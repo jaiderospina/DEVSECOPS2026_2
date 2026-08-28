@@ -491,9 +491,9 @@ En términos de una arquitectura moderna de ciberseguridad y DevSecOps, podría 
 
 > **OWASP proporciona el conocimiento para saber qué proteger, los estándares para definir cómo hacerlo, las herramientas para verificarlo y los laboratorios para aprender a hacerlo.**
 
-[1]: https://owasp.org/projects/?utm_source=chatgpt.com "Projects | OWASP Foundation"
-[2]: https://github.com/OWASP/Top10?utm_source=chatgpt.com "GitHub - OWASP/Top10: Official OWASP Top 10 Document Repository · GitHub"
-[3]: https://devguide.owasp.org/en/05-implementation/02-dependencies/01-dependency-check/?utm_source=chatgpt.com "Dependency-Check - OWASP Developer Guide"
+[1]: https://owasp.org/projects/ "Projects | OWASP Foundation"
+[2]: https://github.com/OWASP/Top10 "GitHub - OWASP/Top10: Official OWASP Top 10 Document Repository · GitHub"
+[3]: https://devguide.owasp.org/en/05-implementation/02-dependencies/01-dependency-check/ "Dependency-Check - OWASP Developer Guide"
 
 ---
 
