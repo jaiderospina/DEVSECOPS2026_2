@@ -51,6 +51,8 @@ https://empresa.com/documento?id=101
 
 y puede acceder a información de otro usuario sin autorización, estamos ante un problema de **Broken Access Control**.
 
+
+![TOP10.png]()
 ---
 
 # 2. OWASP ASVS
