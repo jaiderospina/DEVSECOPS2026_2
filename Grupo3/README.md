@@ -239,3 +239,102 @@ Es como escribir tu diario secreto usando el **"cifrado César"** que aprendiste
 - ✅ No almacenar datos sensibles que no sean estrictamente necesarios (minimización de datos).
 - ✅ Deshabilitar cifrados y protocolos obsoletos en el servidor.
 
+
+
+---
+
+## A05 — Injection (Inyección)
+
+![Riesgo](https://img.shields.io/badge/Riesgo-ALTO-orange?style=flat-square)
+
+### 📌 Descripción
+Ocurre cuando datos no confiables (entrada del usuario) se envían a un intérprete (SQL, sistema operativo, LDAP, motor de plantillas) *
+*como parte de un comando o consulta**, sin la debida validación o separación. Incluye SQLi, NoSQLi, inyección de comandos del SO, y co
+nceptualmente XSS.
+
+**Causas comunes:** concatenar strings para construir queries dinámicamente, falta de validación/sanitización de entrada, uso de APIs d
+e intérprete "crudas" en vez de seguras.
+
+**Impacto potencial:** robo o destrucción total de la base de datos, ejecución remota de código (RCE), bypass de autenticación.
+
+### 💥 Métodos de explotación
+- **SQL Injection clásica**: payload `' OR '1'='1' --` en un campo de login.
+- **Herramientas**: `sqlmap` (automatiza detección y explotación de SQLi), `commix` (inyección de comandos OS), Burp Suite Scanner.
+- **Caso real**: el ataque a **MOVEit Transfer (2023)** por el grupo de ransomware **Cl0p**, que explotó una vulnerabilidad de **SQL in
+jection** para robar datos de miles de organizaciones a nivel mundial (gobiernos, aerolíneas, bancos) — uno de los incidentes de inyecc
+ión más grandes de la historia reciente.
+
+### 🧪 Ejemplo técnico (del día a día)
+```sql
+-- Consulta vulnerable (concatenación de strings):
+"SELECT * FROM usuarios WHERE user='" + usuario + "' AND pass='" + clave + "'"
+
+-- Con el payload usuario = admin' -- 
+SELECT * FROM usuarios WHERE user='admin' -- ' AND pass=''
+-- El "--" comenta el resto: ¡login sin necesitar la contraseña!
+```
+Solución correcta con **consulta parametrizada**:
+```python
+cursor.execute("SELECT * FROM usuarios WHERE user=%s AND pass=%s", (usuario, clave))
+```
+
+### 🎈 Ejemplo sencillo para exponer en clase
+El clásico cómic de **"Bobby Tables"** (xkcd): una escuela le pide a los padres el nombre de su hijo para el registro. Un padre escribe
+ como nombre: `Roberto"); DROP TABLE Alumnos;--`. Si el sistema de la escuela no valida ese texto y lo mete directo en su base de datos
+, **borra la lista completa de alumnos** solo por "confiar ciegamente" en un campo de texto.
+
+### 🛡️ Prevención y mitigación
+- ✅ **Consultas parametrizadas / prepared statements** siempre — nunca concatenar strings.
+- ✅ Usar un **ORM** que maneje el escapado automáticamente.
+- ✅ Validación de entrada con **listas blancas** (formato, tipo, longitud esperada).
+- ✅ Escapar la salida según el contexto (HTML, SQL, shell).
+- ✅ Principio de **mínimo privilegio** en la cuenta de base de datos de la app.
+- ✅ WAF como capa adicional de defensa (nunca como única defensa).
+
+---
+
+## A06 — Insecure Design (Diseño Inseguro)
+
+![Riesgo](https://img.shields.io/badge/Riesgo-MEDIO-yellow?style=flat-square)
+
+### 📌 Descripción
+A diferencia de un bug de implementación, aquí el problema está en el **diseño mismo**: faltan controles de seguridad desde la arquitec
+tura, sin importar qué tan bien se implemente el código después. Es la diferencia entre "está mal construido" y "se construyó lo incorr
+ecto".
+
+**Causas comunes:** ausencia de *threat modeling* (modelado de amenazas) en el ciclo de desarrollo, lógica de negocio que confía en el 
+cliente, falta de límites de uso/recursos por diseño.
+
+**Impacto potencial:** abuso de lógica de negocio, fraude, agotamiento de recursos, pérdidas económicas directas.
+
+### 💥 Métodos de explotación
+- **Abuso de lógica de negocio**: interceptar y modificar con Burp Suite un precio enviado desde el cliente antes de que llegue al serv
+idor.
+- **Enumeración/abuso de flujos** sin límites (p. ej., reintentos ilimitados de un cupón de descuento).
+- No existe una "herramienta automática" estándar — requiere **análisis manual** y pruebas de caso de abuso, ya que el código "funciona
+ bien" pero el diseño permite el fraude.
+- **Caso real (patrón documentado en múltiples programas de bug bounty)**: tiendas en línea donde el **precio final del carrito se reca
+lculaba en el navegador** en vez del servidor, permitiendo a un atacante interceptar la petición y pagar $1 por un producto de $999.
+
+### 🧪 Ejemplo técnico (del día a día)
+```json
+POST /api/checkout
+{ "producto_id": 55, "precio_unitario": 1, "cantidad": 1 }
+```
+El servidor confía en el `precio_unitario` que **envía el cliente** en vez de recalcularlo desde su propia base de datos → el atacante 
+decide cuánto paga.
+
+### 🎈 Ejemplo sencillo para exponer en clase
+Es como una **máquina expendedora que te deja escribir tú mismo el precio** en vez de leerlo de su lista interna. No importa qué tan "b
+ien construida" esté la máquina por dentro: **el diseño mismo** ya tiene el fallo.
+
+### 🛡️ Prevención y mitigación
+- ✅ **Modelado de amenazas** (threat modeling, ej. STRIDE) desde las primeras etapas del diseño.
+- ✅ Nunca confiar en datos de negocio críticos (precios, permisos, límites) que vengan del cliente — **recalcular siempre en el servid
+or**.
+- ✅ Límites de uso de recursos por usuario/servicio (rate limiting, cuotas).
+- ✅ Escribir **casos de abuso** además de casos de uso en los requisitos.
+- ✅ Segregar niveles de confianza entre capas de la aplicación.
+
+---
+
