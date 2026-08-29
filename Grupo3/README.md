@@ -80,17 +80,11 @@ flowchart LR
     style F fill:#b30000,color:#fff
     style E fill:#2e7d32,color:#fff
 ```
-
 ---
-
-
-
-
 
 ## 🥇 A01 — Broken Access Control (Control de Acceso Roto)
 
 ![Riesgo](https://img.shields.io/badge/Riesgo-CRÍTICO-red?style=flat-square) ![Prevalencia](https://img.shields.io/badge/Incidencia-3.73%25%20de%20apps-orange?style=flat-square)
-
 ### 📌 Descripción
 El control de acceso aplica la política de que un usuario **no puede actuar fuera de sus permisos previstos**. Cuando falla, un atacante puede ver, modificar o eliminar contenido que no le corresponde, o ejecutar funciones fuera de su rol (por ejemplo, un usuario normal accediendo a funciones de administrador).
 
@@ -135,7 +129,6 @@ Imagina un **hotel donde la llave de tu habitación abre TODAS las habitaciones*
 ## 🥈 A02 — Security Misconfiguration (Configuración de Seguridad Incorrecta)
 
 ![Riesgo](https://img.shields.io/badge/Riesgo-CRÍTICO-red?style=flat-square) ![Tendencia](https://img.shields.io/badge/Tendencia-⬆️%20de%20%235%20a%20%232-red?style=flat-square)
-
 ### 📌 Descripción
 Ocurre cuando la aplicación, el servidor, el framework o la infraestructura en la nube se despliegan con configuraciones **inseguras, por defecto o incompletas**. Es la categoría que **más subió** en 2025, impulsada por la complejidad de entornos cloud/multi-servicio.
 
@@ -168,7 +161,6 @@ Es como una **tienda que olvida cambiar la clave de la alarma** después de inst
 ## 🥉 A03 — Software Supply Chain Failures (Fallas en la Cadena de Suministro)
 
 ![Riesgo](https://img.shields.io/badge/Riesgo-ALTO-orange?style=flat-square) ![Nuevo](https://img.shields.io/badge/2025-🆕%20NUEVA%20CATEGORÍA-blueviolet?style=flat-square)
-
 ### 📌 Descripción
 Es la categoría **con mayor incidencia promedio (5.19%)** en los datos de 2025 y la más votada como #1 en la encuesta a la comunidad. Expande a la antigua *"Vulnerable and Outdated Components"* (A06:2021): ya no se trata solo de usar una librería con una vulnerabilidad conocida, sino de **cualquier compromiso en el proceso de construir, distribuir o actualizar software** — dependencias, pipelines de CI/CD, registries de paquetes, proveedores externos.
 
@@ -238,8 +230,6 @@ Es como escribir tu diario secreto usando el **"cifrado César"** que aprendiste
 - ✅ Gestión adecuada de llaves (KMS/HSM), nunca hardcodeadas en el repositorio.
 - ✅ No almacenar datos sensibles que no sean estrictamente necesarios (minimización de datos).
 - ✅ Deshabilitar cifrados y protocolos obsoletos en el servidor.
-
-
 
 ---
 
@@ -338,3 +328,194 @@ or**.
 
 ---
 
+## A07 — Authentication Failures (Fallas de Autenticación)
+
+![Riesgo](https://img.shields.io/badge/Riesgo-MEDIO-yellow?style=flat-square)
+
+### 📌 Descripción
+Debilidades relacionadas con **confirmar la identidad de un usuario** y gestionar su sesión de forma segura. Renombrada desde *"Identification and Authentication Failures"* para mayor precisión.
+
+**Causas comunes:** permitir contraseñas débiles o por defecto, ausencia de protección contra fuerza bruta / *credential stuffing*, IDs de sesión predecibles o expuestos en la URL, falta de autenticación multifactor (MFA).
+
+**Impacto potencial:** toma de cuentas (*account takeover*), suplantación de identidad, acceso no autorizado persistente.
+
+### 💥 Métodos de explotación
+- **Credential stuffing**: usar bases de datos de contraseñas filtradas en otros sitios (ej. la filtración *"Collection #1"*, 773 millones de credenciales) para probarlas automáticamente en otro servicio, aprovechando que la gente reutiliza contraseñas.
+- **Fuerza bruta** con `Hydra` o `Medusa` contra formularios de login sin límite de intentos.
+- **Herramientas de credential stuffing**: OpenBullet, listas combinadas (*combolists*).
+- **Caso real**: la brecha de **23andMe (2023)** — atacantes usaron **credential stuffing** (contraseñas reutilizadas de otras filtraciones) contra cuentas que **no tenían MFA activado**, accediendo a datos genéticos y familiares de ~7 millones de usuarios.
+
+### 🧪 Ejemplo técnico (del día a día)
+Un endpoint `POST /login` que no implementa *rate limiting* ni bloqueo de cuenta permite un script como:
+```bash
+for pass in $(cat rockyou.txt); do
+  curl -X POST https://app.com/login -d "user=admin&pass=$pass"
+done
+```
+sin ser detenido ni detectado.
+
+### 🎈 Ejemplo sencillo para exponer en clase
+Imagina un **guardia de seguridad que deja que cualquiera pruebe el código de la puerta las veces que quiera**, sin sospechar nunca ni avisar a nadie, aunque lleven 10,000 intentos fallidos en una hora. Tarde o temprano, alguien adivina `1234`.
+
+### 🛡️ Prevención y mitigación
+- ✅ **MFA (autenticación multifactor)** obligatoria, especialmente en cuentas sensibles.
+- ✅ **Rate limiting** y bloqueo temporal de cuenta tras intentos fallidos (cuidando no habilitar DoS).
+- ✅ Verificar contraseñas nuevas contra bases de datos de contraseñas filtradas (ej. API de *Have I Been Pwned*).
+- ✅ Gestión segura de sesión: IDs aleatorios, cookies `Secure`, `HttpOnly`, `SameSite`, rotación tras login.
+- ✅ Flujos robustos de recuperación de contraseña (sin preguntas de seguridad débiles).
+
+---
+
+## A08 — Software or Data Integrity Failures (Fallas de Integridad)
+
+![Riesgo](https://img.shields.io/badge/Riesgo-MEDIO-yellow?style=flat-square)
+
+### 📌 Descripción
+Se enfoca en código e infraestructura que **no verifica la integridad** de lo que ejecuta o procesa: actualizaciones automáticas sin verificar firma, *deserialización insegura* de datos no confiables, o pipelines de CI/CD con permisos débiles que permiten inyectar cambios maliciosos antes del despliegue.
+
+> 🔍 **Diferencia con A03**: A03 se enfoca en **de dónde viene** el componente (la cadena de suministro); A08 se enfoca en si, **una vez dentro**, se verifica su integridad en tiempo de ejecución/despliegue.
+
+**Causas comunes:** deserializar objetos de fuentes no confiables sin validación, actualizaciones de software sin verificación de firma digital, pipelines CI/CD sin control de acceso ni revisión de código.
+
+**Impacto potencial:** ejecución remota de código (RCE), despliegue de actualizaciones maliciosas a todos los usuarios.
+
+### 💥 Métodos de explotación
+- **Deserialización insegura en Java**: enviar un objeto serializado malicioso que, al deserializarse, ejecuta una cadena de "gadgets" (*gadget chain*) hasta lograr RCE.
+- **Herramienta**: `ysoserial`, que genera payloads de deserialización maliciosos para distintos frameworks Java.
+- **Caso real**: múltiples RCEs críticos en productos empresariales (servidores de aplicaciones, herramientas de colaboración) explotados vía **deserialización insegura de Java** usando cadenas de gadgets de librerías como Apache Commons Collections — un patrón recurrente en boletines de seguridad de la industria durante la última década.
+
+### 🧪 Ejemplo técnico (del día a día)
+```java
+ObjectInputStream ois = new ObjectInputStream(request.getInputStream());
+Object obj = ois.readObject(); // ❌ deserializa lo que sea, sin validar origen ni tipo
+```
+Un atacante envía un objeto serializado diseñado para ejecutar comandos del sistema en cuanto se deserializa.
+
+### 🎈 Ejemplo sencillo para exponer en clase
+Es como **comerte un producto empacado sin sello de garantía** solo porque "se ve parecido" al original. Sin un sello de integridad (como el que traen los medicamentos), no hay forma de saber si alguien lo abrió y le puso algo dañino antes de que llegara a ti.
+
+### 🛡️ Prevención y mitigación
+- ✅ Verificar **firmas digitales** de actualizaciones y paquetes antes de instalarlos.
+- ✅ Evitar deserializar datos de fuentes no confiables; si es inevitable, usar formatos seguros (JSON con validación de esquema en vez de serialización binaria nativa).
+- ✅ Pipelines de CI/CD con **control de acceso estricto** y revisión de código obligatoria antes de merge/deploy.
+- ✅ **Subresource Integrity (SRI)** para scripts de terceros cargados en el navegador.
+
+---
+
+## A09 — Security Logging and Alerting Failures (Fallas de Registro y Alertas)
+
+![Riesgo](https://img.shields.io/badge/Riesgo-MEDIO-yellow?style=flat-square)
+
+### 📌 Descripción
+Sin registro (*logging*) ni **alertas activas**, las brechas pasan desapercibidas durante semanas o meses, dando tiempo al atacante de explorar, escalar privilegios y exfiltrar datos sin ser detectado. El nombre cambió de *"Monitoring"* a **"Alerting"** para enfatizar que **no basta con registrar** — alguien (o algo) debe **reaccionar** a esos registros.
+
+**Causas comunes:** no registrar eventos críticos (logins fallidos, fallos de autorización, errores de validación), logs almacenados solo localmente (fáciles de borrar por el atacante), ausencia de un pipeline de alertas en tiempo real, sin plan de respuesta a incidentes.
+
+**Impacto potencial:** tiempo de permanencia del atacante prolongado (*dwell time*), incapacidad de responder a tiempo, incumplimiento normativo.
+
+### 💥 Métodos de explotación
+- No es una "vulnerabilidad explotable" directamente, sino una **ausencia de defensa** que el atacante aprovecha para **operar sin ser detectado** (borrar logs locales, generar tráfico "silencioso" por debajo de cualquier umbral).
+- **Herramientas del defensor** (para contraste): SIEM como Splunk, Elastic (ELK) Stack, Wazuh.
+- **Caso real**: la brecha de **Marriott/Starwood** permaneció **sin detectar durante aproximadamente 4 años** (2014–2018), exponiendo datos de ~500 millones de huéspedes — un ejemplo extremo de fallas de logging y alertamiento que permitieron una permanencia prolongada del atacante.
+
+### 🧪 Ejemplo técnico (del día a día)
+Una API registra intentos de login fallidos en un archivo local de texto que **nadie revisa nunca** y sin ningún umbral de alerta configurado. Un ataque de fuerza bruta "lento" (unas pocas peticiones por minuto desde una botnet) nunca dispara ninguna notificación.
+
+### 🎈 Ejemplo sencillo para exponer en clase
+Es como tener **cámaras de seguridad grabando 24/7**, pero **nadie las revisa nunca** ni hay una alarma que suene si detectan movimiento sospechoso. El robo se "descubre" semanas después, al revisar la grabación por otro motivo — ya es demasiado tarde.
+
+### 🛡️ Prevención y mitigación
+- ✅ Registrar todos los eventos de seguridad relevantes: logins, fallos de autorización, errores de validación de entrada, con suficiente contexto (quién, qué, cuándo, desde dónde).
+- ✅ Centralizar logs en un **SIEM** resistente a manipulación (los logs no deben poder borrarse desde el mismo servidor comprometido).
+- ✅ Definir **umbrales y alertas en tiempo real** para patrones anómalos.
+- ✅ Tener y **probar** un plan de respuesta a incidentes.
+- ✅ Cuidado con la *inyección de logs*: nunca insertar entrada de usuario sin sanitizar directamente en los registros.
+
+---
+
+## A10 — Mishandling of Exceptional Conditions (Mal Manejo de Condiciones Excepcionales)
+
+![Riesgo](https://img.shields.io/badge/Riesgo-EMERGENTE-lightgrey?style=flat-square) ![Nuevo](https://img.shields.io/badge/2025-🆕%20NUEVA%20CATEGORÍA-blueviolet?style=flat-square)
+### 📌 Descripción
+Categoría nueva en 2025 (24 CWEs) que agrupa fallas en **cómo el sistema reacciona ante lo inesperado**: manejo de errores incorrecto, "fallar abierto" en vez de "fallar cerrado", ignorar valores de retorno de funciones de seguridad, y errores de lógica que solo aparecen bajo condiciones anómalas.
+
+**Causas comunes:** bloques `catch` genéricos que por defecto **otorgan acceso** en vez de negarlo, sistemas de autenticación que permiten el paso si la base de datos no responde, cifrado que cae silenciosamente a texto plano si la llave no está disponible, falta de manejo explícito de casos límite.
+
+**Impacto potencial:** bypass silencioso de controles de seguridad justo cuando el sistema está bajo estrés o fallando — el peor momento posible.
+
+### 💥 Métodos de explotación
+- **Provocar deliberadamente errores** (timeouts, entradas límite, servicios caídos) para forzar al sistema a caer en su "modo de emergencia" inseguro (*fail open*).
+- **Fuzzing** con herramientas como `AFL` o el fuzzer de Burp Suite para encontrar condiciones límite no manejadas.
+- **Chaos engineering** (ej. Chaos Monkey) usado también por atacantes/pentesters para descubrir cómo se comporta el sistema cuando algo se rompe.
+- **Casos ilustrativos**: el incidente de **Knight Capital (2012)**, donde una condición inesperada durante un despliegue activó código obsoleto no removido, generando pérdidas de **$440 millones en 45 minutos**; y la caída global de **Cloudflare (2019)**, causada por una expresión regular que entró en un bucle catastrófico (*ReDoS*) ante una entrada no anticipada, tumbando el servicio a nivel mundial durante ~30 minutos.
+
+### 🧪 Ejemplo técnico (del día a día)
+```java
+try {
+    boolean autorizado = servicioPermisos.verificar(usuario, recurso);
+    if (!autorizado) denegarAcceso();
+} catch (Exception e) {
+    // ❌ Si el servicio de permisos falla (timeout, caída), se PERMITE el acceso
+    otorgarAcceso();
+}
+```
+Un atacante que logra provocar un timeout en el servicio de permisos (saturándolo, por ejemplo) obtiene acceso automático, sin haber "roto" nada más que la disponibilidad del chequeo.
+
+### 🎈 Ejemplo sencillo para exponer en clase
+Es como un **elevador programado para abrir las puertas automáticamente** cada vez que su sistema de control tiene un error, "por si acaso alguien queda atrapado". La intención es buena (seguridad física), pero ese mismo diseño se convierte en una puerta abierta: basta con **provocar un error** para que las puertas se abran solas, sin importar en qué piso estén.
+
+### 🛡️ Prevención y mitigación
+- ✅ **Fallar de forma segura/cerrada (fail-secure)** por defecto: ante un error, la respuesta correcta casi siempre es **negar**, no permitir.
+- ✅ Manejo de errores **centralizado y estructurado**, evitando bloques `catch` genéricos que oculten decisiones de seguridad.
+- ✅ Validación estricta de entradas, incluyendo casos límite y valores nulos/vacíos.
+- ✅ Pruebas explícitas de condiciones anómalas: **fuzzing** y **chaos testing** como parte del ciclo de pruebas.
+- ✅ Patrones de resiliencia (*circuit breakers*, *graceful degradation*) que degraden funcionalidad sin sacrificar seguridad.
+
+---
+
+## 📊 Tabla comparativa 2021 → 2025
+
+| Categoría 2021 | Puesto 2021 | → | Categoría 2025 | Puesto 2025 |
+|---|---|---|---|---|
+| Broken Access Control | #1 | ➡️ | **Broken Access Control** (+ SSRF) | **#1** |
+| Cryptographic Failures | #2 | ⬇️ | Cryptographic Failures | #4 |
+| Injection | #3 | ⬇️ | Injection | #5 |
+| Insecure Design | #4 | ⬇️ | Insecure Design | #6 |
+| Security Misconfiguration | #5 | ⬆️ | **Security Misconfiguration** | **#2** |
+| Vulnerable and Outdated Components | #6 | 🔀 | **Software Supply Chain Failures** | **#3 (🆕 ampliada)** |
+| Identification and Authentication Failures | #7 | ➡️ | Authentication Failures (renombrada) | #7 |
+| Software and Data Integrity Failures | #8 | ➡️ | Software or Data Integrity Failures | #8 |
+| Security Logging and Monitoring Failures | #9 | ➡️ | Security Logging and Alerting Failures (renombrada) | #9 |
+| Server-Side Request Forgery (SSRF) | #10 | 🔀 | *(absorbida en A01)* | — |
+| — | — | 🆕 | **Mishandling of Exceptional Conditions** | **#10 (nueva)** |
+
+---
+
+## 🎓 Conclusiones y guía para la exposición
+
+- 🔴 **Broken Access Control** y **Security Misconfiguration** dominan el top 2, reflejando que hoy los mayores riesgos vienen de **fallos de verificación básica** y **complejidad de la nube**, no solo de bugs de código sofisticados.
+- 🆕 Las dos categorías nuevas (**Supply Chain** y **Exceptional Conditions**) muestran que el perímetro de la seguridad ya no es solo "tu código": incluye **todo lo que confías sin verificar** (dependencias, pipelines) y **cómo te comportas cuando algo sale mal**.
+- 🧠 **Idea central para la clase**: casi todas estas vulnerabilidades comparten una raíz común — **confiar en algo (una entrada, un componente, un estado) sin verificarlo**.
+
+> 💬 **Sugerencia para la exposición**: para cada vulnerabilidad, presenten primero el **ejemplo sencillo/analogía** (llave universal del hotel, vendedor ambulante, elevador con puertas rotas) para que el público entienda el concepto en segundos, y **después** el ejemplo técnico con código para mostrar cómo se ve realmente en una aplicación. Cerrar cada bloque con las 2-3 mitigaciones más importantes marcadas con ✅.
+
+---
+
+## 📚 Fuentes
+
+- [OWASP Top 10:2025 — Sitio oficial](https://owasp.org/Top10/2025/)
+- [OWASP Top 10:2025 — Introducción oficial](https://owasp.org/Top10/2025/0x00_2025-Introduction/)
+- [A03:2025 — Software Supply Chain Failures (oficial)](https://owasp.org/Top10/2025/A03_2025-Software_Supply_Chain_Failures/)
+- [A10:2025 — Mishandling of Exceptional Conditions (oficial)](https://owasp.org/Top10/2025/A10_2025-Mishandling_of_Exceptional_Conditions/)
+- [OWASP Top 10 — Repositorio oficial en GitHub](https://github.com/OWASP/Top10)
+- [Parasoft — OWASP Top 10 2025: What Changed & New Vulnerabilities](https://www.parasoft.com/blog/owasp-top-10/)
+- [Orca Security — OWASP Top 10 2025: Key Changes](https://orca.security/resources/blog/owasp-top-10-2025-key-changes/)
+- [Qualys — What Changed in OWASP Top 10 2025?](https://blog.qualys.com/qualys-insights/2026/06/15/what-changed-in-owasp-top-10-2025-and-recommendations-for-each-category)
+- [Endor Labs — OWASP Top 10 Adds A03:2025: Software Supply Chain Failures](https://www.endorlabs.com/learn/owasp-top-10-adds-a03-2025-software-supply-chain-failures)
+---
+
+<p align="center">
+  <img src="https://img.shields.io/badge/OWASP%20Top%2010-2025-black?style=for-the-badge&logo=owasp" />
+  <br/>
+  <sub>Documento elaborado con fines educativos para la materia de Ciberseguridad · Agosto 2026</sub>
+</p>
