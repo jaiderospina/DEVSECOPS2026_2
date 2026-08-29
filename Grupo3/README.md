@@ -499,5 +499,5 @@ Es como un **elevador programado para abrir las puertas automáticamente** cada 
 <p align="center">
   <img src="https://img.shields.io/badge/OWASP%20Top%2010-2025-black?style=for-the-badge&logo=owasp" />
   <br/>
-  <sub>Documento elaborado con fines educativos para la materia de Ciberseguridad · Agosto 2026</sub>
+  <sub>Documento elaborado con fines educativos para la materia de Seguridad en Entornos Cloud y DevOps· Agosto 2026</sub>
 </p>
