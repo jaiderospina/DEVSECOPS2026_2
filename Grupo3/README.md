@@ -475,13 +475,11 @@ Es como un **elevador programado para abrir las puertas automáticamente** cada 
 
 ---
 
-## 🎓 Conclusiones y guía para la exposición
+## 🎓 Conclusiones
 
 - 🔴 **Broken Access Control** y **Security Misconfiguration** dominan el top 2, reflejando que hoy los mayores riesgos vienen de **fallos de verificación básica** y **complejidad de la nube**, no solo de bugs de código sofisticados.
-- 🆕 Las dos categorías nuevas (**Supply Chain** y **Exceptional Conditions**) muestran que el perímetro de la seguridad ya no es solo "tu código": incluye **todo lo que confías sin verificar** (dependencias, pipelines) y **cómo te comportas cuando algo sale mal**.
+- 🆕 Las dos categorías nuevas (**Supply Chain** y **Exceptional Conditions**) muestran que el perímetro de la seguridad ya no es solo "el código": incluye **todo lo que confías sin verificar** (dependencias, pipelines) y **cómo te comportas cuando algo sale mal**.
 - 🧠 **Idea central para la clase**: casi todas estas vulnerabilidades comparten una raíz común — **confiar en algo (una entrada, un componente, un estado) sin verificarlo**.
-
-> 💬 **Sugerencia para la exposición**: para cada vulnerabilidad, presenten primero el **ejemplo sencillo/analogía** (llave universal del hotel, vendedor ambulante, elevador con puertas rotas) para que el público entienda el concepto en segundos, y **después** el ejemplo técnico con código para mostrar cómo se ve realmente en una aplicación. Cerrar cada bloque con las 2-3 mitigaciones más importantes marcadas con ✅.
 
 ---
 
