@@ -4,6 +4,37 @@
 
 # 🛡️ OWASP Top 10 : 2025 — Vulnerabilidades Críticas en Aplicaciones Web
 
+## 👥 Integrantes del equipo
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="https://img.shields.io/badge/🎓-Integrante-e63946?style=for-the-badge" /><br/>
+      <b>William Ricardo Niño Pico</b>
+    </td>
+    <td align="center">
+      <img src="https://img.shields.io/badge/🎓-Integrante-f4a261?style=for-the-badge" /><br/>
+      <b>Milena Rocío Ramírez Espinosa</b>
+    </td>
+    <td align="center">
+      <img src="https://img.shields.io/badge/🎓-Integrante-e9c46a?style=for-the-badge" /><br/>
+      <b>María Fernanda Giraldo Osorio</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://img.shields.io/badge/🎓-Integrante-2a9d8f?style=for-the-badge" /><br/>
+      <b>Miguel Ángel Díaz Díaz</b>
+    </td>
+    <td align="center" colspan="2">
+      <img src="https://img.shields.io/badge/🎓-Integrante-264653?style=for-the-badge" /><br/>
+      <b>Jorge Iván Páez Rincón</b>
+    </td>
+  </tr>
+</table>
+
+---
+
 > 📚 **Trabajo académico — Clase de Ciberseguridad**
 > Investigación, análisis de explotación y estrategias de mitigación de las 10 vulnerabilidades más críticas en aplicaciones web según la edición **2025** del OWASP Top 10 (publicada oficialmente en enero de 2026 tras el anuncio en el OWASP Global AppSec Conference, Washington D.C., noviembre 2025).
 >
