@@ -20,13 +20,11 @@
       <img src="https://img.shields.io/badge/🎓-Integrante-e9c46a?style=for-the-badge" /><br/>
       <b>María Fernanda Giraldo Osorio</b>
     </td>
-  </tr>
-  <tr>
     <td align="center">
       <img src="https://img.shields.io/badge/🎓-Integrante-2a9d8f?style=for-the-badge" /><br/>
       <b>Miguel Ángel Díaz Díaz</b>
     </td>
-    <td align="center" colspan="2">
+    <td align="center">
       <img src="https://img.shields.io/badge/🎓-Integrante-264653?style=for-the-badge" /><br/>
       <b>Jorge Iván Páez Rincón</b>
     </td>
