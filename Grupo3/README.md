@@ -82,10 +82,10 @@ flowchart LR
 ```
 
 ---
----
 
 
-### MILENA SE ENCARGO DE LAS 2 PRIMERAS
+
+
 
 ## 🥇 A01 — Broken Access Control (Control de Acceso Roto)
 
