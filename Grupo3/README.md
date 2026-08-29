@@ -82,4 +82,85 @@ flowchart LR
 ```
 
 ---
+---
 
+
+### MILENA SE ENCARGO DE LAS 2 PRIMERAS
+
+## 🥇 A01 — Broken Access Control (Control de Acceso Roto)
+
+![Riesgo](https://img.shields.io/badge/Riesgo-CRÍTICO-red?style=flat-square) ![Prevalencia](https://img.shields.io/badge/Incidencia-3.73%25%20de%20apps-orange?style=flat-square)
+
+### 📌 Descripción
+El control de acceso aplica la política de que un usuario **no puede actuar fuera de sus permisos previstos**. Cuando falla, un atacante puede ver, modificar o eliminar contenido que no le corresponde, o ejecutar funciones fuera de su rol (por ejemplo, un usuario normal accediendo a funciones de administrador).
+
+**Causas comunes:**
+- Falta de verificación de permisos en cada endpoint/función (no solo en el menú/UI).
+- **IDOR** (*Insecure Direct Object Reference*): manipular un ID en la URL o petición para acceder a recursos ajenos.
+- Configuración CORS permisiva (`Access-Control-Allow-Origin: *` con credenciales).
+- **SSRF**: el servidor es engañado para hacer peticiones a recursos internos (ahora integrado en esta categoría).
+- Elevación de privilegios manipulando tokens/JWT.
+
+**Impacto potencial:** exposición o alteración masiva de datos, toma de cuentas ajenas, acceso a redes internas (vía SSRF), pérdida de confianza y sanciones regulatorias.
+
+### 💥 Métodos de explotación
+- **IDOR**: cambiar `GET /api/facturas/1042` por `1043` y ver la factura de otro cliente.
+- **Fuerza bruta de rutas ocultas** con `ffuf` / `gobuster` para encontrar paneles `/admin`, `/backup` sin protección.
+- **SSRF** para consultar el servicio de metadatos de la nube (`http://169.254.169.254/`) y robar credenciales temporales.
+- **Herramientas**: Burp Suite (Repeater/Intruder), extensión *Autorize* (prueba automatizada de fallos de autorización), OWASP ZAP.
+- **Caso real**: la brecha de **Capital One (2019)** — una atacante explotó una mala configuración de firewall (WAF) para ejecutar un ataque **SSRF** contra el servicio de metadatos de AWS EC2, robando credenciales IAM y accediendo a datos de más de 100 millones de clientes.
+
+### 🧪 Ejemplo técnico (del día a día)
+```http
+GET /api/v1/usuarios/1002/pedidos HTTP/1.1
+Host: tienda.com
+Authorization: Bearer <token-del-usuario-1001>
+```
+El backend nunca valida que el `1002` de la URL coincida con el dueño del token → el usuario 1001 puede leer/editar los pedidos del usuario 1002 con solo cambiar un número.
+
+### 🎈 Ejemplo sencillo para exponer en clase
+Imagina un **hotel donde la llave de tu habitación abre TODAS las habitaciones**, no solo la tuya. Nadie lo nota hasta que un huésped "curioso" prueba su llave en la puerta de al lado... y entra. Eso es exactamente lo que pasa cuando una app olvida verificar "¿este dato es realmente tuyo?".
+
+### 🛡️ Prevención y mitigación
+- ✅ **Denegar por defecto**: acceso explícitamente permitido, todo lo demás se rechaza.
+- ✅ Validar permisos **en el servidor**, en cada petición — nunca confiar en la UI o el frontend.
+- ✅ Usar un mecanismo **centralizado** de control de acceso (middleware/librería), no lógica dispersa.
+- ✅ Aplicar el **principio de mínimo privilegio** por rol/recurso.
+- ✅ Deshabilitar listados de directorios y metadatos de servidor.
+- ✅ Mitigar SSRF con listas blancas de destinos y segmentación de red.
+- ✅ Registrar y alertar fallos de control de acceso repetidos (posible ataque en curso).
+
+---
+
+## 🥈 A02 — Security Misconfiguration (Configuración de Seguridad Incorrecta)
+
+![Riesgo](https://img.shields.io/badge/Riesgo-CRÍTICO-red?style=flat-square) ![Tendencia](https://img.shields.io/badge/Tendencia-⬆️%20de%20%235%20a%20%232-red?style=flat-square)
+
+### 📌 Descripción
+Ocurre cuando la aplicación, el servidor, el framework o la infraestructura en la nube se despliegan con configuraciones **inseguras, por defecto o incompletas**. Es la categoría que **más subió** en 2025, impulsada por la complejidad de entornos cloud/multi-servicio.
+
+**Causas comunes:** credenciales/paneles por defecto sin cambiar, mensajes de error detallados en producción, funciones/puertos innecesarios habilitados, buckets de almacenamiento (S3, GCS) públicos, cabeceras de seguridad ausentes, permisos de nube excesivos (IAM demasiado permisivo).
+
+**Impacto potencial:** compromiso total del sistema, filtración masiva de datos, acceso administrativo no autorizado.
+
+### 💥 Métodos de explotación
+- **Reconocimiento con Shodan/Censys** para hallar servicios expuestos a internet (bases de datos, dashboards, cámaras).
+- **Dorking / fuzzing de directorios** (`gobuster`, `dirb`) para encontrar `.env`, `.git/`, `config.php.bak`.
+- **Herramientas de auditoría cloud**: ScoutSuite, Prowler, para detectar buckets S3 públicos o IAM mal configurado.
+- **Caso real**: decenas de filtraciones masivas por **buckets S3 públicos mal configurados** (empresas como Verizon, Accenture, Dow Jones han sufrido incidentes de este tipo, exponiendo millones de registros sin que fuera necesario "hackear" nada — el dato simplemente estaba abierto al público).
+
+### 🧪 Ejemplo técnico (del día a día)
+Un backend Django/Flask desplegado a producción con `DEBUG = True`: cualquier error muestra el **stack trace completo**, incluyendo rutas del servidor, variables de entorno y hasta la `SECRET_KEY`, visible para cualquier visitante que provoque un error 500.
+
+### 🎈 Ejemplo sencillo para exponer en clase
+Es como una **tienda que olvida cambiar la clave de la alarma** después de instalarla y sigue usando `0000`, o deja la puerta trasera sin candado "solo por hoy". Nadie forzó nada: la puerta ya estaba abierta.
+
+### 🛡️ Prevención y mitigación
+- ✅ Proceso de despliegue **repetible y automatizado** (Infraestructura como Código) para evitar configuraciones manuales inconsistentes.
+- ✅ Plataforma mínima: eliminar features, puertos, servicios y cuentas que no se usan.
+- ✅ Revisar y actualizar configuraciones de forma periódica (benchmarks CIS).
+- ✅ Cabeceras de seguridad: `Content-Security-Policy`, `X-Frame-Options`, `Strict-Transport-Security`.
+- ✅ Escaneo automatizado de configuración en el pipeline CI/CD.
+- ✅ Nunca dejar credenciales/paneles por defecto.
+
+---
