@@ -85,11 +85,12 @@ Escenario n.° 1 (Aplicaciones de ejemplo y credenciales por defecto): El servid
 
 ---
 
-## 🔴 A03:2025 - Fallos en la cadena de suministro de software
+## A03:2025 - Fallos en la cadena de suministro de software
 
-### 📌 ¿Qué es?
+### 📋 ¿Qué es?
 
 **A03:2025 - Software Supply Chain Failures** corresponde a los fallos de seguridad presentes en la cadena de suministro del software.
+Es una de las modificaciones importantes del OWASP Top 10:2025. En 2021 existía A06 – Vulnerable and Outdated Components, pero en 2025 OWASP amplió considerablemente el concepto para cubrir no solamente componentes vulnerables, sino todo el ecosistema utilizado para construir, distribuir y actualizar software
 
 Esta categoría analiza los riesgos asociados con:
 
@@ -124,3 +125,144 @@ Build
 Artefacto
       ↓
 Producción
+```
+
+### 🚨 ¿Cómo ocurre una vulnerabilidad A03?
+Imagina que una aplicación Java utiliza:
+```java
+Aplicación
+   ↓
+Spring
+   ↓
+Log4j
+```
+El desarrollador puede haber escrito código completamente correcto.
+Pero si Log4j tiene una vulnerabilidad crítica, la aplicación hereda ese riesgo.
+Esto es especialmente peligroso porque muchas aplicaciones tienen:
+
+```text
+Dependencia directa
+       ↓
+Dependencia transitiva
+       ↓
+Otra dependencia
+       ↓
+Otra dependencia
+```
+Por ejemplo:
+```text
+Mi aplicación
+ ├── framework A
+ │    ├── biblioteca B
+ │    │    └── biblioteca vulnerable C
+ │    └── biblioteca D
+ └── biblioteca E
+```
+El desarrollador quizá ni siquiera sabe que utiliza C.
+Por eso OWASP 2025 hace especial énfasis en las dependencias transitivas
+### 📌 Caso real más reciente: Shai-Hulud
+
+OWASP 2025 también incluye el ataque Shai-Hulud de 2025.
+Se trató de un ataque relacionado con el ecosistema npm, donde se distribuyeron versiones maliciosas de paquetes.
+Según OWASP, el malware podía:
+```text
+infectar entorno
+     ↓
+extraer información sensible
+     ↓
+buscar tokens npm
+     ↓
+utilizar tokens
+     ↓
+publicar versiones maliciosas
+     ↓
+infectar más paquetes
+```
+OWASP señala que llegó a afectar más de 500 versiones de paquetes antes de ser interrumpido.
+Este ejemplo es excelente para explicar por qué A03:2025 ya no se limita a:
+"Tengo una librería con un CVE".
+Ahora hablamos de todo el ecosistema de confianza del software.
+
+### 👁️ Herramientas de prevencion
+- Snyk
+- Dependabot
+- OWASP Dependency-Check
+- GitHub Advanced Security
+- herramientas de SBOM
+
+### 🛡️ Prevención y mitigación
+- ✅ Detener y Aislar: Bloquea el despliegue del componente afectado y retira de producción los contenedores o paquetes comprometidos.
+- ✅ Revocar Claves: Invalida de inmediato todos los tokens de CI/CD, credenciales y certificados de firma que pudieron quedar expuestos.
+- ✅ Parchear o Sustituir: Actualiza la dependencia a una versión corregida; si no existe parche, reemplaza la librería o aplica una regla de mitigación temporal.
+- ✅ Bloquear Reincidencias: Añade la regla en tus herramientas SCA (Snyk, Dependabot) para rechazar automáticamente cualquier intento futuro de compilar con la versión vulnerable
+- 🧪Gestión de Inventario (SBOM): Genera e inspecciona de forma explícita el inventario de software y dependencias (usando herramientas como CycloneDX o Syft) para auditar vulnerabilidades (CVEs).
+- 🧪Integridad de Código: Fija versiones exactas (lockfiles) con firmas y hashes SHA-256; evita usar etiquetas como :latest. Firma artefactos mediante Sigstore/Cosign.
+- 🧪Control de Repositorios: Utilice proxies o gestores internos (ej. Nexus, Artifactory) para bloquear ataques de Dependency Confusion y Typosquatting.
+- 🧪Seguridad en CI/CD: Aplique el principio de menor privilegio a tokens de automatización, use runners efímeros e implemente el marco SLSA.
+
+---
+## A04:2025 — Cryptographic Failures
+### 📋 ¿Qué es A04?
+
+A04:2025 – Cryptographic Failures son errores relacionados con la protección criptográfica de la información.
+OWASP explica que incluye problemas como:
+
+- ausencia de cifrado;
+- cifrado débil;
+- algoritmos inseguros;
+- mala administración de claves;
+- claves expuestas;
+- generación aleatoria insegura;
+- reutilización de claves;
+- problemas con IV/nonce;
+- hashes inseguros;
+- errores de validación de certificados;
+- downgrade criptográfico.
+
+### 🧱 ¿Qué intenta proteger la criptografía?
+Principalmente:
+- Confidencialidad : Que nadie pueda leer
+- Integridad : Que nadie pueda modificar
+- Autenticidad : Este mensaje realmente proviene de quien dice enviarlo
+
+### 🚨 Principales Causas del Fallo
+
+- Transmisión en texto plano: Uso de protocolos inseguros (HTTP, FTP, SMTP sin TLS) que permiten la intercepción de tráfico (Man-in-the-Middle).
+- Algoritmos obsoletos o débiles: Uso de esquemas vulnerables o rotos como MD5, SHA-1, DES o RC4.
+- Manejo deficiente de claves: Hardcodear claves secretas en el código fuente, almacenarlas en repositorios o no rotarlas periódicamente.
+- Hashing inseguro de contraseñas: Guardar contraseñas sin salt o usando funciones rápidas no diseñadas para contraseñas (como MD5 o SHA-256 estándar en lugar de Argon2, bcrypt o PBKDF2).
+- Falta de vectores de inicialización (IV): Reutilizar IVs o emplear modos de cifrado inseguros como Electronic Codebook (ECB).
+
+Ejemplo extremadamente sencillo
+Sin cifrado:
+```text
+Usuario
+  |
+  | contraseña=Daniel123
+  |
+  ↓
+Servidor
+```
+Si alguien puede interceptar la comunicación:
+```text
+Atacante
+   ↓
+contraseña=Daniel123
+```
+Con TLS:
+```text
+Usuario
+  |
+  | 🔒 datos cifrados
+  |
+  ↓
+Servidor
+```
+El atacante podría observar tráfico, pero no debería poder obtener el contenido protegido simplemente capturando los paquetes.
+
+### 🛡️ Prevención y mitigación
+- ✅ Protección en Tránsito: Forzar HTTPS mediante HSTS y usar únicamente versiones seguras del protocolo (TLS 1.2 o TLS 1.3). Deshabilitar protocolos en texto plano (HTTP, FTP).
+- ✅ Protección en Reposo: Cifrar datos sensibles (PII, financieras) con algoritmos modernos y robustos como AES-256-GCM.
+- ✅ Protección de Contraseñas: Usar funciones de hash adaptativas con salt automático diseñadas para credenciales (como Argon2id o bcrypt), evitando hashes simples como MD5 o SHA-256.
+- ✅ Gestión de Claves: Guardar claves y secretos fuera del código fuente mediante gestores dedicados (AWS Secrets Manager, HashiCorp Vault) y rotarlos periódicamente.
+- ✅ Eliminar Criptografía Débil: Prohibir esquemas obsoletos o inseguros (DES, RC4, MD5, SHA-1, modo ECB).
