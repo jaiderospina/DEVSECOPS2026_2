@@ -83,3 +83,44 @@ Ocurre cuando un sistema, aplicación o servicio en la nube se configura incorre
 ### 📝 Ejemplos de escenarios de ataque
 Escenario n.° 1 (Aplicaciones de ejemplo y credenciales por defecto): El servidor de producción incluye aplicaciones de ejemplo no eliminadas (como una consola de administración) con sus contraseñas predeterminadas intactas, permitiendo que un atacante inicie sesión y tome el control.
 
+---
+
+## 🔴 A03:2025 - Fallos en la cadena de suministro de software
+
+### 📌 ¿Qué es?
+
+**A03:2025 - Software Supply Chain Failures** corresponde a los fallos de seguridad presentes en la cadena de suministro del software.
+
+Esta categoría analiza los riesgos asociados con:
+
+- Dependencias de terceros.
+- Librerías y frameworks.
+- Paquetes de software.
+- Dependencias transitivas.
+- Repositorios.
+- Herramientas de desarrollo.
+- Procesos CI/CD.
+- Artefactos de software.
+- Proveedores externos.
+- Componentes desactualizados o abandonados.
+
+> 💡 Una aplicación puede tener un código propio seguro, pero si utiliza un componente externo vulnerable o comprometido, la aplicación también puede quedar expuesta.
+
+### 🔄 Cadena de suministro de software
+
+```text
+Desarrollador
+      ↓
+Código fuente
+      ↓
+Dependencias
+      ↓
+Repositorio de paquetes
+      ↓
+CI/CD
+      ↓
+Build
+      ↓
+Artefacto
+      ↓
+Producción
