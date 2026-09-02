@@ -142,3 +142,542 @@ Los **Fallos de Control de Acceso (A01)** y los **Fallos Criptográficos (A02)**
 
 - OWASP Foundation. *OWASP Top 10:2021*. Disponible en: https://owasp.org/Top10/2021/
 - OWASP Foundation. *OWASP Top Ten Web Application Security Risks*. Disponible en: https://owasp.org/www-project-top-ten/
+
+# 🔐 OWASP Top 10 (2021) — A03, A04 y A05: Vulnerabilidades en Aplicaciones Web
+
+
+---
+
+## 📖 Introducción
+
+La seguridad en el desarrollo de software es fundamental para proteger la información, los usuarios y la infraestructura tecnológica de una organización. El **OWASP Top 10** es una referencia ampliamente utilizada para identificar los principales riesgos de seguridad presentes en aplicaciones web.
+
+En este documento se presentan tres categorías de la edición **OWASP Top 10:2021**:
+
+- **A03:2021 — Inyección**
+- **A04:2021 — Diseño Inseguro**
+- **A05:2021 — Configuración de Seguridad Incorrecta**
+
+Para cada vulnerabilidad se analiza su naturaleza, principales causas, impacto potencial, métodos de explotación, herramientas utilizadas por los atacantes y las medidas recomendadas para su prevención y mitigación.
+
+> 📌 **Fuente oficial:** [OWASP Top 10:2021](https://owasp.org/Top10/2021/)
+
+---
+
+## 📊 Panorama general
+
+Las tres categorías analizadas representan diferentes etapas en las que puede aparecer un riesgo de seguridad:
+
+```mermaid
+flowchart LR
+    A["A03: Inyección"] --> B["Entrada manipulada"]
+    B --> C["Interpretación como código"]
+    C --> D["Acceso o modificación no autorizada"]
+
+    E["A04: Diseño Inseguro"] --> F["Falla de arquitectura"]
+    F --> G["Abuso de lógica de negocio"]
+    G --> H["Compromiso de funcionalidad"]
+
+    I["A05: Configuración Incorrecta"] --> J["Configuración insegura"]
+    J --> K["Exposición de servicios"]
+    K --> L["Acceso no autorizado"]
+```
+
+### Comparación de las categorías
+
+| Categoría | Problema principal | Ejemplo | Impacto |
+| --- | --- | --- | --- |
+| **A03 — Inyección** | Datos interpretados como código | SQL Injection | Robo o modificación de información |
+| **A04 — Diseño Inseguro** | Fallas en la arquitectura o lógica | Bypass de reglas de negocio | Fraude o abuso de funcionalidades |
+| **A05 — Configuración Incorrecta** | Sistemas configurados de forma insegura | Panel administrativo expuesto | Acceso no autorizado |
+
+---
+
+# 🧩 Detalle de las categorías
+
+---
+
+# 1️⃣ A03:2021 — Inyección
+
+## 💉 ¿Qué es?
+
+La **inyección** ocurre cuando una aplicación incorpora datos proporcionados por un usuario dentro de una instrucción, consulta o comando sin realizar una separación adecuada entre los datos y el código.
+
+Esto puede provocar que una entrada controlada por un atacante sea interpretada como parte de una instrucción ejecutable.
+
+Entre los tipos más conocidos se encuentran:
+
+- SQL Injection (SQLi)
+- NoSQL Injection
+- OS Command Injection
+- LDAP Injection
+- XPath Injection
+- Cross-Site Scripting (XSS), dependiendo del contexto de clasificación.
+
+### 🧠 Causas más comunes
+
+- Construcción de consultas mediante concatenación de cadenas.
+- Falta de validación de las entradas.
+- Ausencia de consultas parametrizadas.
+- Uso inseguro de comandos del sistema operativo.
+- Falta de controles sobre los datos enviados por los usuarios.
+- Utilización de cuentas de base de datos con privilegios excesivos.
+- Dependencia de mecanismos de seguridad únicamente del lado cliente.
+
+---
+
+## 💥 Impacto
+
+Una vulnerabilidad de inyección puede permitir a un atacante:
+
+- Obtener información almacenada en bases de datos.
+- Modificar o eliminar información.
+- Evadir mecanismos de autenticación.
+- Ejecutar determinadas instrucciones.
+- Acceder a información confidencial.
+- Comprometer otros componentes de la infraestructura.
+
+| Propiedad | Posible impacto |
+| --- | --- |
+| 🔒 Confidencialidad | Lectura de información privada |
+| 📝 Integridad | Modificación de registros |
+| ⚡ Disponibilidad | Eliminación o alteración de recursos |
+| 👤 Autenticación | Bypass del inicio de sesión |
+| 🖥️ Sistema | Ejecución de comandos en determinados escenarios |
+
+---
+
+## 🔍 Métodos de explotación
+
+Los atacantes normalmente comienzan identificando entradas controladas por el usuario, como:
+
+```text
+Parámetros URL
+      ↓
+Campos de formularios
+      ↓
+Cookies
+      ↓
+Headers HTTP
+      ↓
+Datos enviados a APIs
+```
+
+Posteriormente analizan cómo responde la aplicación ante entradas inesperadas o manipuladas.
+
+### SQL Injection
+
+Una aplicación vulnerable puede construir una consulta de esta manera:
+
+```sql
+SELECT * FROM usuarios
+WHERE usuario = 'entrada'
+AND password = 'entrada';
+```
+
+El problema aparece cuando las entradas del usuario se incorporan directamente en la consulta.
+
+Una implementación segura debe utilizar **consultas parametrizadas** para mantener separados los datos de la estructura SQL.
+
+### Command Injection
+
+Puede ocurrir cuando una aplicación utiliza información proporcionada por el usuario para construir comandos del sistema operativo.
+
+```mermaid
+flowchart TD
+    A["Atacante"] --> B["Entrada manipulada"]
+    B --> C["Aplicación vulnerable"]
+    C --> D["Comando del sistema"]
+    D --> E["Sistema operativo"]
+```
+
+---
+
+## 🛠️ Herramientas utilizadas
+
+| Herramienta | Utilización |
+| --- | --- |
+| **Burp Suite** | Interceptar y modificar solicitudes HTTP |
+| **OWASP ZAP** | Análisis de seguridad de aplicaciones web |
+| **sqlmap** | Automatización de pruebas de SQL Injection |
+| **Nmap** | Reconocimiento de servicios |
+| **Wireshark** | Análisis del tráfico de red |
+
+> ⚠️ Estas herramientas deben utilizarse únicamente en sistemas propios, laboratorios o infraestructuras donde exista autorización explícita para realizar pruebas.
+
+---
+
+## 🛡️ Prevención y mitigación
+
+Las principales medidas de seguridad son:
+
+- Utilizar consultas SQL parametrizadas.
+- Implementar validación de entradas en el servidor.
+- Aplicar listas de valores permitidos (*allowlist*) cuando sea posible.
+- Evitar concatenar directamente datos del usuario en comandos.
+- Utilizar ORM de forma segura.
+- Aplicar el principio de mínimo privilegio.
+- Mantener actualizadas las dependencias.
+- Implementar pruebas de seguridad automatizadas.
+- Utilizar mecanismos de protección adicionales como WAF cuando sean apropiados.
+
+### Arquitectura recomendada
+
+```mermaid
+flowchart LR
+    A["Usuario"] --> B["Validación"]
+    B --> C["Aplicación"]
+    C --> D["Consulta parametrizada"]
+    D --> E["Base de datos"]
+```
+
+
+---
+
+# 2️⃣ A04:2021 — Diseño Inseguro
+
+## 🏗️ ¿Qué es?
+
+**Diseño Inseguro** hace referencia a vulnerabilidades originadas principalmente por decisiones deficientes de arquitectura, diseño o lógica de negocio.
+
+En este caso, el problema puede existir incluso antes de escribir el código. Una aplicación puede estar correctamente implementada desde el punto de vista sintáctico, pero continuar siendo vulnerable porque su diseño no contempla determinados escenarios de ataque.
+
+### 🧠 Causas más comunes
+
+- Ausencia de análisis de amenazas.
+- Falta de requisitos de seguridad.
+- No considerar escenarios de abuso.
+- Confiar en controles implementados únicamente en el frontend.
+- Falta de mecanismos contra automatización.
+- Ausencia de límites sobre operaciones sensibles.
+- Arquitecturas que no aplican defensa en profundidad.
+- Falta de separación entre funcionalidades y privilegios.
+
+---
+
+## 💥 Ejemplos
+
+### Ejemplo 1 — Validación únicamente en frontend
+
+Una aplicación podría impedir visualmente que un usuario introduzca un valor determinado.
+
+```text
+Frontend
+   │
+   ├── "No puede realizar esta operación"
+   │
+   ▼
+Backend
+```
+
+Si el backend no realiza nuevamente la validación, un atacante puede enviar directamente una solicitud modificada.
+
+Por esta razón, las restricciones de seguridad **no deben depender exclusivamente de la interfaz del usuario**.
+
+### Ejemplo 2 — Abuso de lógica de negocio
+
+Una plataforma de compras podría tener:
+
+```text
+Producto
+   ↓
+Cupón de descuento
+   ↓
+Pago
+```
+
+Si el diseño no contempla la reutilización indebida de cupones, un atacante podría intentar utilizar repetidamente una promoción.
+
+El problema no necesariamente corresponde a un error de sintaxis o programación, sino a una **falla en el diseño de las reglas de negocio**.
+
+---
+
+## ⚠️ Impacto
+
+| Problema | Posible consecuencia |
+| --- | --- |
+| Falta de validación backend | Bypass de restricciones |
+| Falta de límites | Abuso automatizado |
+| Reglas de negocio deficientes | Fraude |
+| Recuperación de cuentas insegura | Toma de cuentas |
+| Autorización mal diseñada | Escalamiento de privilegios |
+| Falta de controles | Manipulación de procesos |
+
+---
+
+## 🔍 Métodos de explotación
+
+Los atacantes pueden estudiar el funcionamiento de una aplicación y manipular las solicitudes para comprobar si las reglas de negocio se cumplen realmente en el servidor.
+
+```mermaid
+flowchart TD
+    A["Reconocimiento"] --> B["Identificación de funcionalidad"]
+    B --> C["Análisis de reglas"]
+    C --> D["Manipulación de solicitud"]
+    D --> E["Validación del servidor"]
+    E --> F{"¿Existe control?"}
+    F -->|No| G["Abuso de funcionalidad"]
+    F -->|Sí| H["Solicitud rechazada"]
+```
+
+Algunas técnicas utilizadas incluyen:
+
+- Manipulación de parámetros.
+- Repetición de solicitudes.
+- Alteración de valores enviados al servidor.
+- Manipulación de procesos de negocio.
+- Automatización de operaciones.
+- Pruebas de límites y restricciones.
+
+---
+
+## 🛠️ Herramientas utilizadas
+
+| Herramienta | Utilización |
+| --- | --- |
+| **Burp Suite** | Manipulación de solicitudes HTTP |
+| **OWASP ZAP** | Análisis de aplicaciones web |
+| **Postman** | Pruebas de APIs |
+| **DevTools** | Inspección del comportamiento del cliente |
+| **Nmap** | Reconocimiento de infraestructura |
+
+---
+
+## 🛡️ Prevención y mitigación
+
+- Realizar **Threat Modeling** durante el diseño.
+- Definir requisitos de seguridad antes de desarrollar.
+- Validar todas las operaciones críticas en el backend.
+- Aplicar autorización en cada operación sensible.
+- Implementar límites y *rate limiting*.
+- Diseñar mecanismos contra automatización.
+- Aplicar el principio de mínimo privilegio.
+- Implementar defensa en profundidad.
+- Realizar pruebas de abuso de lógica de negocio.
+- Revisar periódicamente la arquitectura.
+
+### 🔐 Seguridad desde el diseño
+
+```mermaid
+flowchart LR
+    A["Requisitos"] --> B["Threat Modeling"]
+    B --> C["Controles de seguridad"]
+    C --> D["Diseño"]
+    D --> E["Desarrollo"]
+    E --> F["Pruebas"]
+    F --> G["Despliegue"]
+    G --> H["Monitoreo"]
+```
+
+---
+
+# 3️⃣ A05:2021 — Configuración de Seguridad Incorrecta
+
+## ⚙️ ¿Qué es?
+
+La **Configuración de Seguridad Incorrecta** ocurre cuando una aplicación, servidor, base de datos, servicio cloud o componente de infraestructura se encuentra configurado de manera insegura.
+
+El problema puede aparecer tanto por una configuración incorrecta como por mantener configuraciones predeterminadas o funcionalidades que no son necesarias.
+
+### 🧠 Causas más comunes
+
+- Credenciales predeterminadas.
+- Funciones innecesarias habilitadas.
+- Paneles administrativos expuestos.
+- Mensajes de error demasiado detallados.
+- Debug habilitado en producción.
+- Permisos excesivos.
+- Servicios o puertos innecesarios expuestos.
+- Falta de actualización de componentes.
+- Configuración incorrecta de servicios cloud.
+- Headers de seguridad ausentes o incorrectos.
+
+---
+
+## 💥 Ejemplos
+
+### Ejemplo 1 — Modo Debug
+
+Un servidor desplegado en producción podría mostrar información detallada cuando ocurre un error:
+
+```text
+Error 500
+
+Database connection failed
+Host: 192.168.x.x
+Database: production_db
+Stack trace:
+...
+```
+
+Esta información puede ayudar a un atacante a conocer detalles internos de la infraestructura.
+
+### Ejemplo 2 — Credenciales predeterminadas
+
+Un dispositivo o aplicación puede mantener las credenciales originales proporcionadas por el fabricante.
+
+```text
+Usuario: admin
+Contraseña: contraseña_predeterminada
+```
+
+Si estas credenciales no se modifican, un atacante que las conozca podría intentar acceder al sistema.
+
+---
+
+## ⚠️ Impacto
+
+| Configuración | Riesgo |
+| --- | --- |
+| Credenciales predeterminadas | Acceso no autorizado |
+| Debug habilitado | Divulgación de información |
+| Directorios públicos | Exposición de archivos |
+| Puertos innecesarios | Aumento de superficie de ataque |
+| Panel administrativo público | Ataques contra autenticación |
+| Permisos excesivos | Escalamiento o abuso |
+| Componentes desactualizados | Explotación de vulnerabilidades conocidas |
+
+---
+
+## 🔍 Métodos de explotación
+
+El atacante normalmente comienza realizando reconocimiento para identificar servicios, tecnologías y configuraciones expuestas.
+
+```mermaid
+flowchart TD
+    A["Reconocimiento"] --> B["Identificación de servicios"]
+    B --> C["Detección de configuración"]
+    C --> D["Identificación de configuración débil"]
+    D --> E["Intento de acceso"]
+    E --> F["Explotación"]
+```
+
+Entre las técnicas utilizadas se encuentran:
+
+- Identificación de servicios expuestos.
+- Detección de versiones.
+- Búsqueda de configuraciones predeterminadas.
+- Identificación de paneles administrativos.
+- Análisis de respuestas HTTP.
+- Revisión de certificados y configuraciones TLS.
+- Enumeración de directorios.
+- Identificación de mensajes de error.
+- Detección de servicios innecesarios.
+
+---
+
+## 🛠️ Herramientas utilizadas
+
+| Herramienta | Utilización |
+| --- | --- |
+| **Nmap** | Descubrimiento de puertos y servicios |
+| **Burp Suite** | Análisis de solicitudes y respuestas HTTP |
+| **OWASP ZAP** | Identificación de problemas de configuración web |
+| **Nikto** | Evaluación de configuraciones de servidores web |
+| **WhatWeb** | Identificación de tecnologías utilizadas |
+| **Gobuster** | Enumeración de recursos y directorios |
+
+---
+
+## 🛡️ Prevención y mitigación
+
+Las organizaciones deben implementar una configuración segura desde el despliegue inicial.
+
+### Recomendaciones
+
+- Eliminar credenciales predeterminadas.
+- Deshabilitar funcionalidades innecesarias.
+- Desactivar el modo debug en producción.
+- Utilizar configuraciones seguras para servidores.
+- Mantener actualizados los componentes.
+- Aplicar el principio de mínimo privilegio.
+- Reducir la cantidad de servicios expuestos.
+- Configurar correctamente HTTPS/TLS.
+- Implementar headers de seguridad.
+- Evitar mostrar información sensible en errores.
+- Realizar revisiones periódicas de configuración.
+- Automatizar controles de seguridad dentro del pipeline CI/CD.
+
+### 🔐 Proceso de configuración segura
+
+```mermaid
+flowchart LR
+    A["Instalación"] --> B["Configuración segura"]
+    B --> C["Eliminar valores predeterminados"]
+    C --> D["Deshabilitar servicios innecesarios"]
+    D --> E["Aplicar mínimo privilegio"]
+    E --> F["Pruebas de seguridad"]
+    F --> G["Monitoreo"]
+```
+
+
+---
+
+# 📊 Comparación general
+
+| Característica | A03 — Inyección | A04 — Diseño Inseguro | A05 — Configuración Incorrecta |
+| --- | --- | --- | --- |
+| **Origen** | Entrada no controlada | Arquitectura o lógica deficiente | Configuración insegura |
+| **Etapa principal** | Desarrollo | Diseño | Implementación/despliegue |
+| **Objetivo frecuente** | Manipular instrucciones | Abusar de funcionalidades | Explotar exposición o configuración |
+| **Ejemplo** | SQL Injection | Bypass de reglas | Debug habilitado |
+| **Herramienta destacada** | sqlmap | Burp Suite | Nmap |
+| **Principal defensa** | Parametrización | Secure by Design | Hardening |
+| **Impacto** | Datos/sistema | Procesos/negocio | Infraestructura/aplicación |
+
+---
+
+## 📈 Relación entre las vulnerabilidades
+
+Las tres categorías pueden aparecer simultáneamente dentro de una misma aplicación.
+
+```mermaid
+flowchart TD
+    A["Diseño de la aplicación"] --> B["A04: Diseño Inseguro"]
+    B --> C["Implementación"]
+    C --> D["A03: Inyección"]
+    C --> E["A05: Configuración Incorrecta"]
+
+    D --> F["Compromiso de datos"]
+    E --> F
+    B --> F
+```
+
+Por ejemplo, una aplicación podría tener una arquitectura que no contempla correctamente la validación de entradas (**A04**), implementar consultas SQL inseguras (**A03**) y además desplegarse con una configuración de producción incorrecta (**A05**).
+
+La combinación de varias debilidades puede incrementar considerablemente la superficie de ataque.
+
+
+---
+
+# 🎯 Conclusión
+
+Las categorías **A03:2021 — Inyección**, **A04:2021 — Diseño Inseguro** y **A05:2021 — Configuración de Seguridad Incorrecta** representan diferentes tipos de debilidades que pueden comprometer la seguridad de una aplicación.
+
+La **Inyección** se produce principalmente cuando los datos externos son interpretados como instrucciones. El **Diseño Inseguro** surge cuando la arquitectura o las reglas de negocio no contemplan adecuadamente escenarios de abuso. Por su parte, la **Configuración de Seguridad Incorrecta** aparece cuando los componentes de una aplicación o infraestructura se despliegan con configuraciones inseguras.
+
+La prevención requiere un enfoque integral que abarque todo el ciclo de vida del software: **diseño seguro, desarrollo seguro, configuración adecuada, pruebas de seguridad, monitoreo y mantenimiento continuo**.
+
+La aplicación de principios como **mínimo privilegio, defensa en profundidad, validación del lado servidor, parametrización, hardening y Threat Modeling** permite reducir significativamente la superficie de ataque y mejorar la postura de seguridad de las aplicaciones.
+
+---
+
+# 📚 Referencias
+
+- OWASP Foundation. **OWASP Top 10:2021 — A03:2021 Injection.**  
+  <https://owasp.org/Top10/2021/A03_2021-Injection/>
+
+- OWASP Foundation. **OWASP Top 10:2021 — A04:2021 Insecure Design.**  
+  <https://owasp.org/Top10/2021/A04_2021-Insecure_Design/>
+
+- OWASP Foundation. **OWASP Top 10:2021 — A05:2021 Security Misconfiguration.**  
+  <https://owasp.org/Top10/2021/A05_2021-Security_Misconfiguration/>
+
+- OWASP Foundation. **OWASP Top 10:2021.**  
+  <https://owasp.org/Top10/2021/>
+
+- OWASP Foundation. **OWASP Web Security Testing Guide.**  
+  <https://owasp.org/www-project-web-security-testing-guide/>
+
+- OWASP Foundation. **OWASP Cheat Sheet Series.**  
+  <https://cheatsheetseries.owasp.org/>
