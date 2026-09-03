@@ -44,12 +44,13 @@ Es una falla donde la aplicación no restringe correctamente lo que los usuarios
 - IDOR: Ver o editar la cuenta de otra persona alterando su identificador único.
 - Elevación de privilegios: Actuar como administrador sin serlo o manipular tokens (como JWT) o cookies para ganar más permisos.
 - Navegación forzada: Entrar a páginas protegidas o de administración escribiendo la ruta directamente sin tener el rol adecuado.
-###🛠️ ¿Cómo prevenirlo?
+### 🛠️ ¿Cómo prevenirlo?
 - Denegar por defecto: Todo debe estar bloqueado a menos que sea un recurso público.
 - Validación en el servidor: Nunca confíes solo en la interfaz de usuario o JavaScript; la seguridad debe validarse en el servidor.
 - Lógica segura: Asegúrate de que los usuarios solo puedan acceder a sus propios registros y no a los de los demás.
 - Control de tokens: Haz que los tokens (JWT) tengan poca duración y asegúrate de cerrar sesiones correctamente.
-- Pruebas: Incluye pruebas unitarias y de integración enfocadas en verificar los permisos.  
+- Pruebas: Incluye pruebas unitarias y de integración enfocadas en verificar los permisos.
+  
 ### 📝 Ejemplos de escenarios de ataque
 Escenario n.° 1: La aplicación utiliza datos no verificados en una llamada SQL que accede a información de la cuenta:
 
