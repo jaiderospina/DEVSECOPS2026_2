@@ -266,3 +266,54 @@ El atacante podría observar tráfico, pero no debería poder obtener el conteni
 - ✅ Protección de Contraseñas: Usar funciones de hash adaptativas con salt automático diseñadas para credenciales (como Argon2id o bcrypt), evitando hashes simples como MD5 o SHA-256.
 - ✅ Gestión de Claves: Guardar claves y secretos fuera del código fuente mediante gestores dedicados (AWS Secrets Manager, HashiCorp Vault) y rotarlos periódicamente.
 - ✅ Eliminar Criptografía Débil: Prohibir esquemas obsoletos o inseguros (DES, RC4, MD5, SHA-1, modo ECB).
+
+## A09:2025 - Fallos en el registro y las alertas de seguridad
+
+### 🛡️ ¿Qué es?
+
+Ocurre cuando la aplicación no guarda registro de lo que pasa (inicios de sesión, errores, accesos) y no tiene alertas para avisar cuando algo raro ocurre. Esto permite que un atacante actúe sin ser detectado.
+
+### 🚨 Métodos de explotación comunes
+
+- **Falta de registros:** No se guardan eventos importantes como intentos de acceso fallidos.
+- **Alertas ineficaces:** Hay tantas alertas falsas que las importantes pasan desapercibidas.
+- **Registros inseguros:** Los archivos de registro pueden ser modificados o borrados por el atacante.
+- **Sin monitoreo:** Nadie revisa los registros para detectar actividades sospechosas.
+
+### 🛠️ Mejores prácticas de prevención
+
+- Registrar todos los eventos de seguridad (accesos, errores, cambios).
+- Proteger los registros para que no puedan ser alterados.
+- Configurar alertas reales con umbrales claros (no generar falsas alarmas).
+- Monitorear los registros de forma centralizada.
+- Tener un plan de respuesta para cuando salte una alerta.
+
+### 📝 Ejemplo de ataque
+
+Un banco no registra los intentos de acceso fallidos. Un atacante prueba miles de contraseñas durante días y nadie se da cuenta. Finalmente logra entrar y roba información de clientes. La brecha se descubre meses después, cuando un cliente reporta cargos no reconocidos.
+
+---
+
+## A10:2025 - Mala gestión de situaciones excepcionales
+
+### 🛡️ ¿Qué es?
+
+Es una categoría nueva. Ocurre cuando el sistema no sabe cómo reaccionar ante errores inesperados. Por ejemplo, si algo falla, el sistema puede mostrar información sensible (como el código interno) o peor aún, dar acceso al atacante "por si acaso".
+
+### 🚨 Métodos de explotación comunes
+
+- **Mostrar errores internos:** Al fallar, el sistema muestra detalles técnicos (rutas de archivos, versiones, etc.).
+- **Fallo abierto (fail-open):** Si algo sale mal, el sistema da acceso en lugar de denegarlo.
+- **Errores no registrados:** El sistema falla pero nadie lo sabe porque no quedó registro.
+- **Casos límite no probados:** Los atacantes buscan situaciones que los desarrolladores no consideraron.
+
+### 🛠️ Mejores prácticas de prevención
+
+- Mostrar mensajes de error amigables sin información técnica sensible.
+- Diseñar el sistema para que ante un error, siempre deniegue el acceso (fail-closed).
+- Registrar todos los errores para poder investigarlos después.
+- Probar qué pasa cuando el sistema recibe entradas inesperadas.
+
+### 📝 Ejemplo de ataque
+
+Un atacante envía un dato malformado a un formulario. La aplicación falla y muestra en pantalla toda la ruta del servidor, la versión del framework y el nombre de la base de datos. Con esa información, el atacante puede buscar vulnerabilidades específicas de esa versión y planear un ataque más grave.
