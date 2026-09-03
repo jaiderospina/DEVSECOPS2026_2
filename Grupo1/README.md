@@ -1187,3 +1187,162 @@ Especialmente en:
 | DevSecOps          | Observabilidad y respuesta | Seguridad durante errores    |
 
 ---
+
+
+**Ingrid Vesga**
+
+**OWASP Top 10 – A05:2025 Injection (Inyeccion)**
+Una inyección ocurre cuando una aplicación toma datos proporcionados por un usuario y los incorpora a una instrucción o comando sin validarlos o separarlos correctamente.
+En términos simples: El atacante logra que un dato sea interpretado como parte de una instrucción.
+El problema fundamental es que la aplicación no distingue correctamente entre "datos" y "comandos".
+
+**MODELO DE INJECTION EN SQL**
+ 
+**COMO EVITAR UNA VULNERABILIDAD DE INJECTION**
+# 1. Evitar concatenación de entradas
+Código Inseguro: El código une el texto de la consulta directamente con lo que escribió el usuario utilizando el operador de suma (+ o .).
+ 
+Qué sucede por dentro: Si el usuario ingresa ' OR '1'='1, el motor de base de datos recibe todo en un solo bloque y ejecuta la lógica maliciosa:
+ 
+# 2. Usar forma Segura (parametrización)
+Se crea la estructura fija de la consulta usando un marcador de posición (como ? o :nombre) y los datos se envían por separado.
+ 
+Qué sucede por dentro: Si el usuario ingresa ' OR '1'='1, la base de datos no lo interpreta como código SQL, sino como el nombre literal del usuario a buscar.
+Como la estructura de la consulta ya fue compilada en la Fase 1, cualquier carácter especial enviado en la Fase 2 (como comillas ', símbolos = o palabras como OR, DROP, DELETE) pierde su significado de comando. El motor los interpreta únicamente como caracteres de texto plano dentro de una cadena de búsqueda.
+
+# 3. Validar las entradas (Importante: la validación por sí sola no reemplaza la parametrización.)
+Tipos de datos, Rango numérico, Longitud máxima. Si la entrada contiene algo fuera de lo permitido, se rechaza, de la siguiente manera:
+•	Edad o ID ---- Únicamente acepte dígitos enteros (0 al 9)
+•	Correo ------ formato de correo valido usuario@dominio.com.
+•	Nombres o textos --- limitar la longitud a un numero de caracteres razonables, y bloquear caracteres especiales de sintaxis propios de SQL.
+
+**No permitir:**
+a.	Delimitadores de cadenas y datos
+•	Comilla simple ('): Delimita cadenas de texto o fechas (ej. 'usuario1'). Es el carácter principal explotado en ataques de inyección SQL.
+•	Comilla doble (") o Corchetes ([ ]): Utilizados para delimitar identificadores (nombres de tablas o columnas) que contienen espacios o palabras reservadas.
+
+b.	Operadores lógicos y de comparación
+•	Igual (=): Utilizado para comparaciones de igualdad o asignación de valores.
+•	Desigualdad (<> o !=): Evalúa si dos valores son diferentes.
+•	Mayor / Menor (>, <, >=, <=): Operadores de comparación de rango.
+•	Signo de porcentaje (%) y Guion bajo (_): Comodines usados con la cláusula LIKE (% equivale a múltiples caracteres, _ a un solo carácter).
+
+c.	Estructura y separación de comandos
+•	Punto y coma (;): Finaliza o separa sentencias SQL consecutivas (permite la ejecución de múltiples consultas en una sola transacción).
+•	Coma (,): Separa columnas, expresiones o valores dentro de una consulta (ej. SELECT col1, col2).
+•	Paréntesis (( )): Agrupan condiciones lógicas, definen la prioridad de ejecución o encierran listas de valores y argumentos de funciones.
+•	Punto (.): Separa el nombre del esquema, tabla o columna (ej. tabla.columna).
+
+d.	Comentarios y comodines de selección
+•	Doble guion (--): Inicia un comentario de una sola línea en la mayoría de motores (SQL Server, PostgreSQL, SQLite). Todo lo que sigue se ignora.
+•	Barra e hífen/asterisco (/* ... */): Delimita comentarios de múltiples líneas.
+•	Asterisco (*): Funciona como comodín para seleccionar todas las columnas (SELECT *) o como operador de multiplicación.
+•	Almohadilla (#): Utilizado en MySQL para comentarios de una sola línea o en SQL Server para definir tablas temporales (#tablaTemp).
+
+# 4. Utilizar APIs y Frameworks seguros, como:
+•	Prepared Statements (Consultas preparadas)
+Evita el ataque de ciberseguridad más peligroso en bases de datos: la Inyección SQL (donde un atacante escribe código malicioso en un campo de texto para robar o borrar información).
+
+•	ORM correctamente utilizado
+Acelera el desarrollo y aplica filtros de seguridad automáticamente, siempre y cuando se use bien y no se mezclen consultas manuales inseguras.
+
+•	APIs de acceso a bases de datos 
+Asegura que la comunicación siga protocolos estandarizados, estables y probados, controlando quién entra y qué permisos tiene.
+
+•	Librerías actualizadas y seguras
+Si una librería antigua tiene un fallo de seguridad ("puerta trasera"), los atacantes pueden entrar por ahí. Al mantenerlas actualizadas, cierras esas brechas antes de que las exploten.
+
+# 5. Aplicar principio mínimo privilegio
+Es una regla fundamental de seguridad que establece que un usuario, programa o sistema solo debe tener los permisos estrictamente necesarios para realizar su trabajo, ni uno más.
+Si un atacante logra hackear una cuenta o un servicio, solo podrá controlar lo que esa cuenta específica tenía permitido hacer, impidiendo que tome el control de todo el sistema.
+
+# 6. Realizar pruebas de seguridad
+**Se deben realizar:**
+•	SAST → (Static Application Security Testing / Análisis Estático): Inspeccionar el código fuente de la aplicación "en reposo" (sin ejecutarla).
+Herramientas: SonarQube, Checkmarx SAST / Fortify, Semgrep, Snyk Code.
+•	DAST → (Dynamic Application Security Testing / Análisis Dinámico): Evaluar la aplicación mientras está en funcionamiento (en ejecución). 
+Herramientas: OWASP ZAP (Zed Attack Proxy), Burp Suite (Scanner), StackHawk, Acunetix / Invicti.
+•	Pruebas de penetración (Pentesting): Un ataque simulado y controlado realizado por expertos de seguridad (etiqueta Ethical Hacking) combinando herramientas automáticas y creatividad manual.
+Herramientas: Burp Suite Professional, Metasploit Framework, Nmap, Nessus / OpenVAS.
+•	Revisión de consultas y comandos: Auditar específicamente cómo la aplicación construye y envía instrucciones a la base de datos (SQL, NoSQL) o al sistema operativo.
+Herramientas: sqlmap, GitGuardian / Trufflehog, SonarQube / Semgrep.
+•	Pruebas de entradas maliciosas (Fuzzing / Input Validation): Enviar datos no válidos, inesperados, extremadamente largos o estructurados con sintaxis dañina en todos los campos donde el usuario puede escribir (formularios, URLs, cabeceras).
+Herramientas: ffuf (Fuzz Faster with U), wfuzz, Postman / Insomnia, OWASP ZAP (Fuzzer).
+
+**OTROS TIPOS DE INJECTION**
+# 1. Inyección de Comandos del Sistema Operativo (OS Command Injection)
+Ocurre cuando la aplicación web le pasa datos del usuario directamente a la consola de comandos del servidor (Bash, CMD, PowerShell).
+•	Ejemplo: Si una app pide una IP para hacer un ping 192.168.1.1 y tú escribes 192.168.1.1; rm -rf /, el servidor no solo hace el ping, sino que luego ejecuta el comando para borrar archivos.
+
+# 2. Cross-Site Scripting (XSS / Inyección HTML/JavaScript)
+Consiste en inyectar código JavaScript malicioso dentro del contenido web que verán otros usuarios.
+•	Ejemplo: Escribes <script>stealCookies()</script> en la sección de comentarios de un blog. Cuando otra persona entra a leer, su navegador ejecuta ese código automáticamente y le roba su sesión.
+
+# 3. Inyección NoSQL
+Similar a la inyección SQL, pero dirigida a bases de datos no relacionales como MongoDB o CouchDB.
+•	Ejemplo: En lugar de código SQL, se inyectan operadores de consulta estructurados (como {"$ne": null}). En un formulario de login, esto puede hacer que la base de datos devuelva "verdadero" sin importar la contraseña.
+
+# 4. Inyección LDAP
+Se dirige a servidores de directorio (como Active Directory), que las empresas usan para gestionar credenciales y permisos de empleados.
+•	Ejemplo: Se insertan caracteres especiales (*, &, |) en el campo de usuario para modificar la consulta LDAP y saltarse la autenticación o listar todos los usuarios del sistema.
+
+# 5. Inyección XML / XXE (XML External Entity)
+Ocurre cuando una aplicación analiza archivos o datos en formato XML cargados por un usuario sin deshabilitar entidades externas.
+•	Ejemplo: Subes un documento XML modificado que le ordena al servidor leer un archivo local sensible (como /etc/passwd) y devolverte su contenido en pantalla.
+
+# 6. Inyección Plantillas Servidor (SSTI - Server-Side Template Injection)
+Ataca a los motores de plantillas web (como Jinja2 en Python, Twig en PHP) sustituyendo texto por código del motor.
+•	Ejemplo: Escribes algo como {{7*7}} en tu perfil. Si la página muestra 49 en lugar del texto literal, la plantilla está ejecutando tu entrada y podrías escalar el ataque para tomar control del servidor.
+
+**CASOS REALES**
+•	Caso Inyección SQL: Equifax (2017)
+La agencia de crédito estadounidense sufrió el robo de datos financieros y personales de más de 147 millones de personas. 
+El fallo: Una vulnerabilidad crítica en su marco de trabajo web (Apache Struts) que no procesaba ni limpiaba adecuadamente las entradas de usuario, permitiendo ejecutar comandos y consultas SQL maliciosas.
+
+•	Caso Inyección de Comandos / Falta de SAST: Capital One (2019)
+Una atacante accedió a los datos de más de 100 millones de clientes almacenados en la nube de Amazon Web Services (AWS).
+El fallo: Una mala configuración en su cortafuegos web (WAF) permitió una inyección de peticiones (SSRF), lo que le dio acceso a comandos internos del servidor para extraer credenciales de acceso.
+
+•	Caso Falta de Mínimo Privilegio: Uber (2022)
+Un joven de 18 años tomó control total de la infraestructura interna de Uber, incluidos sus servicios en la nube, código fuente y canales de Slack.
+El fallo: Obtuvo una contraseña de un empleado y luego encontró un archivo de texto con credenciales de un usuario administrador escritas dentro de la red. Es decir, esa cuenta tenía "superpoderes" innecesarios que le dieron acceso a todo el sistema.
+
+**OWASP Top 10 – A06:2025 Insecure Design (Diseño Inseguro)**
+
+El Diseño Inseguro ocurre cuando un sistema o aplicación se planifica mal desde el principio, creando reglas o procesos defectuosos que permiten a un atacante hacer trampa, incluso si el programador escribió el código sin errores.
+Ejemplo Práctico (El problema vs. La solución)
+•	El Problema: Una tienda en línea crea un cupón del 10% de descuento. En el diseño del proceso, no establecieron la regla de "un solo cupón por cliente". Un usuario descubre que si presiona el botón de aplicar cupón 10 veces seguidas, el sistema le descuenta el 100% y se lleva el producto gratis.
+•	La Solución: Antes de escribir una sola línea de código, el equipo debe sentarse a pensar en los posibles abusos (Modelado de Amenazas) y diseñar la regla: "El sistema solo aceptará un cupón activo por carrito de compras".
+
+**COMO SE PREVIENE UN DISEÑO INSEGURO**
+Para prevenir el Diseño Inseguro, no se buscan fallos en el código tradicional, sino que se analiza el sistema desde los planos y flujos de negocio. Las principales herramientas utilizadas para esta tarea incluyen:
+•	**Modelado de Amenazas (Threat Modeling Tools):**
+Permiten mapear diagramas de flujo de datos, definir componentes y detectar fallos de arquitectura automáticamente según metodologías como STRIDE.
+Herramientas: Microsoft Threat Modeling Tool, OWASP Threat Dragon, IriusRisk / PyTM.
+
+•	**Listas de Verificación y Guías de Diseño Seguro** 
+Pautas y marcos de trabajo estándar que los arquitectos de software revisan antes de construir el sistema.
+Herramientas: OWASP ASVS (Application Security Verification Standard), OWASP SAMM (Software Assurance Maturity Model).
+
+•	**Principio de Mínimo Privilegio y Mínima Exposición:**
+Diseñar el sistema asumiendo que cualquier componente puede fallar. Cada parte del sistema solo debe tener acceso a lo que necesita estrictamente para funcionar.
+•	Herramientas de Pruebas de Lógica de Negocio y Abuso de Flujos
+ Aunque el diseño se analiza en papel, estas herramientas ayudan a simular el abuso de las reglas del negocio en tiempo de ejecución.
+Herramientas: Burp Suite Professional (Editor de Peticiones, Postman / Insomnia (Pruebas de Rate Limiting).
+
+**CASOS REALES**
+•	Caso Zoom (2020) – Reuniones sin contraseña obligatoria
+El diseño inseguro: En sus inicios, Zoom priorizó la máxima facilidad de uso: las salas de reunión solo requerían un número corto en la URL para entrar, sin contraseña obligatoria ni "sala de espera".
+El ataque (Zoom-bombing): Los atacantes crearon programas sencillos que probaban combinaciones aleatorias de números de salas para unirse masivamente a llamadas privadas y transmitir contenido ofensivo.
+Por qué fue un error de diseño: El código de la videollamada funcionaba perfecto, pero la regla de negocio de "entrar con un solo clic sin autenticación" era defectuosa desde la fase de plano.
+
+•	Caso Instagram / Tinder (2018) – Enumeración de usuarios por SMS
+El diseño inseguro: El flujo para "restablecer contraseña" o registrarse enviaba un código por SMS. Para facilitarle la vida al usuario, la pantalla de inicio indicaba explícitamente: "Hemos enviado un SMS al número registrado +57 300 XXX XX89".
+El ataque: Los ciberdelincuentes automatizaron peticiones enviando bases de datos de números de teléfono para confirmar qué cuentas pertenecían a personalidades famosas o políticos.
+Por qué fue un error de diseño: El sistema daba demasiada información contextual en el diseño de la interfaz, exponiendo datos privados sin necesidad de hackear la base de datos.
+
+
+
+
+
+
