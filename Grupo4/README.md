@@ -292,6 +292,8 @@ Ocurre cuando la aplicación no guarda registro de lo que pasa (inicios de sesi�
 
 Un banco no registra los intentos de acceso fallidos. Un atacante prueba miles de contraseñas durante días y nadie se da cuenta. Finalmente logra entrar y roba información de clientes. La brecha se descubre meses después, cuando un cliente reporta cargos no reconocidos.
 
+![Infografía A09 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A09-2025.jpg?raw=true)
+
 ---
 
 ## A10:2025 - Mala gestión de situaciones excepcionales
