@@ -59,6 +59,8 @@ Un atacante puede modificar fácilmente el parámetro 'acct' del navegador para 
 ```java
 https://example.com/app/accountInfo?acct=notmyacct
 ```
+![Infografía A01 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A01-2025.jpg?raw=true)
+
 ---
 
 ## A02:2025 - Configuración de seguridad incorrecta
@@ -82,6 +84,8 @@ Ocurre cuando un sistema, aplicación o servicio en la nube se configura incorre
 
 ### 📝 Ejemplos de escenarios de ataque
 Escenario n.° 1 (Aplicaciones de ejemplo y credenciales por defecto): El servidor de producción incluye aplicaciones de ejemplo no eliminadas (como una consola de administración) con sus contraseñas predeterminadas intactas, permitiendo que un atacante inicie sesión y tome el control.
+
+![Infografía A02 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A02-2025.jpg?raw=true)
 
 ---
 
