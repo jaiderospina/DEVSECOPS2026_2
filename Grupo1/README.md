@@ -6,6 +6,8 @@
 🎓**Ingrid Vega**
 🎓**Jean Carlos Almenarez**
 
+📌**Participación Jean Carlos**
+
 ***Análisis de Vulnerabilidades en el OWASP Top 10: Métodos de Explotación y Prevención***
 
 La seguridad de una aplicación web no depende únicamente de que el código funcione correctamente. Una aplicación puede cumplir con sus funciones y, aun así, tener vulnerabilidades que permitan a un atacante acceder a información privada, modificar datos, ejecutar acciones sin autorización o incluso comprometer otros sistemas.
@@ -308,4 +310,1039 @@ La aplicación debería:
 💢 Microsoft – 2023 // Un token SAS de Azure Storage con permisos excesivos fue publicado accidentalmente en un repositorio público de GitHub. // Investigadores pudieron acceder a información interna almacenada en el recurso, incluyendo respaldos de perfiles de estaciones de trabajo y mensajes internos de Teams. Microsoft indicó que no se expusieron datos de clientes. 
 
 💢 Storm-0501 – 2025 // Durante una intrusión, el actor modificó configuraciones de acceso de Azure Storage para permitir acceso desde infraestructura controlada por el atacante. // Posteriormente se produjo extracción de información almacenada en Azure. Microsoft documentó el caso como parte de una campaña de ransomware contra entornos cloud. 
+
+## 📌 Participación
+
+**Daniel** 
+
+* **A09:2025 – Fallas en el Registro y Alertamiento de Seguridad**
+* **A10:2025 – Manejo Inadecuado de Condiciones Excepcionales**
+
+---
+
+# A09:2025 – Fallas en el Registro y Alertamiento de Seguridad
+
+Las **fallas en el registro y alertamiento de seguridad** ocurren cuando una aplicación no registra correctamente los eventos relevantes para la seguridad, no protege adecuadamente sus registros o no genera alertas cuando sucede una actividad sospechosa.
+En otras palabras, una aplicación puede estar siendo atacada y, aunque el ataque esté ocurriendo, el equipo encargado de la seguridad puede no enterarse a tiempo.
+El registro de eventos, conocido comúnmente como **logging**, y el monitoreo permiten conocer qué está sucediendo dentro de una aplicación y facilitan la detección, investigación y respuesta ante incidentes.
+
+Por ejemplo, deberían existir registros relacionados con:
+
+* Inicios de sesión exitosos.
+* Inicios de sesión fallidos.
+* Cambios de contraseña.
+* Cambios de permisos.
+* Creación, modificación o eliminación de usuarios.
+* Operaciones administrativas.
+* Acceso a información sensible.
+* Errores relacionados con autenticación o autorización.
+* Actividades sospechosas.
+* Errores críticos de la aplicación.
+
+El problema no consiste solamente en "tener logs". También es necesario que estos registros sean **útiles, protegidos, centralizados y monitoreados**.
+
+---
+
+## ¿Por qué ocurre?
+
+Algunas de las causas más comunes de A09 son:
+
+### 1. Falta de registros de seguridad
+
+La aplicación simplemente no registra eventos importantes.
+
+Por ejemplo:
+
+```text
+Usuario: admin
+Acción: cambio de contraseña
+Resultado: exitoso
+```
+
+Si este evento no queda registrado, posteriormente será mucho más difícil determinar quién realizó el cambio.
+
+---
+
+### 2. No registrar intentos fallidos
+
+Un atacante puede intentar miles de combinaciones de usuario y contraseña.
+Si solamente se registran los accesos exitosos, el sistema pierde información fundamental para detectar ataques de fuerza bruta.
+
+Ejemplo:
+
+```text
+Login fallido - usuario: admin
+Login fallido - usuario: admin
+Login fallido - usuario: admin
+Login fallido - usuario: admin
+...
+Login exitoso - usuario: admin
+```
+
+La secuencia anterior podría ser una señal de ataque.
+
+---
+
+### 3. No generar alertas
+
+Registrar información no es suficiente.
+Si un atacante realiza 1.000 intentos de autenticación y el sistema los registra pero nadie los revisa, el registro tiene poca utilidad para una respuesta inmediata.
+Por eso es importante implementar reglas de alertamiento.
+
+Ejemplo:
+
+```text
+10 intentos fallidos en 1 minuto
+        ↓
+Generación de alerta
+        ↓
+Revisión del evento
+        ↓
+Bloqueo o investigación
+```
+
+---
+
+### 4. Logs descentralizados
+
+Cuando cada servidor guarda sus registros de manera independiente, investigar un incidente puede convertirse en una tarea complicada.
+
+Por ejemplo:
+
+```text
+Servidor Web
+      ↓
+auth.log
+
+Servidor API
+      ↓
+application.log
+
+Servidor BD
+      ↓
+database.log
+```
+
+El equipo de seguridad tendría que revisar diferentes sistemas para reconstruir lo ocurrido.
+Una alternativa más adecuada es centralizar los registros.
+
+```text
+Servidor Web ─────┐
+Servidor API ─────┼──→ Sistema centralizado de logs
+Servidor BD ──────┤
+Firewall ─────────┘
+                         ↓
+                    Monitoreo
+                         ↓
+                      Alertas
+```
+
+---
+
+### 5. Registrar información sensible
+
+Los logs también pueden convertirse en un problema de seguridad.
+
+No se deberían almacenar innecesariamente:
+
+* Contraseñas.
+* Tokens de autenticación.
+* Claves privadas.
+* Información financiera completa.
+* Secretos de aplicaciones.
+* Tokens de sesión.
+
+Un error como:
+
+```text
+ERROR login:
+username=admin
+password=MiPassword123
+```
+
+puede convertir el sistema de logging en una nueva fuente de exposición.
+
+---
+
+### 6. No proteger los registros
+
+Los logs deben protegerse contra:
+
+* Modificación.
+* Eliminación.
+* Acceso no autorizado.
+* Manipulación por parte de atacantes.
+
+Si un atacante obtiene privilegios administrativos y puede borrar los registros, podría intentar eliminar evidencia de sus actividades.
+
+---
+
+# Impacto de A09
+
+Una implementación deficiente de logging y alertamiento puede provocar:
+
+* Detección tardía de ataques.
+* Mayor tiempo de permanencia del atacante.
+* Dificultad para investigar incidentes.
+* Pérdida de evidencia.
+* Dificultad para determinar el alcance de una intrusión.
+* Incumplimiento de requisitos de auditoría.
+* Mayor impacto económico y operativo.
+
+Una de las consecuencias más importantes es que **un ataque puede permanecer oculto durante mucho tiempo**.
+
+---
+
+# Métodos de Explotación de A09
+
+El atacante puede aprovechar la falta de monitoreo para realizar actividades sin ser detectado.
+
+## 1. Fuerza bruta
+
+El atacante realiza numerosos intentos de autenticación.
+
+Si no existen alertas:
+
+```text
+Intento 1 → Fallido
+Intento 2 → Fallido
+Intento 3 → Fallido
+...
+Intento 500 → Exitoso
+```
+
+El ataque podría pasar desapercibido.
+
+---
+
+## 2. Escalamiento de privilegios
+
+Un atacante que obtiene una cuenta con pocos privilegios puede intentar acceder a permisos superiores.
+
+Si los cambios de permisos no son registrados:
+
+```text
+Usuario normal
+      ↓
+Obtiene privilegios administrativos
+      ↓
+No se genera alerta
+      ↓
+Continúa operando
+```
+
+Esto dificulta detectar el compromiso.
+
+---
+
+## 3. Extracción lenta de información
+
+Un atacante puede evitar realizar una extracción masiva de datos y hacerlo lentamente.
+
+Por ejemplo:
+
+```text
+Día 1 → 100 registros
+Día 2 → 100 registros
+Día 3 → 100 registros
+...
+```
+
+Si no existen mecanismos de monitoreo adecuados, el comportamiento puede no generar una alerta.
+
+---
+
+## 4. Manipulación o eliminación de registros
+
+Si los logs no están protegidos correctamente, un atacante con suficientes privilegios podría intentar modificarlos o eliminarlos.
+
+Esto afecta directamente la capacidad de realizar una investigación forense.
+
+---
+
+# Herramientas relacionadas
+
+Existen diferentes herramientas que pueden utilizarse para implementar logging, monitoreo, análisis y alertamiento.
+
+### Wazuh
+
+[Wazuh](https://wazuh.com?utm_source=chatgpt.com)
+
+Plataforma de seguridad que permite recopilar y analizar eventos, detectar comportamientos sospechosos y generar alertas.
+
+### Splunk
+
+[Splunk](https://www.splunk.com?utm_source=chatgpt.com)
+
+Plataforma ampliamente utilizada para la recopilación, búsqueda y análisis de grandes cantidades de datos y registros.
+
+### Elastic Stack
+
+[Elastic Security](https://www.elastic.co/security?utm_source=chatgpt.com)
+
+Permite centralizar y analizar logs y eventos de seguridad.
+
+### Microsoft Sentinel
+
+[Microsoft Sentinel](https://www.microsoft.com/en-us/security/business/siem-and-xdr/microsoft-sentinel?utm_source=chatgpt.com)
+
+Solución SIEM utilizada para recopilar información de seguridad, correlacionar eventos y generar alertas.
+
+### Burp Suite
+
+[Burp Suite](https://portswigger.net/burp?utm_source=chatgpt.com)
+
+Puede utilizarse durante pruebas de seguridad para analizar las solicitudes y respuestas de una aplicación web.
+
+### OWASP ZAP
+
+[OWASP ZAP](https://www.zaproxy.org?utm_source=chatgpt.com)
+
+Herramienta de pruebas de seguridad de aplicaciones web que puede ayudar a identificar diferentes comportamientos vulnerables.
+
+---
+
+# Casos relacionados con A09
+
+## Caso 1 – Exposición de información en servicios de salud
+
+Un ejemplo de los riesgos asociados a una deficiente capacidad de detección se presenta en incidentes relacionados con proveedores de servicios de salud, donde el acceso no autorizado a grandes cantidades de información puede permanecer sin ser identificado durante largos períodos.
+
+Este tipo de escenario demuestra la importancia de:
+
+* Registrar accesos.
+* Monitorear actividades anormales.
+* Generar alertas.
+* Investigar eventos sospechosos.
+* Mantener los registros disponibles para análisis posteriores.
+
+Cuando estas capacidades son insuficientes, el tiempo necesario para detectar un incidente puede aumentar considerablemente.
+
+---
+
+## Caso 2 – Incidentes en el sector aeronáutico
+
+Otro ejemplo se encuentra en incidentes relacionados con compañías del sector aeronáutico en los que se produjo exposición de información de clientes y posteriormente se generaron consecuencias regulatorias.
+Estos casos muestran que la seguridad no termina en prevenir una vulnerabilidad.
+
+También es necesario poder:
+
+1. Detectar actividades sospechosas.
+2. Registrar correctamente los eventos.
+3. Investigar lo sucedido.
+4. Responder rápidamente.
+5. Mantener evidencia para determinar el alcance del incidente.
+
+---
+
+# Prevención de A09
+
+Para reducir el riesgo asociado a A09 se recomienda implementar una estrategia de logging y monitoreo de seguridad.
+
+## Eventos que deberían registrarse
+
+Como mínimo, deberían considerarse:
+
+* Intentos de autenticación exitosos.
+* Intentos de autenticación fallidos.
+* Cambios de contraseña.
+* Cambios de privilegios.
+* Creación y eliminación de usuarios.
+* Operaciones administrativas.
+* Cambios de configuración.
+* Errores relacionados con autorización.
+* Acceso a recursos sensibles.
+* Actividades potencialmente sospechosas.
+
+---
+
+## Centralización
+
+Los registros importantes deberían enviarse a una plataforma centralizada.
+
+```text
+                  ┌──────────────┐
+                  │ Servidor Web │
+                  └──────┬───────┘
+                         │
+                  ┌──────▼───────┐
+                  │ Servidor API │
+                  └──────┬───────┘
+                         │
+                  ┌──────▼───────┐
+                  │ Base de Datos│
+                  └──────┬───────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │ Centralización  │
+                │    de Logs      │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │     Alertas     │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │    Respuesta    │
+                │   al incidente  │
+                └─────────────────┘
+```
+
+---
+
+## Alertas
+
+No todos los eventos requieren una alerta inmediata.
+
+Es recomendable establecer reglas para detectar comportamientos anormales.
+
+Ejemplos:
+
+```text
+Muchos intentos fallidos de login
+                ↓
+          Posible fuerza bruta
+```
+
+```text
+Cambio de privilegios inesperado
+                ↓
+       Posible escalamiento
+```
+
+```text
+Acceso masivo a información
+                ↓
+      Posible extracción de datos
+```
+
+---
+
+## Protección de los logs
+
+Los registros deben contar con controles que dificulten su manipulación.
+
+Algunas medidas:
+
+* Control de acceso.
+* Separación de privilegios.
+* Centralización.
+* Retención adecuada.
+* Integridad de registros.
+* Monitoreo de acceso a los logs.
+* Copias de respaldo cuando corresponda.
+
+---
+
+# A10:2025 – Manejo Inadecuado de Condiciones Excepcionales
+
+**A10:2025 – Mishandling of Exceptional Conditions**, o manejo inadecuado de condiciones excepcionales, se relaciona con situaciones en las que una aplicación no maneja correctamente errores, excepciones o estados inesperados.
+Un error por sí solo no necesariamente representa una vulnerabilidad.
+
+El problema aparece cuando el comportamiento producido por ese error permite:
+
+* Saltarse controles de seguridad.
+* Obtener información sensible.
+* Continuar una operación que debería detenerse.
+* Acceder a recursos sin autorización.
+* Dejar el sistema en un estado inconsistente.
+* Generar condiciones inseguras.
+
+---
+
+# Ejemplo de Fail Open
+
+Uno de los conceptos importantes relacionados con este riesgo es **fail open**.
+Un sistema debería bloquear una operación cuando no puede determinar correctamente si esta es segura.
+
+Sin embargo, en un comportamiento inseguro puede ocurrir:
+
+```text
+Solicitud
+   ↓
+Validación de seguridad
+   ↓
+Ocurre una excepción
+   ↓
+Error no controlado
+   ↓
+Sistema continúa
+   ↓
+Operación permitida
+```
+
+Esto se conoce como un patrón de **fail open**.
+
+En determinadas situaciones de seguridad, el comportamiento esperado debería ser:
+
+```text
+Solicitud
+   ↓
+Validación
+   ↓
+Ocurre una excepción
+   ↓
+Operación bloqueada
+   ↓
+Error controlado
+   ↓
+Evento registrado
+```
+
+Este principio se conoce como **fail closed**.
+
+---
+
+# Causas comunes de A10
+
+## 1. Excepciones sin controlar
+
+Por ejemplo:
+
+```python
+try:
+    resultado = operacion()
+except:
+    pass
+```
+
+El problema de este enfoque es que la aplicación puede ignorar completamente una condición inesperada.
+Una excepción debería ser manejada de manera explícita y segura.
+
+---
+
+## 2. Validaciones incompletas
+
+Una aplicación puede validar correctamente los datos normales, pero no comprobar qué sucede cuando recibe:
+
+* Parámetros faltantes.
+* Valores negativos.
+* Valores extremadamente grandes.
+* Tipos de datos inesperados.
+* Valores nulos.
+* Solicitudes incompletas.
+
+---
+
+## 3. Mensajes de error demasiado detallados
+
+Un mensaje como:
+
+```text
+Database connection failed:
+host=10.10.10.25
+database=production
+user=admin
+driver=PostgreSQL
+```
+
+puede revelar información que debería permanecer interna.
+Los usuarios deberían recibir mensajes controlados, mientras que los detalles técnicos deberían registrarse internamente.
+
+Ejemplo:
+
+```text
+Usuario:
+"Ha ocurrido un error procesando la solicitud."
+
+Log interno:
+Error de conexión con base de datos.
+Exception ID: 82f91a
+```
+
+---
+
+## 4. Condiciones de carrera
+
+Una condición de carrera ocurre cuando dos o más operaciones se ejecutan de manera concurrente y el resultado depende del orden en que se procesan.
+
+Por ejemplo:
+
+```text
+Solicitud A ───────┐
+                   ├──→ Validación
+Solicitud B ───────┘
+                   ↓
+             Operación crítica
+```
+
+Si la aplicación no controla correctamente la concurrencia, un atacante podría intentar aprovechar el comportamiento para realizar una operación más de una vez o saltarse una validación.
+
+---
+
+## 5. Manejo incorrecto de permisos
+
+Una excepción durante la comprobación de autorización no debería convertirse automáticamente en una autorización.
+
+Ejemplo conceptual:
+
+```text
+¿Usuario autorizado?
+        ↓
+      Error
+        ↓
+¿Entonces permitir?
+        ↓
+       ❌
+```
+
+El error debería producir un comportamiento seguro:
+
+```text
+¿Usuario autorizado?
+        ↓
+      Error
+        ↓
+   Denegar acceso
+        ↓
+Registrar evento
+```
+
+---
+
+# Métodos de Explotación de A10
+
+Los atacantes pueden intentar provocar condiciones excepcionales para observar cómo responde la aplicación.
+
+## 1. Parámetros faltantes
+
+Por ejemplo:
+
+```http
+POST /api/users
+Content-Type: application/json
+
+{
+    "username": "admin"
+}
+```
+
+Si la aplicación esperaba también un campo de autorización o alguna información adicional, el atacante puede analizar qué ocurre.
+
+---
+
+## 2. Valores extremos
+
+Ejemplos:
+
+```text
+ID = -1
+ID = 0
+ID = 999999999999999999
+```
+
+También pueden probarse:
+
+```text
+String vacío
+NULL
+Valores demasiado largos
+Tipos incorrectos
+```
+
+El objetivo es determinar si una condición inesperada produce un comportamiento inseguro.
+
+---
+
+## 3. Solicitudes simultáneas
+
+Un atacante puede enviar solicitudes de manera concurrente para intentar generar una condición de carrera.
+
+Por ejemplo:
+
+```text
+Solicitud 1 ──→ Verificar saldo ──→ Retirar
+Solicitud 2 ──→ Verificar saldo ──→ Retirar
+Solicitud 3 ──→ Verificar saldo ──→ Retirar
+```
+
+Si las operaciones no están correctamente sincronizadas, podría producirse un resultado diferente al esperado.
+
+---
+
+## 4. Análisis de mensajes de error
+
+Los errores pueden proporcionar información útil para un atacante.
+
+Por ejemplo:
+
+```text
+Error:
+SQL connection refused at 192.168.1.20:5432
+```
+
+El atacante obtiene información sobre:
+
+* Dirección IP.
+* Puerto.
+* Tecnología.
+* Arquitectura.
+* Base de datos.
+* Componentes internos.
+
+Por eso los mensajes externos deben ser controlados.
+
+---
+
+# Caso relacionado con A10 – Excepciones y fail open
+
+Un ejemplo relacionado con este tipo de riesgo se encuentra en vulnerabilidades donde una excepción no controlada puede provocar que una operación continúe cuando debería detenerse.
+El caso de **pyOpenSSL** es útil como ejemplo conceptual de este patrón: una condición excepcional relacionada con una conexión podía provocar un comportamiento inseguro en lugar de producir un rechazo apropiado.
+
+La lección principal es:
+
+> Una excepción no debería cambiar accidentalmente una decisión de seguridad de "denegar" a "permitir".
+
+Esto demuestra por qué el manejo de errores debe considerarse parte de la seguridad de la aplicación y no solamente de su estabilidad.
+
+---
+
+# Relación con CWE
+
+A10 puede relacionarse con diferentes categorías de debilidades de software descritas en **CWE (Common Weakness Enumeration)**.
+
+Entre los patrones relevantes se encuentran situaciones como:
+
+* Manejo incorrecto de errores.
+* Exposición de información mediante mensajes de error.
+* Parámetros que no son correctamente validados.
+* Condiciones de carrera.
+* Comportamientos inseguros después de una excepción.
+
+Esto demuestra que un error aparentemente técnico puede terminar convirtiéndose en un problema de seguridad.
+
+---
+
+# Prevención de A10
+
+## 1. Manejar las excepciones correctamente
+
+Las excepciones deben capturarse de forma específica.
+
+Evitar patrones como:
+
+```python
+try:
+    operacion()
+except:
+    pass
+```
+
+Es preferible manejar explícitamente las condiciones esperadas y registrar aquellas que requieran investigación.
+
+---
+
+## 2. Utilizar Fail Closed
+
+Cuando ocurre un error durante una decisión de seguridad, la aplicación debería adoptar el comportamiento más seguro.
+
+Ejemplo:
+
+```text
+Error al validar autorización
+           ↓
+       DENEGAR
+           ↓
+Registrar evento
+```
+
+No:
+
+```text
+Error al validar autorización
+           ↓
+       PERMITIR
+```
+
+---
+
+## 3. Validar entradas
+
+Las aplicaciones deberían validar:
+
+* Tipo de dato.
+* Longitud.
+* Formato.
+* Rango.
+* Valores permitidos.
+* Campos obligatorios.
+
+Ejemplo:
+
+```text
+ID esperado: entero positivo
+
+ID = 25      → ✔ válido
+ID = -5      → ❌ rechazado
+ID = "abc"   → ❌ rechazado
+ID = NULL    → ❌ rechazado
+```
+
+---
+
+## 4. Evitar información sensible en mensajes
+
+Los usuarios no deberían recibir detalles internos de la aplicación.
+
+### Incorrecto
+
+```text
+Traceback:
+File "/app/database.py"
+Line 82
+Connection refused
+10.10.10.25:5432
+```
+
+### Correcto
+
+```text
+No fue posible procesar la solicitud.
+Código de referencia: ERR-92831
+```
+
+Los detalles técnicos pueden mantenerse en los logs internos.
+
+---
+
+## 5. Pruebas negativas
+
+Las pruebas no deberían limitarse a verificar que todo funciona correctamente.
+También deben comprobar qué ocurre cuando algo sale mal.
+
+Ejemplos:
+
+```text
+¿Qué sucede si falta un parámetro?
+
+¿Qué sucede si el usuario no tiene permisos?
+
+¿Qué sucede si la base de datos no responde?
+
+¿Qué sucede si llega un valor inesperado?
+
+¿Qué sucede si dos solicitudes llegan simultáneamente?
+
+¿Qué sucede si ocurre una excepción durante una validación?
+```
+
+---
+
+## 6. Pruebas automatizadas
+
+Los casos excepcionales deberían formar parte de las pruebas automatizadas.
+
+Ejemplo conceptual:
+
+```text
+Test normal
+     ↓
+Solicitud válida
+     ↓
+Respuesta esperada
+```
+
+Y también:
+
+```text
+Test negativo
+     ↓
+Solicitud inválida
+     ↓
+Aplicación rechaza correctamente
+```
+
+---
+
+## 7. Revisar condiciones de carrera
+
+Las operaciones críticas deben diseñarse teniendo en cuenta la concurrencia.
+
+Especialmente en:
+
+* Transacciones.
+* Pagos.
+* Cambios de permisos.
+* Creación de recursos.
+* Inventarios.
+* Procesamiento de sesiones.
+* Operaciones financieras.
+
+---
+
+# A09 vs A10
+
+| Categoría          | A09                        | A10                          |
+| ------------------ | -------------------------- | ---------------------------- |
+| Problema principal | Falta de visibilidad       | Manejo inseguro de errores   |
+| Riesgo             | Ataques no detectados      | Errores que generan bypass   |
+| Ejemplo            | No registrar login fallido | Excepción permite continuar  |
+| Impacto            | Detección tardía           | Comportamiento inseguro      |
+| Control principal  | Logging y alertas          | Manejo seguro de excepciones |
+| Concepto clave     | Monitoreo                  | Fail Closed                  |
+| Pruebas            | Detección de eventos       | Pruebas negativas            |
+| DevSecOps          | Observabilidad y respuesta | Seguridad durante errores    |
+
+---
+
+
+**Ingrid Vesga**
+
+**OWASP Top 10 – A05:2025 Injection (Inyeccion)**
+Una inyección ocurre cuando una aplicación toma datos proporcionados por un usuario y los incorpora a una instrucción o comando sin validarlos o separarlos correctamente.
+En términos simples: El atacante logra que un dato sea interpretado como parte de una instrucción.
+El problema fundamental es que la aplicación no distingue correctamente entre "datos" y "comandos".
+
+**MODELO DE INJECTION EN SQL**
+ 
+**COMO EVITAR UNA VULNERABILIDAD DE INJECTION**
+# 1. Evitar concatenación de entradas
+Código Inseguro: El código une el texto de la consulta directamente con lo que escribió el usuario utilizando el operador de suma (+ o .).
+ 
+Qué sucede por dentro: Si el usuario ingresa ' OR '1'='1, el motor de base de datos recibe todo en un solo bloque y ejecuta la lógica maliciosa:
+ 
+# 2. Usar forma Segura (parametrización)
+Se crea la estructura fija de la consulta usando un marcador de posición (como ? o :nombre) y los datos se envían por separado.
+ 
+Qué sucede por dentro: Si el usuario ingresa ' OR '1'='1, la base de datos no lo interpreta como código SQL, sino como el nombre literal del usuario a buscar.
+Como la estructura de la consulta ya fue compilada en la Fase 1, cualquier carácter especial enviado en la Fase 2 (como comillas ', símbolos = o palabras como OR, DROP, DELETE) pierde su significado de comando. El motor los interpreta únicamente como caracteres de texto plano dentro de una cadena de búsqueda.
+
+# 3. Validar las entradas (Importante: la validación por sí sola no reemplaza la parametrización.)
+Tipos de datos, Rango numérico, Longitud máxima. Si la entrada contiene algo fuera de lo permitido, se rechaza, de la siguiente manera:
+•	Edad o ID ---- Únicamente acepte dígitos enteros (0 al 9)
+•	Correo ------ formato de correo valido usuario@dominio.com.
+•	Nombres o textos --- limitar la longitud a un numero de caracteres razonables, y bloquear caracteres especiales de sintaxis propios de SQL.
+
+**No permitir:**
+a.	Delimitadores de cadenas y datos
+•	Comilla simple ('): Delimita cadenas de texto o fechas (ej. 'usuario1'). Es el carácter principal explotado en ataques de inyección SQL.
+•	Comilla doble (") o Corchetes ([ ]): Utilizados para delimitar identificadores (nombres de tablas o columnas) que contienen espacios o palabras reservadas.
+
+b.	Operadores lógicos y de comparación
+•	Igual (=): Utilizado para comparaciones de igualdad o asignación de valores.
+•	Desigualdad (<> o !=): Evalúa si dos valores son diferentes.
+•	Mayor / Menor (>, <, >=, <=): Operadores de comparación de rango.
+•	Signo de porcentaje (%) y Guion bajo (_): Comodines usados con la cláusula LIKE (% equivale a múltiples caracteres, _ a un solo carácter).
+
+c.	Estructura y separación de comandos
+•	Punto y coma (;): Finaliza o separa sentencias SQL consecutivas (permite la ejecución de múltiples consultas en una sola transacción).
+•	Coma (,): Separa columnas, expresiones o valores dentro de una consulta (ej. SELECT col1, col2).
+•	Paréntesis (( )): Agrupan condiciones lógicas, definen la prioridad de ejecución o encierran listas de valores y argumentos de funciones.
+•	Punto (.): Separa el nombre del esquema, tabla o columna (ej. tabla.columna).
+
+d.	Comentarios y comodines de selección
+•	Doble guion (--): Inicia un comentario de una sola línea en la mayoría de motores (SQL Server, PostgreSQL, SQLite). Todo lo que sigue se ignora.
+•	Barra e hífen/asterisco (/* ... */): Delimita comentarios de múltiples líneas.
+•	Asterisco (*): Funciona como comodín para seleccionar todas las columnas (SELECT *) o como operador de multiplicación.
+•	Almohadilla (#): Utilizado en MySQL para comentarios de una sola línea o en SQL Server para definir tablas temporales (#tablaTemp).
+
+# 4. Utilizar APIs y Frameworks seguros, como:
+•	Prepared Statements (Consultas preparadas)
+Evita el ataque de ciberseguridad más peligroso en bases de datos: la Inyección SQL (donde un atacante escribe código malicioso en un campo de texto para robar o borrar información).
+
+•	ORM correctamente utilizado
+Acelera el desarrollo y aplica filtros de seguridad automáticamente, siempre y cuando se use bien y no se mezclen consultas manuales inseguras.
+
+•	APIs de acceso a bases de datos 
+Asegura que la comunicación siga protocolos estandarizados, estables y probados, controlando quién entra y qué permisos tiene.
+
+•	Librerías actualizadas y seguras
+Si una librería antigua tiene un fallo de seguridad ("puerta trasera"), los atacantes pueden entrar por ahí. Al mantenerlas actualizadas, cierras esas brechas antes de que las exploten.
+
+# 5. Aplicar principio mínimo privilegio
+Es una regla fundamental de seguridad que establece que un usuario, programa o sistema solo debe tener los permisos estrictamente necesarios para realizar su trabajo, ni uno más.
+Si un atacante logra hackear una cuenta o un servicio, solo podrá controlar lo que esa cuenta específica tenía permitido hacer, impidiendo que tome el control de todo el sistema.
+
+# 6. Realizar pruebas de seguridad
+**Se deben realizar:**
+•	SAST → (Static Application Security Testing / Análisis Estático): Inspeccionar el código fuente de la aplicación "en reposo" (sin ejecutarla).
+Herramientas: SonarQube, Checkmarx SAST / Fortify, Semgrep, Snyk Code.
+•	DAST → (Dynamic Application Security Testing / Análisis Dinámico): Evaluar la aplicación mientras está en funcionamiento (en ejecución). 
+Herramientas: OWASP ZAP (Zed Attack Proxy), Burp Suite (Scanner), StackHawk, Acunetix / Invicti.
+•	Pruebas de penetración (Pentesting): Un ataque simulado y controlado realizado por expertos de seguridad (etiqueta Ethical Hacking) combinando herramientas automáticas y creatividad manual.
+Herramientas: Burp Suite Professional, Metasploit Framework, Nmap, Nessus / OpenVAS.
+•	Revisión de consultas y comandos: Auditar específicamente cómo la aplicación construye y envía instrucciones a la base de datos (SQL, NoSQL) o al sistema operativo.
+Herramientas: sqlmap, GitGuardian / Trufflehog, SonarQube / Semgrep.
+•	Pruebas de entradas maliciosas (Fuzzing / Input Validation): Enviar datos no válidos, inesperados, extremadamente largos o estructurados con sintaxis dañina en todos los campos donde el usuario puede escribir (formularios, URLs, cabeceras).
+Herramientas: ffuf (Fuzz Faster with U), wfuzz, Postman / Insomnia, OWASP ZAP (Fuzzer).
+
+**OTROS TIPOS DE INJECTION**
+# 1. Inyección de Comandos del Sistema Operativo (OS Command Injection)
+Ocurre cuando la aplicación web le pasa datos del usuario directamente a la consola de comandos del servidor (Bash, CMD, PowerShell).
+•	Ejemplo: Si una app pide una IP para hacer un ping 192.168.1.1 y tú escribes 192.168.1.1; rm -rf /, el servidor no solo hace el ping, sino que luego ejecuta el comando para borrar archivos.
+
+# 2. Cross-Site Scripting (XSS / Inyección HTML/JavaScript)
+Consiste en inyectar código JavaScript malicioso dentro del contenido web que verán otros usuarios.
+•	Ejemplo: Escribes <script>stealCookies()</script> en la sección de comentarios de un blog. Cuando otra persona entra a leer, su navegador ejecuta ese código automáticamente y le roba su sesión.
+
+# 3. Inyección NoSQL
+Similar a la inyección SQL, pero dirigida a bases de datos no relacionales como MongoDB o CouchDB.
+•	Ejemplo: En lugar de código SQL, se inyectan operadores de consulta estructurados (como {"$ne": null}). En un formulario de login, esto puede hacer que la base de datos devuelva "verdadero" sin importar la contraseña.
+
+# 4. Inyección LDAP
+Se dirige a servidores de directorio (como Active Directory), que las empresas usan para gestionar credenciales y permisos de empleados.
+•	Ejemplo: Se insertan caracteres especiales (*, &, |) en el campo de usuario para modificar la consulta LDAP y saltarse la autenticación o listar todos los usuarios del sistema.
+
+# 5. Inyección XML / XXE (XML External Entity)
+Ocurre cuando una aplicación analiza archivos o datos en formato XML cargados por un usuario sin deshabilitar entidades externas.
+•	Ejemplo: Subes un documento XML modificado que le ordena al servidor leer un archivo local sensible (como /etc/passwd) y devolverte su contenido en pantalla.
+
+# 6. Inyección Plantillas Servidor (SSTI - Server-Side Template Injection)
+Ataca a los motores de plantillas web (como Jinja2 en Python, Twig en PHP) sustituyendo texto por código del motor.
+•	Ejemplo: Escribes algo como {{7*7}} en tu perfil. Si la página muestra 49 en lugar del texto literal, la plantilla está ejecutando tu entrada y podrías escalar el ataque para tomar control del servidor.
+
+**CASOS REALES**
+•	Caso Inyección SQL: Equifax (2017)
+La agencia de crédito estadounidense sufrió el robo de datos financieros y personales de más de 147 millones de personas. 
+El fallo: Una vulnerabilidad crítica en su marco de trabajo web (Apache Struts) que no procesaba ni limpiaba adecuadamente las entradas de usuario, permitiendo ejecutar comandos y consultas SQL maliciosas.
+
+•	Caso Inyección de Comandos / Falta de SAST: Capital One (2019)
+Una atacante accedió a los datos de más de 100 millones de clientes almacenados en la nube de Amazon Web Services (AWS).
+El fallo: Una mala configuración en su cortafuegos web (WAF) permitió una inyección de peticiones (SSRF), lo que le dio acceso a comandos internos del servidor para extraer credenciales de acceso.
+
+•	Caso Falta de Mínimo Privilegio: Uber (2022)
+Un joven de 18 años tomó control total de la infraestructura interna de Uber, incluidos sus servicios en la nube, código fuente y canales de Slack.
+El fallo: Obtuvo una contraseña de un empleado y luego encontró un archivo de texto con credenciales de un usuario administrador escritas dentro de la red. Es decir, esa cuenta tenía "superpoderes" innecesarios que le dieron acceso a todo el sistema.
+
+**OWASP Top 10 – A06:2025 Insecure Design (Diseño Inseguro)**
+
+El Diseño Inseguro ocurre cuando un sistema o aplicación se planifica mal desde el principio, creando reglas o procesos defectuosos que permiten a un atacante hacer trampa, incluso si el programador escribió el código sin errores.
+Ejemplo Práctico (El problema vs. La solución)
+•	El Problema: Una tienda en línea crea un cupón del 10% de descuento. En el diseño del proceso, no establecieron la regla de "un solo cupón por cliente". Un usuario descubre que si presiona el botón de aplicar cupón 10 veces seguidas, el sistema le descuenta el 100% y se lleva el producto gratis.
+•	La Solución: Antes de escribir una sola línea de código, el equipo debe sentarse a pensar en los posibles abusos (Modelado de Amenazas) y diseñar la regla: "El sistema solo aceptará un cupón activo por carrito de compras".
+
+**COMO SE PREVIENE UN DISEÑO INSEGURO**
+Para prevenir el Diseño Inseguro, no se buscan fallos en el código tradicional, sino que se analiza el sistema desde los planos y flujos de negocio. Las principales herramientas utilizadas para esta tarea incluyen:
+•	**Modelado de Amenazas (Threat Modeling Tools):**
+Permiten mapear diagramas de flujo de datos, definir componentes y detectar fallos de arquitectura automáticamente según metodologías como STRIDE.
+Herramientas: Microsoft Threat Modeling Tool, OWASP Threat Dragon, IriusRisk / PyTM.
+
+•	**Listas de Verificación y Guías de Diseño Seguro** 
+Pautas y marcos de trabajo estándar que los arquitectos de software revisan antes de construir el sistema.
+Herramientas: OWASP ASVS (Application Security Verification Standard), OWASP SAMM (Software Assurance Maturity Model).
+
+•	**Principio de Mínimo Privilegio y Mínima Exposición:**
+Diseñar el sistema asumiendo que cualquier componente puede fallar. Cada parte del sistema solo debe tener acceso a lo que necesita estrictamente para funcionar.
+•	Herramientas de Pruebas de Lógica de Negocio y Abuso de Flujos
+ Aunque el diseño se analiza en papel, estas herramientas ayudan a simular el abuso de las reglas del negocio en tiempo de ejecución.
+Herramientas: Burp Suite Professional (Editor de Peticiones, Postman / Insomnia (Pruebas de Rate Limiting).
+
+**CASOS REALES**
+•	Caso Zoom (2020) – Reuniones sin contraseña obligatoria
+El diseño inseguro: En sus inicios, Zoom priorizó la máxima facilidad de uso: las salas de reunión solo requerían un número corto en la URL para entrar, sin contraseña obligatoria ni "sala de espera".
+El ataque (Zoom-bombing): Los atacantes crearon programas sencillos que probaban combinaciones aleatorias de números de salas para unirse masivamente a llamadas privadas y transmitir contenido ofensivo.
+Por qué fue un error de diseño: El código de la videollamada funcionaba perfecto, pero la regla de negocio de "entrar con un solo clic sin autenticación" era defectuosa desde la fase de plano.
+
+•	Caso Instagram / Tinder (2018) – Enumeración de usuarios por SMS
+El diseño inseguro: El flujo para "restablecer contraseña" o registrarse enviaba un código por SMS. Para facilitarle la vida al usuario, la pantalla de inicio indicaba explícitamente: "Hemos enviado un SMS al número registrado +57 300 XXX XX89".
+El ataque: Los ciberdelincuentes automatizaron peticiones enviando bases de datos de números de teléfono para confirmar qué cuentas pertenecían a personalidades famosas o políticos.
+Por qué fue un error de diseño: El sistema daba demasiada información contextual en el diseño de la interfaz, exponiendo datos privados sin necesidad de hackear la base de datos.
+
+
+
+
+
 

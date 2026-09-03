@@ -1,3 +1,5 @@
+![BANER](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/Banner_OWASP-TOP10.jpg?raw=true)
+
 # OWASP Top 10:2025
 
 ## 👥 Integrantes
@@ -42,12 +44,13 @@ Es una falla donde la aplicación no restringe correctamente lo que los usuarios
 - IDOR: Ver o editar la cuenta de otra persona alterando su identificador único.
 - Elevación de privilegios: Actuar como administrador sin serlo o manipular tokens (como JWT) o cookies para ganar más permisos.
 - Navegación forzada: Entrar a páginas protegidas o de administración escribiendo la ruta directamente sin tener el rol adecuado.
-###🛠️ ¿Cómo prevenirlo?
+### 🛠️ ¿Cómo prevenirlo?
 - Denegar por defecto: Todo debe estar bloqueado a menos que sea un recurso público.
 - Validación en el servidor: Nunca confíes solo en la interfaz de usuario o JavaScript; la seguridad debe validarse en el servidor.
 - Lógica segura: Asegúrate de que los usuarios solo puedan acceder a sus propios registros y no a los de los demás.
 - Control de tokens: Haz que los tokens (JWT) tengan poca duración y asegúrate de cerrar sesiones correctamente.
-- Pruebas: Incluye pruebas unitarias y de integración enfocadas en verificar los permisos.  
+- Pruebas: Incluye pruebas unitarias y de integración enfocadas en verificar los permisos.
+  
 ### 📝 Ejemplos de escenarios de ataque
 Escenario n.° 1: La aplicación utiliza datos no verificados en una llamada SQL que accede a información de la cuenta:
 
@@ -59,6 +62,8 @@ Un atacante puede modificar fácilmente el parámetro 'acct' del navegador para 
 ```java
 https://example.com/app/accountInfo?acct=notmyacct
 ```
+![Infografía A01 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A01-2025.jpg?raw=true)
+
 ---
 
 ## A02:2025 - Configuración de seguridad incorrecta
@@ -82,6 +87,8 @@ Ocurre cuando un sistema, aplicación o servicio en la nube se configura incorre
 
 ### 📝 Ejemplos de escenarios de ataque
 Escenario n.° 1 (Aplicaciones de ejemplo y credenciales por defecto): El servidor de producción incluye aplicaciones de ejemplo no eliminadas (como una consola de administración) con sus contraseñas predeterminadas intactas, permitiendo que un atacante inicie sesión y tome el control.
+
+![Infografía A02 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A02-2025.jpg?raw=true)
 
 ---
 
@@ -200,6 +207,8 @@ Ahora hablamos de todo el ecosistema de confianza del software.
 - 🧪Control de Repositorios: Utilice proxies o gestores internos (ej. Nexus, Artifactory) para bloquear ataques de Dependency Confusion y Typosquatting.
 - 🧪Seguridad en CI/CD: Aplique el principio de menor privilegio a tokens de automatización, use runners efímeros e implemente el marco SLSA.
 
+![Infografía A03 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A03-2025.jpg?raw=true)
+
 ---
 ## A04:2025 — Cryptographic Failures
 ### 📋 ¿Qué es A04?
@@ -266,3 +275,60 @@ El atacante podría observar tráfico, pero no debería poder obtener el conteni
 - ✅ Protección de Contraseñas: Usar funciones de hash adaptativas con salt automático diseñadas para credenciales (como Argon2id o bcrypt), evitando hashes simples como MD5 o SHA-256.
 - ✅ Gestión de Claves: Guardar claves y secretos fuera del código fuente mediante gestores dedicados (AWS Secrets Manager, HashiCorp Vault) y rotarlos periódicamente.
 - ✅ Eliminar Criptografía Débil: Prohibir esquemas obsoletos o inseguros (DES, RC4, MD5, SHA-1, modo ECB).
+
+![Infografía A04 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A04-2025.jpg?raw=true)
+
+## A09:2025 - Fallos en el registro y las alertas de seguridad
+
+### 🛡️ ¿Qué es?
+
+Ocurre cuando la aplicación no guarda registro de lo que pasa (inicios de sesión, errores, accesos) y no tiene alertas para avisar cuando algo raro ocurre. Esto permite que un atacante actúe sin ser detectado.
+
+### 🚨 Métodos de explotación comunes
+
+- **Falta de registros:** No se guardan eventos importantes como intentos de acceso fallidos.
+- **Alertas ineficaces:** Hay tantas alertas falsas que las importantes pasan desapercibidas.
+- **Registros inseguros:** Los archivos de registro pueden ser modificados o borrados por el atacante.
+- **Sin monitoreo:** Nadie revisa los registros para detectar actividades sospechosas.
+
+### 🛠️ Mejores prácticas de prevención
+
+- Registrar todos los eventos de seguridad (accesos, errores, cambios).
+- Proteger los registros para que no puedan ser alterados.
+- Configurar alertas reales con umbrales claros (no generar falsas alarmas).
+- Monitorear los registros de forma centralizada.
+- Tener un plan de respuesta para cuando salte una alerta.
+
+### 📝 Ejemplo de ataque
+
+Un banco no registra los intentos de acceso fallidos. Un atacante prueba miles de contraseñas durante días y nadie se da cuenta. Finalmente logra entrar y roba información de clientes. La brecha se descubre meses después, cuando un cliente reporta cargos no reconocidos.
+
+![Infografía A09 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A09-2025.jpg?raw=true)
+
+---
+
+## A10:2025 - Mala gestión de situaciones excepcionales
+
+### 🛡️ ¿Qué es?
+
+Es una categoría nueva. Ocurre cuando el sistema no sabe cómo reaccionar ante errores inesperados. Por ejemplo, si algo falla, el sistema puede mostrar información sensible (como el código interno) o peor aún, dar acceso al atacante "por si acaso".
+
+### 🚨 Métodos de explotación comunes
+
+- **Mostrar errores internos:** Al fallar, el sistema muestra detalles técnicos (rutas de archivos, versiones, etc.).
+- **Fallo abierto (fail-open):** Si algo sale mal, el sistema da acceso en lugar de denegarlo.
+- **Errores no registrados:** El sistema falla pero nadie lo sabe porque no quedó registro.
+- **Casos límite no probados:** Los atacantes buscan situaciones que los desarrolladores no consideraron.
+
+### 🛠️ Mejores prácticas de prevención
+
+- Mostrar mensajes de error amigables sin información técnica sensible.
+- Diseñar el sistema para que ante un error, siempre deniegue el acceso (fail-closed).
+- Registrar todos los errores para poder investigarlos después.
+- Probar qué pasa cuando el sistema recibe entradas inesperadas.
+
+### 📝 Ejemplo de ataque
+
+Un atacante envía un dato malformado a un formulario. La aplicación falla y muestra en pantalla toda la ruta del servidor, la versión del framework y el nombre de la base de datos. Con esa información, el atacante puede buscar vulnerabilidades específicas de esa versión y planear un ataque más grave.
+
+![Infografía A10 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A10-2025.jpg?raw=true)
