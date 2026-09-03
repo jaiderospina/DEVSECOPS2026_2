@@ -309,3 +309,879 @@ La aplicación debería:
 
 💢 Storm-0501 – 2025 // Durante una intrusión, el actor modificó configuraciones de acceso de Azure Storage para permitir acceso desde infraestructura controlada por el atacante. // Posteriormente se produjo extracción de información almacenada en Azure. Microsoft documentó el caso como parte de una campaña de ransomware contra entornos cloud. 
 
+## 📌 Participación
+
+**Daniel** 
+
+* **A09:2025 – Fallas en el Registro y Alertamiento de Seguridad**
+* **A10:2025 – Manejo Inadecuado de Condiciones Excepcionales**
+
+---
+
+# A09:2025 – Fallas en el Registro y Alertamiento de Seguridad
+
+Las **fallas en el registro y alertamiento de seguridad** ocurren cuando una aplicación no registra correctamente los eventos relevantes para la seguridad, no protege adecuadamente sus registros o no genera alertas cuando sucede una actividad sospechosa.
+En otras palabras, una aplicación puede estar siendo atacada y, aunque el ataque esté ocurriendo, el equipo encargado de la seguridad puede no enterarse a tiempo.
+El registro de eventos, conocido comúnmente como **logging**, y el monitoreo permiten conocer qué está sucediendo dentro de una aplicación y facilitan la detección, investigación y respuesta ante incidentes.
+
+Por ejemplo, deberían existir registros relacionados con:
+
+* Inicios de sesión exitosos.
+* Inicios de sesión fallidos.
+* Cambios de contraseña.
+* Cambios de permisos.
+* Creación, modificación o eliminación de usuarios.
+* Operaciones administrativas.
+* Acceso a información sensible.
+* Errores relacionados con autenticación o autorización.
+* Actividades sospechosas.
+* Errores críticos de la aplicación.
+
+El problema no consiste solamente en "tener logs". También es necesario que estos registros sean **útiles, protegidos, centralizados y monitoreados**.
+
+---
+
+## ¿Por qué ocurre?
+
+Algunas de las causas más comunes de A09 son:
+
+### 1. Falta de registros de seguridad
+
+La aplicación simplemente no registra eventos importantes.
+
+Por ejemplo:
+
+```text
+Usuario: admin
+Acción: cambio de contraseña
+Resultado: exitoso
+```
+
+Si este evento no queda registrado, posteriormente será mucho más difícil determinar quién realizó el cambio.
+
+---
+
+### 2. No registrar intentos fallidos
+
+Un atacante puede intentar miles de combinaciones de usuario y contraseña.
+Si solamente se registran los accesos exitosos, el sistema pierde información fundamental para detectar ataques de fuerza bruta.
+
+Ejemplo:
+
+```text
+Login fallido - usuario: admin
+Login fallido - usuario: admin
+Login fallido - usuario: admin
+Login fallido - usuario: admin
+...
+Login exitoso - usuario: admin
+```
+
+La secuencia anterior podría ser una señal de ataque.
+
+---
+
+### 3. No generar alertas
+
+Registrar información no es suficiente.
+Si un atacante realiza 1.000 intentos de autenticación y el sistema los registra pero nadie los revisa, el registro tiene poca utilidad para una respuesta inmediata.
+Por eso es importante implementar reglas de alertamiento.
+
+Ejemplo:
+
+```text
+10 intentos fallidos en 1 minuto
+        ↓
+Generación de alerta
+        ↓
+Revisión del evento
+        ↓
+Bloqueo o investigación
+```
+
+---
+
+### 4. Logs descentralizados
+
+Cuando cada servidor guarda sus registros de manera independiente, investigar un incidente puede convertirse en una tarea complicada.
+
+Por ejemplo:
+
+```text
+Servidor Web
+      ↓
+auth.log
+
+Servidor API
+      ↓
+application.log
+
+Servidor BD
+      ↓
+database.log
+```
+
+El equipo de seguridad tendría que revisar diferentes sistemas para reconstruir lo ocurrido.
+Una alternativa más adecuada es centralizar los registros.
+
+```text
+Servidor Web ─────┐
+Servidor API ─────┼──→ Sistema centralizado de logs
+Servidor BD ──────┤
+Firewall ─────────┘
+                         ↓
+                    Monitoreo
+                         ↓
+                      Alertas
+```
+
+---
+
+### 5. Registrar información sensible
+
+Los logs también pueden convertirse en un problema de seguridad.
+
+No se deberían almacenar innecesariamente:
+
+* Contraseñas.
+* Tokens de autenticación.
+* Claves privadas.
+* Información financiera completa.
+* Secretos de aplicaciones.
+* Tokens de sesión.
+
+Un error como:
+
+```text
+ERROR login:
+username=admin
+password=MiPassword123
+```
+
+puede convertir el sistema de logging en una nueva fuente de exposición.
+
+---
+
+### 6. No proteger los registros
+
+Los logs deben protegerse contra:
+
+* Modificación.
+* Eliminación.
+* Acceso no autorizado.
+* Manipulación por parte de atacantes.
+
+Si un atacante obtiene privilegios administrativos y puede borrar los registros, podría intentar eliminar evidencia de sus actividades.
+
+---
+
+# Impacto de A09
+
+Una implementación deficiente de logging y alertamiento puede provocar:
+
+* Detección tardía de ataques.
+* Mayor tiempo de permanencia del atacante.
+* Dificultad para investigar incidentes.
+* Pérdida de evidencia.
+* Dificultad para determinar el alcance de una intrusión.
+* Incumplimiento de requisitos de auditoría.
+* Mayor impacto económico y operativo.
+
+Una de las consecuencias más importantes es que **un ataque puede permanecer oculto durante mucho tiempo**.
+
+---
+
+# Métodos de Explotación de A09
+
+El atacante puede aprovechar la falta de monitoreo para realizar actividades sin ser detectado.
+
+## 1. Fuerza bruta
+
+El atacante realiza numerosos intentos de autenticación.
+
+Si no existen alertas:
+
+```text
+Intento 1 → Fallido
+Intento 2 → Fallido
+Intento 3 → Fallido
+...
+Intento 500 → Exitoso
+```
+
+El ataque podría pasar desapercibido.
+
+---
+
+## 2. Escalamiento de privilegios
+
+Un atacante que obtiene una cuenta con pocos privilegios puede intentar acceder a permisos superiores.
+
+Si los cambios de permisos no son registrados:
+
+```text
+Usuario normal
+      ↓
+Obtiene privilegios administrativos
+      ↓
+No se genera alerta
+      ↓
+Continúa operando
+```
+
+Esto dificulta detectar el compromiso.
+
+---
+
+## 3. Extracción lenta de información
+
+Un atacante puede evitar realizar una extracción masiva de datos y hacerlo lentamente.
+
+Por ejemplo:
+
+```text
+Día 1 → 100 registros
+Día 2 → 100 registros
+Día 3 → 100 registros
+...
+```
+
+Si no existen mecanismos de monitoreo adecuados, el comportamiento puede no generar una alerta.
+
+---
+
+## 4. Manipulación o eliminación de registros
+
+Si los logs no están protegidos correctamente, un atacante con suficientes privilegios podría intentar modificarlos o eliminarlos.
+
+Esto afecta directamente la capacidad de realizar una investigación forense.
+
+---
+
+# Herramientas relacionadas
+
+Existen diferentes herramientas que pueden utilizarse para implementar logging, monitoreo, análisis y alertamiento.
+
+### Wazuh
+
+[Wazuh](https://wazuh.com?utm_source=chatgpt.com)
+
+Plataforma de seguridad que permite recopilar y analizar eventos, detectar comportamientos sospechosos y generar alertas.
+
+### Splunk
+
+[Splunk](https://www.splunk.com?utm_source=chatgpt.com)
+
+Plataforma ampliamente utilizada para la recopilación, búsqueda y análisis de grandes cantidades de datos y registros.
+
+### Elastic Stack
+
+[Elastic Security](https://www.elastic.co/security?utm_source=chatgpt.com)
+
+Permite centralizar y analizar logs y eventos de seguridad.
+
+### Microsoft Sentinel
+
+[Microsoft Sentinel](https://www.microsoft.com/en-us/security/business/siem-and-xdr/microsoft-sentinel?utm_source=chatgpt.com)
+
+Solución SIEM utilizada para recopilar información de seguridad, correlacionar eventos y generar alertas.
+
+### Burp Suite
+
+[Burp Suite](https://portswigger.net/burp?utm_source=chatgpt.com)
+
+Puede utilizarse durante pruebas de seguridad para analizar las solicitudes y respuestas de una aplicación web.
+
+### OWASP ZAP
+
+[OWASP ZAP](https://www.zaproxy.org?utm_source=chatgpt.com)
+
+Herramienta de pruebas de seguridad de aplicaciones web que puede ayudar a identificar diferentes comportamientos vulnerables.
+
+---
+
+# Casos relacionados con A09
+
+## Caso 1 – Exposición de información en servicios de salud
+
+Un ejemplo de los riesgos asociados a una deficiente capacidad de detección se presenta en incidentes relacionados con proveedores de servicios de salud, donde el acceso no autorizado a grandes cantidades de información puede permanecer sin ser identificado durante largos períodos.
+
+Este tipo de escenario demuestra la importancia de:
+
+* Registrar accesos.
+* Monitorear actividades anormales.
+* Generar alertas.
+* Investigar eventos sospechosos.
+* Mantener los registros disponibles para análisis posteriores.
+
+Cuando estas capacidades son insuficientes, el tiempo necesario para detectar un incidente puede aumentar considerablemente.
+
+---
+
+## Caso 2 – Incidentes en el sector aeronáutico
+
+Otro ejemplo se encuentra en incidentes relacionados con compañías del sector aeronáutico en los que se produjo exposición de información de clientes y posteriormente se generaron consecuencias regulatorias.
+Estos casos muestran que la seguridad no termina en prevenir una vulnerabilidad.
+
+También es necesario poder:
+
+1. Detectar actividades sospechosas.
+2. Registrar correctamente los eventos.
+3. Investigar lo sucedido.
+4. Responder rápidamente.
+5. Mantener evidencia para determinar el alcance del incidente.
+
+---
+
+# Prevención de A09
+
+Para reducir el riesgo asociado a A09 se recomienda implementar una estrategia de logging y monitoreo de seguridad.
+
+## Eventos que deberían registrarse
+
+Como mínimo, deberían considerarse:
+
+* Intentos de autenticación exitosos.
+* Intentos de autenticación fallidos.
+* Cambios de contraseña.
+* Cambios de privilegios.
+* Creación y eliminación de usuarios.
+* Operaciones administrativas.
+* Cambios de configuración.
+* Errores relacionados con autorización.
+* Acceso a recursos sensibles.
+* Actividades potencialmente sospechosas.
+
+---
+
+## Centralización
+
+Los registros importantes deberían enviarse a una plataforma centralizada.
+
+```text
+                  ┌──────────────┐
+                  │ Servidor Web │
+                  └──────┬───────┘
+                         │
+                  ┌──────▼───────┐
+                  │ Servidor API │
+                  └──────┬───────┘
+                         │
+                  ┌──────▼───────┐
+                  │ Base de Datos│
+                  └──────┬───────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │ Centralización  │
+                │    de Logs      │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │     Alertas     │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │    Respuesta    │
+                │   al incidente  │
+                └─────────────────┘
+```
+
+---
+
+## Alertas
+
+No todos los eventos requieren una alerta inmediata.
+
+Es recomendable establecer reglas para detectar comportamientos anormales.
+
+Ejemplos:
+
+```text
+Muchos intentos fallidos de login
+                ↓
+          Posible fuerza bruta
+```
+
+```text
+Cambio de privilegios inesperado
+                ↓
+       Posible escalamiento
+```
+
+```text
+Acceso masivo a información
+                ↓
+      Posible extracción de datos
+```
+
+---
+
+## Protección de los logs
+
+Los registros deben contar con controles que dificulten su manipulación.
+
+Algunas medidas:
+
+* Control de acceso.
+* Separación de privilegios.
+* Centralización.
+* Retención adecuada.
+* Integridad de registros.
+* Monitoreo de acceso a los logs.
+* Copias de respaldo cuando corresponda.
+
+---
+
+# A10:2025 – Manejo Inadecuado de Condiciones Excepcionales
+
+**A10:2025 – Mishandling of Exceptional Conditions**, o manejo inadecuado de condiciones excepcionales, se relaciona con situaciones en las que una aplicación no maneja correctamente errores, excepciones o estados inesperados.
+Un error por sí solo no necesariamente representa una vulnerabilidad.
+
+El problema aparece cuando el comportamiento producido por ese error permite:
+
+* Saltarse controles de seguridad.
+* Obtener información sensible.
+* Continuar una operación que debería detenerse.
+* Acceder a recursos sin autorización.
+* Dejar el sistema en un estado inconsistente.
+* Generar condiciones inseguras.
+
+---
+
+# Ejemplo de Fail Open
+
+Uno de los conceptos importantes relacionados con este riesgo es **fail open**.
+Un sistema debería bloquear una operación cuando no puede determinar correctamente si esta es segura.
+
+Sin embargo, en un comportamiento inseguro puede ocurrir:
+
+```text
+Solicitud
+   ↓
+Validación de seguridad
+   ↓
+Ocurre una excepción
+   ↓
+Error no controlado
+   ↓
+Sistema continúa
+   ↓
+Operación permitida
+```
+
+Esto se conoce como un patrón de **fail open**.
+
+En determinadas situaciones de seguridad, el comportamiento esperado debería ser:
+
+```text
+Solicitud
+   ↓
+Validación
+   ↓
+Ocurre una excepción
+   ↓
+Operación bloqueada
+   ↓
+Error controlado
+   ↓
+Evento registrado
+```
+
+Este principio se conoce como **fail closed**.
+
+---
+
+# Causas comunes de A10
+
+## 1. Excepciones sin controlar
+
+Por ejemplo:
+
+```python
+try:
+    resultado = operacion()
+except:
+    pass
+```
+
+El problema de este enfoque es que la aplicación puede ignorar completamente una condición inesperada.
+Una excepción debería ser manejada de manera explícita y segura.
+
+---
+
+## 2. Validaciones incompletas
+
+Una aplicación puede validar correctamente los datos normales, pero no comprobar qué sucede cuando recibe:
+
+* Parámetros faltantes.
+* Valores negativos.
+* Valores extremadamente grandes.
+* Tipos de datos inesperados.
+* Valores nulos.
+* Solicitudes incompletas.
+
+---
+
+## 3. Mensajes de error demasiado detallados
+
+Un mensaje como:
+
+```text
+Database connection failed:
+host=10.10.10.25
+database=production
+user=admin
+driver=PostgreSQL
+```
+
+puede revelar información que debería permanecer interna.
+Los usuarios deberían recibir mensajes controlados, mientras que los detalles técnicos deberían registrarse internamente.
+
+Ejemplo:
+
+```text
+Usuario:
+"Ha ocurrido un error procesando la solicitud."
+
+Log interno:
+Error de conexión con base de datos.
+Exception ID: 82f91a
+```
+
+---
+
+## 4. Condiciones de carrera
+
+Una condición de carrera ocurre cuando dos o más operaciones se ejecutan de manera concurrente y el resultado depende del orden en que se procesan.
+
+Por ejemplo:
+
+```text
+Solicitud A ───────┐
+                   ├──→ Validación
+Solicitud B ───────┘
+                   ↓
+             Operación crítica
+```
+
+Si la aplicación no controla correctamente la concurrencia, un atacante podría intentar aprovechar el comportamiento para realizar una operación más de una vez o saltarse una validación.
+
+---
+
+## 5. Manejo incorrecto de permisos
+
+Una excepción durante la comprobación de autorización no debería convertirse automáticamente en una autorización.
+
+Ejemplo conceptual:
+
+```text
+¿Usuario autorizado?
+        ↓
+      Error
+        ↓
+¿Entonces permitir?
+        ↓
+       ❌
+```
+
+El error debería producir un comportamiento seguro:
+
+```text
+¿Usuario autorizado?
+        ↓
+      Error
+        ↓
+   Denegar acceso
+        ↓
+Registrar evento
+```
+
+---
+
+# Métodos de Explotación de A10
+
+Los atacantes pueden intentar provocar condiciones excepcionales para observar cómo responde la aplicación.
+
+## 1. Parámetros faltantes
+
+Por ejemplo:
+
+```http
+POST /api/users
+Content-Type: application/json
+
+{
+    "username": "admin"
+}
+```
+
+Si la aplicación esperaba también un campo de autorización o alguna información adicional, el atacante puede analizar qué ocurre.
+
+---
+
+## 2. Valores extremos
+
+Ejemplos:
+
+```text
+ID = -1
+ID = 0
+ID = 999999999999999999
+```
+
+También pueden probarse:
+
+```text
+String vacío
+NULL
+Valores demasiado largos
+Tipos incorrectos
+```
+
+El objetivo es determinar si una condición inesperada produce un comportamiento inseguro.
+
+---
+
+## 3. Solicitudes simultáneas
+
+Un atacante puede enviar solicitudes de manera concurrente para intentar generar una condición de carrera.
+
+Por ejemplo:
+
+```text
+Solicitud 1 ──→ Verificar saldo ──→ Retirar
+Solicitud 2 ──→ Verificar saldo ──→ Retirar
+Solicitud 3 ──→ Verificar saldo ──→ Retirar
+```
+
+Si las operaciones no están correctamente sincronizadas, podría producirse un resultado diferente al esperado.
+
+---
+
+## 4. Análisis de mensajes de error
+
+Los errores pueden proporcionar información útil para un atacante.
+
+Por ejemplo:
+
+```text
+Error:
+SQL connection refused at 192.168.1.20:5432
+```
+
+El atacante obtiene información sobre:
+
+* Dirección IP.
+* Puerto.
+* Tecnología.
+* Arquitectura.
+* Base de datos.
+* Componentes internos.
+
+Por eso los mensajes externos deben ser controlados.
+
+---
+
+# Caso relacionado con A10 – Excepciones y fail open
+
+Un ejemplo relacionado con este tipo de riesgo se encuentra en vulnerabilidades donde una excepción no controlada puede provocar que una operación continúe cuando debería detenerse.
+El caso de **pyOpenSSL** es útil como ejemplo conceptual de este patrón: una condición excepcional relacionada con una conexión podía provocar un comportamiento inseguro en lugar de producir un rechazo apropiado.
+
+La lección principal es:
+
+> Una excepción no debería cambiar accidentalmente una decisión de seguridad de "denegar" a "permitir".
+
+Esto demuestra por qué el manejo de errores debe considerarse parte de la seguridad de la aplicación y no solamente de su estabilidad.
+
+---
+
+# Relación con CWE
+
+A10 puede relacionarse con diferentes categorías de debilidades de software descritas en **CWE (Common Weakness Enumeration)**.
+
+Entre los patrones relevantes se encuentran situaciones como:
+
+* Manejo incorrecto de errores.
+* Exposición de información mediante mensajes de error.
+* Parámetros que no son correctamente validados.
+* Condiciones de carrera.
+* Comportamientos inseguros después de una excepción.
+
+Esto demuestra que un error aparentemente técnico puede terminar convirtiéndose en un problema de seguridad.
+
+---
+
+# Prevención de A10
+
+## 1. Manejar las excepciones correctamente
+
+Las excepciones deben capturarse de forma específica.
+
+Evitar patrones como:
+
+```python
+try:
+    operacion()
+except:
+    pass
+```
+
+Es preferible manejar explícitamente las condiciones esperadas y registrar aquellas que requieran investigación.
+
+---
+
+## 2. Utilizar Fail Closed
+
+Cuando ocurre un error durante una decisión de seguridad, la aplicación debería adoptar el comportamiento más seguro.
+
+Ejemplo:
+
+```text
+Error al validar autorización
+           ↓
+       DENEGAR
+           ↓
+Registrar evento
+```
+
+No:
+
+```text
+Error al validar autorización
+           ↓
+       PERMITIR
+```
+
+---
+
+## 3. Validar entradas
+
+Las aplicaciones deberían validar:
+
+* Tipo de dato.
+* Longitud.
+* Formato.
+* Rango.
+* Valores permitidos.
+* Campos obligatorios.
+
+Ejemplo:
+
+```text
+ID esperado: entero positivo
+
+ID = 25      → ✔ válido
+ID = -5      → ❌ rechazado
+ID = "abc"   → ❌ rechazado
+ID = NULL    → ❌ rechazado
+```
+
+---
+
+## 4. Evitar información sensible en mensajes
+
+Los usuarios no deberían recibir detalles internos de la aplicación.
+
+### Incorrecto
+
+```text
+Traceback:
+File "/app/database.py"
+Line 82
+Connection refused
+10.10.10.25:5432
+```
+
+### Correcto
+
+```text
+No fue posible procesar la solicitud.
+Código de referencia: ERR-92831
+```
+
+Los detalles técnicos pueden mantenerse en los logs internos.
+
+---
+
+## 5. Pruebas negativas
+
+Las pruebas no deberían limitarse a verificar que todo funciona correctamente.
+También deben comprobar qué ocurre cuando algo sale mal.
+
+Ejemplos:
+
+```text
+¿Qué sucede si falta un parámetro?
+
+¿Qué sucede si el usuario no tiene permisos?
+
+¿Qué sucede si la base de datos no responde?
+
+¿Qué sucede si llega un valor inesperado?
+
+¿Qué sucede si dos solicitudes llegan simultáneamente?
+
+¿Qué sucede si ocurre una excepción durante una validación?
+```
+
+---
+
+## 6. Pruebas automatizadas
+
+Los casos excepcionales deberían formar parte de las pruebas automatizadas.
+
+Ejemplo conceptual:
+
+```text
+Test normal
+     ↓
+Solicitud válida
+     ↓
+Respuesta esperada
+```
+
+Y también:
+
+```text
+Test negativo
+     ↓
+Solicitud inválida
+     ↓
+Aplicación rechaza correctamente
+```
+
+---
+
+## 7. Revisar condiciones de carrera
+
+Las operaciones críticas deben diseñarse teniendo en cuenta la concurrencia.
+
+Especialmente en:
+
+* Transacciones.
+* Pagos.
+* Cambios de permisos.
+* Creación de recursos.
+* Inventarios.
+* Procesamiento de sesiones.
+* Operaciones financieras.
+
+---
+
+# A09 vs A10
+
+| Categoría          | A09                        | A10                          |
+| ------------------ | -------------------------- | ---------------------------- |
+| Problema principal | Falta de visibilidad       | Manejo inseguro de errores   |
+| Riesgo             | Ataques no detectados      | Errores que generan bypass   |
+| Ejemplo            | No registrar login fallido | Excepción permite continuar  |
+| Impacto            | Detección tardía           | Comportamiento inseguro      |
+| Control principal  | Logging y alertas          | Manejo seguro de excepciones |
+| Concepto clave     | Monitoreo                  | Fail Closed                  |
+| Pruebas            | Detección de eventos       | Pruebas negativas            |
+| DevSecOps          | Observabilidad y respuesta | Seguridad durante errores    |
+
+---
