@@ -6,6 +6,8 @@
 🎓**Ingrid Vega**
 🎓**Jean Carlos Almenarez**
 
+📌**Participación Jean Carlos**
+
 ***Análisis de Vulnerabilidades en el OWASP Top 10: Métodos de Explotación y Prevención***
 
 La seguridad de una aplicación web no depende únicamente de que el código funcione correctamente. Una aplicación puede cumplir con sus funciones y, aun así, tener vulnerabilidades que permitan a un atacante acceder a información privada, modificar datos, ejecutar acciones sin autorización o incluso comprometer otros sistemas.
