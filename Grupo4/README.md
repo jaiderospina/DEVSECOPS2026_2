@@ -319,3 +319,5 @@ Es una categoría nueva. Ocurre cuando el sistema no sabe cómo reaccionar ante 
 ### 📝 Ejemplo de ataque
 
 Un atacante envía un dato malformado a un formulario. La aplicación falla y muestra en pantalla toda la ruta del servidor, la versión del framework y el nombre de la base de datos. Con esa información, el atacante puede buscar vulnerabilidades específicas de esa versión y planear un ataque más grave.
+
+![Infografía A10 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A10-2025.jpg?raw=true)
