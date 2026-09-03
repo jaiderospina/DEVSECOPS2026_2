@@ -200,6 +200,8 @@ Ahora hablamos de todo el ecosistema de confianza del software.
 - 🧪Control de Repositorios: Utilice proxies o gestores internos (ej. Nexus, Artifactory) para bloquear ataques de Dependency Confusion y Typosquatting.
 - 🧪Seguridad en CI/CD: Aplique el principio de menor privilegio a tokens de automatización, use runners efímeros e implemente el marco SLSA.
 
+![Infografía A03 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A03-2025.jpg?raw=true)
+
 ---
 ## A04:2025 — Cryptographic Failures
 ### 📋 ¿Qué es A04?
@@ -266,6 +268,8 @@ El atacante podría observar tráfico, pero no debería poder obtener el conteni
 - ✅ Protección de Contraseñas: Usar funciones de hash adaptativas con salt automático diseñadas para credenciales (como Argon2id o bcrypt), evitando hashes simples como MD5 o SHA-256.
 - ✅ Gestión de Claves: Guardar claves y secretos fuera del código fuente mediante gestores dedicados (AWS Secrets Manager, HashiCorp Vault) y rotarlos periódicamente.
 - ✅ Eliminar Criptografía Débil: Prohibir esquemas obsoletos o inseguros (DES, RC4, MD5, SHA-1, modo ECB).
+
+![Infografía A04 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A04-2025.jpg?raw=true)
 
 ## A09:2025 - Fallos en el registro y las alertas de seguridad
 
