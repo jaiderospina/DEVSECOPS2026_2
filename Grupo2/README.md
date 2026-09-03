@@ -660,8 +660,6 @@ La prevención requiere un enfoque integral que abarque todo el ciclo de vida de
 
 La aplicación de principios como **mínimo privilegio, defensa en profundidad, validación del lado servidor, parametrización, hardening y Threat Modeling** permite reducir significativamente la superficie de ataque y mejorar la postura de seguridad de las aplicaciones.
 
----
-
 # 📚 Referencias
 
 - OWASP Foundation. **OWASP Top 10:2021 — A03:2021 Injection.**  
@@ -681,3 +679,2164 @@ La aplicación de principios como **mínimo privilegio, defensa en profundidad, 
 
 - OWASP Foundation. **OWASP Cheat Sheet Series.**  
   <https://cheatsheetseries.owasp.org/>
+
+
+---
+
+# 4️⃣ A06:2021 – Componentes Vulnerables y Desactualizados
+
+## 🧩 Introducción
+
+Las aplicaciones web modernas rara vez están construidas completamente desde cero. Los desarrolladores utilizan frameworks, librerías, paquetes, servidores, sistemas operativos y otros componentes desarrollados por terceros.
+
+Esto permite desarrollar aplicaciones de manera más rápida, pero también introduce riesgos de seguridad.
+
+El riesgo **A06:2021 – Componentes Vulnerables y Desactualizados** del OWASP Top 10 ocurre cuando una aplicación utiliza componentes que contienen vulnerabilidades conocidas, se encuentran desactualizados, ya no reciben soporte o no son administrados adecuadamente.
+
+> 💡 Una aplicación puede tener código propio aparentemente seguro y aun así ser vulnerable debido a una dependencia de terceros.
+
+---
+
+## 🧠 ¿Qué es un componente?
+
+Un componente es una pieza de software que forma parte de una aplicación o de la infraestructura que la soporta.
+
+Algunos ejemplos son:
+
+- Frameworks.
+- Librerías.
+- Paquetes.
+- APIs.
+- Servidores web.
+- Sistemas operativos.
+- Servidores de aplicaciones.
+- Sistemas gestores de bases de datos.
+- Plugins.
+- Runtimes.
+- Dependencias de terceros.
+
+Por ejemplo, una aplicación desarrollada en Python podría utilizar:
+
+```text
+Aplicación Web
+│
+├── Python
+├── Flask
+├── Requests
+├── SQLAlchemy
+├── PostgreSQL
+└── Otras librerías
+```
+
+Cada uno de estos componentes puede introducir dependencias adicionales.
+
+---
+
+## 🔗 Dependencias directas y transitivas
+
+Este concepto es fundamental para comprender A06.
+
+### Dependencia directa
+
+Es un componente que nuestro proyecto utiliza directamente.
+
+Ejemplo:
+
+```text
+Mi aplicación
+      │
+      └── Flask
+```
+
+Nosotros decidimos instalar Flask.
+
+### Dependencia transitiva
+
+Es una dependencia utilizada por otro componente que nosotros instalamos.
+
+Ejemplo:
+
+```text
+Mi aplicación
+      │
+      └── Framework
+             │
+             └── Librería A
+                    │
+                    └── Librería B
+```
+
+Aunque nosotros nunca instalamos directamente la Librería B, nuestra aplicación puede depender de ella.
+
+> ⚠️ Una vulnerabilidad en una dependencia transitiva también puede afectar nuestra aplicación.
+
+---
+
+## 🔴 ¿Cuándo tenemos un problema A06?
+
+Podemos encontrar A06 cuando:
+
+- Utilizamos una librería con vulnerabilidades conocidas.
+- Utilizamos componentes sin actualizar durante largos periodos.
+- Utilizamos software que ya no recibe soporte.
+- No conocemos las versiones exactas de nuestras dependencias.
+- No analizamos las dependencias de manera periódica.
+- Utilizamos componentes obtenidos de fuentes no confiables.
+- Tenemos dependencias innecesarias.
+- No conocemos las dependencias transitivas.
+- No tenemos un inventario de los componentes utilizados.
+
+---
+
+## 📊 Ejemplo sencillo
+
+Supongamos que tenemos una tienda virtual:
+
+```text
+                    🛒 TIENDA WEB
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+      Frontend        Backend          Base de datos
+        │                │                │
+     React/JS          Flask           PostgreSQL
+                         │
+                 ┌───────┴───────┐
+                 │               │
+              Requests       Librería X
+                                 │
+                          ⚠️ Vulnerabilidad
+```
+
+El desarrollador puede no haber escrito la Librería X.
+
+Sin embargo, si la aplicación la utiliza directa o indirectamente, puede verse afectada.
+
+---
+
+# 🕵️ ¿Cómo puede aprovecharlo un atacante?
+
+El atacante puede intentar descubrir qué tecnologías utiliza una aplicación.
+
+Un escenario simplificado sería:
+
+```text
+        🔴 ATACANTE
+             │
+             ▼
+     Identifica tecnología
+             │
+             ▼
+     Identifica versión
+             │
+             ▼
+     Busca vulnerabilidades
+             │
+             ▼
+      ¿Existe una CVE?
+          /       \
+        Sí         No
+        │           │
+        ▼           ▼
+  Investiga       Busca
+  explotación     otra vía
+```
+
+Por esta razón, conocer y administrar las versiones de los componentes es una actividad importante dentro de la seguridad del software.
+
+---
+
+# 📚 Conceptos importantes: CVE, CWE y CVSS
+
+Estos tres términos suelen aparecer juntos cuando estudiamos vulnerabilidades.
+
+## 🆔 CVE
+
+**CVE – Common Vulnerabilities and Exposures**
+
+Es un sistema utilizado para identificar vulnerabilidades de seguridad conocidas mediante identificadores únicos.
+
+Ejemplo:
+
+```text
+CVE-2021-XXXXX
+```
+
+El identificador permite referenciar una vulnerabilidad específica.
+
+---
+
+## 🧱 CWE
+
+**CWE – Common Weakness Enumeration**
+
+Describe categorías de debilidades de software.
+
+Por ejemplo:
+
+```text
+CWE-1104
+Use of Unmaintained Third Party Components
+```
+
+En términos sencillos:
+
+```text
+CVE = Identifica una vulnerabilidad específica
+
+CWE = Describe el tipo de debilidad
+```
+
+---
+
+## 📈 CVSS
+
+**CVSS – Common Vulnerability Scoring System**
+
+Permite expresar la severidad técnica de una vulnerabilidad mediante una puntuación.
+
+De forma simplificada:
+
+```text
+Vulnerabilidad
+      │
+      ▼
+Características técnicas
+      │
+      ▼
+Explotabilidad + Impacto
+      │
+      ▼
+Puntuación CVSS
+```
+
+### 📌 Diferencia
+
+| Concepto | Significado |
+|---|---|
+| CVE | Identificador de una vulnerabilidad |
+| CWE | Categoría de una debilidad |
+| CVSS | Evaluación de severidad |
+
+---
+
+# 🔎 ¿Qué significa "desactualizado"?
+
+Un componente desactualizado es aquel que utiliza una versión antigua cuando existen versiones posteriores.
+
+Ejemplo:
+
+```text
+Versión instalada
+       │
+       ▼
+Librería X 1.2
+       │
+       │
+       ▼
+Versiones disponibles
+       │
+       ├── 1.3
+       ├── 1.4
+       └── 2.0
+```
+
+El hecho de que exista una versión nueva **no significa automáticamente que la versión anterior sea vulnerable**.
+
+Sin embargo, mantener componentes antiguos puede aumentar el riesgo, especialmente cuando:
+
+- Ya no reciben soporte.
+- Existen vulnerabilidades conocidas.
+- No reciben parches de seguridad.
+- El fabricante recomienda actualizar.
+
+---
+
+# ⚠️ Componentes sin mantenimiento
+
+Otro escenario importante ocurre cuando un proyecto deja de recibir mantenimiento.
+
+Ejemplo:
+
+```text
+Librería X
+│
+├── Última actualización: hace varios años
+├── Sin nuevos parches
+├── Issues sin resolver
+├── Sin soporte activo
+└── Vulnerabilidades conocidas
+```
+
+Esto representa un riesgo porque una organización puede depender de un componente que ya no recibe correcciones.
+
+---
+
+# 🧬 Dependencias transitivas
+
+Veamos un ejemplo más completo:
+
+```mermaid
+flowchart TD
+    A["Nuestra aplicación"] --> B["Framework"]
+    B --> C["Librería HTTP"]
+    C --> D["Librería auxiliar"]
+    D --> E["Componente vulnerable"]
+
+    E --> F["⚠️ Riesgo A06"]
+```
+
+La aplicación puede terminar utilizando un componente vulnerable sin que el desarrollador lo haya agregado directamente.
+
+Por esto es importante conocer el árbol completo de dependencias.
+
+---
+
+# 🧰 ¿Qué es SCA?
+
+**SCA – Software Composition Analysis**
+
+Es el análisis de los componentes y dependencias de una aplicación con el objetivo de identificar riesgos, versiones y vulnerabilidades conocidas.
+
+Podemos imaginarlo así:
+
+```text
+              📦 PROYECTO
+                   │
+                   ▼
+             Analizador SCA
+                   │
+          ┌────────┼────────┐
+          ▼        ▼        ▼
+      Librería A Librería B Librería C
+          │        │        │
+          ▼        ▼        ▼
+        CVE?     CVE?      CVE?
+          │        │        │
+          └────────┼────────┘
+                   ▼
+              📊 Reporte
+```
+
+Una herramienta SCA puede ayudarnos a identificar:
+
+- Dependencias.
+- Versiones.
+- Vulnerabilidades conocidas.
+- Componentes obsoletos.
+- Dependencias transitivas.
+- Riesgos asociados.
+
+---
+
+# 🛠️ Herramientas relacionadas con A06
+
+Algunas herramientas que podemos estudiar son:
+
+### OWASP Dependency-Check
+
+Analiza dependencias de proyectos y busca vulnerabilidades conocidas.
+
+### npm audit
+
+Permite analizar vulnerabilidades en proyectos que utilizan paquetes de Node.js.
+
+```bash
+npm audit
+```
+
+### pip-audit
+
+Permite analizar dependencias de proyectos Python.
+
+```bash
+pip-audit
+```
+
+### Dependabot
+
+Puede ayudar a detectar dependencias vulnerables y proponer actualizaciones en proyectos alojados en GitHub.
+
+---
+
+# 📦 ¿Qué es una SBOM?
+
+**SBOM – Software Bill of Materials**
+
+Una SBOM puede entenderse como la "lista de ingredientes" de un software.
+
+Por ejemplo:
+
+```text
+Aplicación: TiendaWeb
+│
+├── Python
+├── Flask
+├── Requests
+├── SQLAlchemy
+├── PostgreSQL Driver
+└── Otras dependencias
+```
+
+Una SBOM permite conocer qué componentes forman parte de un producto de software.
+
+### 🍔 Analogía
+
+Podemos compararlo con una hamburguesa:
+
+```text
+🍔 Software
+│
+├── Pan
+├── Carne
+├── Queso
+├── Salsa
+└── Vegetales
+```
+
+Si descubrimos que uno de los ingredientes tiene un problema, necesitamos saber qué productos contienen ese ingrediente.
+
+Con el software sucede algo similar.
+
+---
+
+# 🔄 Ciclo de gestión de dependencias
+
+Una buena estrategia no consiste solamente en actualizar todo inmediatamente.
+
+Se recomienda establecer un proceso:
+
+```mermaid
+flowchart LR
+    A["📋 Inventariar"] --> B["🔎 Analizar"]
+    B --> C["⚠️ Identificar vulnerabilidades"]
+    C --> D["📊 Evaluar riesgo"]
+    D --> E["🔄 Actualizar"]
+    E --> F["🧪 Probar"]
+    F --> G["🚀 Desplegar"]
+    G --> A
+```
+
+### 1. Inventariar
+
+Conocer qué componentes tenemos.
+
+### 2. Analizar
+
+Revisar versiones y vulnerabilidades.
+
+### 3. Evaluar
+
+Determinar qué vulnerabilidades representan mayor riesgo.
+
+### 4. Actualizar
+
+Aplicar versiones corregidas cuando corresponda.
+
+### 5. Probar
+
+Verificar que la actualización no rompa la aplicación.
+
+### 6. Desplegar
+
+Llevar los cambios al entorno correspondiente.
+
+### 7. Monitorear
+
+Continuar revisando las dependencias.
+
+---
+
+# 💻 Ejemplo práctico con Python
+
+Supongamos que tenemos:
+
+```text
+requirements.txt
+```
+
+Con:
+
+```text
+Flask
+requests
+```
+
+Podemos instalar las dependencias:
+
+```bash
+pip install -r requirements.txt
+```
+
+Posteriormente podemos realizar una auditoría:
+
+```bash
+pip-audit
+```
+
+El objetivo del ejercicio es identificar si alguna dependencia tiene vulnerabilidades conocidas.
+
+---
+
+# 🧪 Laboratorio propuesto – A06
+
+## Objetivo
+
+Identificar, analizar y corregir vulnerabilidades relacionadas con dependencias de terceros.
+
+### Paso 1 – Crear proyecto
+
+```bash
+mkdir laboratorio-a06
+cd laboratorio-a06
+```
+
+### Paso 2 – Crear entorno virtual
+
+```bash
+python -m venv venv
+```
+
+Activación en Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+### Paso 3 – Crear archivo de dependencias
+
+```text
+requirements.txt
+```
+
+Ejemplo:
+
+```text
+Flask
+requests
+```
+
+### Paso 4 – Instalar dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+### Paso 5 – Ejecutar auditoría
+
+```bash
+pip-audit
+```
+
+### Paso 6 – Analizar resultados
+
+Registrar:
+
+```text
+Dependencia
+Versión instalada
+Vulnerabilidad
+Severidad
+Versión corregida
+Acción recomendada
+```
+
+### Paso 7 – Actualizar
+
+Actualizar las dependencias afectadas.
+
+```bash
+pip install --upgrade nombre-paquete
+```
+
+### Paso 8 – Ejecutar nuevamente
+
+```bash
+pip-audit
+```
+
+### Paso 9 – Comparar
+
+```text
+ANTES
+│
+├── Dependencia vulnerable
+└── ⚠️ Riesgo
+
+        ↓ ACTUALIZACIÓN
+
+DESPUÉS
+│
+├── Dependencia actualizada
+└── ✅ Riesgo reducido
+```
+
+---
+
+# 🛡️ ¿Cómo prevenir A06?
+
+Las principales medidas son:
+
+- Mantener un inventario de componentes.
+- Conocer las versiones utilizadas.
+- Analizar dependencias periódicamente.
+- Utilizar herramientas SCA.
+- Mantener las dependencias actualizadas.
+- Eliminar dependencias innecesarias.
+- Evitar componentes sin mantenimiento.
+- Utilizar fuentes confiables.
+- Revisar dependencias transitivas.
+- Implementar análisis de dependencias dentro del CI/CD.
+- Mantener una SBOM cuando sea apropiado.
+- Establecer procesos para responder ante nuevas vulnerabilidades.
+
+---
+
+# 🔐 A06 dentro de DevSecOps
+
+A06 puede integrarse directamente en el ciclo DevSecOps.
+
+```mermaid
+flowchart LR
+    A["👨‍💻 Desarrollo"] --> B["📦 Dependencias"]
+    B --> C["🔎 SCA"]
+    C --> D{"¿Vulnerabilidad?"}
+    D -->|No| E["✅ Continuar"]
+    D -->|Sí| F["⚠️ Corregir"]
+    F --> G["🧪 Pruebas"]
+    G --> E
+    E --> H["🚀 Deploy"]
+```
+
+La idea es detectar problemas **antes de que lleguen a producción**.
+
+---
+
+# 📋 Checklist A06
+
+```text
+☐ ¿Conocemos todas nuestras dependencias?
+
+☐ ¿Conocemos las versiones utilizadas?
+
+☐ ¿Tenemos dependencias transitivas?
+
+☐ ¿Analizamos las dependencias periódicamente?
+
+☐ ¿Utilizamos una herramienta SCA?
+
+☐ ¿Conocemos las vulnerabilidades asociadas?
+
+☐ ¿Eliminamos dependencias innecesarias?
+
+☐ ¿Tenemos componentes sin mantenimiento?
+
+☐ ¿Tenemos un proceso de actualización?
+
+☐ ¿Probamos las actualizaciones antes de producción?
+
+☐ ¿Consideramos utilizar una SBOM?
+
+☐ ¿Integramos el análisis en CI/CD?
+```
+
+---
+
+# 🎯 Ejemplo de situación real
+
+Supongamos que una empresa tiene 50 aplicaciones.
+
+Una vulnerabilidad crítica aparece en una librería utilizada por varias aplicaciones.
+
+Sin un inventario:
+
+```text
+Nueva vulnerabilidad
+        │
+        ▼
+"¿Dónde utilizamos esa librería?"
+        │
+        ▼
+Investigación manual
+        │
+        ▼
+Horas o días de trabajo
+```
+
+Con inventario y herramientas:
+
+```text
+Nueva vulnerabilidad
+        │
+        ▼
+SBOM / SCA
+        │
+        ▼
+Aplicaciones afectadas
+        │
+        ▼
+Priorización
+        │
+        ▼
+Actualización
+```
+
+Esto demuestra por qué la gestión de dependencias es una parte importante de la seguridad.
+
+---
+
+# 🧠 ¿Qué aprendimos de A06?
+
+A06 nos enseña que la seguridad de una aplicación no depende únicamente del código que escribimos.
+
+También depende de los componentes que utilizamos.
+
+```text
+        Aplicación segura
+              │
+       ┌──────┴──────┐
+       ▼             ▼
+   Código propio   Dependencias
+       │             │
+       │             ▼
+       │       ¿Son seguras?
+       │             │
+       └──────┬──────┘
+              ▼
+        Seguridad total
+```
+
+Una aplicación puede tener un código propio correctamente desarrollado y aun así estar expuesta debido a una dependencia vulnerable.
+
+---
+
+# ✅ Conclusión A06
+
+Los componentes de terceros son fundamentales para el desarrollo moderno de aplicaciones, pero también representan una superficie de ataque importante.
+
+El uso de dependencias vulnerables, desactualizadas o sin mantenimiento puede introducir riesgos que no siempre son evidentes para los desarrolladores.
+
+Por esta razón, las organizaciones deben conocer qué componentes utilizan, controlar sus versiones, analizar periódicamente las dependencias, eliminar componentes innecesarios y establecer procesos de actualización y respuesta ante vulnerabilidades.
+
+El uso de herramientas SCA y, cuando sea apropiado, de una SBOM facilita la identificación y gestión de estos riesgos.
+
+> 🔑 **La primera medida de seguridad para nuestras dependencias es saber exactamente qué tenemos instalado.**
+
+# 📚 Referencias A06
+
+- OWASP Top 10 – A06:2021 Componentes Vulnerables y Desactualizados.
+- OWASP Top 10 – 2021.
+- OWASP Dependency-Check.
+- OWASP Software Component Verification Standard.
+- NIST – National Vulnerability Database (NVD).
+- NIST – Software Bill of Materials (SBOM).
+- MITRE – Common Vulnerabilities and Exposures (CVE).
+- MITRE – Common Weakness Enumeration (CWE).
+- FIRST – Common Vulnerability Scoring System (CVSS).
+
+---
+
+# 5️⃣ A07:2021 – Fallas de Identificación y Autenticación
+
+## 🔐 Introducción
+
+Una aplicación web necesita saber quién está intentando acceder a ella y comprobar que realmente es quien dice ser.
+
+Por ejemplo, cuando un usuario inicia sesión en una plataforma bancaria, la aplicación debe responder preguntas como:
+
+- ¿Quién es el usuario?
+- ¿Cómo demuestra su identidad?
+- ¿La contraseña es correcta?
+- ¿Tiene habilitado un segundo factor?
+- ¿Qué permisos tiene?
+- ¿Cuánto tiempo puede permanecer abierta su sesión?
+- ¿Qué ocurre si pierde su contraseña?
+- ¿Qué sucede después de varios intentos fallidos?
+
+Cuando estos mecanismos están mal diseñados o implementados pueden aparecer vulnerabilidades relacionadas con la identificación, autenticación y gestión de sesiones.
+
+El **A07:2021 – Identification and Authentication Failures** del OWASP Top 10 agrupa diferentes problemas relacionados con la autenticación de usuarios, las credenciales y la gestión de sesiones.
+
+> 💡 En términos sencillos: A07 ocurre cuando una aplicación no comprueba correctamente quién es el usuario o permite que un atacante pueda hacerse pasar por él.
+
+---
+
+# 🧠 1. Identificación, autenticación y autorización
+
+Antes de estudiar A07 debemos diferenciar tres conceptos que suelen confundirse.
+
+## 👤 Identificación
+
+La identificación responde:
+
+> **¿Quién eres?**
+
+Por ejemplo:
+
+```text
+Usuario: william
+Correo: william@example.com
+```
+
+El usuario está indicando a la aplicación quién dice ser.
+
+---
+
+## 🔑 Autenticación
+
+La autenticación responde:
+
+> **¿Puedes demostrar que realmente eres esa persona?**
+
+Ejemplo:
+
+```text
+Usuario
+   +
+Contraseña
+   +
+Código MFA
+```
+
+Si las credenciales son correctas, la aplicación puede considerar que el usuario fue autenticado.
+
+---
+
+## 🛂 Autorización
+
+La autorización responde:
+
+> **¿Qué tienes permitido hacer?**
+
+Ejemplo:
+
+```text
+Usuario: William
+       │
+       ▼
+Autenticado ✅
+       │
+       ▼
+¿Puede eliminar usuarios?
+       │
+       ▼
+      NO ❌
+```
+
+Estar autenticado **no significa tener acceso a todo**.
+
+---
+
+## 📊 Diferencia entre los tres conceptos
+
+| Concepto | Pregunta | Ejemplo |
+|---|---|---|
+| Identificación | ¿Quién eres? | Usuario: William |
+| Autenticación | ¿Puedes demostrarlo? | Contraseña + MFA |
+| Autorización | ¿Qué puedes hacer? | Consultar su cuenta |
+
+### 🧠 Analogía
+
+Podemos compararlo con entrar a una universidad:
+
+```text
+IDENTIFICACIÓN
+      ↓
+"Soy William"
+
+      ↓
+
+AUTENTICACIÓN
+      ↓
+"Esta es mi tarjeta de identificación"
+
+      ↓
+
+AUTORIZACIÓN
+      ↓
+"Mi tarjeta me permite entrar a esta área"
+```
+
+---
+
+# 🔴 2. ¿Qué es A07?
+
+A07 se presenta cuando existen fallas en mecanismos como:
+
+- Inicio de sesión.
+- Contraseñas.
+- MFA.
+- Recuperación de cuentas.
+- Gestión de sesiones.
+- Tokens.
+- Protección contra ataques automatizados.
+- Cierre de sesión.
+- Validación de credenciales.
+
+Algunos ejemplos son:
+
+```text
+❌ Contraseñas débiles
+❌ Credenciales predeterminadas
+❌ Falta de MFA
+❌ Fuerza bruta
+❌ Credential Stuffing
+❌ Recuperación insegura de cuentas
+❌ Contraseñas almacenadas incorrectamente
+❌ Sesiones que no expiran
+❌ Session Fixation
+❌ Session Hijacking
+```
+
+---
+
+# 🔓 3. Contraseñas débiles
+
+Una contraseña débil puede ser fácilmente adivinada o encontrada mediante ataques automatizados.
+
+Ejemplos:
+
+```text
+123456
+password
+admin
+admin123
+qwerty
+```
+
+El problema aumenta cuando los usuarios reutilizan la misma contraseña en diferentes servicios.
+
+---
+
+# ⚠️ 4. Credenciales predeterminadas
+
+Algunos sistemas pueden instalarse inicialmente con credenciales conocidas.
+
+Ejemplo:
+
+```text
+Usuario: admin
+Contraseña: admin
+```
+
+Si estas credenciales permanecen activas en producción, un atacante podría intentar utilizarlas.
+
+### ❌ Mala práctica
+
+```text
+Instalación
+    ↓
+Usuario predeterminado
+    ↓
+Contraseña predeterminada
+    ↓
+Producción
+```
+
+### ✅ Buena práctica
+
+```text
+Instalación
+    ↓
+Cambiar credenciales
+    ↓
+Configurar autenticación segura
+    ↓
+MFA cuando corresponda
+    ↓
+Producción
+```
+
+---
+
+# 💥 5. Ataque de fuerza bruta
+
+Un ataque de fuerza bruta consiste en realizar numerosos intentos de autenticación buscando encontrar las credenciales correctas.
+
+Ejemplo conceptual:
+
+```mermaid
+flowchart LR
+    A["🔴 Atacante"] --> B["Página de Login"]
+    B --> C["Intento 1"]
+    B --> D["Intento 2"]
+    B --> E["Intento 3"]
+    B --> F["Muchos intentos"]
+    F --> G{"¿Credenciales correctas?"}
+    G -->|No| F
+    G -->|Sí| H["⚠️ Acceso"]
+```
+
+Una aplicación vulnerable podría permitir una cantidad ilimitada de intentos.
+
+### ❌ Ejemplo
+
+```text
+Intento 1 → incorrecto
+Intento 2 → incorrecto
+Intento 3 → incorrecto
+...
+Intento 10.000 → incorrecto
+```
+
+Sin controles adecuados, el atacante puede continuar intentando.
+
+---
+
+# 🛡️ 6. Protección contra fuerza bruta
+
+Algunas medidas de protección incluyen:
+
+- Limitar intentos.
+- Aplicar retrasos progresivos.
+- Utilizar rate limiting.
+- Implementar MFA.
+- Detectar patrones anormales.
+- Monitorear intentos fallidos.
+- Utilizar mecanismos de bloqueo cuidadosamente diseñados.
+- Alertar ante comportamientos sospechosos.
+
+Ejemplo conceptual:
+
+```mermaid
+flowchart LR
+    A["Usuario"] --> B["Login"]
+    B --> C["Contador de intentos"]
+    C --> D{"¿Supera límite?"}
+    D -->|No| E["Continuar"]
+    D -->|Sí| F["⏳ Aplicar protección"]
+```
+
+> ⚠️ Un bloqueo de cuenta mal diseñado también puede convertirse en un problema de disponibilidad si un atacante puede bloquear intencionalmente cuentas de otros usuarios.
+
+---
+
+# 🧪 7. Credential Stuffing
+
+El **Credential Stuffing** es diferente de la fuerza bruta.
+
+En este caso, el atacante utiliza pares de usuario y contraseña obtenidos previamente, normalmente de una filtración o compromiso de otro servicio.
+
+Ejemplo:
+
+```text
+Servicio A
+────────────────
+usuario@example.com
+contraseña123
+
+        ↓
+Credenciales obtenidas
+        ↓
+        ↓
+        ↓
+
+Servicio B
+────────────────
+usuario@example.com
+contraseña123
+
+        ↓
+⚠️ Intento de acceso
+```
+
+El problema principal es la **reutilización de contraseñas**.
+
+---
+
+## 🔄 Fuerza bruta vs Credential Stuffing
+
+| Característica | Fuerza bruta | Credential Stuffing |
+|---|---|---|
+| Objetivo | Encontrar credenciales | Reutilizar credenciales obtenidas |
+| Contraseñas | Se prueban combinaciones | Ya fueron obtenidas |
+| Principal defensa | Rate limiting + MFA | MFA + detección + contraseñas únicas |
+| Riesgo | Alto | Alto |
+
+---
+
+# 🔐 8. MFA – Multi-Factor Authentication
+
+MFA significa:
+
+> **Multi-Factor Authentication**
+
+Consiste en utilizar dos o más factores de autenticación independientes.
+
+## Los principales factores
+
+### 🧠 Algo que sabes
+
+Por ejemplo:
+
+```text
+Contraseña
+PIN
+```
+
+### 📱 Algo que tienes
+
+Por ejemplo:
+
+```text
+Teléfono
+Token de seguridad
+Aplicación autenticadora
+```
+
+### 👤 Algo que eres
+
+Por ejemplo:
+
+```text
+Huella digital
+Reconocimiento facial
+```
+
+---
+
+## MFA de forma visual
+
+```mermaid
+flowchart LR
+    A["👤 Usuario"] --> B["🔑 Contraseña"]
+    B --> C["📱 Segundo factor"]
+    C --> D{"¿Correctos?"}
+    D -->|Sí| E["✅ Acceso"]
+    D -->|No| F["❌ Acceso denegado"]
+```
+
+Si un atacante obtiene la contraseña, todavía tendría que superar el segundo factor.
+
+> 💡 MFA no hace que una aplicación sea invulnerable, pero reduce significativamente el riesgo asociado al robo de credenciales.
+
+---
+
+# 🔑 9. Almacenamiento seguro de contraseñas
+
+Una de las reglas más importantes:
+
+> ❌ **Las contraseñas no deben almacenarse en texto plano.**
+
+### ❌ Ejemplo incorrecto
+
+```text
+Usuario: william
+Password: MiPassword123
+```
+
+Si un atacante obtiene la base de datos, puede conocer directamente las contraseñas.
+
+---
+
+## ✅ Hashing
+
+En lugar de guardar directamente la contraseña, se almacena un resultado derivado mediante un algoritmo diseñado para contraseñas.
+
+Conceptualmente:
+
+```text
+Contraseña
+     │
+     ▼
+Función de hashing
+     │
+     ▼
+Hash almacenado
+```
+
+Cuando el usuario vuelve a iniciar sesión:
+
+```text
+Contraseña ingresada
+       │
+       ▼
+Verificación
+       │
+       ▼
+Hash almacenado
+       │
+       ▼
+¿Coinciden?
+```
+
+---
+
+# 🧂 10. ¿Qué es un salt?
+
+Un **salt** es un valor aleatorio que se utiliza junto con la contraseña durante el proceso de almacenamiento.
+
+Conceptualmente:
+
+```text
+Contraseña + Salt
+       │
+       ▼
+Hash
+       │
+       ▼
+Base de datos
+```
+
+El objetivo es dificultar ataques basados en contraseñas previamente procesadas y evitar que usuarios con la misma contraseña terminen necesariamente con el mismo valor almacenado.
+
+> ⚠️ No debemos implementar nuestro propio algoritmo de hashing de contraseñas. Es preferible utilizar mecanismos y librerías diseñados específicamente para este propósito.
+
+---
+
+# 🧰 11. Algoritmos para contraseñas
+
+Para almacenar contraseñas se utilizan algoritmos diseñados para ser costosos computacionalmente, como:
+
+- Argon2.
+- bcrypt.
+- scrypt.
+- PBKDF2.
+
+No debemos confundirlos con hashes rápidos utilizados para otros propósitos.
+
+Ejemplos de algoritmos que **no deben utilizarse por sí solos para almacenar contraseñas**:
+
+```text
+MD5
+SHA-1
+SHA-256
+```
+
+El problema no es que SHA-256 sea "malo", sino que los hashes rápidos no están diseñados específicamente para proteger contraseñas frente a ataques de adivinación masiva.
+
+---
+
+# 📧 12. Recuperación de cuentas
+
+La recuperación de una contraseña también forma parte de la seguridad de autenticación.
+
+### ❌ Ejemplo inseguro
+
+```text
+¿Cuál es el nombre de tu mascota?
+```
+
+Si la respuesta puede ser conocida o adivinada, el mecanismo puede ser débil.
+
+---
+
+## ✅ Ejemplo más seguro
+
+```text
+Usuario solicita recuperación
+          ↓
+Servidor genera mecanismo temporal
+          ↓
+Usuario recibe enlace
+          ↓
+Enlace con token aleatorio
+          ↓
+Token expira
+          ↓
+Nueva contraseña
+```
+
+El mecanismo de recuperación debe tener controles de seguridad equivalentes a los del inicio de sesión.
+
+---
+
+# 🍪 13. ¿Qué es una sesión?
+
+Después de autenticarse correctamente, una aplicación necesita recordar que el usuario ya fue autenticado.
+
+Para esto se utilizan mecanismos de sesión.
+
+Ejemplo:
+
+```text
+Usuario
+   │
+   ▼
+Login
+   │
+   ▼
+Autenticación correcta
+   │
+   ▼
+Servidor crea sesión
+   │
+   ▼
+Session ID / Token
+   │
+   ▼
+Usuario continúa navegando
+```
+
+---
+
+# 🎟️ 14. Session ID
+
+Un Session ID es un identificador asociado a la sesión de un usuario.
+
+Conceptualmente:
+
+```text
+Usuario
+   │
+   ▼
+Login correcto
+   │
+   ▼
+Session ID
+   │
+   ▼
+Servidor reconoce la sesión
+```
+
+El identificador debe ser difícil de adivinar y debe protegerse adecuadamente.
+
+---
+
+# 🚨 15. Session Hijacking
+
+El **Session Hijacking** ocurre cuando un atacante consigue utilizar una sesión legítima de otra persona.
+
+Conceptualmente:
+
+```mermaid
+flowchart LR
+    A["👤 Usuario"] --> B["🔐 Login"]
+    B --> C["🎟️ Session Token"]
+    C --> D["🌐 Aplicación"]
+
+    E["🔴 Atacante"] --> F["Token comprometido"]
+    F --> D
+
+    D --> G["⚠️ Posible suplantación"]
+```
+
+Por ejemplo, si un atacante consigue un token de sesión válido, podría intentar utilizarlo para actuar como el usuario.
+
+---
+
+# 🔒 16. Session Fixation
+
+La **Session Fixation** es una vulnerabilidad en la que un atacante consigue que la víctima utilice un identificador de sesión conocido por el atacante y posteriormente la víctima se autentica utilizando esa sesión.
+
+Conceptualmente:
+
+```text
+Atacante
+   │
+   ▼
+Conoce Session ID
+   │
+   ▼
+Víctima utiliza esa sesión
+   │
+   ▼
+Víctima inicia sesión
+   │
+   ▼
+Sesión autenticada
+   │
+   ▼
+Atacante intenta reutilizarla
+```
+
+Una medida importante es **regenerar el identificador de sesión después de una autenticación exitosa**.
+
+---
+
+# 🔄 17. Expiración de sesiones
+
+Una sesión no debería permanecer válida indefinidamente.
+
+Podemos tener:
+
+```text
+Login
+  ↓
+Sesión activa
+  ↓
+Inactividad
+  ↓
+Tiempo de expiración
+  ↓
+Sesión invalidada
+```
+
+También es importante invalidar la sesión cuando el usuario realiza un cierre de sesión.
+
+---
+
+# 🚪 18. Cierre de sesión
+
+Un error sería simplemente eliminar la información visual de la aplicación y mantener la sesión válida en el servidor.
+
+### ❌ Conceptualmente
+
+```text
+Usuario pulsa "Cerrar sesión"
+        ↓
+Se oculta la página
+        ↓
+Session Token continúa válido
+```
+
+### ✅ Mejor práctica
+
+```text
+Usuario pulsa "Cerrar sesión"
+        ↓
+Servidor invalida sesión
+        ↓
+Token deja de ser válido
+        ↓
+Usuario debe autenticarse nuevamente
+```
+
+---
+
+# 🔐 19. Cookies y seguridad de sesión
+
+Cuando una aplicación utiliza cookies para mantener sesiones, existen atributos de seguridad importantes.
+
+## HttpOnly
+
+Ayuda a impedir que JavaScript del navegador acceda directamente a la cookie.
+
+```text
+HttpOnly
+   ↓
+Cookie no accesible mediante document.cookie
+```
+
+---
+
+## Secure
+
+Indica que la cookie debe transmitirse mediante una conexión HTTPS.
+
+```text
+Secure
+   ↓
+Enviar cookie únicamente mediante HTTPS
+```
+
+---
+
+## SameSite
+
+Ayuda a controlar cuándo el navegador envía cookies en solicitudes entre sitios.
+
+Ejemplo:
+
+```text
+SameSite=Lax
+```
+
+o:
+
+```text
+SameSite=Strict
+```
+
+La configuración adecuada depende del diseño de la aplicación.
+
+---
+
+# 🌐 20. HTTPS y autenticación
+
+Las credenciales y los tokens de sesión deben protegerse durante el transporte.
+
+### ❌ Situación insegura
+
+```text
+Usuario
+   │
+   │ HTTP
+   ▼
+Servidor
+```
+
+### ✅ Situación recomendada
+
+```text
+Usuario
+   │
+   │ HTTPS 🔒
+   ▼
+Servidor
+```
+
+HTTPS ayuda a proteger la información mientras viaja entre el cliente y el servidor.
+
+---
+
+# 💻 21. Ejemplo de código vulnerable
+
+El siguiente ejemplo es **educativo** y representa varias malas prácticas:
+
+```python
+users = {
+    "admin": "123456"
+}
+
+@app.route("/login", methods=["POST"])
+def login():
+
+    username = request.form["username"]
+    password = request.form["password"]
+
+    if username in users:
+        if users[username] == password:
+            return "Login exitoso"
+
+    return "Credenciales incorrectas"
+```
+
+## 🚨 Problemas
+
+Podemos identificar:
+
+```text
+❌ Contraseña débil
+❌ Contraseña almacenada en texto plano
+❌ No existe MFA
+❌ No existe rate limiting
+❌ No existe control de intentos
+❌ No existe una gestión segura de sesión
+❌ No existe monitoreo
+```
+
+---
+
+# 🛠️ 22. Ejemplo conceptual mejorado
+
+Una implementación más segura debería seguir un flujo parecido a:
+
+```python
+@app.route("/login", methods=["POST"])
+def login():
+
+    username = request.form["username"]
+    password = request.form["password"]
+
+    user = get_user(username)
+
+    if not user:
+        register_failed_attempt(username)
+        return "Credenciales incorrectas"
+
+    if not verify_password(password, user.password_hash):
+        register_failed_attempt(username)
+        return "Credenciales incorrectas"
+
+    if user.mfa_enabled:
+        return "Solicitar segundo factor"
+
+    create_secure_session(user)
+
+    return "Login exitoso"
+```
+
+### Ahora tenemos:
+
+```text
+Usuario
+   │
+   ▼
+Buscar cuenta
+   │
+   ▼
+Verificar contraseña
+   │
+   ▼
+Control de intentos
+   │
+   ▼
+MFA
+   │
+   ▼
+Crear sesión segura
+   │
+   ▼
+✅ Acceso
+```
+
+---
+
+# 🧪 23. Laboratorio A07
+
+## 🎯 Objetivo
+
+Construir una aplicación de autenticación sencilla, identificar vulnerabilidades y posteriormente aplicar medidas de seguridad.
+
+El laboratorio debe realizarse únicamente en un entorno controlado y local.
+
+---
+
+## 🏗️ Arquitectura
+
+```mermaid
+flowchart TD
+    A["🌐 Navegador"] --> B["🔐 Login"]
+    B --> C["Flask"]
+    C --> D["👤 Usuarios"]
+    C --> E["🗄️ Base de datos"]
+    C --> F["🎟️ Sesiones"]
+    C --> G["📊 Logs"]
+```
+
+---
+
+# 🧪 Fase 1 – Login vulnerable
+
+Crear una aplicación sencilla con:
+
+```text
+Usuario
+Contraseña
+Botón Login
+```
+
+El primer objetivo es observar qué problemas existen.
+
+### Ejemplo:
+
+```python
+users = {
+    "admin": "123456"
+}
+```
+
+El grupo debe identificar:
+
+```text
+1. ¿La contraseña es segura?
+2. ¿Cómo está almacenada?
+3. ¿Existe MFA?
+4. ¿Cuántos intentos permite?
+5. ¿Existe rate limiting?
+6. ¿Cómo se crea la sesión?
+7. ¿Cuándo expira?
+```
+
+---
+
+# 🧪 Fase 2 – Mejorar las contraseñas
+
+Cambiar el almacenamiento directo de contraseñas por un mecanismo de hashing adecuado.
+
+Flujo:
+
+```text
+Contraseña
+    ↓
+Hash seguro para passwords
+    ↓
+Base de datos
+```
+
+No almacenar:
+
+```text
+password = "123456"
+```
+
+en texto plano.
+
+---
+
+# 🧪 Fase 3 – Protección contra intentos automatizados
+
+Implementar un mecanismo para controlar múltiples intentos.
+
+Ejemplo conceptual:
+
+```text
+Intento 1 → ❌
+Intento 2 → ❌
+Intento 3 → ❌
+Intentos repetidos
+       ↓
+Protección
+       ↓
+⏳ Esperar / limitar solicitudes
+```
+
+---
+
+# 🧪 Fase 4 – MFA
+
+Agregar un segundo factor de demostración.
+
+Por ejemplo:
+
+```text
+Usuario
+   +
+Contraseña
+   +
+Código temporal
+   ↓
+✅ Acceso
+```
+
+Para un laboratorio académico puede utilizarse un mecanismo de código temporal, siempre dentro del entorno de pruebas.
+
+---
+
+# 🧪 Fase 5 – Gestión de sesión
+
+Comprobar:
+
+```text
+☐ ¿Se genera una sesión después del login?
+
+☐ ¿El identificador es suficientemente aleatorio?
+
+☐ ¿Se regenera después de autenticarse?
+
+☐ ¿La sesión expira?
+
+☐ ¿Se invalida al cerrar sesión?
+
+☐ ¿Las cookies utilizan atributos de seguridad?
+```
+
+---
+
+# 🔍 24. Pruebas que podemos realizar
+
+Una vez creada la aplicación, podemos revisar:
+
+### Prueba 1 – Contraseña débil
+
+Intentar utilizar contraseñas evidentemente inseguras en el laboratorio.
+
+```text
+123456
+password
+admin
+```
+
+Objetivo:
+
+> Comprobar si la aplicación permite credenciales débiles.
+
+---
+
+### Prueba 2 – Intentos repetidos
+
+Realizar varios intentos fallidos controlados.
+
+Objetivo:
+
+> Comprobar si existe protección contra ataques automatizados.
+
+---
+
+### Prueba 3 – Cierre de sesión
+
+Cerrar sesión y comprobar si el acceso anterior continúa funcionando.
+
+Objetivo:
+
+> Verificar la invalidación de la sesión.
+
+---
+
+### Prueba 4 – Expiración
+
+Esperar el tiempo configurado y comprobar si la sesión continúa válida.
+
+Objetivo:
+
+> Verificar la expiración.
+
+---
+
+### Prueba 5 – MFA
+
+Comprobar que conocer solamente la contraseña no sea suficiente cuando MFA está habilitado.
+
+---
+
+# 🛡️ 25. Herramientas para estudiar A07
+
+## OWASP ZAP
+
+Puede utilizarse para analizar aplicaciones web durante pruebas de seguridad.
+
+## Burp Suite
+
+Permite observar y analizar solicitudes HTTP/HTTPS durante pruebas autorizadas.
+
+## DevTools
+
+Las herramientas de desarrollador del navegador permiten estudiar:
+
+- Cookies.
+- Headers.
+- Solicitudes.
+- Respuestas.
+- Almacenamiento.
+
+Por ejemplo:
+
+```text
+Browser
+   ↓
+DevTools
+   ↓
+Network
+   ↓
+Request / Response
+```
+
+---
+
+# 🧩 26. A07 y DevSecOps
+
+La autenticación segura no debería revisarse solamente al final del proyecto.
+
+Puede incorporarse al ciclo de desarrollo:
+
+```mermaid
+flowchart LR
+    A["📋 Requisitos"] --> B["👨‍💻 Desarrollo"]
+    B --> C["🧪 Pruebas"]
+    C --> D["🔐 Seguridad"]
+    D --> E["🚀 Despliegue"]
+    E --> F["📊 Monitoreo"]
+    F --> A
+```
+
+En cada etapa podemos preguntarnos:
+
+```text
+¿La autenticación es segura?
+
+¿Las sesiones están protegidas?
+
+¿Las contraseñas están correctamente gestionadas?
+
+¿Existe MFA?
+
+¿Hay protección contra automatización?
+
+¿Se registran eventos de seguridad?
+```
+
+---
+
+# 📊 27. Matriz de vulnerabilidades A07
+
+| Vulnerabilidad | Ejemplo | Impacto |
+|---|---|---|
+| Contraseña débil | `123456` | 🔴 Alto |
+| Credenciales predeterminadas | `admin/admin` | 🔴 Alto |
+| Fuerza bruta | Muchos intentos | 🔴 Alto |
+| Credential Stuffing | Reutilización de credenciales | 🔴 Alto |
+| Sin MFA | Solo contraseña | 🟠 Medio/Alto |
+| Hashing incorrecto | Contraseñas en texto plano | 🔴 Crítico |
+| Sesión sin expiración | Token permanente | 🟠 Alto |
+| Session Fixation | Sesión reutilizada | 🔴 Alto |
+| Session Hijacking | Robo de sesión | 🔴 Alto |
+| Recuperación insegura | Preguntas fáciles | 🟠 Alto |
+
+---
+
+# 🛡️ 28. Buenas prácticas para prevenir A07
+
+Las aplicaciones deberían considerar:
+
+### 🔑 Contraseñas
+
+- Utilizar políticas de contraseñas adecuadas.
+- No utilizar contraseñas predeterminadas.
+- No almacenar contraseñas en texto plano.
+- Utilizar algoritmos diseñados para almacenamiento de contraseñas.
+- Evitar reutilización de contraseñas.
+
+### 📱 MFA
+
+- Utilizar MFA cuando sea apropiado.
+- Proteger especialmente cuentas administrativas.
+- Preferir mecanismos resistentes al phishing cuando sea posible.
+
+### 🚦 Protección contra automatización
+
+- Rate limiting.
+- Protección contra intentos excesivos.
+- Monitoreo.
+- Detección de comportamientos anormales.
+
+### 🎟️ Sesiones
+
+- Utilizar identificadores de sesión impredecibles.
+- Regenerar la sesión después de autenticarse.
+- Establecer expiración.
+- Invalidar la sesión al cerrar sesión.
+- Proteger las cookies.
+- Utilizar HTTPS.
+
+### 🔄 Recuperación de cuentas
+
+- Utilizar mecanismos temporales.
+- Utilizar tokens aleatorios.
+- Establecer expiración.
+- No utilizar preguntas de seguridad débiles.
+- No revelar información innecesaria sobre las cuentas.
+
+---
+
+# 🔗 29. Relación entre A07 y otros riesgos OWASP
+
+A07 puede relacionarse con otras categorías del OWASP Top 10.
+
+Por ejemplo:
+
+```mermaid
+flowchart TD
+    A["A07 - Autenticación"] --> B["Credenciales"]
+    A --> C["Sesiones"]
+    A --> D["MFA"]
+
+    B --> E["A02 - Cryptographic Failures"]
+    C --> F["Gestión de sesiones"]
+    D --> G["Control de acceso"]
+```
+
+Esto demuestra que las categorías del OWASP Top 10 no necesariamente aparecen aisladas.
+
+Una vulnerabilidad puede involucrar diferentes controles de seguridad.
+
+---
+
+# 🧠 30. Ejemplo completo
+
+Imaginemos una aplicación bancaria.
+
+El usuario realiza:
+
+```text
+1. Introduce usuario
+       ↓
+2. Introduce contraseña
+       ↓
+3. Sistema verifica contraseña
+       ↓
+4. Solicita MFA
+       ↓
+5. Usuario proporciona segundo factor
+       ↓
+6. Sistema crea sesión
+       ↓
+7. Usuario accede a su cuenta
+```
+
+Una implementación insegura podría tener:
+
+```text
+❌ Contraseña débil
+❌ Contraseña almacenada en texto plano
+❌ Sin MFA
+❌ Sin límite de intentos
+❌ Sesión permanente
+❌ Cookie sin protección
+❌ Sesión no invalidada al cerrar sesión
+```
+
+Mientras una implementación más segura podría tener:
+
+```text
+✅ Contraseña protegida
+✅ MFA
+✅ Rate limiting
+✅ Sesión segura
+✅ Expiración
+✅ Cookies protegidas
+✅ HTTPS
+✅ Invalidación al cerrar sesión
+✅ Monitoreo
+```
+
+---
+
+# 📋 31. Checklist A07
+
+```text
+☐ ¿La aplicación identifica correctamente al usuario?
+
+☐ ¿La autenticación está correctamente implementada?
+
+☐ ¿Se utilizan contraseñas seguras?
+
+☐ ¿Se evitan credenciales predeterminadas?
+
+☐ ¿Las contraseñas se almacenan mediante mecanismos seguros?
+
+☐ ¿Existe MFA?
+
+☐ ¿Existe protección contra fuerza bruta?
+
+☐ ¿Existe protección contra Credential Stuffing?
+
+☐ ¿Existe rate limiting?
+
+☐ ¿La recuperación de cuentas es segura?
+
+☐ ¿Las sesiones tienen expiración?
+
+☐ ¿Las sesiones se invalidan al cerrar sesión?
+
+☐ ¿El Session ID se regenera después del login?
+
+☐ ¿Las cookies utilizan atributos de seguridad?
+
+☐ ¿La aplicación utiliza HTTPS?
+
+☐ ¿Se monitorean eventos de autenticación?
+
+☐ ¿Se registran intentos fallidos?
+
+☐ ¿Las cuentas administrativas tienen controles adicionales?
+```
+
+---
+
+# 🎓 32. ¿Qué aprendimos de A07?
+
+A07 nos permite comprender que la autenticación es mucho más que colocar un formulario de usuario y contraseña.
+
+Una autenticación segura involucra diferentes elementos:
+
+```text
+              🔐 AUTENTICACIÓN SEGURA
+                       │
+        ┌──────────────┼──────────────┐
+        ▼              ▼              ▼
+   Contraseñas       MFA          Sesiones
+        │              │              │
+        ▼              ▼              ▼
+     Hashing       Segundo       Expiración
+                    factor       Invalidación
+        │              │              │
+        └──────────────┼──────────────┘
+                       ▼
+                  🛡️ Seguridad
+```
+
+Por lo tanto, proteger una cuenta requiere analizar todo el ciclo:
+
+```text
+Registro
+   ↓
+Login
+   ↓
+Autenticación
+   ↓
+MFA
+   ↓
+Sesión
+   ↓
+Uso de aplicación
+   ↓
+Logout
+   ↓
+Invalidación de sesión
+```
+
+---
+
+# 🎯 33. Conclusión A07
+
+Las fallas de identificación y autenticación representan un riesgo importante porque pueden permitir que un atacante acceda a una aplicación utilizando credenciales obtenidas, adivinadas o reutilizadas, o aprovechando errores en la gestión de sesiones.
+
+Una autenticación segura debe considerar mucho más que una contraseña. Es necesario proteger el almacenamiento de credenciales, controlar los intentos de autenticación, implementar MFA cuando corresponda, proteger los mecanismos de recuperación de cuentas y gestionar correctamente las sesiones.
+
+También es fundamental recordar que **autenticación y autorización son conceptos diferentes**: primero debemos comprobar quién es el usuario y posteriormente determinar qué acciones tiene permitidas.
+
+> 🔑 **Una contraseña correcta no es suficiente para considerar segura una autenticación. La seguridad debe proteger todo el ciclo de vida de la identidad y la sesión.**
+
+---
+
+# 🔗 34. Relación entre A06 y A07
+
+Los dos riesgos estudiados pueden aparecer simultáneamente.
+
+Por ejemplo:
+
+```mermaid
+flowchart TD
+    A["Aplicación Web"] --> B["Dependencias"]
+    A --> C["Autenticación"]
+
+    B --> D["A06"]
+    D --> E["Componente vulnerable"]
+
+    C --> F["A07"]
+    F --> G["Contraseña débil"]
+    F --> H["Sin MFA"]
+    F --> I["Sesión insegura"]
+
+    E --> J["⚠️ Superficie de ataque"]
+    G --> J
+    H --> J
+    I --> J
+```
+
+### A06 responde principalmente:
+
+> **¿Son seguros los componentes que utilizamos?**
+
+### A07 responde principalmente:
+
+> **¿Estamos protegiendo correctamente las identidades y sesiones de nuestros usuarios?**
+
+---
+
+# 🏁 Conclusión general A06 + A07
+
+El estudio de A06 y A07 permite comprender dos aspectos fundamentales de la seguridad de aplicaciones.
+
+Por un lado, **A06 demuestra que debemos conocer y gestionar los componentes que forman parte de nuestro software**. Una dependencia vulnerable puede convertirse en una puerta de entrada para un atacante.
+
+Por otro lado, **A07 demuestra que debemos proteger adecuadamente las identidades, credenciales y sesiones de los usuarios**.
+
+Ambos riesgos pueden reducirse mediante una combinación de:
+
+```text
+📋 Inventario
+     +
+🔎 Análisis
+     +
+🧪 Pruebas
+     +
+🔐 Controles de seguridad
+     +
+📊 Monitoreo
+     +
+🔄 Actualización continua
+```
+
+Desde una perspectiva DevSecOps, la seguridad debe incorporarse durante todo el ciclo de vida del software y no únicamente cuando la aplicación ya está en producción.
+
+> 🛡️ **La seguridad no consiste solamente en evitar que entren a nuestra aplicación; también consiste en saber qué tenemos dentro, quién puede acceder y cómo controlamos ese acceso.**
+
+---
+
+# 📚 Referencias específicas – A07
+
+- OWASP Top 10 – A07:2021 Identification and Authentication Failures.
+- OWASP Authentication Cheat Sheet.
+- OWASP Session Management Cheat Sheet.
+- OWASP Multifactor Authentication Cheat Sheet.
+- OWASP Password Storage Cheat Sheet.
+- OWASP Forgot Password Cheat Sheet.
+- OWASP Credential Stuffing Prevention Cheat Sheet.
+- OWASP Top 10 – 2021.
+- NIST Digital Identity Guidelines.
+- MITRE CWE – Authentication related weaknesses.
+
+---
+
