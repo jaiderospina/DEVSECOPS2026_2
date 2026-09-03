@@ -1191,26 +1191,28 @@ Especialmente en:
 
 **Ingrid Vesga**
 
-**OWASP Top 10 – A05:2025 Injection (Inyeccion)**
+# OWASP Top 10 – A05:2025 Injection (Inyeccion)
+
 Una inyección ocurre cuando una aplicación toma datos proporcionados por un usuario y los incorpora a una instrucción o comando sin validarlos o separarlos correctamente.
+
 En términos simples: El atacante logra que un dato sea interpretado como parte de una instrucción.
 El problema fundamental es que la aplicación no distingue correctamente entre "datos" y "comandos".
 
 **MODELO DE INJECTION EN SQL**
  
 **COMO EVITAR UNA VULNERABILIDAD DE INJECTION**
-# 1. Evitar concatenación de entradas
+*1. Evitar concatenación de entradas*
 Código Inseguro: El código une el texto de la consulta directamente con lo que escribió el usuario utilizando el operador de suma (+ o .).
  
 Qué sucede por dentro: Si el usuario ingresa ' OR '1'='1, el motor de base de datos recibe todo en un solo bloque y ejecuta la lógica maliciosa:
  
-# 2. Usar forma Segura (parametrización)
+*2. Usar forma Segura (parametrización)*
 Se crea la estructura fija de la consulta usando un marcador de posición (como ? o :nombre) y los datos se envían por separado.
  
 Qué sucede por dentro: Si el usuario ingresa ' OR '1'='1, la base de datos no lo interpreta como código SQL, sino como el nombre literal del usuario a buscar.
 Como la estructura de la consulta ya fue compilada en la Fase 1, cualquier carácter especial enviado en la Fase 2 (como comillas ', símbolos = o palabras como OR, DROP, DELETE) pierde su significado de comando. El motor los interpreta únicamente como caracteres de texto plano dentro de una cadena de búsqueda.
 
-# 3. Validar las entradas (Importante: la validación por sí sola no reemplaza la parametrización.)
+*3. Validar las entradas (Importante: la validación por sí sola no reemplaza la parametrización.)*
 Tipos de datos, Rango numérico, Longitud máxima. Si la entrada contiene algo fuera de lo permitido, se rechaza, de la siguiente manera:
 •	Edad o ID ---- Únicamente acepte dígitos enteros (0 al 9)
 •	Correo ------ formato de correo valido usuario@dominio.com.
@@ -1239,7 +1241,7 @@ d.	Comentarios y comodines de selección
 •	Asterisco (*): Funciona como comodín para seleccionar todas las columnas (SELECT *) o como operador de multiplicación.
 •	Almohadilla (#): Utilizado en MySQL para comentarios de una sola línea o en SQL Server para definir tablas temporales (#tablaTemp).
 
-# 4. Utilizar APIs y Frameworks seguros, como:
+**4. Utilizar APIs y Frameworks seguros, como:**
 •	Prepared Statements (Consultas preparadas)
 Evita el ataque de ciberseguridad más peligroso en bases de datos: la Inyección SQL (donde un atacante escribe código malicioso en un campo de texto para robar o borrar información).
 
@@ -1252,11 +1254,11 @@ Asegura que la comunicación siga protocolos estandarizados, estables y probados
 •	Librerías actualizadas y seguras
 Si una librería antigua tiene un fallo de seguridad ("puerta trasera"), los atacantes pueden entrar por ahí. Al mantenerlas actualizadas, cierras esas brechas antes de que las exploten.
 
-# 5. Aplicar principio mínimo privilegio
+**5. Aplicar principio mínimo privilegio**
 Es una regla fundamental de seguridad que establece que un usuario, programa o sistema solo debe tener los permisos estrictamente necesarios para realizar su trabajo, ni uno más.
 Si un atacante logra hackear una cuenta o un servicio, solo podrá controlar lo que esa cuenta específica tenía permitido hacer, impidiendo que tome el control de todo el sistema.
 
-# 6. Realizar pruebas de seguridad
+**6. Realizar pruebas de seguridad**
 **Se deben realizar:**
 •	SAST → (Static Application Security Testing / Análisis Estático): Inspeccionar el código fuente de la aplicación "en reposo" (sin ejecutarla).
 Herramientas: SonarQube, Checkmarx SAST / Fortify, Semgrep, Snyk Code.
@@ -1270,27 +1272,27 @@ Herramientas: sqlmap, GitGuardian / Trufflehog, SonarQube / Semgrep.
 Herramientas: ffuf (Fuzz Faster with U), wfuzz, Postman / Insomnia, OWASP ZAP (Fuzzer).
 
 **OTROS TIPOS DE INJECTION**
-# 1. Inyección de Comandos del Sistema Operativo (OS Command Injection)
+1. Inyección de Comandos del Sistema Operativo (OS Command Injection)
 Ocurre cuando la aplicación web le pasa datos del usuario directamente a la consola de comandos del servidor (Bash, CMD, PowerShell).
 •	Ejemplo: Si una app pide una IP para hacer un ping 192.168.1.1 y tú escribes 192.168.1.1; rm -rf /, el servidor no solo hace el ping, sino que luego ejecuta el comando para borrar archivos.
 
-# 2. Cross-Site Scripting (XSS / Inyección HTML/JavaScript)
+2. Cross-Site Scripting (XSS / Inyección HTML/JavaScript)
 Consiste en inyectar código JavaScript malicioso dentro del contenido web que verán otros usuarios.
 •	Ejemplo: Escribes <script>stealCookies()</script> en la sección de comentarios de un blog. Cuando otra persona entra a leer, su navegador ejecuta ese código automáticamente y le roba su sesión.
 
-# 3. Inyección NoSQL
+3. Inyección NoSQL
 Similar a la inyección SQL, pero dirigida a bases de datos no relacionales como MongoDB o CouchDB.
 •	Ejemplo: En lugar de código SQL, se inyectan operadores de consulta estructurados (como {"$ne": null}). En un formulario de login, esto puede hacer que la base de datos devuelva "verdadero" sin importar la contraseña.
 
-# 4. Inyección LDAP
+4. Inyección LDAP
 Se dirige a servidores de directorio (como Active Directory), que las empresas usan para gestionar credenciales y permisos de empleados.
 •	Ejemplo: Se insertan caracteres especiales (*, &, |) en el campo de usuario para modificar la consulta LDAP y saltarse la autenticación o listar todos los usuarios del sistema.
 
-# 5. Inyección XML / XXE (XML External Entity)
+5. Inyección XML / XXE (XML External Entity)
 Ocurre cuando una aplicación analiza archivos o datos en formato XML cargados por un usuario sin deshabilitar entidades externas.
 •	Ejemplo: Subes un documento XML modificado que le ordena al servidor leer un archivo local sensible (como /etc/passwd) y devolverte su contenido en pantalla.
 
-# 6. Inyección Plantillas Servidor (SSTI - Server-Side Template Injection)
+6. Inyección Plantillas Servidor (SSTI - Server-Side Template Injection)
 Ataca a los motores de plantillas web (como Jinja2 en Python, Twig en PHP) sustituyendo texto por código del motor.
 •	Ejemplo: Escribes algo como {{7*7}} en tu perfil. Si la página muestra 49 en lugar del texto literal, la plantilla está ejecutando tu entrada y podrías escalar el ataque para tomar control del servidor.
 
@@ -1307,7 +1309,7 @@ El fallo: Una mala configuración en su cortafuegos web (WAF) permitió una inye
 Un joven de 18 años tomó control total de la infraestructura interna de Uber, incluidos sus servicios en la nube, código fuente y canales de Slack.
 El fallo: Obtuvo una contraseña de un empleado y luego encontró un archivo de texto con credenciales de un usuario administrador escritas dentro de la red. Es decir, esa cuenta tenía "superpoderes" innecesarios que le dieron acceso a todo el sistema.
 
-**OWASP Top 10 – A06:2025 Insecure Design (Diseño Inseguro)**
+# OWASP Top 10 – A06:2025 Insecure Design (Diseño Inseguro)
 
 El Diseño Inseguro ocurre cuando un sistema o aplicación se planifica mal desde el principio, creando reglas o procesos defectuosos que permiten a un atacante hacer trampa, incluso si el programador escribió el código sin errores.
 Ejemplo Práctico (El problema vs. La solución)
