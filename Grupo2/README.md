@@ -466,40 +466,42 @@ Robo de credenciales, exposición de datos financieros o médicos, suplantación
 
 ### 💉 ¿Qué es?
 
-La **inyección** ocurre cuando una aplicación incorpora datos proporcionados por un usuario dentro de una instrucción, consulta o comando sin realizar una separación adecuada entre los datos y el código. Esto puede provocar que una entrada controlada por un atacante sea interpretada como parte de una instrucción ejecutable.
+La **inyección** se presenta cuando una aplicación utiliza información proporcionada externamente dentro de una consulta, instrucción o comando sin separar correctamente los datos de las instrucciones que serán procesadas. Como consecuencia, un atacante puede conseguir que una entrada manipulada sea interpretada como código o como parte de una instrucción ejecutable.
 
-Esta categoría **baja del puesto #3 al puesto #5** en 2025, manteniendo su posición relativa respecto a Fallos Criptográficos y Diseño Inseguro. Sigue siendo una de las categorías más probadas, con el mayor número de CVE asociadas entre las **38 CWE** que agrupa, y abarca desde Cross-Site Scripting (alta frecuencia / bajo impacto individual) hasta SQL Injection (baja frecuencia / alto impacto).
+En 2025, esta categoría **desciende del puesto #3 al #5**. Aun así, continúa siendo una de las vulnerabilidades más analizadas y reúne el mayor número de CVE entre las **38 CWE** incluidas en esta categoría. Su alcance comprende diferentes problemas, desde Cross-Site Scripting, que suele presentar una alta frecuencia pero un impacto individual menor, hasta SQL Injection, que puede ser menos frecuente pero generar consecuencias mucho más graves.
 
-Entre los tipos más conocidos se encuentran:
+Algunos de los principales tipos de inyección son:
 
-- SQL Injection (SQLi)
-- NoSQL Injection
-- OS Command Injection
-- LDAP Injection
-- XPath Injection
-- Cross-Site Scripting (XSS)
+* SQL Injection (SQLi)
+* NoSQL Injection
+* OS Command Injection
+* LDAP Injection
+* XPath Injection
+* Cross-Site Scripting (XSS)
 
 ### 🧠 Causas más comunes
 
-- Construcción de consultas mediante concatenación de cadenas.
-- Falta de validación de las entradas.
-- Ausencia de consultas parametrizadas.
-- Uso inseguro de comandos del sistema operativo.
-- Falta de controles sobre los datos enviados por los usuarios.
-- Utilización de cuentas de base de datos con privilegios excesivos.
-- Dependencia de mecanismos de seguridad únicamente del lado cliente.
+* Construcción de consultas utilizando concatenación de cadenas.
+* Validación insuficiente de los datos de entrada.
+* No utilizar consultas parametrizadas.
+* Manejo inseguro de comandos del sistema operativo.
+* Falta de controles sobre la información proporcionada por los usuarios.
+* Utilización de cuentas de base de datos con permisos superiores a los necesarios.
+* Confiar únicamente en mecanismos de seguridad implementados en el cliente.
 
 ### 💥 Impacto
 
-| Propiedad | Posible impacto |
-| --- | --- |
-| 🔒 Confidencialidad | Lectura de información privada |
-| 📝 Integridad | Modificación de registros |
-| ⚡ Disponibilidad | Eliminación o alteración de recursos |
-| 👤 Autenticación | Bypass del inicio de sesión |
-| 🖥️ Sistema | Ejecución de comandos en determinados escenarios |
+| Propiedad           | Posible impacto                                          |
+| ------------------- | -------------------------------------------------------- |
+| 🔒 Confidencialidad | Acceso o lectura de información privada                  |
+| 📝 Integridad       | Alteración o modificación de registros                   |
+| ⚡ Disponibilidad    | Eliminación o modificación de recursos                   |
+| 👤 Autenticación    | Evasión de mecanismos de inicio de sesión                |
+| 🖥️ Sistema         | Posible ejecución de comandos en determinados escenarios |
 
 ### 🔍 Métodos de explotación
+
+Las entradas manipuladas pueden llegar a la aplicación mediante diferentes mecanismos:
 
 ```text
 Parámetros URL
@@ -513,7 +515,7 @@ Headers HTTP
 Datos enviados a APIs
 ```
 
-**SQL Injection.** Una aplicación vulnerable puede construir una consulta de esta manera:
+**SQL Injection.** Una aplicación vulnerable puede generar una consulta utilizando directamente los valores recibidos:
 
 ```sql
 SELECT * FROM usuarios
@@ -521,47 +523,55 @@ WHERE usuario = 'entrada'
 AND password = 'entrada';
 ```
 
-El problema aparece cuando las entradas del usuario se incorporan directamente en la consulta. Una implementación segura debe utilizar **consultas parametrizadas** para mantener separados los datos de la estructura SQL.
+El riesgo aparece cuando los valores proporcionados por el usuario se incorporan directamente a la estructura de la consulta. Para evitar esta situación se deben utilizar **consultas parametrizadas**, de manera que los datos permanezcan separados de la estructura SQL.
 
-**Command Injection.** Puede ocurrir cuando una aplicación utiliza información proporcionada por el usuario para construir comandos del sistema operativo.
+**Command Injection.** Este tipo de vulnerabilidad puede producirse cuando una aplicación utiliza datos controlados por el usuario para formar comandos que posteriormente serán ejecutados por el sistema operativo.
 
 ```mermaid
 flowchart TD
+
     A["Atacante"] --> B["Entrada manipulada"]
+
     B --> C["Aplicación vulnerable"]
+
     C --> D["Comando del sistema"]
+
     D --> E["Sistema operativo"]
 ```
 
 ### 🛠️ Herramientas utilizadas
 
-| Herramienta | Utilización |
-| --- | --- |
-| **Burp Suite** | Interceptar y modificar solicitudes HTTP |
-| **OWASP ZAP** | Análisis de seguridad de aplicaciones web |
-| **sqlmap** | Automatización de pruebas de SQL Injection |
-| **Nmap** | Reconocimiento de servicios |
-| **Wireshark** | Análisis del tráfico de red |
+| Herramienta    | Utilización                                        |
+| -------------- | -------------------------------------------------- |
+| **Burp Suite** | Interceptar y modificar solicitudes HTTP           |
+| **OWASP ZAP**  | Evaluar la seguridad de aplicaciones web           |
+| **sqlmap**     | Automatizar pruebas relacionadas con SQL Injection |
+| **Nmap**       | Realizar reconocimiento de servicios               |
+| **Wireshark**  | Examinar y analizar tráfico de red                 |
 
-> ⚠️ Estas herramientas deben utilizarse únicamente en sistemas propios, laboratorios o infraestructuras donde exista autorización explícita para realizar pruebas.
+> ⚠️ Estas herramientas deben emplearse únicamente sobre sistemas propios, entornos de laboratorio o infraestructuras en las que exista autorización explícita para efectuar pruebas de seguridad.
 
 ### 🛡️ Prevención y mitigación
 
-- Utilizar consultas SQL parametrizadas.
-- Implementar validación de entradas en el servidor.
-- Aplicar listas de valores permitidos (*allowlist*) cuando sea posible.
-- Evitar concatenar directamente datos del usuario en comandos.
-- Utilizar ORM de forma segura.
-- Aplicar el principio de mínimo privilegio.
-- Mantener actualizadas las dependencias.
-- Implementar pruebas de seguridad automatizadas.
-- Utilizar mecanismos de protección adicionales como WAF cuando sean apropiados.
+* Implementar consultas SQL parametrizadas.
+* Validar las entradas directamente en el servidor.
+* Utilizar listas de valores permitidos (*allowlist*) cuando sea viable.
+* Evitar introducir directamente datos del usuario dentro de comandos.
+* Utilizar ORM aplicando configuraciones y prácticas seguras.
+* Aplicar el principio de mínimo privilegio.
+* Mantener actualizadas las dependencias utilizadas por la aplicación.
+* Incorporar pruebas de seguridad automatizadas.
+* Implementar mecanismos complementarios, como WAF, cuando resulten adecuados.
 
 ```mermaid
 flowchart LR
+
     A["Usuario"] --> B["Validación"]
+
     B --> C["Aplicación"]
+
     C --> D["Consulta parametrizada"]
+
     D --> E["Base de datos"]
 ```
 
@@ -571,103 +581,136 @@ flowchart LR
 
 ### 🏗️ ¿Qué es?
 
-**Diseño Inseguro** hace referencia a vulnerabilidades originadas principalmente por decisiones deficientes de arquitectura, diseño o lógica de negocio. En este caso, el problema puede existir incluso antes de escribir el código. Una aplicación puede estar correctamente implementada desde el punto de vista sintáctico, pero continuar siendo vulnerable porque su diseño no contempla determinados escenarios de ataque.
+El **Diseño Inseguro** comprende vulnerabilidades que tienen su origen en decisiones inadecuadas relacionadas con la arquitectura, el diseño o las reglas de negocio de una aplicación. Por lo tanto, el problema puede aparecer incluso antes de comenzar la implementación del software.
 
-Esta categoría **baja del puesto #4 al puesto #6**, a medida que Configuración Incorrecta y Cadena de Suministro la superan en la clasificación. Fue introducida como categoría en 2021, y OWASP reconoce en 2025 mejoras notables en la industria relacionadas con *threat modeling* y un mayor énfasis en diseño seguro desde el inicio del ciclo de desarrollo.
+Una aplicación puede no presentar errores evidentes en su código y, aun así, ser vulnerable si durante su diseño no se contemplaron determinados escenarios de ataque, abuso o uso indebido.
+
+En 2025, esta categoría **pasa del puesto #4 al #6**, debido a que Configuración de Seguridad Incorrecta y Fallas de la Cadena de Suministro de Software ocupan posiciones superiores. OWASP introdujo esta categoría en 2021 y señala que durante los últimos años se han producido avances en la industria, especialmente en la utilización de **Threat Modeling** y en la incorporación de seguridad desde las primeras etapas del desarrollo.
 
 ### 🧠 Causas más comunes
 
-- Ausencia de análisis de amenazas.
-- Falta de requisitos de seguridad.
-- No considerar escenarios de abuso.
-- Confiar en controles implementados únicamente en el frontend.
-- Falta de mecanismos contra automatización.
-- Ausencia de límites sobre operaciones sensibles.
-- Arquitecturas que no aplican defensa en profundidad.
-- Falta de separación entre funcionalidades y privilegios.
+* No realizar un análisis de amenazas.
+* No establecer requisitos de seguridad.
+* Ignorar posibles escenarios de abuso.
+* Confiar en controles de seguridad ubicados únicamente en el frontend.
+* No implementar mecanismos para limitar la automatización.
+* Ausencia de límites para operaciones críticas o sensibles.
+* Arquitecturas que no incorporan defensa en profundidad.
+* Falta de separación adecuada entre funcionalidades y privilegios.
 
 ### 💥 Ejemplos
 
-**Ejemplo 1 — Validación únicamente en frontend.** Una aplicación podría impedir visualmente que un usuario introduzca un valor determinado.
+**Ejemplo 1 — Validación exclusiva en frontend.**
+
+Una aplicación puede bloquear visualmente una determinada operación desde su interfaz:
 
 ```text
 Frontend
+
    │
+
    ├── "No puede realizar esta operación"
+
    │
+
    ▼
+
 Backend
 ```
 
-Si el backend no realiza nuevamente la validación, un atacante puede enviar directamente una solicitud modificada. Por esta razón, las restricciones de seguridad **no deben depender exclusivamente de la interfaz del usuario**.
+Sin embargo, si el servidor no comprueba nuevamente la operación, un atacante puede enviar directamente una solicitud modificada al backend.
 
-**Ejemplo 2 — Abuso de lógica de negocio.** Una plataforma de compras podría tener:
+Por esta razón, **los controles de seguridad no deben depender únicamente de la interfaz del usuario**.
+
+**Ejemplo 2 — Abuso de la lógica de negocio.**
+
+Una plataforma de comercio podría implementar un proceso similar a:
 
 ```text
 Producto
+
    ↓
+
 Cupón de descuento
+
    ↓
+
 Pago
 ```
 
-Si el diseño no contempla la reutilización indebida de cupones, un atacante podría intentar utilizar repetidamente una promoción. El problema no necesariamente corresponde a un error de sintaxis o programación, sino a una **falla en el diseño de las reglas de negocio**.
+Si el diseño no contempla que un cupón pueda utilizarse varias veces de forma indebida, un atacante podría intentar reutilizar la promoción repetidamente.
+
+En este escenario, el problema no necesariamente se encuentra en un error de sintaxis o en una instrucción incorrecta del código, sino en una **deficiencia en el diseño de las reglas de negocio**.
 
 ### ⚠️ Impacto
 
-| Problema | Posible consecuencia |
-| --- | --- |
-| Falta de validación backend | Bypass de restricciones |
-| Falta de límites | Abuso automatizado |
-| Reglas de negocio deficientes | Fraude |
-| Recuperación de cuentas insegura | Toma de cuentas |
-| Autorización mal diseñada | Escalamiento de privilegios |
-| Falta de controles | Manipulación de procesos |
+| Problema                         | Posible consecuencia                      |
+| -------------------------------- | ----------------------------------------- |
+| Falta de validación backend      | Evasión de restricciones                  |
+| Falta de límites                 | Automatización y abuso de funcionalidades |
+| Reglas de negocio deficientes    | Posibles fraudes                          |
+| Recuperación de cuentas insegura | Compromiso o toma de cuentas              |
+| Autorización mal diseñada        | Escalamiento de privilegios               |
+| Ausencia de controles            | Manipulación de procesos                  |
 
 ### 🔍 Métodos de explotación
 
 ```mermaid
 flowchart TD
+
     A["Reconocimiento"] --> B["Identificación de funcionalidad"]
+
     B --> C["Análisis de reglas"]
+
     C --> D["Manipulación de solicitud"]
+
     D --> E["Validación del servidor"]
+
     E --> F{"¿Existe control?"}
+
     F -->|No| G["Abuso de funcionalidad"]
+
     F -->|Sí| H["Solicitud rechazada"]
 ```
 
 ### 🛠️ Herramientas utilizadas
 
-| Herramienta | Utilización |
-| --- | --- |
-| **Burp Suite** | Manipulación de solicitudes HTTP |
-| **OWASP ZAP** | Análisis de aplicaciones web |
-| **Postman** | Pruebas de APIs |
-| **DevTools** | Inspección del comportamiento del cliente |
-| **Nmap** | Reconocimiento de infraestructura |
+| Herramienta    | Utilización                                 |
+| -------------- | ------------------------------------------- |
+| **Burp Suite** | Modificación y análisis de solicitudes HTTP |
+| **OWASP ZAP**  | Evaluación de aplicaciones web              |
+| **Postman**    | Pruebas y análisis de APIs                  |
+| **DevTools**   | Inspección del comportamiento del cliente   |
+| **Nmap**       | Reconocimiento de infraestructura           |
 
 ### 🛡️ Prevención y mitigación
 
-- Realizar **Threat Modeling** durante el diseño.
-- Definir requisitos de seguridad antes de desarrollar.
-- Validar todas las operaciones críticas en el backend.
-- Aplicar autorización en cada operación sensible.
-- Implementar límites y *rate limiting*.
-- Diseñar mecanismos contra automatización.
-- Aplicar el principio de mínimo privilegio.
-- Implementar defensa en profundidad.
-- Realizar pruebas de abuso de lógica de negocio.
-- Revisar periódicamente la arquitectura.
+* Realizar **Threat Modeling** durante la etapa de diseño.
+* Establecer requisitos de seguridad antes de comenzar el desarrollo.
+* Comprobar todas las operaciones críticas desde el backend.
+* Aplicar mecanismos de autorización en operaciones sensibles.
+* Establecer límites y utilizar *rate limiting*.
+* Implementar mecanismos para prevenir la automatización abusiva.
+* Aplicar el principio de mínimo privilegio.
+* Incorporar defensa en profundidad.
+* Ejecutar pruebas orientadas a detectar abuso de la lógica de negocio.
+* Revisar periódicamente la arquitectura de la aplicación.
 
 ```mermaid
 flowchart LR
+
     A["Requisitos"] --> B["Threat Modeling"]
+
     B --> C["Controles de seguridad"]
+
     C --> D["Diseño"]
+
     D --> E["Desarrollo"]
+
     E --> F["Pruebas"]
+
     F --> G["Despliegue"]
+
     G --> H["Monitoreo"]
 ```
 
@@ -675,31 +718,37 @@ flowchart LR
 
 ## 📊 Comparación A02, A05 y A06
 
-| Característica | A05 — Inyección | A06 — Diseño Inseguro | A02 — Configuración Incorrecta |
-| --- | --- | --- | --- |
-| **Origen** | Entrada no controlada | Arquitectura o lógica deficiente | Configuración insegura |
-| **Etapa principal** | Desarrollo | Diseño | Implementación/despliegue |
-| **Objetivo frecuente** | Manipular instrucciones | Abusar de funcionalidades | Explotar exposición o configuración |
-| **Ejemplo** | SQL Injection | Bypass de reglas | Debug habilitado |
-| **Herramienta destacada** | sqlmap | Burp Suite | Nmap |
-| **Principal defensa** | Parametrización | Secure by Design | Hardening |
-| **Impacto** | Datos/sistema | Procesos/negocio | Infraestructura/aplicación |
+| Característica            | A05 — Inyección                   | A06 — Diseño Inseguro                 | A02 — Configuración Incorrecta          |
+| ------------------------- | --------------------------------- | ------------------------------------- | --------------------------------------- |
+| **Origen**                | Datos de entrada no controlados   | Deficiencias de arquitectura o lógica | Configuración insegura                  |
+| **Etapa principal**       | Desarrollo                        | Diseño                                | Implementación/despliegue               |
+| **Objetivo frecuente**    | Alterar o manipular instrucciones | Aprovechar funcionalidades            | Explotar configuraciones o exposiciones |
+| **Ejemplo**               | SQL Injection                     | Bypass de reglas                      | Debug habilitado                        |
+| **Herramienta destacada** | sqlmap                            | Burp Suite                            | Nmap                                    |
+| **Principal defensa**     | Parametrización                   | Secure by Design                      | Hardening                               |
+| **Impacto**               | Datos y sistema                   | Procesos y negocio                    | Infraestructura y aplicación            |
 
-Las tres categorías pueden aparecer simultáneamente dentro de una misma aplicación:
+Las tres categorías pueden coexistir dentro de una misma aplicación:
 
 ```mermaid
 flowchart TD
+
     A["Diseño de la aplicación"] --> B["A06: Diseño Inseguro"]
+
     B --> C["Implementación"]
+
     C --> D["A05: Inyección"]
+
     C --> E["A02: Configuración Incorrecta"]
 
     D --> F["Compromiso de datos"]
+
     E --> F
+
     B --> F
 ```
 
-> **Conclusión:** la **Inyección** se produce principalmente cuando los datos externos son interpretados como instrucciones. El **Diseño Inseguro** surge cuando la arquitectura o las reglas de negocio no contemplan adecuadamente escenarios de abuso. La **Configuración de Seguridad Incorrecta** aparece cuando los componentes de una aplicación o infraestructura se despliegan con configuraciones inseguras. La prevención requiere un enfoque integral: **diseño seguro, desarrollo seguro, configuración adecuada, pruebas de seguridad, monitoreo y mantenimiento continuo**.
+> **Conclusión:** la **Inyección** aparece principalmente cuando información externa termina siendo interpretada como parte de una instrucción o comando. El **Diseño Inseguro** se presenta cuando la arquitectura o las reglas de negocio no consideran correctamente posibles situaciones de abuso. Por otro lado, la **Configuración de Seguridad Incorrecta** ocurre cuando los componentes de la aplicación o de la infraestructura se despliegan utilizando configuraciones que generan riesgos de seguridad. La protección frente a estas amenazas requiere combinar **diseño seguro, desarrollo seguro, configuración adecuada, pruebas de seguridad, monitoreo y mantenimiento continuo**.
 
 ---
 
