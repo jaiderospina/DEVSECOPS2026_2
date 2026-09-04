@@ -2840,3 +2840,370 @@ Desde una perspectiva DevSecOps, la seguridad debe incorporarse durante todo el 
 
 ---
 
+6️⃣ A08:2021 – Fallas de Integridad de Software y Datos 🧩 Introducción
+
+Cuando hablamos de A06 vimos que una aplicación puede depender de componentes de terceros vulnerables. A08 va un paso más allá: no se trata solo de si un componente tiene una vulnerabilidad conocida, sino de si tenemos alguna forma de verificar que el código, las actualizaciones o los datos que estamos usando realmente vienen de donde creemos que vienen y no fueron alterados en el camino.
+
+El riesgo A08:2021 – Software and Data Integrity Failures del OWASP Top 10 se relaciona con código e infraestructura que no protege contra violaciones de integridad, es decir, situaciones donde se asume que algo es confiable sin haberlo comprobado realmente.
+
+💡 En términos sencillos: A08 ocurre cuando una aplicación confía "a ciegas" en un archivo, una actualización o un objeto de datos, sin verificar su procedencia ni su integridad.
+
+🧠 ¿Qué significa "integridad" aquí?
+
+En seguridad de la información solemos hablar de tres pilares:
+
+        🔺 TRIADA CIA
+              │
+   ┌──────────┼──────────┐
+   ▼          ▼          ▼
+Confidencialidad   Integridad   Disponibilidad
+Confidencialidad: que solo quien debe ver la información pueda verla.
+Integridad: que la información no haya sido alterada sin autorización.
+Disponibilidad: que la información esté accesible cuando se necesita.
+
+A08 se enfoca específicamente en el segundo pilar: la integridad, tanto de software (código, paquetes, actualizaciones, pipelines) como de datos (objetos serializados, cookies, tokens).
+
+🔴 ¿Cuándo aparece A08?
+
+Podemos encontrarnos con A08 cuando:
+
+Utilizamos plugins, librerías o contenido servido desde un CDN sin verificar su integridad.
+Un pipeline CI/CD no valida que el código que despliega proviene realmente del repositorio autorizado.
+Una aplicación implementa actualizaciones automáticas sin verificar la firma del paquete.
+Se deserializan objetos que provienen del cliente sin comprobar que no fueron manipulados.
+Se confía en cookies o parámetros para tomar decisiones de seguridad sin validarlos en el servidor.
+
+📊 Ejemplo sencillo — cadena de confianza rota
+
+   Repositorio oficial
+          │
+          ▼
+   Pipeline CI/CD
+          │
+   ┌──────┴──────┐
+   ▼             ▼
+Verificación   Sin verificación
+   │             │
+   ▼             ▼
+ ✅ Seguro     ⚠️ Riesgo de A08
+
+Si el pipeline no verifica de dónde viene el código o el artefacto que va a desplegar, un atacante que logre insertarse en cualquier punto de esa cadena puede hacer que su código termine ejecutándose en producción, sin que nadie lo note hasta que sea demasiado tarde.
+
+🕵️ Deserialización insegura
+
+Uno de los escenarios más citados dentro de A08 es la deserialización insegura, que ocurre cuando una aplicación reconstruye objetos a partir de datos que el usuario puede modificar.
+
+Cliente
+   │
+   ▼
+Objeto serializado
+   │
+   ▼
+Servidor
+   │
+   ▼
+Deserialización
+   │
+   ▼
+¿El objeto fue validado?
+     /        \
+   Sí          No
+   │            │
+   ▼            ▼
+ Seguro     ⚠️ Ejecución de código
+
+Si el servidor no valida el contenido antes de reconstruir el objeto, un atacante puede manipular esos datos para alterar el comportamiento de la aplicación, e incluso, en algunos lenguajes y frameworks, lograr ejecución remota de código.
+
+💥 Ejemplos de escenarios reales
+
+Escenario 1 — Actualización sin firma Un dispositivo (router, decodificador, IoT) descarga actualizaciones de firmware sin verificar una firma digital. Un atacante que logra interceptar o suplantar el servidor de actualizaciones puede distribuir una versión maliciosa a todos los dispositivos que confían en esa fuente.
+
+Escenario 2 — Dependencia descargada fuera del gestor oficial Un desarrollador, al no encontrar la versión de un paquete que necesita en el repositorio oficial (npm, PyPI, Maven), lo descarga de un sitio externo. Ese paquete no está firmado ni verificado, y puede contener código malicioso.
+
+Escenario 3 — CI/CD comprometido Casos reales como el ataque a la cadena de suministro de SolarWinds muestran cómo comprometer una sola herramienta dentro de un pipeline de construcción permite distribuir código malicioso a miles de organizaciones que confiaban en ese software.
+
+🛠️ Herramientas relacionadas
+
+Herramienta	Utilización
+Cosign / Sigstore	Firma y verificación de artefactos e imágenes de contenedores
+OWASP Dependency-Check	Verificación de integridad de dependencias
+GPG	Firma y verificación de paquetes y commits
+Escáneres de deserialización (Java)	Identificación de puntos vulnerables a deserialización insegura
+
+🛡️ ¿Cómo prevenir A08?
+
+Utilizar firmas digitales para verificar que el software o los datos provienen de la fuente esperada.
+Asegurarse de que las dependencias solo se consuman desde repositorios de confianza.
+Establecer revisión de código y de configuración antes de fusionar cambios.
+Proteger el pipeline CI/CD con control de acceso y segregación adecuados.
+No deserializar datos no confiables sin verificación de integridad o firma digital.
+
+🧪 Laboratorio propuesto – A08
+
+Objetivo: Comprender de forma práctica el concepto de verificación de integridad de un archivo descargado.
+
+1. Descargar un archivo de ejemplo
+2. Calcular su hash (sha256sum archivo)
+3. Comparar contra el hash publicado por la fuente oficial
+4. Modificar intencionalmente el archivo (laboratorio propio)
+5. Calcular el hash nuevamente
+6. Comparar y observar la diferencia
+
+El objetivo del ejercicio es evidenciar por qué verificar la integridad (por ejemplo, mediante hashes o firmas) permite detectar si un archivo fue alterado antes de confiar en él.
+
+📋 Checklist A08
+
+☐ ¿Verificamos la firma de nuestras dependencias? ☐ ¿Nuestro pipeline CI/CD valida el origen del código que despliega? ☐ ¿Las actualizaciones automáticas verifican una firma digital? ☐ ¿Deserializamos datos del cliente sin validarlos? ☐ ¿Tenemos control de acceso adecuado sobre nuestro pipeline?
+
+🎯 Conclusión A08
+
+A08 nos recuerda que no basta con que un componente exista o funcione correctamente: también debemos poder confiar en que nadie lo alteró en el camino, desde el repositorio hasta la ejecución en producción. La integridad es un pilar de seguridad tan importante como la confidencialidad, y suele pasar desapercibido hasta que ya es demasiado tarde.
+
+📚 Referencias A08
+
+OWASP Top 10 – A08:2021 Software and Data Integrity Failures.
+OWASP Cheat Sheet: Software Supply Chain Security.
+OWASP Cheat Sheet: Deserialization.
+
+7️⃣ A09:2021 – Fallas de Registro y Monitoreo de Seguridad 🧩 Introducción
+
+Hasta ahora hemos analizado vulnerabilidades que un atacante puede explotar directamente. A09 es distinto: no es una falla que se "ataque" en sí misma, sino una falla que permite que todo lo demás pase desapercibido.
+
+El riesgo A09:2021 – Security Logging and Monitoring Failures del OWASP Top 10 se refiere a la incapacidad de una aplicación u organización para detectar, registrar y responder ante actividad sospechosa o incidentes de seguridad.
+
+💡 En términos sencillos: A09 ocurre cuando "las luces están apagadas" — un atacante puede estar operando dentro del sistema y nadie se entera.
+
+🧠 ¿Por qué es tan importante el registro?
+
+        Ataque en curso
+              │
+              ▼
+     ¿Existe registro?
+        /         \
+      Sí            No
+      │              │
+      ▼              ▼
+  Detección      ⚠️ Persistencia
+      │              │
+      ▼              ▼
+  Respuesta      Sin respuesta
+
+Sin registro (logging) y monitoreo, los ataques no pueden detectarse. Y sin alertas, aunque exista registro, nadie reacciona a tiempo. Por eso esta categoría abarca tres capas relacionadas: registrar, monitorear y alertar.
+
+🔴 ¿Cuándo tenemos un problema A09?
+
+Podemos encontrarnos con A09 cuando:
+
+No se registran eventos auditables como inicios de sesión fallidos o transacciones sensibles.
+Las advertencias y errores no generan mensajes de registro claros.
+Los registros se almacenan solo localmente, sin respaldo ni protección contra manipulación.
+No existen umbrales de alerta ni procesos de escalamiento.
+Hay tantos falsos positivos que las alertas reales se pierden entre el ruido.
+Se registra información sensible (contraseñas, datos personales) dentro de los propios logs.
+
+📊 Ejemplo sencillo
+
+   🏢 EMPRESA
+        │
+   ┌────┴────┐
+   ▼         ▼
+Con logging   Sin logging
+   │             │
+   ▼             ▼
+Detecta el      Brecha pasa
+ataque en       desapercibida
+minutos/horas   durante meses/años
+
+💥 Ejemplos de escenarios reales
+
+Escenario 1 — Ausencia total de monitoreo Una plataforma de salud sufrió el acceso y modificación no autorizada de millones de registros médicos sensibles. Una revisión posterior determinó que, al no existir registro ni monitoreo, la brecha pudo haber estado activa durante años sin que nadie lo notara.
+
+Escenario 2 — Brecha en un proveedor externo Una aerolínea sufrió la exposición de más de una década de datos personales de pasajeros, originada en un proveedor externo de hosting en la nube que tardó en notificar el incidente a la empresa, evidenciando fallas de monitoreo a lo largo de toda la cadena de terceros.
+
+Escenario 3 — Ataques a sistemas de pago sin alerta oportuna Una aerolínea europea sufrió el robo de cientos de miles de registros de pago a través de vulnerabilidades en su aplicación, lo que derivó en una sanción millonaria por no haber detectado ni reportado la brecha a tiempo.
+
+🔍 ¿Qué debería registrarse?
+
+Evento
+   │
+   ├── Inicios de sesión (éxito y fallo)
+   ├── Cambios de permisos
+   ├── Transacciones de alto valor
+   ├── Errores de validación del lado del servidor
+   ├── Accesos a datos sensibles
+   └── Actividad administrativa
+
+🛠️ Herramientas relacionadas
+
+Herramienta	Utilización
+ELK Stack (Elasticsearch, Logstash, Kibana)	Correlación y visualización de logs
+Splunk	Gestión centralizada de logs y alertas
+OWASP ModSecurity Core Rule Set	Protección y registro a nivel de WAF
+SIEM (genérico)	Correlación de eventos de seguridad y generación de alertas
+
+🛡️ ¿Cómo prevenir A09?
+
+Registrar todos los eventos relevantes con suficiente contexto (usuario, IP, acción, resultado).
+Proteger la integridad de los registros contra manipulación (por ejemplo, almacenamiento append-only).
+Definir umbrales de alerta y manuales de procedimiento (playbooks) para el equipo de respuesta.
+Usar honeytokens: datos señuelo que nunca deberían usarse en operación normal, de modo que cualquier acceso a ellos dispare una alerta confiable.
+Adoptar un plan formal de respuesta a incidentes (por ejemplo, basado en NIST SP 800-61).
+
+🧪 Laboratorio propuesto – A09
+
+Objetivo: Configurar un registro básico de eventos de autenticación y observar cómo permite detectar un patrón de ataque.
+
+1. Retomar la aplicación de login del laboratorio A07
+2. Agregar registro de cada intento (éxito/fallo, usuario, IP, hora)
+3. Simular varios intentos fallidos consecutivos
+4. Revisar el archivo/registro generado
+5. Identificar visualmente el patrón de ataque
+6. Proponer un umbral de alerta (ej. 5 fallos en 1 minuto)
+
+📋 Checklist A09
+
+☐ ¿Registramos los inicios de sesión fallidos? ☐ ¿Nuestros logs están protegidos contra manipulación? ☐ ¿Tenemos umbrales de alerta definidos? ☐ ¿Alguien revisa las alertas generadas? ☐ ¿Registramos información sensible que no deberíamos registrar? ☐ ¿Tenemos un plan de respuesta a incidentes?
+
+🎯 Conclusión A09
+
+A09 nos enseña que la seguridad no termina en prevenir un ataque: también debemos poder verlo cuando ocurre. Una aplicación puede tener excelentes controles preventivos y, aun así, quedar expuesta durante años si nadie está observando lo que sucede dentro de ella.
+
+📚 Referencias A09
+
+OWASP Top 10 – A09:2021 Security Logging and Monitoring Failures.
+OWASP Cheat Sheet: Logging.
+NIST SP 800-61 – Computer Security Incident Handling Guide.
+
+8️⃣ A10:2021 – Server-Side Request Forgery (SSRF) 🧩 Introducción
+
+Muchas aplicaciones modernas necesitan pedirle a otro servidor que "vaya a buscar algo" en su nombre: descargar una imagen desde una URL, consultar un webhook, generar una vista previa de un enlace, etc. El riesgo A10:2021 – Server-Side Request Forgery (SSRF) del OWASP Top 10 aparece cuando esta funcionalidad no valida correctamente la URL proporcionada por el usuario, permitiendo que el servidor haga solicitudes hacia destinos que no debería alcanzar.
+
+💡 En términos sencillos: SSRF ocurre cuando conseguimos que el propio servidor haga una petición por nosotros, hacia donde nosotros queramos.
+
+🧠 ¿Cómo funciona una solicitud SSRF normal (legítima)?
+
+Usuario
+   │
+   ▼
+Aplicación
+   │
+   ▼ (URL proporcionada por el usuario)
+Servidor realiza la solicitud
+   │
+   ▼
+Recurso externo legítimo
+
+Por ejemplo, una función de "vista previa de enlace" que recibe una URL y le pide al servidor que la descargue para generar una miniatura.
+
+🔴 ¿Cómo se explota?
+
+El problema aparece cuando el atacante puede controlar total o parcialmente esa URL, y el servidor no valida hacia dónde puede o no puede apuntar.
+
+Atacante
+   │
+   ▼ URL manipulada
+Aplicación
+   │
+   ▼
+Servidor realiza la solicitud
+   │
+   ▼
+   ┌───────────────┬───────────────┐
+   ▼               ▼               ▼
+Recurso externo  Red interna   Metadata cloud
+ (esperado)      (no debería)  (no debería)
+
+El servidor, al estar dentro de la red interna de la organización, puede alcanzar recursos que el atacante nunca podría contactar directamente desde internet.
+
+💥 Ejemplos de explotación
+
+Escenario 1 — Acceso a servicios internos Una aplicación permite ingresar una URL para "importar una imagen desde internet". Un atacante coloca http://localhost:8080/admin o una IP interna (http://192.168.1.10/) y logra que el servidor consulte paneles administrativos u otros servicios internos que no están expuestos públicamente.
+
+Escenario 2 — Robo de credenciales de metadatos cloud En entornos como AWS, cada instancia tiene un servicio interno de metadatos accesible en http://169.254.169.254/. Si una aplicación vulnerable a SSRF permite apuntar hacia esa dirección, un atacante puede obtener credenciales temporales de la instancia y, con ellas, acceder a otros recursos de la cuenta en la nube.
+
+Escenario 3 — Escaneo de puertos internos Un atacante puede usar la funcionalidad vulnerable para probar sistemáticamente distintas IPs y puertos internos, observando diferencias en tiempos de respuesta o mensajes de error, y así mapear la red interna de la organización sin tener acceso directo a ella.
+
+Atacante
+   │
+   ▼
+Prueba 10.0.0.1:22
+Prueba 10.0.0.1:80
+Prueba 10.0.0.1:3306
+   │
+   ▼
+Diferencias en respuesta
+   │
+   ▼
+📊 Mapa de la red interna
+
+🔍 Puntos frecuentes donde aparece SSRF
+
+Funciones de "vista previa de URL" o "importar desde una URL".
+Webhooks configurables por el usuario.
+Procesamiento de documentos (PDF, XML) que pueden referenciar recursos externos.
+Integraciones que descargan archivos remotos (avatares, adjuntos).
+Funcionalidades de renderizado de páginas (capturas de pantalla, generación de PDF).
+
+🛠️ Herramientas utilizadas
+
+Herramienta	Utilización
+Burp Suite	Interceptar y modificar solicitudes que contienen URLs
+SSRFmap	Automatización de pruebas de SSRF
+Servicios de "callback" (Burp Collaborator y similares)	Confirmar si el servidor realizó realmente la solicitud
+Nmap (desde el servidor vulnerable, indirectamente)	Escaneo de red interna aprovechando el SSRF
+
+⚠️ Estas herramientas deben utilizarse únicamente en sistemas propios, laboratorios o infraestructuras con autorización explícita.
+
+🛡️ ¿Cómo prevenir SSRF?
+
+Validar y sanear todos los datos proporcionados por el cliente, incluyendo URLs.
+Aplicar una lista blanca (allowlist) de dominios o direcciones permitidas, en lugar de intentar bloquear los peligrosos (blocklist).
+Bloquear rangos de IP privadas (10.x, 172.16.x, 169.254.x, 127.x) y direcciones de loopback en las solicitudes salientes del servidor.
+Deshabilitar esquemas de URL innecesarios (file://, gopher://, dict://).
+Usar mecanismos como IMDSv2 en AWS para dificultar el abuso del servicio de metadatos.
+Segmentar de red los servicios que realizan solicitudes hacia internet, separándolos de los sistemas internos críticos.
+No devolver directamente al usuario la respuesta cruda de la solicitud realizada por el servidor.
+
+🧪 Laboratorio propuesto – A10 (SSRF)
+
+Objetivo: Comprender el concepto de SSRF mediante un entorno local y controlado.
+
+1. Crear un servicio interno de prueba (ej. servidor Flask en localhost:9000)
+   que muestre un mensaje "Acceso interno"
+2. Crear una aplicación que reciba una URL y descargue su contenido
+3. Probar con una URL externa legítima (comportamiento esperado)
+4. Probar apuntando a http://localhost:9000 (comportamiento vulnerable)
+5. Documentar la diferencia de comportamiento
+6. Implementar una validación con lista blanca de dominios
+7. Repetir la prueba y confirmar que el acceso interno ya no es posible
+
+📋 Checklist A10
+
+☐ ¿Validamos las URLs proporcionadas por el usuario? ☐ ¿Usamos lista blanca en lugar de lista negra? ☐ ¿Bloqueamos rangos de IP privadas y de loopback? ☐ ¿Deshabilitamos esquemas de URL innecesarios? ☐ ¿Segmentamos la red entre servicios expuestos y sistemas internos? ☐ ¿Protegemos el acceso al servicio de metadatos en la nube?
+
+🎯 Conclusión A10
+
+SSRF es un buen recordatorio de que el servidor también es un usuario de la red, y como tal, puede ser engañado para actuar en nombre de un atacante. Cualquier funcionalidad que reciba una URL o dirección proporcionada externamente y la use para realizar una solicitud debe tratarse con el mismo cuidado que cualquier otra entrada no confiable.
+
+📚 Referencias A10
+
+OWASP Top 10 – A10:2021 Server-Side Request Forgery (SSRF).
+OWASP Cheat Sheet: Server-Side Request Forgery Prevention.
+OWASP Top 10 – 2021. https://owasp.org/Top10/2021/
+
+🏁 Conclusión general A08 + A09 + A10
+
+Estas tres últimas categorías cierran el ciclo del OWASP Top 10:2021 abordando aspectos que suelen quedar en segundo plano frente a vulnerabilidades más "vistosas" como la inyección o el control de acceso, pero que resultan igual de críticos:
+
+📦 A08 — Integridad
+     │  ¿Podemos confiar en lo que ejecutamos?
+     ▼
+📊 A09 — Registro y monitoreo
+     │  ¿Nos damos cuenta si algo sale mal?
+     ▼
+🌐 A10 — SSRF
+     │  ¿Puede el atacante usar a nuestro servidor como intermediario?
+
+A08 nos recuerda verificar el origen y la integridad de lo que ejecutamos. A09 nos recuerda que la prevención no es suficiente si no podemos detectar y responder a un ataque. Y A10 nos muestra cómo una funcionalidad aparentemente inocente —pedirle al servidor que "vaya a buscar algo"— puede convertirse en una puerta de entrada hacia la red interna de una organización.
+
+🔑 La seguridad de una aplicación no depende de un único control, sino de la combinación de integridad, visibilidad y validación estricta de cada dato que proviene del exterior — incluyendo aquellos que parecen tan simples como una URL.
