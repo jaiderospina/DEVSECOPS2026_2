@@ -278,6 +278,22 @@ El atacante podría observar tráfico, pero no debería poder obtener el conteni
 
 ![Infografía A04 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A04-2025.jpg?raw=true)
 
+## A06:2025 - Diseño Inseguro
+
+### 🛡️ ¿Qué es?
+
+Categoría amplia que representa diferentes debilidades, expresadas como "diseño de control ausente o ineficaz".
+Ocurre cuando un sistema, programa o aplicación se planea sin incluir los controles de seguridad necesarios para proteger la información y prevenir posibles ataques.
+Es decir, el diseño inseguro es diferente a un error de implementación, aquí los controles no fueron considerados o definidos desde el comienzo.
+Por esta razon, aunque, el sistema sea desarrollado correctamente, puede continuar siendo vulnerable.
+
+### 🛠️ Tres partes clave para tener un diseño seguro son:
+
+- **Requisitos de recolección y gestión de recursos**
+- **Creando un diseño seguro**
+- **Tener un ciclo de vida seguro de desarrollo**
+
+
 ## A09:2025 - Fallos en el registro y las alertas de seguridad
 
 ### 🛡️ ¿Qué es?
