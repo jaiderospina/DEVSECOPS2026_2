@@ -278,6 +278,16 @@ El atacante podría observar tráfico, pero no debería poder obtener el conteni
 
 ![Infografía A04 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A04-2025.jpg?raw=true)
 
+## A05:2025 Inyección
+
+### 🛡️ ¿Qué es?
+
+Una inyección ocurre cuando una aplicación recibe información sin validarla y la interpreta como una instrucción o comando, permitiendo que un atacante consulte, modifique o elimine información sin autorización.
+
+
+
+
+
 ## A06:2025 - Diseño Inseguro
 
 ### 🛡️ ¿Qué es?
@@ -285,7 +295,7 @@ El atacante podría observar tráfico, pero no debería poder obtener el conteni
 Categoría amplia que representa diferentes debilidades, expresadas como "diseño de control ausente o ineficaz".
 Ocurre cuando un sistema, programa o aplicación se planea sin incluir los controles de seguridad necesarios para proteger la información y prevenir posibles ataques.
 Es decir, el diseño inseguro es diferente a un error de implementación, aquí los controles no fueron considerados o definidos desde el comienzo.
-Por esta razon, aunque, el sistema sea desarrollado correctamente, puede continuar siendo vulnerable.
+Por esta razón, aunque, el sistema sea desarrollado correctamente, puede continuar siendo vulnerable.
 
 ![Diseño seguro](Imagenes/Diseno_Seguro.png)
 
@@ -299,6 +309,8 @@ Por esta razon, aunque, el sistema sea desarrollado correctamente, puede continu
 - **Realizar pruebas de seguridad:** Es necesario probar los flujos normales y los casos inesperados para verificar que los controles funcionen.
 - **Separar los sistemas y la información:** Las capas, redes, usuarios y datos deben mantenerse separados según las necesidad de acceso y protección.
 - **Promover una cultura de seguridad:** Todo el equipo debe conocer los riesgos, aprender de los errores, y considerar la seguridad en cada decisión del proyecto.
+
+### 📝 Ejemplo de ataque
 
 
 ## A09:2025 - Fallos en el registro y las alertas de seguridad
