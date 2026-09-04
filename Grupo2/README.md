@@ -1,7 +1,7 @@
-# 🔐 OWASP Top 10 (2021) — Guía Completa de Riesgos de Seguridad en Aplicaciones Web
+# 🔐 OWASP Top 10 (2025) — Guía Completa de Riesgos de Seguridad en Aplicaciones Web
 
 ![Status](https://img.shields.io/badge/Estado-Completo-brightgreen)
-![OWASP](https://img.shields.io/badge/OWASP-Top%2010%202021-blue)
+![OWASP](https://img.shields.io/badge/OWASP-Top%2010%202025-blue)
 ![Licencia](https://img.shields.io/badge/Uso-Académico-lightgrey)
 
 ---
@@ -23,39 +23,91 @@ La seguridad en el desarrollo de software es hoy uno de los pilares fundamentale
 
 Este documento resume, mediante un consenso amplio de expertos en seguridad, los **diez riesgos más críticos** que afectan a las aplicaciones web. Su propósito es concientizar a desarrolladores, arquitectos de software y equipos de seguridad sobre las vulnerabilidades más comunes y graves, para que puedan prevenirlas desde las primeras etapas del ciclo de vida del desarrollo (diseño, codificación, pruebas y despliegue).
 
-Este repositorio reúne, de forma unificada, el análisis de las **diez categorías** de la edición **2021** del OWASP Top 10:
+En noviembre de 2025 OWASP presentó, en la conferencia Global AppSec de Washington D.C., la **octava edición** del Top 10, la primera actualización desde 2021. La versión final se publicó en enero de 2026. Este análisis se construyó sobre más de 175.000 registros CVE y 589 CWE (Common Weakness Enumerations) diferentes —casi el 50% más que en la edición anterior—, además de encuestas a miles de profesionales de la industria.
 
-| # | Categoría |
-|---|---|
-| A01 | Fallos de Control de Acceso |
-| A02 | Fallos Criptográficos |
-| A03 | Inyección |
-| A04 | Diseño Inseguro |
-| A05 | Configuración de Seguridad Incorrecta |
-| A06 | Componentes Vulnerables y Desactualizados |
-| A07 | Fallas de Identificación y Autenticación |
-| A08 | Fallas de Integridad de Software y Datos |
-| A09 | Fallas de Registro y Monitoreo de Seguridad |
-| A10 | Server-Side Request Forgery (SSRF) |
+> 📌 **¿Por qué cambió la lista?** OWASP explica que este ciclo profundizó el giro hacia las **causas raíz** en vez de los **síntomas**. Por ejemplo, "Exposición de Datos Sensibles" (síntoma) se reemplazó por "Fallos Criptográficos" (causa raíz) desde 2017/2021, y ese mismo criterio se aplicó ahora para fusionar SSRF dentro de Control de Acceso y para separar "Fallas de Integridad" del concepto más amplio de "Cadena de Suministro de Software".
 
-> 📌 Fuente oficial: [owasp.org/Top10/2021](https://owasp.org/Top10/2021/)
+Este repositorio reúne, de forma unificada, el análisis de las **diez categorías** de la edición **2025** del OWASP Top 10:
+
+| # 2025 | Categoría | Cambio respecto a 2021 |
+|---|---|---|
+| A01 | Control de Acceso Roto (*Broken Access Control*) | Se mantiene en el puesto #1. Absorbe **SSRF** (antes A10:2021) |
+| A02 | Configuración de Seguridad Incorrecta | Sube del puesto #5 al #2 |
+| A03 | **Fallas de la Cadena de Suministro de Software** (NUEVA) | Expande a A06:2021 – Componentes Vulnerables y Desactualizados |
+| A04 | Fallos Criptográficos | Baja del puesto #2 al #4 |
+| A05 | Inyección | Baja del puesto #3 al #5 |
+| A06 | Diseño Inseguro | Baja del puesto #4 al #6 |
+| A07 | Fallas de Autenticación | Se mantiene en el puesto #7 (renombrada, antes "Identificación y Autenticación") |
+| A08 | Fallas de Integridad de Software o Datos | Se mantiene en el puesto #8 |
+| A09 | Fallas de Registro y **Alertamiento** de Seguridad | Se mantiene en el puesto #9 (renombrada, antes "Registro y Monitoreo") |
+| A10 | **Manejo Inadecuado de Condiciones Excepcionales** (NUEVA) | Categoría completamente nueva |
+
+> 📌 Fuente oficial: [owasp.org/Top10/2025](https://owasp.org/Top10/2025/)
+
+### 🆚 ¿Qué cambió respecto a 2021?
+
+```mermaid
+flowchart LR
+    subgraph "OWASP Top 10:2021"
+    a01["A01 Control de Acceso"]
+    a02["A02 Fallos Criptográficos"]
+    a03["A03 Inyección"]
+    a04["A04 Diseño Inseguro"]
+    a05["A05 Config. Incorrecta"]
+    a06["A06 Componentes Vulnerables"]
+    a07["A07 Identif. y Autenticación"]
+    a08["A08 Integridad SW/Datos"]
+    a09["A09 Registro y Monitoreo"]
+    a10["A10 SSRF"]
+    end
+
+    subgraph "OWASP Top 10:2025"
+    b01["A01 Control de Acceso (+SSRF)"]
+    b02["A02 Config. Incorrecta"]
+    b03["A03 Cadena de Suministro NUEVA"]
+    b04["A04 Fallos Criptográficos"]
+    b05["A05 Inyección"]
+    b06["A06 Diseño Inseguro"]
+    b07["A07 Fallas de Autenticación"]
+    b08["A08 Integridad SW/Datos"]
+    b09["A09 Registro y Alertamiento"]
+    b10["A10 Condiciones Excepcionales NUEVA"]
+    end
+
+    a01 --> b01
+    a10 -.-> b01
+    a05 --> b02
+    a06 -.->|"expandida"| b03
+    a02 --> b04
+    a03 --> b05
+    a04 --> b06
+    a07 --> b07
+    a08 --> b08
+    a09 --> b09
+```
+
+**Resumen de los tres movimientos clave:**
+
+1. **Consolidación:** *Server-Side Request Forgery* (A10:2021) desaparece como categoría independiente y se integra dentro de **A01:2025 – Control de Acceso Roto**, ya que conceptualmente SSRF también es un fallo en las restricciones que determinan qué puede alcanzar o solicitar una aplicación.
+2. **Categoría nueva — A03:2025:** *Fallas de la Cadena de Suministro de Software* amplía lo que antes era "Componentes Vulnerables y Desactualizados" (A06:2021) para cubrir todo el ecosistema: dependencias, sistemas de build (compilación), pipelines CI/CD e infraestructura de distribución, no solo la versión de una librería.
+3. **Categoría nueva — A10:2025:** *Manejo Inadecuado de Condiciones Excepcionales* cubre 24 CWE relacionados con manejo de errores deficiente, errores lógicos, mecanismos de "fail open" (fallar de forma insegura) y otros escenarios derivados de condiciones anómalas que el sistema no supo manejar correctamente.
 
 ---
 
 ## 📑 Tabla de contenidos
 
 1. [Panorama general](#-panorama-general)
-2. [A01 — Fallos de Control de Acceso](#1️⃣-a012021--fallos-de-control-de-acceso)
-3. [A02 — Fallos Criptográficos](#2️⃣-a022021--fallos-criptográficos)
-4. [A03 — Inyección](#3️⃣-a032021--inyección)
-5. [A04 — Diseño Inseguro](#4️⃣-a042021--diseño-inseguro)
-6. [A05 — Configuración de Seguridad Incorrecta](#5️⃣-a052021--configuración-de-seguridad-incorrecta)
-7. [Comparación A03–A05](#-comparación-a03-a05)
-8. [A06 — Componentes Vulnerables y Desactualizados](#6️⃣-a062021--componentes-vulnerables-y-desactualizados)
-9. [A07 — Fallas de Identificación y Autenticación](#7️⃣-a072021--fallas-de-identificación-y-autenticación)
-10. [A08 — Fallas de Integridad de Software y Datos](#8️⃣-a082021--fallas-de-integridad-de-software-y-datos)
-11. [A09 — Fallas de Registro y Monitoreo de Seguridad](#9️⃣-a092021--fallas-de-registro-y-monitoreo-de-seguridad)
-12. [A10 — Server-Side Request Forgery (SSRF)](#🔟-a102021--server-side-request-forgery-ssrf)
+2. [A01 — Control de Acceso Roto (incluye SSRF)](#1️⃣-a012025--control-de-acceso-roto-incluye-ssrf)
+3. [A02 — Configuración de Seguridad Incorrecta](#2️⃣-a022025--configuración-de-seguridad-incorrecta)
+4. [A03 — Fallas de la Cadena de Suministro de Software (NUEVA)](#3️⃣-a032025--fallas-de-la-cadena-de-suministro-de-software-nueva)
+5. [A04 — Fallos Criptográficos](#4️⃣-a042025--fallos-criptográficos)
+6. [A05 — Inyección](#5️⃣-a052025--inyección)
+7. [A06 — Diseño Inseguro](#6️⃣-a062025--diseño-inseguro)
+8. [Comparación A02, A05 y A06](#-comparación-a02-a05-y-a06)
+9. [A07 — Fallas de Autenticación](#7️⃣-a072025--fallas-de-autenticación)
+10. [A08 — Fallas de Integridad de Software o Datos](#8️⃣-a082025--fallas-de-integridad-de-software-o-datos)
+11. [A09 — Fallas de Registro y Alertamiento de Seguridad](#9️⃣-a092025--fallas-de-registro-y-alertamiento-de-seguridad)
+12. [A10 — Manejo Inadecuado de Condiciones Excepcionales (NUEVA)](#🔟-a102025--manejo-inadecuado-de-condiciones-excepcionales-nueva)
 13. [Conclusión general](#-conclusión-general)
 14. [Referencias](#-referencias-generales)
 
@@ -63,43 +115,47 @@ Este repositorio reúne, de forma unificada, el análisis de las **diez categor�
 
 ## 📊 Panorama general
 
-El siguiente gráfico ilustra, de forma aproximada, el porcentaje de aplicaciones analizadas que presentaron cada una de las dos primeras categorías de vulnerabilidad según los datos recopilados por OWASP para la edición 2021:
+El siguiente gráfico ilustra, de forma aproximada, el porcentaje de aplicaciones analizadas que presentaron cada una de las dos primeras categorías de vulnerabilidad según los datos recopilados por OWASP para la edición 2025:
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
 xychart-beta
-    title "Incidencia aproximada — A01 vs A02 (OWASP Top 10 2021)"
-    x-axis ["A01 - Control de Acceso", "A02 - Fallos Criptográficos"]
+    title "Incidencia aproximada — A01 vs A02 (OWASP Top 10 2025)"
+    x-axis ["A01 - Control de Acceso", "A02 - Config. Incorrecta"]
     y-axis "% de aplicaciones afectadas" 0 --> 10
-    bar [3.8, 4.5]
+    bar [3.73, 3.00]
 ```
 
 ```mermaid
 mindmap
-  root((OWASP Top 10 2021))
-    A01 Control de Acceso
+  root((OWASP Top 10 2025))
+    A01 Control de Acceso Roto
       Acceso indebido a datos
       Escalamiento de privilegios
-      Elevación de permisos
-    A02 Fallos Criptográficos
-      Datos sin cifrar
-      Algoritmos débiles
-      Claves mal gestionadas
+      SSRF integrado
+    A02 Configuración Incorrecta
+      Valores predeterminados
+      Servicios expuestos
+      Hardening deficiente
+    A03 Cadena de Suministro
+      Dependencias comprometidas
+      Pipelines CI/CD
+      Infraestructura de build
 ```
 
-Las categorías A03, A04 y A05 representan además diferentes etapas en las que puede aparecer un riesgo de seguridad:
+Las categorías A02, A05 y A06 representan además diferentes etapas en las que puede aparecer un riesgo de seguridad:
 
 ```mermaid
 flowchart LR
-    A["A03: Inyección"] --> B["Entrada manipulada"]
+    A["A05: Inyección"] --> B["Entrada manipulada"]
     B --> C["Interpretación como código"]
     C --> D["Acceso o modificación no autorizada"]
 
-    E["A04: Diseño Inseguro"] --> F["Falla de arquitectura"]
+    E["A06: Diseño Inseguro"] --> F["Falla de arquitectura"]
     F --> G["Abuso de lógica de negocio"]
     G --> H["Compromiso de funcionalidad"]
 
-    I["A05: Configuración Incorrecta"] --> J["Configuración insegura"]
+    I["A02: Configuración Incorrecta"] --> J["Configuración insegura"]
     J --> K["Exposición de servicios"]
     K --> L["Acceso no autorizado"]
 ```
@@ -108,13 +164,15 @@ flowchart LR
 
 # 🧩 Detalle de las categorías
 
-## 1️⃣ A01:2021 — Fallos de Control de Acceso
+## 1️⃣ A01:2025 — Control de Acceso Roto (incluye SSRF)
 
 ### 🔒 ¿Qué es?
 
 El control de acceso es el conjunto de mecanismos que determina qué puede hacer o ver un usuario dentro de una aplicación, según su rol o identidad (por ejemplo, un usuario normal no debería poder ver ni modificar datos de un administrador). Un fallo de control de acceso ocurre cuando estas restricciones no se aplican correctamente en el backend, permitiendo que un usuario actúe fuera de los permisos que le corresponden.
 
-Esta categoría subió de la quinta posición (en la edición 2017) al **primer lugar** en 2021, lo que refleja lo extendido y crítico que es este problema: se detectaron ocurrencias en la gran mayoría de las aplicaciones analizadas por OWASP.
+Esta categoría mantiene el **primer lugar** en la edición 2025: en promedio, el **3.73%** de las aplicaciones analizadas presentó al menos una de las **40 CWE** agrupadas en esta categoría (la mayor cantidad de CWE de todo el Top 10), lo que confirma que sigue siendo el riesgo más extendido.
+
+> 🆕 **Novedad 2025:** lo que en la edición anterior era la categoría independiente **A10:2021 – Server-Side Request Forgery (SSRF)** ahora se integra dentro de A01, ya que también es, en esencia, un fallo en las restricciones sobre qué puede alcanzar o solicitar la aplicación en nombre de un usuario. Esta categoría ahora cubre explícitamente patrones de API como **BOLA** (*Broken Object Level Authorization*) y **BFLA** (*Broken Function Level Authorization*), token manipulation y CORS mal configurado.
 
 ### 🧠 Causas más comunes
 
@@ -123,31 +181,248 @@ Esta categoría subió de la quinta posición (en la edición 2017) al **primer 
 - No aplicar el principio de "denegar por defecto": otorgar acceso amplio y luego restringir, en vez de al revés.
 - Rutas o endpoints de administración accesibles sin autenticación adecuada.
 - CORS mal configurado, permitiendo peticiones desde orígenes no autorizados.
+- **(SSRF)** Funcionalidades que reciben una URL o dirección proporcionada por el usuario y no validan hacia dónde puede apuntar la solicitud que hace el propio servidor.
 
 ### 💥 Ejemplos
 
 1. Un usuario cambia el valor `id=1023` por `id=1024` en la URL (`miapp.com/perfil?id=1024`) y accede a la información de otra persona.
 2. Un empleado normal accede directamente a `/admin/panel` sin que el sistema verifique su rol.
-3. Una API permite eliminar registros de otros usuarios simplemente conociendo su identificador (`DELETE /api/pedidos/58`).
+3. Una API permite eliminar registros de otros usuarios simplemente conociendo su identificador (`DELETE /api/pedidos/58`) — patrón BOLA.
+4. Una función de "importar imagen desde internet" permite ingresar `http://localhost:8080/admin` o una IP interna, logrando que el servidor consulte paneles administrativos u otros servicios internos no expuestos públicamente (SSRF).
+5. En entornos cloud como AWS, una aplicación vulnerable a SSRF permite apuntar hacia el servicio interno de metadatos (`http://169.254.169.254/`), obteniendo credenciales temporales de la instancia.
+
+```text
+Atacante → URL o parámetro manipulado → Aplicación → Servidor realiza la solicitud
+   │
+   ┌───────────────┬───────────────┐
+   ▼               ▼               ▼
+Recurso externo  Red interna   Metadata cloud
+ (esperado)      (no debería)  (no debería)
+```
 
 ### ⚠️ Impacto
 
-Exposición de datos privados, modificación o eliminación no autorizada de información, fraude, escalamiento de privilegios hasta llegar a comprometer cuentas administrativas.
+Exposición de datos privados, modificación o eliminación no autorizada de información, fraude, escalamiento de privilegios hasta llegar a comprometer cuentas administrativas, escaneo y explotación de la red interna, y robo de credenciales temporales de servicios cloud a través de SSRF.
+
+### 🛠️ Herramientas utilizadas
+
+| Herramienta | Utilización |
+| --- | --- |
+| **Burp Suite** | Interceptar y modificar solicitudes, incluyendo aquellas que contienen URLs |
+| **OWASP ZAP** | Análisis de control de acceso y de solicitudes salientes del servidor |
+| **SSRFmap** | Automatización de pruebas de SSRF |
+| **Servicios de "callback"** (Burp Collaborator y similares) | Confirmar si el servidor realizó realmente una solicitud saliente |
 
 ### 🛡️ Recomendaciones de prevención
 
 - Aplicar el principio de mínimo privilegio: cada usuario solo accede a lo estrictamente necesario.
 - Validar permisos en cada solicitud del lado del servidor, no confiar en el cliente.
 - Registrar (loggear) los intentos de acceso denegados para detectar posibles ataques.
-- Usar pruebas automatizadas que verifiquen los controles de acceso en cada rol.
+- Usar pruebas automatizadas que verifiquen los controles de acceso en cada rol, incluyendo pruebas específicas de BOLA/BFLA en APIs.
+- **(SSRF)** Validar y sanear todas las URLs proporcionadas por el cliente; aplicar listas blancas (*allowlist*) de dominios o direcciones permitidas.
+- **(SSRF)** Bloquear rangos de IP privadas (`10.x`, `172.16.x`, `169.254.x`, `127.x`) en las solicitudes salientes del servidor y deshabilitar esquemas innecesarios (`file://`, `gopher://`, `dict://`).
+- **(SSRF)** Usar mecanismos como IMDSv2 en AWS para dificultar el abuso del servicio de metadatos, y no devolver directamente al usuario la respuesta cruda de la solicitud realizada por el servidor.
 
 ---
 
-## 2️⃣ A02:2021 — Fallos Criptográficos
+## 2️⃣ A02:2025 — Configuración de Seguridad Incorrecta
+
+### ⚙️ ¿Qué es?
+
+La **Configuración de Seguridad Incorrecta** ocurre cuando una aplicación, servidor, base de datos, servicio cloud o componente de infraestructura se encuentra configurado de manera insegura. El problema puede aparecer tanto por una configuración incorrecta como por mantener configuraciones predeterminadas o funcionalidades que no son necesarias.
+
+> 🆕 **Novedad 2025:** esta categoría **sube del puesto #5 (2021) al puesto #2**. En promedio, el **3.00%** de las aplicaciones analizadas presentó al menos una de las **16 CWE** agrupadas aquí. OWASP señala que este ascenso no es sorprendente: cada vez más comportamiento de las aplicaciones depende de configuraciones (infraestructura como código, contenedores, servicios administrados en la nube), y el despliegue continuo sin escaneo continuo abre ventanas de exposición activas.
+
+### 🧠 Causas más comunes
+
+- Credenciales predeterminadas.
+- Funciones innecesarias habilitadas.
+- Paneles administrativos expuestos.
+- Mensajes de error demasiado detallados.
+- Debug habilitado en producción.
+- Permisos excesivos.
+- Servicios o puertos innecesarios expuestos.
+- Falta de actualización de componentes.
+- Configuración incorrecta de servicios cloud.
+- Headers de seguridad ausentes o incorrectos.
+- Despliegues continuos (CI/CD) sin escaneo continuo de configuración.
+
+### 💥 Ejemplos
+
+**Ejemplo 1 — Modo Debug.** Un servidor desplegado en producción podría mostrar información detallada cuando ocurre un error:
+
+```text
+Error 500
+
+Database connection failed
+Host: 192.168.x.x
+Database: production_db
+Stack trace:
+...
+```
+
+Esta información puede ayudar a un atacante a conocer detalles internos de la infraestructura.
+
+**Ejemplo 2 — Credenciales predeterminadas.** Un dispositivo o aplicación puede mantener las credenciales originales proporcionadas por el fabricante.
+
+```text
+Usuario: admin
+Contraseña: contraseña_predeterminada
+```
+
+Si estas credenciales no se modifican, un atacante que las conozca podría intentar acceder al sistema.
+
+**Ejemplo 3 — Bucket cloud mal configurado.** Un contenedor de almacenamiento (S3, Blob Storage, etc.) queda accesible públicamente por un permiso mal asignado durante el despliegue automatizado, sin que ningún control lo detecte antes de llegar a producción.
+
+### ⚠️ Impacto
+
+| Configuración | Riesgo |
+| --- | --- |
+| Credenciales predeterminadas | Acceso no autorizado |
+| Debug habilitado | Divulgación de información |
+| Directorios públicos | Exposición de archivos |
+| Puertos innecesarios | Aumento de superficie de ataque |
+| Panel administrativo público | Ataques contra autenticación |
+| Permisos excesivos | Escalamiento o abuso |
+| Componentes desactualizados | Explotación de vulnerabilidades conocidas |
+| Recursos cloud mal configurados | Exposición masiva de datos |
+
+### 🔍 Métodos de explotación
+
+```mermaid
+flowchart TD
+    A["Reconocimiento"] --> B["Identificación de servicios"]
+    B --> C["Detección de configuración"]
+    C --> D["Identificación de configuración débil"]
+    D --> E["Intento de acceso"]
+    E --> F["Explotación"]
+```
+
+### 🛠️ Herramientas utilizadas
+
+| Herramienta | Utilización |
+| --- | --- |
+| **Nmap** | Descubrimiento de puertos y servicios |
+| **Burp Suite** | Análisis de solicitudes y respuestas HTTP |
+| **OWASP ZAP** | Identificación de problemas de configuración web |
+| **Nikto** | Evaluación de configuraciones de servidores web |
+| **WhatWeb** | Identificación de tecnologías utilizadas |
+| **Gobuster** | Enumeración de recursos y directorios |
+
+### 🛡️ Prevención y mitigación
+
+- Eliminar credenciales predeterminadas.
+- Deshabilitar funcionalidades innecesarias.
+- Desactivar el modo debug en producción.
+- Utilizar configuraciones seguras para servidores.
+- Mantener actualizados los componentes.
+- Aplicar el principio de mínimo privilegio.
+- Reducir la cantidad de servicios expuestos.
+- Configurar correctamente HTTPS/TLS.
+- Implementar headers de seguridad.
+- Evitar mostrar información sensible en errores.
+- Realizar revisiones periódicas de configuración.
+- Automatizar controles de configuración (IaC scanning) dentro del pipeline CI/CD.
+
+```mermaid
+flowchart LR
+    A["Instalación"] --> B["Configuración segura"]
+    B --> C["Eliminar valores predeterminados"]
+    C --> D["Deshabilitar servicios innecesarios"]
+    D --> E["Aplicar mínimo privilegio"]
+    E --> F["Pruebas de seguridad"]
+    F --> G["Monitoreo"]
+```
+
+---
+
+## 3️⃣ A03:2025 — Fallas de la Cadena de Suministro de Software (NUEVA)
+
+### 🆕 ¿Por qué es una categoría nueva?
+
+En 2021 existía la categoría **A06:2021 – Componentes Vulnerables y Desactualizados**, enfocada principalmente en si una librería o dependencia tenía una CVE conocida. En 2025 esta idea se **expande** hacia un concepto mucho más amplio: la **Cadena de Suministro de Software** (*Software Supply Chain*), que incluye no solo las dependencias en sí, sino todo el ecosistema que las construye, empaqueta y distribuye — sistemas de build, pipelines CI/CD, registries de paquetes e infraestructura de distribución.
+
+Esta categoría fue votada de forma abrumadora por la comunidad como una de las principales preocupaciones actuales. Tiene solo **5 CWE** asociadas —la menor cantidad de todo el Top 10— y una presencia limitada en los datos recopilados, pero paradójicamente presenta los **puntajes promedio más altos de explotabilidad e impacto** de todas las categorías, lo que sugiere que las herramientas de escaneo automatizado todavía no logran detectar bien este tipo de ataques mientras ya están ocurriendo en producción.
+
+> 💡 En términos sencillos: A03 ocurre cuando comprometemos no el código que escribimos, sino algún eslabón de la cadena que lo construye, empaqueta o entrega — una dependencia, un paquete, un pipeline o un registry.
+
+### 🧠 ¿Qué cubre esta categoría?
+
+```text
+        🏭 CADENA DE SUMINISTRO DE SOFTWARE
+                     │
+     ┌───────────────┼───────────────┬────────────────┐
+     ▼                ▼               ▼                ▼
+Dependencias    Sistemas de Build   Pipelines      Registries /
+(directas y      (compiladores,      CI/CD          repositorios de
+ transitivas)     empaquetadores)   (GitHub Actions,  distribución
+                                     Jenkins, etc.)   (npm, PyPI, etc.)
+```
+
+- **Dependencias directas y transitivas** con vulnerabilidades conocidas o mantenidas de forma deficiente (lo que antes cubría íntegramente A06:2021).
+- **Compromiso del sistema de build**: inyección de código malicioso durante la compilación o empaquetado.
+- **Pipelines CI/CD inseguros**: falta de control de acceso, secretos expuestos, ejecución de pasos no verificados.
+- **Registries y repositorios de paquetes comprometidos**: *typosquatting* (paquetes con nombres similares a los legítimos), *dependency confusion* (confundir un paquete interno con uno público), o paquetes maliciosos publicados con nombres legítimos.
+- **Componentes sin mantenimiento o sin soporte**, heredado de A06:2021.
+
+### 🔴 ¿Cuándo tenemos un problema A03?
+
+- Utilizamos una librería con vulnerabilidades conocidas o sin actualizar durante largos periodos.
+- Instalamos paquetes desde fuentes no verificadas o sin firma.
+- No tenemos un inventario (SBOM) de los componentes utilizados.
+- El pipeline CI/CD no restringe qué puede ejecutarse ni quién puede modificarlo.
+- No verificamos la integridad (hash o firma) de los artefactos que se despliegan.
+- No monitoreamos si aparecen nuevas vulnerabilidades en dependencias ya instaladas.
+
+### 💥 Ejemplos de escenarios reales
+
+- **Ataque a la cadena de suministro (tipo SolarWinds):** comprometer una sola herramienta del pipeline de compilación permite distribuir código malicioso a miles de organizaciones que confían en ese proveedor.
+- **Dependency confusion:** un atacante publica en un registry público un paquete con el mismo nombre que una dependencia interna privada de una empresa, y el sistema de build termina descargando la versión maliciosa por error de resolución de paquetes.
+- **Typosquatting:** un paquete malicioso se publica con un nombre casi idéntico a uno legítimo y muy popular (`reqeusts` en lugar de `requests`), esperando errores de tipeo de los desarrolladores.
+- **Compromiso de un registry:** credenciales de mantenedor de un paquete popular son robadas y se publica una nueva versión con código malicioso que se descarga automáticamente en miles de proyectos.
+
+### 🛠️ Herramientas relacionadas
+
+| Herramienta | Utilización |
+|---|---|
+| **OWASP Dependency-Check** | Analiza dependencias y busca vulnerabilidades conocidas |
+| **npm audit / pip-audit** | Analiza vulnerabilidades en proyectos Node.js / Python |
+| **Dependabot / Renovate** | Detecta dependencias vulnerables y propone actualizaciones |
+| **Cosign / Sigstore** | Firma y verificación de artefactos e imágenes de contenedores |
+| **Herramientas de generación de SBOM** (Syft, CycloneDX) | Inventario completo de componentes de software |
+
+### 🛡️ ¿Cómo prevenir A03?
+
+- Mantener un inventario de componentes (SBOM) y conocer las versiones utilizadas.
+- Analizar dependencias periódicamente con herramientas SCA (*Software Composition Analysis*).
+- Consumir dependencias solo desde repositorios de confianza y fijar versiones (*pinning*) cuando sea posible.
+- Proteger el pipeline CI/CD con control de acceso, segregación de funciones y revisión de cambios.
+- Firmar y verificar artefactos antes de desplegarlos.
+- Configurar los registries privados con prioridad sobre los públicos para evitar *dependency confusion*.
+- Establecer un proceso formal de respuesta ante nuevas vulnerabilidades en la cadena de suministro.
+
+### 🧪 Laboratorio propuesto — A03
+
+**Objetivo:** identificar, analizar y corregir vulnerabilidades relacionadas con dependencias y con la integridad de la cadena de suministro.
+
+1. Crear el proyecto: `mkdir laboratorio-a03 && cd laboratorio-a03`
+2. Crear entorno virtual: `python -m venv venv` (activar con `venv\Scripts\activate` en Windows)
+3. Crear `requirements.txt` con, por ejemplo, `Flask` y `requests`
+4. Instalar dependencias: `pip install -r requirements.txt`
+5. Ejecutar auditoría: `pip-audit`
+6. Registrar dependencia, versión instalada, vulnerabilidad, severidad, versión corregida y acción recomendada
+7. Generar un SBOM básico del proyecto con una herramienta como Syft o CycloneDX
+8. Actualizar las dependencias afectadas y volver a ejecutar `pip-audit` para comparar resultados antes/después
+
+> 🔑 **La primera medida de seguridad para nuestra cadena de suministro es saber exactamente qué componentes tenemos, de dónde vienen y si podemos confiar en su integridad.**
+
+---
+
+## 4️⃣ A04:2025 — Fallos Criptográficos
 
 ### 🔑 ¿Qué es?
 
-Antes llamada "Exposición de Datos Sensibles" (2017), esta categoría fue renombrada para reflejar su causa raíz: fallos en el uso de la criptografía, más que el simple hecho de exponer datos. Ocurre cuando una aplicación no protege adecuadamente la información sensible —contraseñas, datos financieros, información médica, tokens de sesión— ya sea **en tránsito** (mientras viaja por la red) o **en reposo** (mientras está almacenada).
+Renombrada desde "Exposición de Datos Sensibles" (2017) hacia "Fallos Criptográficos" (2021), esta categoría **baja del puesto #2 al puesto #4** en 2025, aunque en promedio el **3.80%** de las aplicaciones analizadas presentó al menos una de las **32 CWE** agrupadas aquí — una de las incidencias más altas de todo el Top 10. Ocurre cuando una aplicación no protege adecuadamente la información sensible —contraseñas, datos financieros, información médica, tokens de sesión— ya sea **en tránsito** (mientras viaja por la red) o **en reposo** (mientras está almacenada).
 
 ### 🧠 Causas más comunes
 
@@ -175,22 +450,25 @@ Robo de credenciales, exposición de datos financieros o médicos, suplantación
 - Clasificar los datos según su sensibilidad y aplicar controles proporcionales a cada nivel.
 - No almacenar datos sensibles que no sean estrictamente necesarios.
 
-### 🖼️ Resumen visual A01 vs A02
+### 🖼️ Resumen visual A01, A02 y A04
 
 | Categoría | Icono | Enfoque principal | Ejemplo típico |
 |---|---|---|---|
-| A01 | 🔒 | Control de acceso | Modificar una URL para ver datos ajenos |
-| A02 | 🔑 | Criptografía | Enviar contraseñas por HTTP sin cifrar |
+| A01 | 🔒 | Control de acceso (+SSRF) | Modificar una URL para ver datos ajenos |
+| A02 | ⚙️ | Configuración | Servicio en producción con debug habilitado |
+| A04 | 🔑 | Criptografía | Enviar contraseñas por HTTP sin cifrar |
 
-> **Conclusión A01–A02:** el primero falla en decidir *quién puede hacer qué*, y el segundo falla en *proteger la información* una vez que se accede a ella; por eso suelen presentarse combinados en ataques reales. Aplicar controles adecuados —como validación estricta de permisos en el servidor y cifrado robusto de la información— es un primer paso fundamental para reducir la superficie de ataque de cualquier sistema.
+> **Conclusión:** A01 falla en decidir *quién puede hacer qué (y hacia dónde)*, A02 falla en cómo está *dispuesto y protegido* el sistema, y A04 falla en *proteger la información* una vez que se accede a ella; por eso suelen presentarse combinadas en ataques reales.
 
 ---
 
-## 3️⃣ A03:2021 — Inyección
+## 5️⃣ A05:2025 — Inyección
 
 ### 💉 ¿Qué es?
 
 La **inyección** ocurre cuando una aplicación incorpora datos proporcionados por un usuario dentro de una instrucción, consulta o comando sin realizar una separación adecuada entre los datos y el código. Esto puede provocar que una entrada controlada por un atacante sea interpretada como parte de una instrucción ejecutable.
+
+Esta categoría **baja del puesto #3 al puesto #5** en 2025, manteniendo su posición relativa respecto a Fallos Criptográficos y Diseño Inseguro. Sigue siendo una de las categorías más probadas, con el mayor número de CVE asociadas entre las **38 CWE** que agrupa, y abarca desde Cross-Site Scripting (alta frecuencia / bajo impacto individual) hasta SQL Injection (baja frecuencia / alto impacto).
 
 Entre los tipos más conocidos se encuentran:
 
@@ -199,7 +477,7 @@ Entre los tipos más conocidos se encuentran:
 - OS Command Injection
 - LDAP Injection
 - XPath Injection
-- Cross-Site Scripting (XSS), dependiendo del contexto de clasificación
+- Cross-Site Scripting (XSS)
 
 ### 🧠 Causas más comunes
 
@@ -213,8 +491,6 @@ Entre los tipos más conocidos se encuentran:
 
 ### 💥 Impacto
 
-Una vulnerabilidad de inyección puede permitir a un atacante obtener información almacenada en bases de datos, modificar o eliminar información, evadir mecanismos de autenticación, ejecutar determinadas instrucciones, acceder a información confidencial o comprometer otros componentes de la infraestructura.
-
 | Propiedad | Posible impacto |
 | --- | --- |
 | 🔒 Confidencialidad | Lectura de información privada |
@@ -224,8 +500,6 @@ Una vulnerabilidad de inyección puede permitir a un atacante obtener informaci�
 | 🖥️ Sistema | Ejecución de comandos en determinados escenarios |
 
 ### 🔍 Métodos de explotación
-
-Los atacantes normalmente comienzan identificando entradas controladas por el usuario:
 
 ```text
 Parámetros URL
@@ -293,11 +567,13 @@ flowchart LR
 
 ---
 
-## 4️⃣ A04:2021 — Diseño Inseguro
+## 6️⃣ A06:2025 — Diseño Inseguro
 
 ### 🏗️ ¿Qué es?
 
 **Diseño Inseguro** hace referencia a vulnerabilidades originadas principalmente por decisiones deficientes de arquitectura, diseño o lógica de negocio. En este caso, el problema puede existir incluso antes de escribir el código. Una aplicación puede estar correctamente implementada desde el punto de vista sintáctico, pero continuar siendo vulnerable porque su diseño no contempla determinados escenarios de ataque.
+
+Esta categoría **baja del puesto #4 al puesto #6**, a medida que Configuración Incorrecta y Cadena de Suministro la superan en la clasificación. Fue introducida como categoría en 2021, y OWASP reconoce en 2025 mejoras notables en la industria relacionadas con *threat modeling* y un mayor énfasis en diseño seguro desde el inicio del ciclo de desarrollo.
 
 ### 🧠 Causas más comunes
 
@@ -361,8 +637,6 @@ flowchart TD
     F -->|Sí| H["Solicitud rechazada"]
 ```
 
-Algunas técnicas utilizadas incluyen manipulación de parámetros, repetición de solicitudes, alteración de valores enviados al servidor, manipulación de procesos de negocio, automatización de operaciones y pruebas de límites y restricciones.
-
 ### 🛠️ Herramientas utilizadas
 
 | Herramienta | Utilización |
@@ -399,116 +673,9 @@ flowchart LR
 
 ---
 
-## 5️⃣ A05:2021 — Configuración de Seguridad Incorrecta
+## 📊 Comparación A02, A05 y A06
 
-### ⚙️ ¿Qué es?
-
-La **Configuración de Seguridad Incorrecta** ocurre cuando una aplicación, servidor, base de datos, servicio cloud o componente de infraestructura se encuentra configurado de manera insegura. El problema puede aparecer tanto por una configuración incorrecta como por mantener configuraciones predeterminadas o funcionalidades que no son necesarias.
-
-### 🧠 Causas más comunes
-
-- Credenciales predeterminadas.
-- Funciones innecesarias habilitadas.
-- Paneles administrativos expuestos.
-- Mensajes de error demasiado detallados.
-- Debug habilitado en producción.
-- Permisos excesivos.
-- Servicios o puertos innecesarios expuestos.
-- Falta de actualización de componentes.
-- Configuración incorrecta de servicios cloud.
-- Headers de seguridad ausentes o incorrectos.
-
-### 💥 Ejemplos
-
-**Ejemplo 1 — Modo Debug.** Un servidor desplegado en producción podría mostrar información detallada cuando ocurre un error:
-
-```text
-Error 500
-
-Database connection failed
-Host: 192.168.x.x
-Database: production_db
-Stack trace:
-...
-```
-
-Esta información puede ayudar a un atacante a conocer detalles internos de la infraestructura.
-
-**Ejemplo 2 — Credenciales predeterminadas.** Un dispositivo o aplicación puede mantener las credenciales originales proporcionadas por el fabricante.
-
-```text
-Usuario: admin
-Contraseña: contraseña_predeterminada
-```
-
-Si estas credenciales no se modifican, un atacante que las conozca podría intentar acceder al sistema.
-
-### ⚠️ Impacto
-
-| Configuración | Riesgo |
-| --- | --- |
-| Credenciales predeterminadas | Acceso no autorizado |
-| Debug habilitado | Divulgación de información |
-| Directorios públicos | Exposición de archivos |
-| Puertos innecesarios | Aumento de superficie de ataque |
-| Panel administrativo público | Ataques contra autenticación |
-| Permisos excesivos | Escalamiento o abuso |
-| Componentes desactualizados | Explotación de vulnerabilidades conocidas |
-
-### 🔍 Métodos de explotación
-
-```mermaid
-flowchart TD
-    A["Reconocimiento"] --> B["Identificación de servicios"]
-    B --> C["Detección de configuración"]
-    C --> D["Identificación de configuración débil"]
-    D --> E["Intento de acceso"]
-    E --> F["Explotación"]
-```
-
-Entre las técnicas utilizadas se encuentran: identificación de servicios expuestos, detección de versiones, búsqueda de configuraciones predeterminadas, identificación de paneles administrativos, análisis de respuestas HTTP, revisión de certificados y configuraciones TLS, enumeración de directorios, identificación de mensajes de error y detección de servicios innecesarios.
-
-### 🛠️ Herramientas utilizadas
-
-| Herramienta | Utilización |
-| --- | --- |
-| **Nmap** | Descubrimiento de puertos y servicios |
-| **Burp Suite** | Análisis de solicitudes y respuestas HTTP |
-| **OWASP ZAP** | Identificación de problemas de configuración web |
-| **Nikto** | Evaluación de configuraciones de servidores web |
-| **WhatWeb** | Identificación de tecnologías utilizadas |
-| **Gobuster** | Enumeración de recursos y directorios |
-
-### 🛡️ Prevención y mitigación
-
-- Eliminar credenciales predeterminadas.
-- Deshabilitar funcionalidades innecesarias.
-- Desactivar el modo debug en producción.
-- Utilizar configuraciones seguras para servidores.
-- Mantener actualizados los componentes.
-- Aplicar el principio de mínimo privilegio.
-- Reducir la cantidad de servicios expuestos.
-- Configurar correctamente HTTPS/TLS.
-- Implementar headers de seguridad.
-- Evitar mostrar información sensible en errores.
-- Realizar revisiones periódicas de configuración.
-- Automatizar controles de seguridad dentro del pipeline CI/CD.
-
-```mermaid
-flowchart LR
-    A["Instalación"] --> B["Configuración segura"]
-    B --> C["Eliminar valores predeterminados"]
-    C --> D["Deshabilitar servicios innecesarios"]
-    D --> E["Aplicar mínimo privilegio"]
-    E --> F["Pruebas de seguridad"]
-    F --> G["Monitoreo"]
-```
-
----
-
-## 📊 Comparación A03–A05
-
-| Característica | A03 — Inyección | A04 — Diseño Inseguro | A05 — Configuración Incorrecta |
+| Característica | A05 — Inyección | A06 — Diseño Inseguro | A02 — Configuración Incorrecta |
 | --- | --- | --- | --- |
 | **Origen** | Entrada no controlada | Arquitectura o lógica deficiente | Configuración insegura |
 | **Etapa principal** | Desarrollo | Diseño | Implementación/despliegue |
@@ -522,254 +689,27 @@ Las tres categorías pueden aparecer simultáneamente dentro de una misma aplica
 
 ```mermaid
 flowchart TD
-    A["Diseño de la aplicación"] --> B["A04: Diseño Inseguro"]
+    A["Diseño de la aplicación"] --> B["A06: Diseño Inseguro"]
     B --> C["Implementación"]
-    C --> D["A03: Inyección"]
-    C --> E["A05: Configuración Incorrecta"]
+    C --> D["A05: Inyección"]
+    C --> E["A02: Configuración Incorrecta"]
 
     D --> F["Compromiso de datos"]
     E --> F
     B --> F
 ```
 
-Por ejemplo, una aplicación podría tener una arquitectura que no contempla correctamente la validación de entradas (**A04**), implementar consultas SQL inseguras (**A03**) y además desplegarse con una configuración de producción incorrecta (**A05**). La combinación de varias debilidades puede incrementar considerablemente la superficie de ataque.
-
-> **Conclusión A03–A05:** la **Inyección** se produce principalmente cuando los datos externos son interpretados como instrucciones. El **Diseño Inseguro** surge cuando la arquitectura o las reglas de negocio no contemplan adecuadamente escenarios de abuso. La **Configuración de Seguridad Incorrecta** aparece cuando los componentes de una aplicación o infraestructura se despliegan con configuraciones inseguras. La prevención requiere un enfoque integral: **diseño seguro, desarrollo seguro, configuración adecuada, pruebas de seguridad, monitoreo y mantenimiento continuo**.
+> **Conclusión:** la **Inyección** se produce principalmente cuando los datos externos son interpretados como instrucciones. El **Diseño Inseguro** surge cuando la arquitectura o las reglas de negocio no contemplan adecuadamente escenarios de abuso. La **Configuración de Seguridad Incorrecta** aparece cuando los componentes de una aplicación o infraestructura se despliegan con configuraciones inseguras. La prevención requiere un enfoque integral: **diseño seguro, desarrollo seguro, configuración adecuada, pruebas de seguridad, monitoreo y mantenimiento continuo**.
 
 ---
 
-## 6️⃣ A06:2021 — Componentes Vulnerables y Desactualizados
-
-### 🧩 Introducción
-
-Las aplicaciones web modernas rara vez están construidas completamente desde cero. Los desarrolladores utilizan frameworks, librerías, paquetes, servidores, sistemas operativos y otros componentes desarrollados por terceros. Esto permite desarrollar aplicaciones de manera más rápida, pero también introduce riesgos de seguridad.
-
-El riesgo **A06:2021 – Componentes Vulnerables y Desactualizados** ocurre cuando una aplicación utiliza componentes que contienen vulnerabilidades conocidas, se encuentran desactualizados, ya no reciben soporte o no son administrados adecuadamente.
-
-> 💡 Una aplicación puede tener código propio aparentemente seguro y aun así ser vulnerable debido a una dependencia de terceros.
-
-### 🧠 ¿Qué es un componente?
-
-Un componente es una pieza de software que forma parte de una aplicación o de la infraestructura que la soporta: frameworks, librerías, paquetes, APIs, servidores web, sistemas operativos, servidores de aplicaciones, sistemas gestores de bases de datos, plugins, runtimes y otras dependencias de terceros.
-
-```text
-Aplicación Web
-│
-├── Python
-├── Flask
-├── Requests
-├── SQLAlchemy
-├── PostgreSQL
-└── Otras librerías
-```
-
-### 🔗 Dependencias directas y transitivas
-
-**Dependencia directa** — un componente que nuestro proyecto utiliza directamente:
-
-```text
-Mi aplicación
-      │
-      └── Flask
-```
-
-**Dependencia transitiva** — una dependencia utilizada por otro componente que nosotros instalamos:
-
-```text
-Mi aplicación
-      │
-      └── Framework
-             │
-             └── Librería A
-                    │
-                    └── Librería B
-```
-
-> ⚠️ Una vulnerabilidad en una dependencia transitiva también puede afectar nuestra aplicación.
-
-### 🔴 ¿Cuándo tenemos un problema A06?
-
-- Utilizamos una librería con vulnerabilidades conocidas.
-- Utilizamos componentes sin actualizar durante largos periodos.
-- Utilizamos software que ya no recibe soporte.
-- No conocemos las versiones exactas de nuestras dependencias.
-- No analizamos las dependencias de manera periódica.
-- Utilizamos componentes obtenidos de fuentes no confiables.
-- Tenemos dependencias innecesarias o desconocidas (transitivas).
-- No tenemos un inventario de los componentes utilizados.
-
-### 📊 Ejemplo sencillo
-
-```text
-                    🛒 TIENDA WEB
-                         │
-        ┌────────────────┼────────────────┐
-        │                │                │
-      Frontend        Backend          Base de datos
-        │                │                │
-     React/JS          Flask           PostgreSQL
-                         │
-                 ┌───────┴───────┐
-                 │               │
-              Requests       Librería X
-                                 │
-                          ⚠️ Vulnerabilidad
-```
-
-El desarrollador puede no haber escrito la Librería X. Sin embargo, si la aplicación la utiliza directa o indirectamente, puede verse afectada.
-
-### 🕵️ ¿Cómo puede aprovecharlo un atacante?
-
-```text
-        🔴 ATACANTE
-             │
-             ▼
-     Identifica tecnología
-             │
-             ▼
-     Identifica versión
-             │
-             ▼
-     Busca vulnerabilidades
-             │
-             ▼
-      ¿Existe una CVE?
-          /       \
-        Sí         No
-        │           │
-        ▼           ▼
-  Investiga       Busca
-  explotación     otra vía
-```
-
-### 📚 Conceptos importantes: CVE, CWE y CVSS
-
-| Concepto | Significado |
-|---|---|
-| **CVE** (Common Vulnerabilities and Exposures) | Identificador único de una vulnerabilidad específica (p. ej. `CVE-2021-XXXXX`) |
-| **CWE** (Common Weakness Enumeration) | Describe categorías de debilidades de software (p. ej. `CWE-1104 – Use of Unmaintained Third Party Components`) |
-| **CVSS** (Common Vulnerability Scoring System) | Puntuación que expresa la severidad técnica de una vulnerabilidad, combinando explotabilidad e impacto |
-
-### 🔎 Componentes desactualizados y sin mantenimiento
-
-Un componente desactualizado es aquel que utiliza una versión antigua cuando existen versiones posteriores. El hecho de que exista una versión nueva **no significa automáticamente que la versión anterior sea vulnerable**, pero mantener componentes antiguos aumenta el riesgo, especialmente cuando ya no reciben soporte, existen vulnerabilidades conocidas o el fabricante recomienda actualizar.
-
-```mermaid
-flowchart TD
-    A["Nuestra aplicación"] --> B["Framework"]
-    B --> C["Librería HTTP"]
-    C --> D["Librería auxiliar"]
-    D --> E["Componente vulnerable"]
-
-    E --> F["⚠️ Riesgo A06"]
-```
-
-### 🧰 SCA — Software Composition Analysis
-
-Es el análisis de los componentes y dependencias de una aplicación con el objetivo de identificar riesgos, versiones y vulnerabilidades conocidas.
-
-```text
-              📦 PROYECTO
-                   │
-                   ▼
-             Analizador SCA
-                   │
-          ┌────────┼────────┐
-          ▼        ▼        ▼
-      Librería A Librería B Librería C
-          │        │        │
-          ▼        ▼        ▼
-        CVE?     CVE?      CVE?
-          │        │        │
-          └────────┼────────┘
-                   ▼
-              📊 Reporte
-```
-
-### 🛠️ Herramientas relacionadas
-
-| Herramienta | Utilización |
-|---|---|
-| **OWASP Dependency-Check** | Analiza dependencias y busca vulnerabilidades conocidas |
-| **npm audit** | Analiza vulnerabilidades en proyectos Node.js (`npm audit`) |
-| **pip-audit** | Analiza dependencias de proyectos Python (`pip-audit`) |
-| **Dependabot** | Detecta dependencias vulnerables y propone actualizaciones en GitHub |
-
-### 📦 SBOM — Software Bill of Materials
-
-Una SBOM es la "lista de ingredientes" de un software: qué componentes forman parte de un producto.
-
-```text
-Aplicación: TiendaWeb
-│
-├── Python
-├── Flask
-├── Requests
-├── SQLAlchemy
-├── PostgreSQL Driver
-└── Otras dependencias
-```
-
-### 🔄 Ciclo de gestión de dependencias
-
-```mermaid
-flowchart LR
-    A["📋 Inventariar"] --> B["🔎 Analizar"]
-    B --> C["⚠️ Identificar vulnerabilidades"]
-    C --> D["📊 Evaluar riesgo"]
-    D --> E["🔄 Actualizar"]
-    E --> F["🧪 Probar"]
-    F --> G["🚀 Desplegar"]
-    G --> A
-```
-
-### 🧪 Laboratorio propuesto — A06
-
-**Objetivo:** identificar, analizar y corregir vulnerabilidades relacionadas con dependencias de terceros.
-
-1. Crear el proyecto: `mkdir laboratorio-a06 && cd laboratorio-a06`
-2. Crear entorno virtual: `python -m venv venv` (activar con `venv\Scripts\activate` en Windows)
-3. Crear `requirements.txt` con, por ejemplo, `Flask` y `requests`
-4. Instalar dependencias: `pip install -r requirements.txt`
-5. Ejecutar auditoría: `pip-audit`
-6. Registrar dependencia, versión instalada, vulnerabilidad, severidad, versión corregida y acción recomendada
-7. Actualizar las dependencias afectadas: `pip install --upgrade nombre-paquete`
-8. Ejecutar `pip-audit` nuevamente y comparar resultados antes/después
-
-### 🔐 A06 dentro de DevSecOps
-
-```mermaid
-flowchart LR
-    A["👨‍💻 Desarrollo"] --> B["📦 Dependencias"]
-    B --> C["🔎 SCA"]
-    C --> D{"¿Vulnerabilidad?"}
-    D -->|No| E["✅ Continuar"]
-    D -->|Sí| F["⚠️ Corregir"]
-    F --> G["🧪 Pruebas"]
-    G --> E
-    E --> H["🚀 Deploy"]
-```
-
-### 🛡️ ¿Cómo prevenir A06?
-
-- Mantener un inventario de componentes y conocer las versiones utilizadas.
-- Analizar dependencias periódicamente con herramientas SCA.
-- Mantener las dependencias actualizadas y eliminar las innecesarias.
-- Evitar componentes sin mantenimiento y utilizar fuentes confiables.
-- Revisar dependencias transitivas.
-- Implementar análisis de dependencias dentro del CI/CD.
-- Mantener una SBOM cuando sea apropiado.
-- Establecer procesos para responder ante nuevas vulnerabilidades.
-
-> 🔑 **La primera medida de seguridad para nuestras dependencias es saber exactamente qué tenemos instalado.**
-
----
-
-## 7️⃣ A07:2021 — Fallas de Identificación y Autenticación
+## 7️⃣ A07:2025 — Fallas de Autenticación
 
 ### 🔐 Introducción
 
 Una aplicación web necesita saber quién está intentando acceder a ella y comprobar que realmente es quien dice ser. Cuando estos mecanismos están mal diseñados o implementados pueden aparecer vulnerabilidades relacionadas con la identificación, autenticación y gestión de sesiones.
+
+Esta categoría **se mantiene en el puesto #7**, aunque cambia ligeramente de nombre: antes era *"Identification and Authentication Failures"* y ahora se llama simplemente **"Authentication Failures"**, para reflejar con más precisión las **36 CWE** agrupadas en ella. OWASP observa que el uso creciente de frameworks estandarizados de autenticación (OAuth, OIDC, librerías maduras de manejo de sesiones) parece estar reduciendo, de forma general, la ocurrencia de este tipo de fallas.
 
 > 💡 En términos sencillos: A07 ocurre cuando una aplicación no comprueba correctamente quién es el usuario o permite que un atacante pueda hacerse pasar por él.
 
@@ -789,7 +729,7 @@ AUTENTICACIÓN  → "Esta es mi tarjeta de identificación"
 AUTORIZACIÓN   → "Mi tarjeta me permite entrar a esta área"
 ```
 
-Estar autenticado **no significa tener acceso a todo**.
+Estar autenticado **no significa tener acceso a todo** (eso corresponde a A01 — Control de Acceso).
 
 ### 🔴 ¿Qué es A07?
 
@@ -1027,18 +967,6 @@ flowchart TD
 - **Burp Suite** — observación y análisis de solicitudes HTTP/HTTPS autorizadas.
 - **DevTools** — inspección de cookies, headers, solicitudes, respuestas y almacenamiento.
 
-### 🧩 A07 y DevSecOps
-
-```mermaid
-flowchart LR
-    A["📋 Requisitos"] --> B["👨‍💻 Desarrollo"]
-    B --> C["🧪 Pruebas"]
-    C --> D["🔐 Seguridad"]
-    D --> E["🚀 Despliegue"]
-    E --> F["📊 Monitoreo"]
-    F --> A
-```
-
 ### 📊 Matriz de vulnerabilidades A07
 
 | Vulnerabilidad | Ejemplo | Impacto |
@@ -1061,44 +989,21 @@ flowchart LR
 - **Protección contra automatización:** rate limiting, control de intentos, monitoreo, detección de anomalías.
 - **Sesiones:** identificadores impredecibles, regeneración post-login, expiración, invalidación al cerrar sesión, cookies protegidas, HTTPS.
 - **Recuperación de cuentas:** mecanismos temporales, tokens aleatorios con expiración, sin preguntas de seguridad débiles.
-
-### 🔗 Relación entre A07 y otros riesgos OWASP
-
-```mermaid
-flowchart TD
-    A["A07 - Autenticación"] --> B["Credenciales"]
-    A --> C["Sesiones"]
-    A --> D["MFA"]
-
-    B --> E["A02 - Cryptographic Failures"]
-    C --> F["Gestión de sesiones"]
-    D --> G["Control de acceso"]
-```
-
-### 🧠 Ejemplo completo (aplicación bancaria)
-
-```text
-1. Introduce usuario → 2. Introduce contraseña → 3. Verifica contraseña
-→ 4. Solicita MFA → 5. Proporciona segundo factor → 6. Crea sesión → 7. Accede a su cuenta
-```
-
-**Implementación insegura:** contraseña débil, texto plano, sin MFA, sin límite de intentos, sesión permanente, cookie sin protección, sin invalidación al cerrar sesión.
-
-**Implementación segura:** contraseña protegida, MFA, rate limiting, sesión segura con expiración, cookies protegidas, HTTPS, invalidación al cerrar sesión, monitoreo.
+- **Frameworks estandarizados:** preferir librerías y frameworks de autenticación maduros (OAuth 2.0, OIDC) en lugar de implementaciones propias.
 
 > 🔑 **Una contraseña correcta no es suficiente para considerar segura una autenticación. La seguridad debe proteger todo el ciclo de vida de la identidad y la sesión.**
 
 ---
 
-## 8️⃣ A08:2021 — Fallas de Integridad de Software y Datos
+## 8️⃣ A08:2025 — Fallas de Integridad de Software o Datos
 
 ### 🧩 Introducción
 
-Cuando hablamos de A06 vimos que una aplicación puede depender de componentes de terceros vulnerables. A08 va un paso más allá: no se trata solo de si un componente tiene una vulnerabilidad conocida, sino de si tenemos alguna forma de verificar que el código, las actualizaciones o los datos que estamos usando realmente vienen de donde creemos que vienen y no fueron alterados en el camino.
+Cuando hablamos de A03 vimos que una aplicación puede depender de una cadena de suministro comprometida. A08 va un paso más específico: no se trata solo de si un componente o pipeline fue comprometido, sino de si a **nivel de código, archivo u objeto de datos individual** tenemos alguna forma de verificar que lo que estamos usando realmente viene de donde creemos que viene y no fue alterado en el camino.
 
-El riesgo **A08:2021 – Software and Data Integrity Failures** se relaciona con código e infraestructura que no protege contra violaciones de integridad, es decir, situaciones donde se asume que algo es confiable sin haberlo comprobado realmente.
+El riesgo **A08:2025 – Software or Data Integrity Failures** **se mantiene en el puesto #8** de la lista, y OWASP la distingue explícitamente de A03 (Cadena de Suministro): esta categoría se enfoca en fallar en mantener límites de confianza (*trust boundaries*) y verificar la integridad de artefactos de software, código y datos a un nivel más bajo o puntual, mientras que A03 abarca el ecosistema completo (dependencias, builds, pipelines, distribución).
 
-> 💡 En términos sencillos: A08 ocurre cuando una aplicación confía "a ciegas" en un archivo, una actualización o un objeto de datos, sin verificar su procedencia ni su integridad.
+> 💡 En términos sencillos: A08 ocurre cuando una aplicación confía "a ciegas" en un archivo, una actualización o un objeto de datos puntual, sin verificar su procedencia ni su integridad — mientras que A03 se enfoca en que toda la cadena que produjo ese artefacto sea confiable.
 
 ### 🧠 ¿Qué significa "integridad" aquí?
 
@@ -1114,12 +1019,11 @@ Confidencialidad   Integridad   Disponibilidad
 - **Integridad:** que la información no haya sido alterada sin autorización.
 - **Disponibilidad:** que la información esté accesible cuando se necesita.
 
-A08 se enfoca en el segundo pilar, tanto de software (código, paquetes, actualizaciones, pipelines) como de datos (objetos serializados, cookies, tokens).
+A08 se enfoca en el segundo pilar, tanto de software (código, paquetes, actualizaciones) como de datos (objetos serializados, cookies, tokens).
 
 ### 🔴 ¿Cuándo aparece A08?
 
 - Utilizamos plugins, librerías o contenido servido desde un CDN sin verificar su integridad.
-- Un pipeline CI/CD no valida que el código que despliega proviene realmente del repositorio autorizado.
 - Una aplicación implementa actualizaciones automáticas sin verificar la firma del paquete.
 - Se deserializan objetos que provienen del cliente sin comprobar que no fueron manipulados.
 - Se confía en cookies o parámetros para tomar decisiones de seguridad sin validarlos en el servidor.
@@ -1140,8 +1044,6 @@ Verificación   Sin verificación
  ✅ Seguro     ⚠️ Riesgo de A08
 ```
 
-Si el pipeline no verifica de dónde viene el código o el artefacto que va a desplegar, un atacante que logre insertarse en cualquier punto de esa cadena puede hacer que su código termine ejecutándose en producción, sin que nadie lo note hasta que sea demasiado tarde.
-
 ### 🕵️ Deserialización insegura
 
 ```text
@@ -1159,25 +1061,22 @@ Si el servidor no valida el contenido antes de reconstruir el objeto, un atacant
 ### 💥 Ejemplos de escenarios reales
 
 - **Actualización sin firma:** un dispositivo (router, decodificador, IoT) descarga actualizaciones de firmware sin verificar una firma digital; un atacante que intercepta o suplanta el servidor de actualizaciones puede distribuir una versión maliciosa.
-- **Dependencia fuera del gestor oficial:** un desarrollador descarga un paquete desde un sitio externo no firmado ni verificado, que puede contener código malicioso.
-- **CI/CD comprometido:** casos como el ataque a la cadena de suministro de SolarWinds muestran cómo comprometer una sola herramienta del pipeline permite distribuir código malicioso a miles de organizaciones.
+- **Objeto de datos manipulado:** una aplicación confía en una cookie o token serializado sin verificar su firma, permitiendo que un atacante modifique su contenido para escalar privilegios.
 
 ### 🛠️ Herramientas relacionadas
 
 | Herramienta | Utilización |
 |---|---|
 | **Cosign / Sigstore** | Firma y verificación de artefactos e imágenes de contenedores |
-| **OWASP Dependency-Check** | Verificación de integridad de dependencias |
 | **GPG** | Firma y verificación de paquetes y commits |
 | **Escáneres de deserialización (Java)** | Identificación de puntos vulnerables a deserialización insegura |
 
 ### 🛡️ ¿Cómo prevenir A08?
 
 - Utilizar firmas digitales para verificar que el software o los datos provienen de la fuente esperada.
-- Asegurarse de que las dependencias solo se consuman desde repositorios de confianza.
 - Establecer revisión de código y de configuración antes de fusionar cambios.
-- Proteger el pipeline CI/CD con control de acceso y segregación adecuados.
 - No deserializar datos no confiables sin verificación de integridad o firma digital.
+- Validar en el servidor cualquier dato proveniente del cliente que se use para tomar decisiones de seguridad.
 
 ### 🧪 Laboratorio propuesto — A08
 
@@ -1197,17 +1096,17 @@ A08 nos recuerda que no basta con que un componente exista o funcione correctame
 
 ---
 
-## 9️⃣ A09:2021 — Fallas de Registro y Monitoreo de Seguridad
+## 9️⃣ A09:2025 — Fallas de Registro y Alertamiento de Seguridad
 
 ### 🧩 Introducción
 
 Hasta ahora hemos analizado vulnerabilidades que un atacante puede explotar directamente. A09 es distinto: no es una falla que se "ataque" en sí misma, sino una falla que permite que todo lo demás pase desapercibido.
 
-El riesgo **A09:2021 – Security Logging and Monitoring Failures** se refiere a la incapacidad de una aplicación u organización para detectar, registrar y responder ante actividad sospechosa o incidentes de seguridad.
+El riesgo **A09:2025 – Security Logging & Alerting Failures** **se mantiene en el puesto #9**, con un cambio de nombre respecto a 2021: antes se llamaba *"Security Logging and Monitoring Failures"*, y ahora enfatiza explícitamente la palabra **"Alerting" (alertamiento)**, porque tener un excelente registro de eventos sin ningún mecanismo de alerta tiene un valor mínimo a la hora de identificar incidentes de seguridad a tiempo. Al igual que en 2021, esta categoría suele estar subrepresentada en los datos automatizados y fue nuevamente incluida gracias a la encuesta de la comunidad.
 
-> 💡 En términos sencillos: A09 ocurre cuando "las luces están apagadas" — un atacante puede estar operando dentro del sistema y nadie se entera.
+> 💡 En términos sencillos: A09 ocurre cuando "las luces están apagadas" — un atacante puede estar operando dentro del sistema y nadie se entera, ya sea porque no se registró el evento o porque, aunque se registró, nadie fue alertado.
 
-### 🧠 ¿Por qué es tan importante el registro?
+### 🧠 ¿Por qué es tan importante el registro y el alertamiento?
 
 ```text
 Ataque en curso
@@ -1218,13 +1117,15 @@ Ataque en curso
   Sí            No
   │              │
   ▼              ▼
-Detección      ⚠️ Persistencia
-  │              │
-  ▼              ▼
-Respuesta      Sin respuesta
+¿Existe alerta?  ⚠️ Persistencia
+  /      \          │
+Sí        No        │
+│          │         │
+▼          ▼         ▼
+Respuesta  Sin respuesta a tiempo
 ```
 
-Sin registro (logging) y monitoreo, los ataques no pueden detectarse. Y sin alertas, aunque exista registro, nadie reacciona a tiempo. Por eso esta categoría abarca tres capas relacionadas: registrar, monitorear y alertar.
+Sin registro (logging) los ataques no pueden detectarse. Y sin **alertamiento**, aunque exista registro, nadie reacciona a tiempo. Por eso esta categoría abarca tres capas relacionadas: registrar, monitorear y **alertar activamente**.
 
 ### 🔴 ¿Cuándo tenemos un problema A09?
 
@@ -1234,6 +1135,7 @@ Sin registro (logging) y monitoreo, los ataques no pueden detectarse. Y sin aler
 - No existen umbrales de alerta ni procesos de escalamiento.
 - Hay tantos falsos positivos que las alertas reales se pierden entre el ruido.
 - Se registra información sensible (contraseñas, datos personales) dentro de los propios logs.
+- Existen registros completos y correctos, pero **ningún mecanismo automatizado dispara una alerta** cuando ocurre un evento anómalo.
 
 ### 📊 Ejemplo sencillo
 
@@ -1242,7 +1144,8 @@ Sin registro (logging) y monitoreo, los ataques no pueden detectarse. Y sin aler
         │
    ┌────┴────┐
    ▼         ▼
-Con logging   Sin logging
+Con logging Y   Sin logging o
+alertamiento    sin alertamiento
    │             │
    ▼             ▼
 Detecta el      Brecha pasa
@@ -1256,7 +1159,7 @@ minutos/horas   durante meses/años
 - **Brecha en un proveedor externo:** una aerolínea sufrió la exposición de más de una década de datos personales de pasajeros, originada en un proveedor externo de hosting en la nube que tardó en notificar el incidente.
 - **Ataques a sistemas de pago sin alerta oportuna:** una aerolínea europea sufrió el robo de cientos de miles de registros de pago, derivando en una sanción millonaria por no detectar ni reportar la brecha a tiempo.
 
-### 🔍 ¿Qué debería registrarse?
+### 🔍 ¿Qué debería registrarse y alertarse?
 
 ```text
 Evento
@@ -1282,146 +1185,148 @@ Evento
 
 - Registrar todos los eventos relevantes con suficiente contexto (usuario, IP, acción, resultado).
 - Proteger la integridad de los registros contra manipulación (p. ej. almacenamiento append-only).
-- Definir umbrales de alerta y manuales de procedimiento (*playbooks*) para el equipo de respuesta.
+- Definir umbrales de alerta y manuales de procedimiento (*playbooks*) para el equipo de respuesta, no solo generar el log.
 - Usar **honeytokens**: datos señuelo que nunca deberían usarse en operación normal, de modo que cualquier acceso a ellos dispare una alerta confiable.
 - Adoptar un plan formal de respuesta a incidentes (p. ej. basado en NIST SP 800-61).
+- Reducir los falsos positivos para que las alertas reales no se pierdan en el ruido.
 
 ### 🧪 Laboratorio propuesto — A09
 
-**Objetivo:** configurar un registro básico de eventos de autenticación y observar cómo permite detectar un patrón de ataque.
+**Objetivo:** configurar un registro básico de eventos de autenticación, definir un umbral de alerta y observar cómo permite detectar un patrón de ataque.
 
 1. Retomar la aplicación de login del laboratorio A07.
 2. Agregar registro de cada intento (éxito/fallo, usuario, IP, hora).
 3. Simular varios intentos fallidos consecutivos.
 4. Revisar el archivo/registro generado.
 5. Identificar visualmente el patrón de ataque.
-6. Proponer un umbral de alerta (p. ej. 5 fallos en 1 minuto).
+6. Proponer y **configurar un umbral de alerta real** (p. ej. 5 fallos en 1 minuto → notificación automática).
 
 ### 🎯 Conclusión A09
 
-A09 nos enseña que la seguridad no termina en prevenir un ataque: también debemos poder verlo cuando ocurre. Una aplicación puede tener excelentes controles preventivos y, aun así, quedar expuesta durante años si nadie está observando lo que sucede dentro de ella.
+A09 nos enseña que la seguridad no termina en prevenir un ataque, ni siquiera en registrarlo: también debemos poder **enterarnos activamente** cuando ocurre. Una aplicación puede tener excelentes controles preventivos y registros completos y, aun así, quedar expuesta durante años si nadie recibe una alerta sobre lo que sucede dentro de ella.
 
 ---
 
-## 🔟 A10:2021 — Server-Side Request Forgery (SSRF)
+## 🔟 A10:2025 — Manejo Inadecuado de Condiciones Excepcionales (NUEVA)
 
-### 🧩 Introducción
+### 🆕 ¿Por qué es una categoría nueva?
 
-Muchas aplicaciones modernas necesitan pedirle a otro servidor que "vaya a buscar algo" en su nombre: descargar una imagen desde una URL, consultar un webhook, generar una vista previa de un enlace, etc. El riesgo **A10:2021 – Server-Side Request Forgery (SSRF)** aparece cuando esta funcionalidad no valida correctamente la URL proporcionada por el usuario, permitiendo que el servidor haga solicitudes hacia destinos que no debería alcanzar.
+**A10:2025 – Mishandling of Exceptional Conditions** es una categoría completamente nueva en esta edición, con **24 CWE** asociadas. Cubre errores de manejo de excepciones, errores lógicos, mecanismos de **"fail open"** (donde un sistema, ante un fallo, termina permitiendo acceso o continuando de forma insegura en vez de bloquear) y otros escenarios que surgen cuando la aplicación se enfrenta a condiciones anómalas que no supo manejar correctamente.
 
-> 💡 En términos sencillos: SSRF ocurre cuando conseguimos que el propio servidor haga una petición por nosotros, hacia donde nosotros queramos.
+> 💡 En términos sencillos: A10 ocurre cuando algo sale mal —una excepción, un error, un tercero no disponible, una condición de carrera— y en vez de fallar de forma segura, la aplicación reacciona de una manera que termina beneficiando a un atacante.
 
-### 🧠 Solicitud legítima vs. explotada
-
-**Solicitud normal (legítima):**
+### 🧠 ¿Qué cubre esta categoría?
 
 ```text
-Usuario → Aplicación → (URL proporcionada por el usuario)
-Servidor realiza la solicitud → Recurso externo legítimo
+                CONDICIÓN EXCEPCIONAL
+                        │
+        ┌───────────────┼───────────────┐
+        ▼                ▼               ▼
+  Manejo de errores   Errores lógicos   "Fail open"
+  (excepciones no      (validaciones     (el sistema falla
+   controladas,         incompletas,      hacia el estado
+   mensajes filtrados)  race conditions)  menos seguro)
 ```
 
-**Explotación:** el problema aparece cuando el atacante puede controlar total o parcialmente esa URL y el servidor no valida hacia dónde puede o no puede apuntar.
+- **Manejo de excepciones deficiente:** una excepción no controlada revela detalles internos (stack traces, rutas de archivos, versiones de librerías) o deja el sistema en un estado inconsistente.
+- **Errores lógicos:** condiciones de carrera (*race conditions*), validaciones que se omiten en ciertos flujos de ejecución poco comunes, o estados intermedios mal definidos.
+- **"Fail open" vs. "fail closed":** cuando ante un error (por ejemplo, un servicio de autorización que no responde) el sistema decide *permitir* la operación en lugar de *denegarla* por defecto.
+- **Dependencias externas no disponibles:** una aplicación que, al no poder contactar un servicio externo crítico (por ejemplo, un servicio de verificación de fraude), continúa el proceso como si todo estuviera correcto.
+
+### 🔴 ¿Cuándo aparece A10?
+
+- El código captura excepciones genéricas y continúa la ejecución sin evaluar si es seguro hacerlo.
+- Los mensajes de error expuestos al usuario final incluyen información técnica sensible.
+- Existen condiciones de carrera en operaciones críticas (por ejemplo, verificación de saldo y descuento del mismo no son atómicos).
+- Un mecanismo de seguridad (autenticación, autorización, límite de intentos) fallando internamente termina "abriendo la puerta" en lugar de bloquear el acceso.
+- No se contempla el comportamiento de la aplicación ante timeouts, servicios caídos o respuestas inesperadas de terceros.
+
+### 💥 Ejemplos
+
+**Ejemplo 1 — Fail open en autorización.**
 
 ```text
-Atacante → URL manipulada → Aplicación → Servidor realiza la solicitud
-   │
-   ┌───────────────┬───────────────┐
-   ▼               ▼               ▼
-Recurso externo  Red interna   Metadata cloud
- (esperado)      (no debería)  (no debería)
+Solicitud → Servicio de autorización
+                  │
+          ┌───────┴───────┐
+          ▼               ▼
+      Responde OK     No responde / error
+          │               │
+          ▼               ▼
+   Verificar permiso   ⚠️ ¿Se permite igual
+                          por diseño ("fail open")?
 ```
 
-El servidor, al estar dentro de la red interna de la organización, puede alcanzar recursos que el atacante nunca podría contactar directamente desde internet.
+Si el diseño decide continuar y otorgar acceso cuando el servicio de autorización falla, un atacante que logre provocar ese fallo (por ejemplo, saturando el servicio) puede obtener acceso no autorizado.
 
-### 💥 Ejemplos de explotación
+**Ejemplo 2 — Condición de carrera en un proceso de pago.** Dos solicitudes casi simultáneas de "canjear un mismo cupón" o "retirar fondos" pueden pasar la validación al mismo tiempo si la operación de verificar-y-descontar no es atómica, permitiendo un doble uso del recurso.
 
-- **Acceso a servicios internos:** una funcionalidad de "importar imagen desde internet" permite ingresar `http://localhost:8080/admin` o una IP interna, logrando que el servidor consulte paneles administrativos u otros servicios internos no expuestos públicamente.
-- **Robo de credenciales de metadatos cloud:** en entornos como AWS, cada instancia tiene un servicio interno de metadatos en `http://169.254.169.254/`. Si una aplicación vulnerable a SSRF permite apuntar hacia esa dirección, un atacante puede obtener credenciales temporales de la instancia.
-- **Escaneo de puertos internos:** un atacante puede usar la funcionalidad vulnerable para probar sistemáticamente distintas IPs y puertos internos, observando diferencias en tiempos de respuesta o mensajes de error, mapeando así la red interna.
+**Ejemplo 3 — Mensaje de error detallado.** Una excepción no controlada en producción devuelve al usuario un stack trace completo con nombres de clases internas, rutas del sistema de archivos y, en algunos casos, fragmentos de consultas SQL.
 
-```text
-Atacante
-   │
-   ▼
-Prueba 10.0.0.1:22
-Prueba 10.0.0.1:80
-Prueba 10.0.0.1:3306
-   │
-   ▼
-Diferencias en respuesta
-   │
-   ▼
-📊 Mapa de la red interna
-```
+### ⚠️ Impacto
 
-### 🔍 Puntos frecuentes donde aparece SSRF
+| Escenario | Posible consecuencia |
+| --- | --- |
+| Fail open en autenticación/autorización | Acceso no autorizado |
+| Condición de carrera en transacciones | Fraude, doble gasto |
+| Excepciones no controladas | Divulgación de información interna |
+| Dependencias externas caídas mal manejadas | Bypass de controles de seguridad |
+| Estados inconsistentes | Corrupción de datos |
 
-- Funciones de "vista previa de URL" o "importar desde una URL".
-- Webhooks configurables por el usuario.
-- Procesamiento de documentos (PDF, XML) que pueden referenciar recursos externos.
-- Integraciones que descargan archivos remotos (avatares, adjuntos).
-- Funcionalidades de renderizado de páginas (capturas de pantalla, generación de PDF).
-
-### 🛠️ Herramientas utilizadas
+### 🛠️ Herramientas relacionadas
 
 | Herramienta | Utilización |
 |---|---|
-| **Burp Suite** | Interceptar y modificar solicitudes que contienen URLs |
-| **SSRFmap** | Automatización de pruebas de SSRF |
-| **Servicios de "callback"** (Burp Collaborator y similares) | Confirmar si el servidor realizó realmente la solicitud |
-| **Nmap** (indirectamente, desde el servidor vulnerable) | Escaneo de red interna aprovechando el SSRF |
+| **Burp Suite / OWASP ZAP** | Provocar errores y condiciones límite mediante solicitudes manipuladas |
+| **Herramientas de fuzzing** | Enviar entradas inesperadas para forzar excepciones no controladas |
+| **Herramientas de pruebas de concurrencia** | Detectar condiciones de carrera en operaciones críticas |
+| **Chaos engineering** (p. ej. simulación de caída de dependencias) | Validar el comportamiento ante servicios externos no disponibles |
 
-> ⚠️ Estas herramientas deben utilizarse únicamente en sistemas propios, laboratorios o infraestructuras con autorización explícita.
+### 🛡️ ¿Cómo prevenir A10?
 
-### 🛡️ ¿Cómo prevenir SSRF?
+- Diseñar explícitamente el comportamiento de "fail closed" (denegar por defecto) para cualquier mecanismo de seguridad, no solo el "happy path".
+- Manejar las excepciones de forma específica, evitando capturas genéricas que oculten el verdadero problema.
+- No exponer detalles técnicos internos en los mensajes de error mostrados al usuario final.
+- Diseñar operaciones críticas (pagos, canjes, descuentos de inventario) como transacciones atómicas.
+- Definir y probar explícitamente el comportamiento de la aplicación ante timeouts y caídas de servicios externos.
+- Incluir pruebas de condiciones límite y de manejo de errores dentro del ciclo de pruebas de seguridad, no solo pruebas funcionales del camino esperado.
 
-- Validar y sanear todos los datos proporcionados por el cliente, incluyendo URLs.
-- Aplicar una lista blanca (*allowlist*) de dominios o direcciones permitidas, en lugar de intentar bloquear los peligrosos (*blocklist*).
-- Bloquear rangos de IP privadas (`10.x`, `172.16.x`, `169.254.x`, `127.x`) y direcciones de loopback en las solicitudes salientes del servidor.
-- Deshabilitar esquemas de URL innecesarios (`file://`, `gopher://`, `dict://`).
-- Usar mecanismos como IMDSv2 en AWS para dificultar el abuso del servicio de metadatos.
-- Segmentar de red los servicios que realizan solicitudes hacia internet, separándolos de los sistemas internos críticos.
-- No devolver directamente al usuario la respuesta cruda de la solicitud realizada por el servidor.
+### 🧪 Laboratorio propuesto — A10
 
-### 🧪 Laboratorio propuesto — A10 (SSRF)
+**Objetivo:** comprender de forma práctica el concepto de "fail open" frente a "fail closed" en un mecanismo de autorización.
 
-**Objetivo:** comprender el concepto de SSRF mediante un entorno local y controlado.
-
-1. Crear un servicio interno de prueba (p. ej. servidor Flask en `localhost:9000`) que muestre un mensaje "Acceso interno".
-2. Crear una aplicación que reciba una URL y descargue su contenido.
-3. Probar con una URL externa legítima (comportamiento esperado).
-4. Probar apuntando a `http://localhost:9000` (comportamiento vulnerable).
-5. Documentar la diferencia de comportamiento.
-6. Implementar una validación con lista blanca de dominios.
-7. Repetir la prueba y confirmar que el acceso interno ya no es posible.
+1. Crear un endpoint simple que consulte un servicio de autorización simulado.
+2. Implementar una primera versión donde, ante un error del servicio de autorización, la solicitud se **permite** por defecto (fail open).
+3. Forzar el fallo del servicio de autorización (apagarlo o simular un timeout) y observar que el acceso se otorga igualmente.
+4. Modificar el código para que, ante cualquier error, la solicitud se **deniegue** por defecto (fail closed).
+5. Repetir la prueba y confirmar que el acceso ya no se otorga cuando el servicio de autorización falla.
 
 ### 🎯 Conclusión A10
 
-SSRF es un buen recordatorio de que el servidor también es un usuario de la red, y como tal, puede ser engañado para actuar en nombre de un atacante. Cualquier funcionalidad que reciba una URL o dirección proporcionada externamente y la use para realizar una solicitud debe tratarse con el mismo cuidado que cualquier otra entrada no confiable.
+A10 recuerda que la seguridad de una aplicación no solo depende de cómo se comporta en su flujo normal ("happy path"), sino de cómo reacciona cuando algo sale mal. Un sistema que solo es seguro cuando todo funciona correctamente, y que se abre ante el primer error o condición inesperada, sigue siendo un sistema inseguro.
 
 ---
 
 ## 🏁 Conclusión general
 
-El estudio conjunto de las diez categorías del OWASP Top 10:2021 permite comprender que la seguridad de una aplicación web no depende de un único control, sino de la combinación de múltiples capas de defensa a lo largo de todo el ciclo de vida del software.
+El estudio conjunto de las diez categorías del OWASP Top 10:2025 permite comprender que la seguridad de una aplicación web no depende de un único control, sino de la combinación de múltiples capas de defensa a lo largo de todo el ciclo de vida del software.
 
 ```text
-🔒 A01 — Control de acceso        ¿Quién puede hacer qué?
-🔑 A02 — Criptografía              ¿Protegemos la información?
-💉 A03 — Inyección                 ¿Separamos datos de código?
-🏗️ A04 — Diseño inseguro            ¿La arquitectura contempla el abuso?
-⚙️ A05 — Configuración incorrecta  ¿Está bien configurado el sistema?
-📦 A06 — Componentes vulnerables   ¿Confiamos en terceros sin verificar?
-🔐 A07 — Autenticación             ¿Protegemos identidades y sesiones?
-📦 A08 — Integridad                ¿Podemos confiar en lo que ejecutamos?
-📊 A09 — Registro y monitoreo      ¿Nos damos cuenta si algo sale mal?
-🌐 A10 — SSRF                      ¿Puede el atacante usar a nuestro servidor
-                                      como intermediario?
+🔒 A01 — Control de Acceso (+SSRF)     ¿Quién puede hacer qué, y hacia dónde?
+⚙️ A02 — Configuración Incorrecta       ¿Está bien configurado el sistema?
+🏭 A03 — Cadena de Suministro (NUEVA)   ¿Confiamos en todo el ecosistema sin verificar?
+🔑 A04 — Fallos Criptográficos          ¿Protegemos la información?
+💉 A05 — Inyección                      ¿Separamos datos de código?
+🏗️ A06 — Diseño Inseguro                 ¿La arquitectura contempla el abuso?
+🔐 A07 — Fallas de Autenticación        ¿Protegemos identidades y sesiones?
+📦 A08 — Integridad de SW/Datos         ¿Podemos confiar en lo que ejecutamos?
+📊 A09 — Registro y Alertamiento        ¿Nos enteramos activamente si algo sale mal?
+⚡ A10 — Condiciones Excepcionales (NUEVA) ¿Qué pasa cuando algo falla?
 ```
 
-Las categorías **A01** y **A02** muestran que fallar en decidir *quién puede hacer qué* y fallar en *proteger la información* suelen presentarse combinados en ataques reales. **A03**, **A04** y **A05** demuestran que un mismo sistema puede fallar en distintas etapas: desarrollo (inyección), diseño (arquitectura y lógica de negocio) e implementación/despliegue (configuración). **A06** y **A07** recuerdan que también debemos gestionar los componentes de terceros que usamos y proteger adecuadamente las identidades y sesiones de los usuarios. Finalmente, **A08**, **A09** y **A10** cierran el ciclo abordando aspectos que suelen quedar en segundo plano frente a vulnerabilidades más "vistosas", pero igual de críticos: verificar el origen y la integridad de lo que ejecutamos, poder detectar y responder ante un ataque, y evitar que el propio servidor sea utilizado como intermediario hacia la red interna.
+Las categorías **A01** (que ahora incluye SSRF) y **A04** muestran que fallar en decidir *quién puede hacer qué —y hacia dónde puede apuntar el servidor—* y fallar en *proteger la información* suelen presentarse combinados en ataques reales. **A02**, **A05** y **A06** demuestran que un mismo sistema puede fallar en distintas etapas: implementación/despliegue (configuración), desarrollo (inyección) y diseño (arquitectura y lógica de negocio). **A03** amplía la vieja preocupación por "componentes vulnerables" a todo el ecosistema de la cadena de suministro, mientras que **A07** recuerda que también debemos proteger adecuadamente las identidades y sesiones de los usuarios. Finalmente, **A08**, **A09** y **A10** cierran el ciclo abordando aspectos que suelen quedar en segundo plano frente a vulnerabilidades más "vistosas", pero igual de críticos: verificar el origen y la integridad puntual de lo que ejecutamos, poder **detectar y ser alertados** ante un ataque, y asegurarnos de que el sistema falle de forma segura cuando algo sale mal.
 
-> 🔑 **La seguridad de una aplicación no depende de un único control, sino de la combinación de principios como mínimo privilegio, defensa en profundidad, validación del lado del servidor, parametrización, hardening, integridad, visibilidad y validación estricta de cada dato que proviene del exterior — incluyendo aquellos que parecen tan simples como una URL.**
+> 🔑 **La seguridad de una aplicación no depende de un único control, sino de la combinación de principios como mínimo privilegio, defensa en profundidad, validación del lado del servidor, parametrización, hardening, integridad de la cadena de suministro, visibilidad con alertamiento activo, manejo seguro de errores y validación estricta de cada dato que proviene del exterior — incluyendo aquellos que parecen tan simples como una URL.**
 
 ---
 
@@ -1429,16 +1334,18 @@ Las categorías **A01** y **A02** muestran que fallar en decidir *quién puede h
 
 **OWASP Foundation**
 
-- OWASP Top 10:2021 — <https://owasp.org/Top10/2021/>
-- OWASP Top Ten Web Application Security Risks — <https://owasp.org/www-project-top-ten/>
-- A03:2021 – Injection — <https://owasp.org/Top10/2021/A03_2021-Injection/>
-- A04:2021 – Insecure Design — <https://owasp.org/Top10/2021/A04_2021-Insecure_Design/>
-- A05:2021 – Security Misconfiguration — <https://owasp.org/Top10/2021/A05_2021-Security_Misconfiguration/>
-- A06:2021 – Componentes Vulnerables y Desactualizados
-- A07:2021 – Identification and Authentication Failures
-- A08:2021 – Software and Data Integrity Failures
-- A09:2021 – Security Logging and Monitoring Failures
-- A10:2021 – Server-Side Request Forgery (SSRF)
+- OWASP Top 10:2025 (edición vigente) — <https://owasp.org/Top10/2025/>
+- A01:2025 – Broken Access Control — <https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/>
+- A02:2025 – Security Misconfiguration — <https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/>
+- A03:2025 – Software Supply Chain Failures — <https://owasp.org/Top10/2025/A03_2025-Software_Supply_Chain_Failures/>
+- A04:2025 – Cryptographic Failures — <https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/>
+- A05:2025 – Injection — <https://owasp.org/Top10/2025/A05_2025-Injection/>
+- A06:2025 – Insecure Design — <https://owasp.org/Top10/2025/A06_2025-Insecure_Design/>
+- A07:2025 – Authentication Failures — <https://owasp.org/Top10/2025/A07_2025-Authentication_Failures/>
+- A08:2025 – Software or Data Integrity Failures — <https://owasp.org/Top10/2025/A08_2025-Software_or_Data_Integrity_Failures/>
+- A09:2025 – Security Logging and Alerting Failures — <https://owasp.org/Top10/2025/A09_2025-Security_Logging_and_Alerting_Failures/>
+- A10:2025 – Mishandling of Exceptional Conditions — <https://owasp.org/Top10/2025/A10_2025-Mishandling_of_Exceptional_Conditions/>
+- OWASP Top 10:2021 (edición anterior, superada) — <https://owasp.org/Top10/2021/>
 - OWASP Dependency-Check
 - OWASP Software Component Verification Standard
 - OWASP Web Security Testing Guide — <https://owasp.org/www-project-web-security-testing-guide/>
