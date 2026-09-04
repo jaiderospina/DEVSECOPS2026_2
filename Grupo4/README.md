@@ -289,6 +289,18 @@ Por esta razon, aunque, el sistema sea desarrollado correctamente, puede continu
 
 ![Diseño seguro](Imagenes/Diseno_Seguro.png)
 
+### 🧱 ¿Cómo prevenir el diseño inseguro?
+
+- **Incluir la seguridad desde el inicio:** Considerarse desde la planeación y mantenerse durante el desarrollo de la aplicación.
+- **Identificar las posibles amenazas:** Analizar los riesgos que puedan afectar la autenticación, el control de acceso, los datos y funciones criticos del sistema.
+- **Utilizar diseños y componentes seguros:** Usar patrones, herramientas y componentes de seguridad que hayan sido revisados y aprobados.
+- **Definir controles de seguridad:** Cada requisito o función del sistema debe establecer quién puede acceder, que acciones pueden realizar.
+- **Validar la información en todos los niveles:** Comprobar los datos tanto en la parte visible de la aplicación como en los procesos internos del sistema.
+- **Realizar pruebas de seguridad:** Es necesario probar los flujos normales y los casos inesperados para verificar que los controles funcionen.
+- **Separar los sistemas y la información:** Las capas, redes, usuarios y datos deben mantenerse separados según las necesidad de acceso y protección.
+- **Promover una cultura de seguridad:** Todo el equipo debe conocer los riesgos, aprender de los errores, y considerar la seguridad en cada decisión del proyecto.
+
+
 ## A09:2025 - Fallos en el registro y las alertas de seguridad
 
 ### 🛡️ ¿Qué es?
