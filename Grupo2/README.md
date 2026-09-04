@@ -2840,7 +2840,7 @@ Desde una perspectiva DevSecOps, la seguridad debe incorporarse durante todo el 
 
 ---
 
-6️⃣ A08:2021 – Fallas de Integridad de Software y Datos 🧩 Introducción
+# A08:2021 – Fallas de Integridad de Software y Datos 🧩 Introducción
 
 Cuando hablamos de A06 vimos que una aplicación puede depender de componentes de terceros vulnerables. A08 va un paso más allá: no se trata solo de si un componente tiene una vulnerabilidad conocida, sino de si tenemos alguna forma de verificar que el código, las actualizaciones o los datos que estamos usando realmente vienen de donde creemos que vienen y no fueron alterados en el camino.
 
@@ -2965,7 +2965,7 @@ OWASP Top 10 – A08:2021 Software and Data Integrity Failures.
 OWASP Cheat Sheet: Software Supply Chain Security.
 OWASP Cheat Sheet: Deserialization.
 
-7️⃣ A09:2021 – Fallas de Registro y Monitoreo de Seguridad 🧩 Introducción
+# A09:2021 – Fallas de Registro y Monitoreo de Seguridad 🧩 Introducción
 
 Hasta ahora hemos analizado vulnerabilidades que un atacante puede explotar directamente. A09 es distinto: no es una falla que se "ataque" en sí misma, sino una falla que permite que todo lo demás pase desapercibido.
 
@@ -3074,7 +3074,7 @@ OWASP Top 10 – A09:2021 Security Logging and Monitoring Failures.
 OWASP Cheat Sheet: Logging.
 NIST SP 800-61 – Computer Security Incident Handling Guide.
 
-8️⃣ A10:2021 – Server-Side Request Forgery (SSRF) 🧩 Introducción
+# A10:2021 – Server-Side Request Forgery (SSRF) 🧩 Introducción
 
 Muchas aplicaciones modernas necesitan pedirle a otro servidor que "vaya a buscar algo" en su nombre: descargar una imagen desde una URL, consultar un webhook, generar una vista previa de un enlace, etc. El riesgo A10:2021 – Server-Side Request Forgery (SSRF) del OWASP Top 10 aparece cuando esta funcionalidad no valida correctamente la URL proporcionada por el usuario, permitiendo que el servidor haga solicitudes hacia destinos que no debería alcanzar.
 
