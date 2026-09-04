@@ -320,7 +320,7 @@ Por esta razón, aunque, el sistema sea desarrollado correctamente, puede contin
 
 ### 📝 Ejemplo de ataque
 
-![A052025](Imagenes/A052025.jpeg)
+![A062025](Imagenes/A062025.jpeg)
 
 ## A09:2025 - Fallos en el registro y las alertas de seguridad
 
