@@ -1,4 +1,4 @@
-# 🔐 OWASP Top 10 (2021) — A01 y A02: Riesgos de Seguridad en Aplicaciones Web
+# 🔐 OWASP Top 10 (2021) — Guía Completa de Riesgos de Seguridad en Aplicaciones Web
 
 ![Status](https://img.shields.io/badge/Estado-Completo-brightgreen)
 ![OWASP](https://img.shields.io/badge/OWASP-Top%2010%202021-blue)
@@ -17,26 +17,53 @@
 
 ---
 
-## 📖 Introducción
+## 📖 Introducción general
 
 La seguridad en el desarrollo de software es hoy uno de los pilares fundamentales para proteger la información de los usuarios y la integridad de los sistemas. El **OWASP Top 10** es un documento de referencia elaborado por la *Open Web Application Security Project (OWASP)*, una fundación sin ánimo de lucro dedicada a mejorar la seguridad del software a nivel mundial.
 
 Este documento resume, mediante un consenso amplio de expertos en seguridad, los **diez riesgos más críticos** que afectan a las aplicaciones web. Su propósito es concientizar a desarrolladores, arquitectos de software y equipos de seguridad sobre las vulnerabilidades más comunes y graves, para que puedan prevenirlas desde las primeras etapas del ciclo de vida del desarrollo (diseño, codificación, pruebas y despliegue).
 
-En este repositorio se presenta un análisis detallado de las **dos primeras categorías** de la edición **2021** del OWASP Top 10:
+Este repositorio reúne, de forma unificada, el análisis de las **diez categorías** de la edición **2021** del OWASP Top 10:
 
-- **A01:2021 — Fallos de Control de Acceso** (la categoría con más incidencia registrada en 2021)
-- **A02:2021 — Fallos Criptográficos**
-
-El objetivo es servir como material de estudio y consulta para proyectos académicos y profesionales relacionados con la seguridad informática.
+| # | Categoría |
+|---|---|
+| A01 | Fallos de Control de Acceso |
+| A02 | Fallos Criptográficos |
+| A03 | Inyección |
+| A04 | Diseño Inseguro |
+| A05 | Configuración de Seguridad Incorrecta |
+| A06 | Componentes Vulnerables y Desactualizados |
+| A07 | Fallas de Identificación y Autenticación |
+| A08 | Fallas de Integridad de Software y Datos |
+| A09 | Fallas de Registro y Monitoreo de Seguridad |
+| A10 | Server-Side Request Forgery (SSRF) |
 
 > 📌 Fuente oficial: [owasp.org/Top10/2021](https://owasp.org/Top10/2021/)
 
 ---
 
+## 📑 Tabla de contenidos
+
+1. [Panorama general](#-panorama-general)
+2. [A01 — Fallos de Control de Acceso](#1️⃣-a012021--fallos-de-control-de-acceso)
+3. [A02 — Fallos Criptográficos](#2️⃣-a022021--fallos-criptográficos)
+4. [A03 — Inyección](#3️⃣-a032021--inyección)
+5. [A04 — Diseño Inseguro](#4️⃣-a042021--diseño-inseguro)
+6. [A05 — Configuración de Seguridad Incorrecta](#5️⃣-a052021--configuración-de-seguridad-incorrecta)
+7. [Comparación A03–A05](#-comparación-a03-a05)
+8. [A06 — Componentes Vulnerables y Desactualizados](#6️⃣-a062021--componentes-vulnerables-y-desactualizados)
+9. [A07 — Fallas de Identificación y Autenticación](#7️⃣-a072021--fallas-de-identificación-y-autenticación)
+10. [A08 — Fallas de Integridad de Software y Datos](#8️⃣-a082021--fallas-de-integridad-de-software-y-datos)
+11. [A09 — Fallas de Registro y Monitoreo de Seguridad](#9️⃣-a092021--fallas-de-registro-y-monitoreo-de-seguridad)
+12. [A10 — Server-Side Request Forgery (SSRF)](#🔟-a102021--server-side-request-forgery-ssrf)
+13. [Conclusión general](#-conclusión-general)
+14. [Referencias](#-referencias-generales)
+
+---
+
 ## 📊 Panorama general
 
-El siguiente gráfico ilustra, de forma aproximada, el porcentaje de aplicaciones analizadas que presentaron cada una de estas dos categorías de vulnerabilidad según los datos recopilados por OWASP para la edición 2021:
+El siguiente gráfico ilustra, de forma aproximada, el porcentaje de aplicaciones analizadas que presentaron cada una de las dos primeras categorías de vulnerabilidad según los datos recopilados por OWASP para la edición 2021:
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
@@ -60,113 +87,7 @@ mindmap
       Claves mal gestionadas
 ```
 
----
-
-## 🧩 Detalle de las categorías
-
-### 1️⃣ A01:2021 — Fallos de Control de Acceso
-
-🔒 **¿Qué es?**
-El control de acceso es el conjunto de mecanismos que determina qué puede hacer o ver un usuario dentro de una aplicación, según su rol o identidad (por ejemplo, un usuario normal no debería poder ver ni modificar datos de un administrador). Un fallo de control de acceso ocurre cuando estas restricciones no se aplican correctamente en el backend, permitiendo que un usuario actúe fuera de los permisos que le corresponden.
-
-Esta categoría subió de la quinta posición (en la edición 2017) al **primer lugar** en 2021, lo que refleja lo extendido y crítico que es este problema: se detectaron ocurrencias en la gran mayoría de las aplicaciones analizadas por OWASP.
-
-**🧠 Causas más comunes:**
-- Verificar permisos solo en el frontend (interfaz visual) y no en el backend (servidor).
-- Confiar en el identificador enviado por el propio usuario (IDOR — *Insecure Direct Object Reference*) sin validar si le pertenece.
-- No aplicar el principio de "denegar por defecto": otorgar acceso amplio y luego restringir, en vez de al revés.
-- Rutas o endpoints de administración accesibles sin autenticación adecuada.
-- CORS mal configurado, permitiendo peticiones desde orígenes no autorizados.
-
-**💥 Ejemplos:**
-1. Un usuario cambia el valor `id=1023` por `id=1024` en la URL (`miapp.com/perfil?id=1024`) y accede a la información de otra persona.
-2. Un empleado normal accede directamente a `/admin/panel` sin que el sistema verifique su rol.
-3. Una API permite eliminar registros de otros usuarios simplemente conociendo su identificador (`DELETE /api/pedidos/58`).
-
-**⚠️ Impacto:**
-Exposición de datos privados, modificación o eliminación no autorizada de información, fraude, escalamiento de privilegios hasta llegar a comprometer cuentas administrativas.
-
-**🛡️ Recomendaciones de prevención:**
-- Aplicar el principio de mínimo privilegio: cada usuario solo accede a lo estrictamente necesario.
-- Validar permisos en cada solicitud del lado del servidor, no confiar en el cliente.
-- Registrar (loggear) los intentos de acceso denegados para detectar posibles ataques.
-- Usar pruebas automatizadas que verifiquen los controles de acceso en cada rol.
-
----
-
-### 2️⃣ A02:2021 — Fallos Criptográficos
-
-🔑 **¿Qué es?**
-Antes llamada "Exposición de Datos Sensibles" (2017), esta categoría fue renombrada para reflejar su causa raíz: fallos en el uso de la criptografía, más que el simple hecho de exponer datos. Ocurre cuando una aplicación no protege adecuadamente la información sensible —contraseñas, datos financieros, información médica, tokens de sesión— ya sea **en tránsito** (mientras viaja por la red) o **en reposo** (mientras está almacenada).
-
-**🧠 Causas más comunes:**
-- Transmitir datos sensibles sin cifrado (uso de HTTP en lugar de HTTPS).
-- Almacenar contraseñas usando algoritmos débiles o sin "salt" (por ejemplo, MD5 o SHA-1 sin protección adicional) en vez de funciones diseñadas para contraseñas como bcrypt o Argon2.
-- Uso de algoritmos de cifrado obsoletos o claves criptográficas demasiado cortas.
-- Gestión deficiente de claves: claves cifradas guardadas junto con los datos que protegen, o "hardcodeadas" directamente en el código fuente.
-- Certificados SSL/TLS vencidos, autofirmados o mal configurados.
-
-**💥 Ejemplos:**
-1. Un formulario de inicio de sesión que envía usuario y contraseña por HTTP en lugar de HTTPS, exponiendo las credenciales a cualquiera que intercepte el tráfico de red.
-2. Una base de datos que almacena contraseñas en texto plano o con un algoritmo de hash débil y sin "salt".
-3. Una aplicación móvil que guarda tokens de autenticación sin cifrar en el almacenamiento local del dispositivo.
-
-**⚠️ Impacto:**
-Robo de credenciales, exposición de datos financieros o médicos, suplantación de identidad, incumplimiento de normativas de protección de datos (como GDPR o leyes locales de habeas data), y pérdida de confianza de los usuarios.
-
-**🛡️ Recomendaciones de prevención:**
-- Forzar el uso de HTTPS/TLS en toda la aplicación (incluyendo redirecciones automáticas de HTTP a HTTPS).
-- Cifrar los datos sensibles en reposo con algoritmos actualizados y robustos.
-- Usar funciones de hash específicas para contraseñas (bcrypt, scrypt o Argon2) en lugar de algoritmos de propósito general.
-- Clasificar los datos según su sensibilidad y aplicar controles proporcionales a cada nivel.
-- No almacenar datos sensibles que no sean estrictamente necesarios.
-
----
-
-## 🖼️ Recursos visuales
-
-| Categoría | Icono | Enfoque principal | Ejemplo típico |
-|---|---|---|---|
-| A01 | 🔒 | Control de acceso | Modificar una URL para ver datos ajenos |
-| A02 | 🔑 | Criptografía | Enviar contraseñas por HTTP sin cifrar |
-
----
-
-## 🎯 Conclusión
-
-Los **Fallos de Control de Acceso (A01)** y los **Fallos Criptográficos (A02)** representan, según OWASP, dos de los riesgos más críticos y frecuentes en las aplicaciones web actuales. El primero falla en decidir *quién puede hacer qué*, y el segundo falla en *proteger la información* una vez que se accede a ella; por eso suelen presentarse combinados en ataques reales. Aplicar controles adecuados —como validación estricta de permisos en el servidor y cifrado robusto de la información— es un primer paso fundamental para reducir la superficie de ataque de cualquier sistema.
-
----
-
-## 📚 Referencias
-
-- OWASP Foundation. *OWASP Top 10:2021*. Disponible en: https://owasp.org/Top10/2021/
-- OWASP Foundation. *OWASP Top Ten Web Application Security Risks*. Disponible en: https://owasp.org/www-project-top-ten/
-
-# 🔐 OWASP Top 10 (2021) — A03, A04 y A05: Vulnerabilidades en Aplicaciones Web
-
-
----
-
-## 📖 Introducción
-
-La seguridad en el desarrollo de software es fundamental para proteger la información, los usuarios y la infraestructura tecnológica de una organización. El **OWASP Top 10** es una referencia ampliamente utilizada para identificar los principales riesgos de seguridad presentes en aplicaciones web.
-
-En este documento se presentan tres categorías de la edición **OWASP Top 10:2021**:
-
-- **A03:2021 — Inyección**
-- **A04:2021 — Diseño Inseguro**
-- **A05:2021 — Configuración de Seguridad Incorrecta**
-
-Para cada vulnerabilidad se analiza su naturaleza, principales causas, impacto potencial, métodos de explotación, herramientas utilizadas por los atacantes y las medidas recomendadas para su prevención y mitigación.
-
-> 📌 **Fuente oficial:** [OWASP Top 10:2021](https://owasp.org/Top10/2021/)
-
----
-
-## 📊 Panorama general
-
-Las tres categorías analizadas representan diferentes etapas en las que puede aparecer un riesgo de seguridad:
+Las categorías A03, A04 y A05 representan además diferentes etapas en las que puede aparecer un riesgo de seguridad:
 
 ```mermaid
 flowchart LR
@@ -183,27 +104,93 @@ flowchart LR
     K --> L["Acceso no autorizado"]
 ```
 
-### Comparación de las categorías
-
-| Categoría | Problema principal | Ejemplo | Impacto |
-| --- | --- | --- | --- |
-| **A03 — Inyección** | Datos interpretados como código | SQL Injection | Robo o modificación de información |
-| **A04 — Diseño Inseguro** | Fallas en la arquitectura o lógica | Bypass de reglas de negocio | Fraude o abuso de funcionalidades |
-| **A05 — Configuración Incorrecta** | Sistemas configurados de forma insegura | Panel administrativo expuesto | Acceso no autorizado |
-
 ---
 
 # 🧩 Detalle de las categorías
 
+## 1️⃣ A01:2021 — Fallos de Control de Acceso
+
+### 🔒 ¿Qué es?
+
+El control de acceso es el conjunto de mecanismos que determina qué puede hacer o ver un usuario dentro de una aplicación, según su rol o identidad (por ejemplo, un usuario normal no debería poder ver ni modificar datos de un administrador). Un fallo de control de acceso ocurre cuando estas restricciones no se aplican correctamente en el backend, permitiendo que un usuario actúe fuera de los permisos que le corresponden.
+
+Esta categoría subió de la quinta posición (en la edición 2017) al **primer lugar** en 2021, lo que refleja lo extendido y crítico que es este problema: se detectaron ocurrencias en la gran mayoría de las aplicaciones analizadas por OWASP.
+
+### 🧠 Causas más comunes
+
+- Verificar permisos solo en el frontend (interfaz visual) y no en el backend (servidor).
+- Confiar en el identificador enviado por el propio usuario (IDOR — *Insecure Direct Object Reference*) sin validar si le pertenece.
+- No aplicar el principio de "denegar por defecto": otorgar acceso amplio y luego restringir, en vez de al revés.
+- Rutas o endpoints de administración accesibles sin autenticación adecuada.
+- CORS mal configurado, permitiendo peticiones desde orígenes no autorizados.
+
+### 💥 Ejemplos
+
+1. Un usuario cambia el valor `id=1023` por `id=1024` en la URL (`miapp.com/perfil?id=1024`) y accede a la información de otra persona.
+2. Un empleado normal accede directamente a `/admin/panel` sin que el sistema verifique su rol.
+3. Una API permite eliminar registros de otros usuarios simplemente conociendo su identificador (`DELETE /api/pedidos/58`).
+
+### ⚠️ Impacto
+
+Exposición de datos privados, modificación o eliminación no autorizada de información, fraude, escalamiento de privilegios hasta llegar a comprometer cuentas administrativas.
+
+### 🛡️ Recomendaciones de prevención
+
+- Aplicar el principio de mínimo privilegio: cada usuario solo accede a lo estrictamente necesario.
+- Validar permisos en cada solicitud del lado del servidor, no confiar en el cliente.
+- Registrar (loggear) los intentos de acceso denegados para detectar posibles ataques.
+- Usar pruebas automatizadas que verifiquen los controles de acceso en cada rol.
+
 ---
 
-# 1️⃣ A03:2021 — Inyección
+## 2️⃣ A02:2021 — Fallos Criptográficos
 
-## 💉 ¿Qué es?
+### 🔑 ¿Qué es?
 
-La **inyección** ocurre cuando una aplicación incorpora datos proporcionados por un usuario dentro de una instrucción, consulta o comando sin realizar una separación adecuada entre los datos y el código.
+Antes llamada "Exposición de Datos Sensibles" (2017), esta categoría fue renombrada para reflejar su causa raíz: fallos en el uso de la criptografía, más que el simple hecho de exponer datos. Ocurre cuando una aplicación no protege adecuadamente la información sensible —contraseñas, datos financieros, información médica, tokens de sesión— ya sea **en tránsito** (mientras viaja por la red) o **en reposo** (mientras está almacenada).
 
-Esto puede provocar que una entrada controlada por un atacante sea interpretada como parte de una instrucción ejecutable.
+### 🧠 Causas más comunes
+
+- Transmitir datos sensibles sin cifrado (uso de HTTP en lugar de HTTPS).
+- Almacenar contraseñas usando algoritmos débiles o sin "salt" (por ejemplo, MD5 o SHA-1 sin protección adicional) en vez de funciones diseñadas para contraseñas como bcrypt o Argon2.
+- Uso de algoritmos de cifrado obsoletos o claves criptográficas demasiado cortas.
+- Gestión deficiente de claves: claves cifradas guardadas junto con los datos que protegen, o "hardcodeadas" directamente en el código fuente.
+- Certificados SSL/TLS vencidos, autofirmados o mal configurados.
+
+### 💥 Ejemplos
+
+1. Un formulario de inicio de sesión que envía usuario y contraseña por HTTP en lugar de HTTPS, exponiendo las credenciales a cualquiera que intercepte el tráfico de red.
+2. Una base de datos que almacena contraseñas en texto plano o con un algoritmo de hash débil y sin "salt".
+3. Una aplicación móvil que guarda tokens de autenticación sin cifrar en el almacenamiento local del dispositivo.
+
+### ⚠️ Impacto
+
+Robo de credenciales, exposición de datos financieros o médicos, suplantación de identidad, incumplimiento de normativas de protección de datos (como GDPR o leyes locales de habeas data), y pérdida de confianza de los usuarios.
+
+### 🛡️ Recomendaciones de prevención
+
+- Forzar el uso de HTTPS/TLS en toda la aplicación (incluyendo redirecciones automáticas de HTTP a HTTPS).
+- Cifrar los datos sensibles en reposo con algoritmos actualizados y robustos.
+- Usar funciones de hash específicas para contraseñas (bcrypt, scrypt o Argon2) en lugar de algoritmos de propósito general.
+- Clasificar los datos según su sensibilidad y aplicar controles proporcionales a cada nivel.
+- No almacenar datos sensibles que no sean estrictamente necesarios.
+
+### 🖼️ Resumen visual A01 vs A02
+
+| Categoría | Icono | Enfoque principal | Ejemplo típico |
+|---|---|---|---|
+| A01 | 🔒 | Control de acceso | Modificar una URL para ver datos ajenos |
+| A02 | 🔑 | Criptografía | Enviar contraseñas por HTTP sin cifrar |
+
+> **Conclusión A01–A02:** el primero falla en decidir *quién puede hacer qué*, y el segundo falla en *proteger la información* una vez que se accede a ella; por eso suelen presentarse combinados en ataques reales. Aplicar controles adecuados —como validación estricta de permisos en el servidor y cifrado robusto de la información— es un primer paso fundamental para reducir la superficie de ataque de cualquier sistema.
+
+---
+
+## 3️⃣ A03:2021 — Inyección
+
+### 💉 ¿Qué es?
+
+La **inyección** ocurre cuando una aplicación incorpora datos proporcionados por un usuario dentro de una instrucción, consulta o comando sin realizar una separación adecuada entre los datos y el código. Esto puede provocar que una entrada controlada por un atacante sea interpretada como parte de una instrucción ejecutable.
 
 Entre los tipos más conocidos se encuentran:
 
@@ -212,7 +199,7 @@ Entre los tipos más conocidos se encuentran:
 - OS Command Injection
 - LDAP Injection
 - XPath Injection
-- Cross-Site Scripting (XSS), dependiendo del contexto de clasificación.
+- Cross-Site Scripting (XSS), dependiendo del contexto de clasificación
 
 ### 🧠 Causas más comunes
 
@@ -224,18 +211,9 @@ Entre los tipos más conocidos se encuentran:
 - Utilización de cuentas de base de datos con privilegios excesivos.
 - Dependencia de mecanismos de seguridad únicamente del lado cliente.
 
----
+### 💥 Impacto
 
-## 💥 Impacto
-
-Una vulnerabilidad de inyección puede permitir a un atacante:
-
-- Obtener información almacenada en bases de datos.
-- Modificar o eliminar información.
-- Evadir mecanismos de autenticación.
-- Ejecutar determinadas instrucciones.
-- Acceder a información confidencial.
-- Comprometer otros componentes de la infraestructura.
+Una vulnerabilidad de inyección puede permitir a un atacante obtener información almacenada en bases de datos, modificar o eliminar información, evadir mecanismos de autenticación, ejecutar determinadas instrucciones, acceder a información confidencial o comprometer otros componentes de la infraestructura.
 
 | Propiedad | Posible impacto |
 | --- | --- |
@@ -245,11 +223,9 @@ Una vulnerabilidad de inyección puede permitir a un atacante:
 | 👤 Autenticación | Bypass del inicio de sesión |
 | 🖥️ Sistema | Ejecución de comandos en determinados escenarios |
 
----
+### 🔍 Métodos de explotación
 
-## 🔍 Métodos de explotación
-
-Los atacantes normalmente comienzan identificando entradas controladas por el usuario, como:
+Los atacantes normalmente comienzan identificando entradas controladas por el usuario:
 
 ```text
 Parámetros URL
@@ -263,11 +239,7 @@ Headers HTTP
 Datos enviados a APIs
 ```
 
-Posteriormente analizan cómo responde la aplicación ante entradas inesperadas o manipuladas.
-
-### SQL Injection
-
-Una aplicación vulnerable puede construir una consulta de esta manera:
+**SQL Injection.** Una aplicación vulnerable puede construir una consulta de esta manera:
 
 ```sql
 SELECT * FROM usuarios
@@ -275,13 +247,9 @@ WHERE usuario = 'entrada'
 AND password = 'entrada';
 ```
 
-El problema aparece cuando las entradas del usuario se incorporan directamente en la consulta.
+El problema aparece cuando las entradas del usuario se incorporan directamente en la consulta. Una implementación segura debe utilizar **consultas parametrizadas** para mantener separados los datos de la estructura SQL.
 
-Una implementación segura debe utilizar **consultas parametrizadas** para mantener separados los datos de la estructura SQL.
-
-### Command Injection
-
-Puede ocurrir cuando una aplicación utiliza información proporcionada por el usuario para construir comandos del sistema operativo.
+**Command Injection.** Puede ocurrir cuando una aplicación utiliza información proporcionada por el usuario para construir comandos del sistema operativo.
 
 ```mermaid
 flowchart TD
@@ -291,9 +259,7 @@ flowchart TD
     D --> E["Sistema operativo"]
 ```
 
----
-
-## 🛠️ Herramientas utilizadas
+### 🛠️ Herramientas utilizadas
 
 | Herramienta | Utilización |
 | --- | --- |
@@ -305,11 +271,7 @@ flowchart TD
 
 > ⚠️ Estas herramientas deben utilizarse únicamente en sistemas propios, laboratorios o infraestructuras donde exista autorización explícita para realizar pruebas.
 
----
-
-## 🛡️ Prevención y mitigación
-
-Las principales medidas de seguridad son:
+### 🛡️ Prevención y mitigación
 
 - Utilizar consultas SQL parametrizadas.
 - Implementar validación de entradas en el servidor.
@@ -321,8 +283,6 @@ Las principales medidas de seguridad son:
 - Implementar pruebas de seguridad automatizadas.
 - Utilizar mecanismos de protección adicionales como WAF cuando sean apropiados.
 
-### Arquitectura recomendada
-
 ```mermaid
 flowchart LR
     A["Usuario"] --> B["Validación"]
@@ -331,16 +291,13 @@ flowchart LR
     D --> E["Base de datos"]
 ```
 
-
 ---
 
-# 2️⃣ A04:2021 — Diseño Inseguro
+## 4️⃣ A04:2021 — Diseño Inseguro
 
-## 🏗️ ¿Qué es?
+### 🏗️ ¿Qué es?
 
-**Diseño Inseguro** hace referencia a vulnerabilidades originadas principalmente por decisiones deficientes de arquitectura, diseño o lógica de negocio.
-
-En este caso, el problema puede existir incluso antes de escribir el código. Una aplicación puede estar correctamente implementada desde el punto de vista sintáctico, pero continuar siendo vulnerable porque su diseño no contempla determinados escenarios de ataque.
+**Diseño Inseguro** hace referencia a vulnerabilidades originadas principalmente por decisiones deficientes de arquitectura, diseño o lógica de negocio. En este caso, el problema puede existir incluso antes de escribir el código. Una aplicación puede estar correctamente implementada desde el punto de vista sintáctico, pero continuar siendo vulnerable porque su diseño no contempla determinados escenarios de ataque.
 
 ### 🧠 Causas más comunes
 
@@ -353,13 +310,9 @@ En este caso, el problema puede existir incluso antes de escribir el código. Un
 - Arquitecturas que no aplican defensa en profundidad.
 - Falta de separación entre funcionalidades y privilegios.
 
----
+### 💥 Ejemplos
 
-## 💥 Ejemplos
-
-### Ejemplo 1 — Validación únicamente en frontend
-
-Una aplicación podría impedir visualmente que un usuario introduzca un valor determinado.
+**Ejemplo 1 — Validación únicamente en frontend.** Una aplicación podría impedir visualmente que un usuario introduzca un valor determinado.
 
 ```text
 Frontend
@@ -370,13 +323,9 @@ Frontend
 Backend
 ```
 
-Si el backend no realiza nuevamente la validación, un atacante puede enviar directamente una solicitud modificada.
+Si el backend no realiza nuevamente la validación, un atacante puede enviar directamente una solicitud modificada. Por esta razón, las restricciones de seguridad **no deben depender exclusivamente de la interfaz del usuario**.
 
-Por esta razón, las restricciones de seguridad **no deben depender exclusivamente de la interfaz del usuario**.
-
-### Ejemplo 2 — Abuso de lógica de negocio
-
-Una plataforma de compras podría tener:
+**Ejemplo 2 — Abuso de lógica de negocio.** Una plataforma de compras podría tener:
 
 ```text
 Producto
@@ -386,13 +335,9 @@ Cupón de descuento
 Pago
 ```
 
-Si el diseño no contempla la reutilización indebida de cupones, un atacante podría intentar utilizar repetidamente una promoción.
+Si el diseño no contempla la reutilización indebida de cupones, un atacante podría intentar utilizar repetidamente una promoción. El problema no necesariamente corresponde a un error de sintaxis o programación, sino a una **falla en el diseño de las reglas de negocio**.
 
-El problema no necesariamente corresponde a un error de sintaxis o programación, sino a una **falla en el diseño de las reglas de negocio**.
-
----
-
-## ⚠️ Impacto
+### ⚠️ Impacto
 
 | Problema | Posible consecuencia |
 | --- | --- |
@@ -403,11 +348,7 @@ El problema no necesariamente corresponde a un error de sintaxis o programación
 | Autorización mal diseñada | Escalamiento de privilegios |
 | Falta de controles | Manipulación de procesos |
 
----
-
-## 🔍 Métodos de explotación
-
-Los atacantes pueden estudiar el funcionamiento de una aplicación y manipular las solicitudes para comprobar si las reglas de negocio se cumplen realmente en el servidor.
+### 🔍 Métodos de explotación
 
 ```mermaid
 flowchart TD
@@ -420,18 +361,9 @@ flowchart TD
     F -->|Sí| H["Solicitud rechazada"]
 ```
 
-Algunas técnicas utilizadas incluyen:
+Algunas técnicas utilizadas incluyen manipulación de parámetros, repetición de solicitudes, alteración de valores enviados al servidor, manipulación de procesos de negocio, automatización de operaciones y pruebas de límites y restricciones.
 
-- Manipulación de parámetros.
-- Repetición de solicitudes.
-- Alteración de valores enviados al servidor.
-- Manipulación de procesos de negocio.
-- Automatización de operaciones.
-- Pruebas de límites y restricciones.
-
----
-
-## 🛠️ Herramientas utilizadas
+### 🛠️ Herramientas utilizadas
 
 | Herramienta | Utilización |
 | --- | --- |
@@ -441,9 +373,7 @@ Algunas técnicas utilizadas incluyen:
 | **DevTools** | Inspección del comportamiento del cliente |
 | **Nmap** | Reconocimiento de infraestructura |
 
----
-
-## 🛡️ Prevención y mitigación
+### 🛡️ Prevención y mitigación
 
 - Realizar **Threat Modeling** durante el diseño.
 - Definir requisitos de seguridad antes de desarrollar.
@@ -455,8 +385,6 @@ Algunas técnicas utilizadas incluyen:
 - Implementar defensa en profundidad.
 - Realizar pruebas de abuso de lógica de negocio.
 - Revisar periódicamente la arquitectura.
-
-### 🔐 Seguridad desde el diseño
 
 ```mermaid
 flowchart LR
@@ -471,13 +399,11 @@ flowchart LR
 
 ---
 
-# 3️⃣ A05:2021 — Configuración de Seguridad Incorrecta
+## 5️⃣ A05:2021 — Configuración de Seguridad Incorrecta
 
-## ⚙️ ¿Qué es?
+### ⚙️ ¿Qué es?
 
-La **Configuración de Seguridad Incorrecta** ocurre cuando una aplicación, servidor, base de datos, servicio cloud o componente de infraestructura se encuentra configurado de manera insegura.
-
-El problema puede aparecer tanto por una configuración incorrecta como por mantener configuraciones predeterminadas o funcionalidades que no son necesarias.
+La **Configuración de Seguridad Incorrecta** ocurre cuando una aplicación, servidor, base de datos, servicio cloud o componente de infraestructura se encuentra configurado de manera insegura. El problema puede aparecer tanto por una configuración incorrecta como por mantener configuraciones predeterminadas o funcionalidades que no son necesarias.
 
 ### 🧠 Causas más comunes
 
@@ -492,13 +418,9 @@ El problema puede aparecer tanto por una configuración incorrecta como por mant
 - Configuración incorrecta de servicios cloud.
 - Headers de seguridad ausentes o incorrectos.
 
----
+### 💥 Ejemplos
 
-## 💥 Ejemplos
-
-### Ejemplo 1 — Modo Debug
-
-Un servidor desplegado en producción podría mostrar información detallada cuando ocurre un error:
+**Ejemplo 1 — Modo Debug.** Un servidor desplegado en producción podría mostrar información detallada cuando ocurre un error:
 
 ```text
 Error 500
@@ -512,9 +434,7 @@ Stack trace:
 
 Esta información puede ayudar a un atacante a conocer detalles internos de la infraestructura.
 
-### Ejemplo 2 — Credenciales predeterminadas
-
-Un dispositivo o aplicación puede mantener las credenciales originales proporcionadas por el fabricante.
+**Ejemplo 2 — Credenciales predeterminadas.** Un dispositivo o aplicación puede mantener las credenciales originales proporcionadas por el fabricante.
 
 ```text
 Usuario: admin
@@ -523,9 +443,7 @@ Contraseña: contraseña_predeterminada
 
 Si estas credenciales no se modifican, un atacante que las conozca podría intentar acceder al sistema.
 
----
-
-## ⚠️ Impacto
+### ⚠️ Impacto
 
 | Configuración | Riesgo |
 | --- | --- |
@@ -537,11 +455,7 @@ Si estas credenciales no se modifican, un atacante que las conozca podría inten
 | Permisos excesivos | Escalamiento o abuso |
 | Componentes desactualizados | Explotación de vulnerabilidades conocidas |
 
----
-
-## 🔍 Métodos de explotación
-
-El atacante normalmente comienza realizando reconocimiento para identificar servicios, tecnologías y configuraciones expuestas.
+### 🔍 Métodos de explotación
 
 ```mermaid
 flowchart TD
@@ -552,21 +466,9 @@ flowchart TD
     E --> F["Explotación"]
 ```
 
-Entre las técnicas utilizadas se encuentran:
+Entre las técnicas utilizadas se encuentran: identificación de servicios expuestos, detección de versiones, búsqueda de configuraciones predeterminadas, identificación de paneles administrativos, análisis de respuestas HTTP, revisión de certificados y configuraciones TLS, enumeración de directorios, identificación de mensajes de error y detección de servicios innecesarios.
 
-- Identificación de servicios expuestos.
-- Detección de versiones.
-- Búsqueda de configuraciones predeterminadas.
-- Identificación de paneles administrativos.
-- Análisis de respuestas HTTP.
-- Revisión de certificados y configuraciones TLS.
-- Enumeración de directorios.
-- Identificación de mensajes de error.
-- Detección de servicios innecesarios.
-
----
-
-## 🛠️ Herramientas utilizadas
+### 🛠️ Herramientas utilizadas
 
 | Herramienta | Utilización |
 | --- | --- |
@@ -577,13 +479,7 @@ Entre las técnicas utilizadas se encuentran:
 | **WhatWeb** | Identificación de tecnologías utilizadas |
 | **Gobuster** | Enumeración de recursos y directorios |
 
----
-
-## 🛡️ Prevención y mitigación
-
-Las organizaciones deben implementar una configuración segura desde el despliegue inicial.
-
-### Recomendaciones
+### 🛡️ Prevención y mitigación
 
 - Eliminar credenciales predeterminadas.
 - Deshabilitar funcionalidades innecesarias.
@@ -598,8 +494,6 @@ Las organizaciones deben implementar una configuración segura desde el desplieg
 - Realizar revisiones periódicas de configuración.
 - Automatizar controles de seguridad dentro del pipeline CI/CD.
 
-### 🔐 Proceso de configuración segura
-
 ```mermaid
 flowchart LR
     A["Instalación"] --> B["Configuración segura"]
@@ -610,10 +504,9 @@ flowchart LR
     F --> G["Monitoreo"]
 ```
 
-
 ---
 
-# 📊 Comparación general
+## 📊 Comparación A03–A05
 
 | Característica | A03 — Inyección | A04 — Diseño Inseguro | A05 — Configuración Incorrecta |
 | --- | --- | --- | --- |
@@ -625,11 +518,7 @@ flowchart LR
 | **Principal defensa** | Parametrización | Secure by Design | Hardening |
 | **Impacto** | Datos/sistema | Procesos/negocio | Infraestructura/aplicación |
 
----
-
-## 📈 Relación entre las vulnerabilidades
-
-Las tres categorías pueden aparecer simultáneamente dentro de una misma aplicación.
+Las tres categorías pueden aparecer simultáneamente dentro de una misma aplicación:
 
 ```mermaid
 flowchart TD
@@ -643,79 +532,25 @@ flowchart TD
     B --> F
 ```
 
-Por ejemplo, una aplicación podría tener una arquitectura que no contempla correctamente la validación de entradas (**A04**), implementar consultas SQL inseguras (**A03**) y además desplegarse con una configuración de producción incorrecta (**A05**).
+Por ejemplo, una aplicación podría tener una arquitectura que no contempla correctamente la validación de entradas (**A04**), implementar consultas SQL inseguras (**A03**) y además desplegarse con una configuración de producción incorrecta (**A05**). La combinación de varias debilidades puede incrementar considerablemente la superficie de ataque.
 
-La combinación de varias debilidades puede incrementar considerablemente la superficie de ataque.
-
-
----
-
-# 🎯 Conclusión
-
-Las categorías **A03:2021 — Inyección**, **A04:2021 — Diseño Inseguro** y **A05:2021 — Configuración de Seguridad Incorrecta** representan diferentes tipos de debilidades que pueden comprometer la seguridad de una aplicación.
-
-La **Inyección** se produce principalmente cuando los datos externos son interpretados como instrucciones. El **Diseño Inseguro** surge cuando la arquitectura o las reglas de negocio no contemplan adecuadamente escenarios de abuso. Por su parte, la **Configuración de Seguridad Incorrecta** aparece cuando los componentes de una aplicación o infraestructura se despliegan con configuraciones inseguras.
-
-La prevención requiere un enfoque integral que abarque todo el ciclo de vida del software: **diseño seguro, desarrollo seguro, configuración adecuada, pruebas de seguridad, monitoreo y mantenimiento continuo**.
-
-La aplicación de principios como **mínimo privilegio, defensa en profundidad, validación del lado servidor, parametrización, hardening y Threat Modeling** permite reducir significativamente la superficie de ataque y mejorar la postura de seguridad de las aplicaciones.
-
-# 📚 Referencias
-
-- OWASP Foundation. **OWASP Top 10:2021 — A03:2021 Injection.**  
-  <https://owasp.org/Top10/2021/A03_2021-Injection/>
-
-- OWASP Foundation. **OWASP Top 10:2021 — A04:2021 Insecure Design.**  
-  <https://owasp.org/Top10/2021/A04_2021-Insecure_Design/>
-
-- OWASP Foundation. **OWASP Top 10:2021 — A05:2021 Security Misconfiguration.**  
-  <https://owasp.org/Top10/2021/A05_2021-Security_Misconfiguration/>
-
-- OWASP Foundation. **OWASP Top 10:2021.**  
-  <https://owasp.org/Top10/2021/>
-
-- OWASP Foundation. **OWASP Web Security Testing Guide.**  
-  <https://owasp.org/www-project-web-security-testing-guide/>
-
-- OWASP Foundation. **OWASP Cheat Sheet Series.**  
-  <https://cheatsheetseries.owasp.org/>
-
+> **Conclusión A03–A05:** la **Inyección** se produce principalmente cuando los datos externos son interpretados como instrucciones. El **Diseño Inseguro** surge cuando la arquitectura o las reglas de negocio no contemplan adecuadamente escenarios de abuso. La **Configuración de Seguridad Incorrecta** aparece cuando los componentes de una aplicación o infraestructura se despliegan con configuraciones inseguras. La prevención requiere un enfoque integral: **diseño seguro, desarrollo seguro, configuración adecuada, pruebas de seguridad, monitoreo y mantenimiento continuo**.
 
 ---
 
-# 4️⃣ A06:2021 – Componentes Vulnerables y Desactualizados
+## 6️⃣ A06:2021 — Componentes Vulnerables y Desactualizados
 
-## 🧩 Introducción
+### 🧩 Introducción
 
-Las aplicaciones web modernas rara vez están construidas completamente desde cero. Los desarrolladores utilizan frameworks, librerías, paquetes, servidores, sistemas operativos y otros componentes desarrollados por terceros.
+Las aplicaciones web modernas rara vez están construidas completamente desde cero. Los desarrolladores utilizan frameworks, librerías, paquetes, servidores, sistemas operativos y otros componentes desarrollados por terceros. Esto permite desarrollar aplicaciones de manera más rápida, pero también introduce riesgos de seguridad.
 
-Esto permite desarrollar aplicaciones de manera más rápida, pero también introduce riesgos de seguridad.
-
-El riesgo **A06:2021 – Componentes Vulnerables y Desactualizados** del OWASP Top 10 ocurre cuando una aplicación utiliza componentes que contienen vulnerabilidades conocidas, se encuentran desactualizados, ya no reciben soporte o no son administrados adecuadamente.
+El riesgo **A06:2021 – Componentes Vulnerables y Desactualizados** ocurre cuando una aplicación utiliza componentes que contienen vulnerabilidades conocidas, se encuentran desactualizados, ya no reciben soporte o no son administrados adecuadamente.
 
 > 💡 Una aplicación puede tener código propio aparentemente seguro y aun así ser vulnerable debido a una dependencia de terceros.
 
----
+### 🧠 ¿Qué es un componente?
 
-## 🧠 ¿Qué es un componente?
-
-Un componente es una pieza de software que forma parte de una aplicación o de la infraestructura que la soporta.
-
-Algunos ejemplos son:
-
-- Frameworks.
-- Librerías.
-- Paquetes.
-- APIs.
-- Servidores web.
-- Sistemas operativos.
-- Servidores de aplicaciones.
-- Sistemas gestores de bases de datos.
-- Plugins.
-- Runtimes.
-- Dependencias de terceros.
-
-Por ejemplo, una aplicación desarrollada en Python podría utilizar:
+Un componente es una pieza de software que forma parte de una aplicación o de la infraestructura que la soporta: frameworks, librerías, paquetes, APIs, servidores web, sistemas operativos, servidores de aplicaciones, sistemas gestores de bases de datos, plugins, runtimes y otras dependencias de terceros.
 
 ```text
 Aplicación Web
@@ -728,19 +563,9 @@ Aplicación Web
 └── Otras librerías
 ```
 
-Cada uno de estos componentes puede introducir dependencias adicionales.
+### 🔗 Dependencias directas y transitivas
 
----
-
-## 🔗 Dependencias directas y transitivas
-
-Este concepto es fundamental para comprender A06.
-
-### Dependencia directa
-
-Es un componente que nuestro proyecto utiliza directamente.
-
-Ejemplo:
+**Dependencia directa** — un componente que nuestro proyecto utiliza directamente:
 
 ```text
 Mi aplicación
@@ -748,13 +573,7 @@ Mi aplicación
       └── Flask
 ```
 
-Nosotros decidimos instalar Flask.
-
-### Dependencia transitiva
-
-Es una dependencia utilizada por otro componente que nosotros instalamos.
-
-Ejemplo:
+**Dependencia transitiva** — una dependencia utilizada por otro componente que nosotros instalamos:
 
 ```text
 Mi aplicación
@@ -766,15 +585,9 @@ Mi aplicación
                     └── Librería B
 ```
 
-Aunque nosotros nunca instalamos directamente la Librería B, nuestra aplicación puede depender de ella.
-
 > ⚠️ Una vulnerabilidad en una dependencia transitiva también puede afectar nuestra aplicación.
 
----
-
-## 🔴 ¿Cuándo tenemos un problema A06?
-
-Podemos encontrar A06 cuando:
+### 🔴 ¿Cuándo tenemos un problema A06?
 
 - Utilizamos una librería con vulnerabilidades conocidas.
 - Utilizamos componentes sin actualizar durante largos periodos.
@@ -782,15 +595,10 @@ Podemos encontrar A06 cuando:
 - No conocemos las versiones exactas de nuestras dependencias.
 - No analizamos las dependencias de manera periódica.
 - Utilizamos componentes obtenidos de fuentes no confiables.
-- Tenemos dependencias innecesarias.
-- No conocemos las dependencias transitivas.
+- Tenemos dependencias innecesarias o desconocidas (transitivas).
 - No tenemos un inventario de los componentes utilizados.
 
----
-
-## 📊 Ejemplo sencillo
-
-Supongamos que tenemos una tienda virtual:
+### 📊 Ejemplo sencillo
 
 ```text
                     🛒 TIENDA WEB
@@ -808,17 +616,9 @@ Supongamos que tenemos una tienda virtual:
                           ⚠️ Vulnerabilidad
 ```
 
-El desarrollador puede no haber escrito la Librería X.
+El desarrollador puede no haber escrito la Librería X. Sin embargo, si la aplicación la utiliza directa o indirectamente, puede verse afectada.
 
-Sin embargo, si la aplicación la utiliza directa o indirectamente, puede verse afectada.
-
----
-
-# 🕵️ ¿Cómo puede aprovecharlo un atacante?
-
-El atacante puede intentar descubrir qué tecnologías utiliza una aplicación.
-
-Un escenario simplificado sería:
+### 🕵️ ¿Cómo puede aprovecharlo un atacante?
 
 ```text
         🔴 ATACANTE
@@ -842,139 +642,17 @@ Un escenario simplificado sería:
   explotación     otra vía
 ```
 
-Por esta razón, conocer y administrar las versiones de los componentes es una actividad importante dentro de la seguridad del software.
-
----
-
-# 📚 Conceptos importantes: CVE, CWE y CVSS
-
-Estos tres términos suelen aparecer juntos cuando estudiamos vulnerabilidades.
-
-## 🆔 CVE
-
-**CVE – Common Vulnerabilities and Exposures**
-
-Es un sistema utilizado para identificar vulnerabilidades de seguridad conocidas mediante identificadores únicos.
-
-Ejemplo:
-
-```text
-CVE-2021-XXXXX
-```
-
-El identificador permite referenciar una vulnerabilidad específica.
-
----
-
-## 🧱 CWE
-
-**CWE – Common Weakness Enumeration**
-
-Describe categorías de debilidades de software.
-
-Por ejemplo:
-
-```text
-CWE-1104
-Use of Unmaintained Third Party Components
-```
-
-En términos sencillos:
-
-```text
-CVE = Identifica una vulnerabilidad específica
-
-CWE = Describe el tipo de debilidad
-```
-
----
-
-## 📈 CVSS
-
-**CVSS – Common Vulnerability Scoring System**
-
-Permite expresar la severidad técnica de una vulnerabilidad mediante una puntuación.
-
-De forma simplificada:
-
-```text
-Vulnerabilidad
-      │
-      ▼
-Características técnicas
-      │
-      ▼
-Explotabilidad + Impacto
-      │
-      ▼
-Puntuación CVSS
-```
-
-### 📌 Diferencia
+### 📚 Conceptos importantes: CVE, CWE y CVSS
 
 | Concepto | Significado |
 |---|---|
-| CVE | Identificador de una vulnerabilidad |
-| CWE | Categoría de una debilidad |
-| CVSS | Evaluación de severidad |
+| **CVE** (Common Vulnerabilities and Exposures) | Identificador único de una vulnerabilidad específica (p. ej. `CVE-2021-XXXXX`) |
+| **CWE** (Common Weakness Enumeration) | Describe categorías de debilidades de software (p. ej. `CWE-1104 – Use of Unmaintained Third Party Components`) |
+| **CVSS** (Common Vulnerability Scoring System) | Puntuación que expresa la severidad técnica de una vulnerabilidad, combinando explotabilidad e impacto |
 
----
+### 🔎 Componentes desactualizados y sin mantenimiento
 
-# 🔎 ¿Qué significa "desactualizado"?
-
-Un componente desactualizado es aquel que utiliza una versión antigua cuando existen versiones posteriores.
-
-Ejemplo:
-
-```text
-Versión instalada
-       │
-       ▼
-Librería X 1.2
-       │
-       │
-       ▼
-Versiones disponibles
-       │
-       ├── 1.3
-       ├── 1.4
-       └── 2.0
-```
-
-El hecho de que exista una versión nueva **no significa automáticamente que la versión anterior sea vulnerable**.
-
-Sin embargo, mantener componentes antiguos puede aumentar el riesgo, especialmente cuando:
-
-- Ya no reciben soporte.
-- Existen vulnerabilidades conocidas.
-- No reciben parches de seguridad.
-- El fabricante recomienda actualizar.
-
----
-
-# ⚠️ Componentes sin mantenimiento
-
-Otro escenario importante ocurre cuando un proyecto deja de recibir mantenimiento.
-
-Ejemplo:
-
-```text
-Librería X
-│
-├── Última actualización: hace varios años
-├── Sin nuevos parches
-├── Issues sin resolver
-├── Sin soporte activo
-└── Vulnerabilidades conocidas
-```
-
-Esto representa un riesgo porque una organización puede depender de un componente que ya no recibe correcciones.
-
----
-
-# 🧬 Dependencias transitivas
-
-Veamos un ejemplo más completo:
+Un componente desactualizado es aquel que utiliza una versión antigua cuando existen versiones posteriores. El hecho de que exista una versión nueva **no significa automáticamente que la versión anterior sea vulnerable**, pero mantener componentes antiguos aumenta el riesgo, especialmente cuando ya no reciben soporte, existen vulnerabilidades conocidas o el fabricante recomienda actualizar.
 
 ```mermaid
 flowchart TD
@@ -986,19 +664,9 @@ flowchart TD
     E --> F["⚠️ Riesgo A06"]
 ```
 
-La aplicación puede terminar utilizando un componente vulnerable sin que el desarrollador lo haya agregado directamente.
-
-Por esto es importante conocer el árbol completo de dependencias.
-
----
-
-# 🧰 ¿Qué es SCA?
-
-**SCA – Software Composition Analysis**
+### 🧰 SCA — Software Composition Analysis
 
 Es el análisis de los componentes y dependencias de una aplicación con el objetivo de identificar riesgos, versiones y vulnerabilidades conocidas.
-
-Podemos imaginarlo así:
 
 ```text
               📦 PROYECTO
@@ -1018,54 +686,18 @@ Podemos imaginarlo así:
               📊 Reporte
 ```
 
-Una herramienta SCA puede ayudarnos a identificar:
+### 🛠️ Herramientas relacionadas
 
-- Dependencias.
-- Versiones.
-- Vulnerabilidades conocidas.
-- Componentes obsoletos.
-- Dependencias transitivas.
-- Riesgos asociados.
+| Herramienta | Utilización |
+|---|---|
+| **OWASP Dependency-Check** | Analiza dependencias y busca vulnerabilidades conocidas |
+| **npm audit** | Analiza vulnerabilidades en proyectos Node.js (`npm audit`) |
+| **pip-audit** | Analiza dependencias de proyectos Python (`pip-audit`) |
+| **Dependabot** | Detecta dependencias vulnerables y propone actualizaciones en GitHub |
 
----
+### 📦 SBOM — Software Bill of Materials
 
-# 🛠️ Herramientas relacionadas con A06
-
-Algunas herramientas que podemos estudiar son:
-
-### OWASP Dependency-Check
-
-Analiza dependencias de proyectos y busca vulnerabilidades conocidas.
-
-### npm audit
-
-Permite analizar vulnerabilidades en proyectos que utilizan paquetes de Node.js.
-
-```bash
-npm audit
-```
-
-### pip-audit
-
-Permite analizar dependencias de proyectos Python.
-
-```bash
-pip-audit
-```
-
-### Dependabot
-
-Puede ayudar a detectar dependencias vulnerables y proponer actualizaciones en proyectos alojados en GitHub.
-
----
-
-# 📦 ¿Qué es una SBOM?
-
-**SBOM – Software Bill of Materials**
-
-Una SBOM puede entenderse como la "lista de ingredientes" de un software.
-
-Por ejemplo:
+Una SBOM es la "lista de ingredientes" de un software: qué componentes forman parte de un producto.
 
 ```text
 Aplicación: TiendaWeb
@@ -1078,33 +710,7 @@ Aplicación: TiendaWeb
 └── Otras dependencias
 ```
 
-Una SBOM permite conocer qué componentes forman parte de un producto de software.
-
-### 🍔 Analogía
-
-Podemos compararlo con una hamburguesa:
-
-```text
-🍔 Software
-│
-├── Pan
-├── Carne
-├── Queso
-├── Salsa
-└── Vegetales
-```
-
-Si descubrimos que uno de los ingredientes tiene un problema, necesitamos saber qué productos contienen ese ingrediente.
-
-Con el software sucede algo similar.
-
----
-
-# 🔄 Ciclo de gestión de dependencias
-
-Una buena estrategia no consiste solamente en actualizar todo inmediatamente.
-
-Se recomienda establecer un proceso:
+### 🔄 Ciclo de gestión de dependencias
 
 ```mermaid
 flowchart LR
@@ -1117,184 +723,20 @@ flowchart LR
     G --> A
 ```
 
-### 1. Inventariar
+### 🧪 Laboratorio propuesto — A06
 
-Conocer qué componentes tenemos.
+**Objetivo:** identificar, analizar y corregir vulnerabilidades relacionadas con dependencias de terceros.
 
-### 2. Analizar
+1. Crear el proyecto: `mkdir laboratorio-a06 && cd laboratorio-a06`
+2. Crear entorno virtual: `python -m venv venv` (activar con `venv\Scripts\activate` en Windows)
+3. Crear `requirements.txt` con, por ejemplo, `Flask` y `requests`
+4. Instalar dependencias: `pip install -r requirements.txt`
+5. Ejecutar auditoría: `pip-audit`
+6. Registrar dependencia, versión instalada, vulnerabilidad, severidad, versión corregida y acción recomendada
+7. Actualizar las dependencias afectadas: `pip install --upgrade nombre-paquete`
+8. Ejecutar `pip-audit` nuevamente y comparar resultados antes/después
 
-Revisar versiones y vulnerabilidades.
-
-### 3. Evaluar
-
-Determinar qué vulnerabilidades representan mayor riesgo.
-
-### 4. Actualizar
-
-Aplicar versiones corregidas cuando corresponda.
-
-### 5. Probar
-
-Verificar que la actualización no rompa la aplicación.
-
-### 6. Desplegar
-
-Llevar los cambios al entorno correspondiente.
-
-### 7. Monitorear
-
-Continuar revisando las dependencias.
-
----
-
-# 💻 Ejemplo práctico con Python
-
-Supongamos que tenemos:
-
-```text
-requirements.txt
-```
-
-Con:
-
-```text
-Flask
-requests
-```
-
-Podemos instalar las dependencias:
-
-```bash
-pip install -r requirements.txt
-```
-
-Posteriormente podemos realizar una auditoría:
-
-```bash
-pip-audit
-```
-
-El objetivo del ejercicio es identificar si alguna dependencia tiene vulnerabilidades conocidas.
-
----
-
-# 🧪 Laboratorio propuesto – A06
-
-## Objetivo
-
-Identificar, analizar y corregir vulnerabilidades relacionadas con dependencias de terceros.
-
-### Paso 1 – Crear proyecto
-
-```bash
-mkdir laboratorio-a06
-cd laboratorio-a06
-```
-
-### Paso 2 – Crear entorno virtual
-
-```bash
-python -m venv venv
-```
-
-Activación en Windows:
-
-```bash
-venv\Scripts\activate
-```
-
-### Paso 3 – Crear archivo de dependencias
-
-```text
-requirements.txt
-```
-
-Ejemplo:
-
-```text
-Flask
-requests
-```
-
-### Paso 4 – Instalar dependencias
-
-```bash
-pip install -r requirements.txt
-```
-
-### Paso 5 – Ejecutar auditoría
-
-```bash
-pip-audit
-```
-
-### Paso 6 – Analizar resultados
-
-Registrar:
-
-```text
-Dependencia
-Versión instalada
-Vulnerabilidad
-Severidad
-Versión corregida
-Acción recomendada
-```
-
-### Paso 7 – Actualizar
-
-Actualizar las dependencias afectadas.
-
-```bash
-pip install --upgrade nombre-paquete
-```
-
-### Paso 8 – Ejecutar nuevamente
-
-```bash
-pip-audit
-```
-
-### Paso 9 – Comparar
-
-```text
-ANTES
-│
-├── Dependencia vulnerable
-└── ⚠️ Riesgo
-
-        ↓ ACTUALIZACIÓN
-
-DESPUÉS
-│
-├── Dependencia actualizada
-└── ✅ Riesgo reducido
-```
-
----
-
-# 🛡️ ¿Cómo prevenir A06?
-
-Las principales medidas son:
-
-- Mantener un inventario de componentes.
-- Conocer las versiones utilizadas.
-- Analizar dependencias periódicamente.
-- Utilizar herramientas SCA.
-- Mantener las dependencias actualizadas.
-- Eliminar dependencias innecesarias.
-- Evitar componentes sin mantenimiento.
-- Utilizar fuentes confiables.
-- Revisar dependencias transitivas.
-- Implementar análisis de dependencias dentro del CI/CD.
-- Mantener una SBOM cuando sea apropiado.
-- Establecer procesos para responder ante nuevas vulnerabilidades.
-
----
-
-# 🔐 A06 dentro de DevSecOps
-
-A06 puede integrarse directamente en el ciclo DevSecOps.
+### 🔐 A06 dentro de DevSecOps
 
 ```mermaid
 flowchart LR
@@ -1308,352 +750,75 @@ flowchart LR
     E --> H["🚀 Deploy"]
 ```
 
-La idea es detectar problemas **antes de que lleguen a producción**.
+### 🛡️ ¿Cómo prevenir A06?
 
----
-
-# 📋 Checklist A06
-
-```text
-☐ ¿Conocemos todas nuestras dependencias?
-
-☐ ¿Conocemos las versiones utilizadas?
-
-☐ ¿Tenemos dependencias transitivas?
-
-☐ ¿Analizamos las dependencias periódicamente?
-
-☐ ¿Utilizamos una herramienta SCA?
-
-☐ ¿Conocemos las vulnerabilidades asociadas?
-
-☐ ¿Eliminamos dependencias innecesarias?
-
-☐ ¿Tenemos componentes sin mantenimiento?
-
-☐ ¿Tenemos un proceso de actualización?
-
-☐ ¿Probamos las actualizaciones antes de producción?
-
-☐ ¿Consideramos utilizar una SBOM?
-
-☐ ¿Integramos el análisis en CI/CD?
-```
-
----
-
-# 🎯 Ejemplo de situación real
-
-Supongamos que una empresa tiene 50 aplicaciones.
-
-Una vulnerabilidad crítica aparece en una librería utilizada por varias aplicaciones.
-
-Sin un inventario:
-
-```text
-Nueva vulnerabilidad
-        │
-        ▼
-"¿Dónde utilizamos esa librería?"
-        │
-        ▼
-Investigación manual
-        │
-        ▼
-Horas o días de trabajo
-```
-
-Con inventario y herramientas:
-
-```text
-Nueva vulnerabilidad
-        │
-        ▼
-SBOM / SCA
-        │
-        ▼
-Aplicaciones afectadas
-        │
-        ▼
-Priorización
-        │
-        ▼
-Actualización
-```
-
-Esto demuestra por qué la gestión de dependencias es una parte importante de la seguridad.
-
----
-
-# 🧠 ¿Qué aprendimos de A06?
-
-A06 nos enseña que la seguridad de una aplicación no depende únicamente del código que escribimos.
-
-También depende de los componentes que utilizamos.
-
-```text
-        Aplicación segura
-              │
-       ┌──────┴──────┐
-       ▼             ▼
-   Código propio   Dependencias
-       │             │
-       │             ▼
-       │       ¿Son seguras?
-       │             │
-       └──────┬──────┘
-              ▼
-        Seguridad total
-```
-
-Una aplicación puede tener un código propio correctamente desarrollado y aun así estar expuesta debido a una dependencia vulnerable.
-
----
-
-# ✅ Conclusión A06
-
-Los componentes de terceros son fundamentales para el desarrollo moderno de aplicaciones, pero también representan una superficie de ataque importante.
-
-El uso de dependencias vulnerables, desactualizadas o sin mantenimiento puede introducir riesgos que no siempre son evidentes para los desarrolladores.
-
-Por esta razón, las organizaciones deben conocer qué componentes utilizan, controlar sus versiones, analizar periódicamente las dependencias, eliminar componentes innecesarios y establecer procesos de actualización y respuesta ante vulnerabilidades.
-
-El uso de herramientas SCA y, cuando sea apropiado, de una SBOM facilita la identificación y gestión de estos riesgos.
+- Mantener un inventario de componentes y conocer las versiones utilizadas.
+- Analizar dependencias periódicamente con herramientas SCA.
+- Mantener las dependencias actualizadas y eliminar las innecesarias.
+- Evitar componentes sin mantenimiento y utilizar fuentes confiables.
+- Revisar dependencias transitivas.
+- Implementar análisis de dependencias dentro del CI/CD.
+- Mantener una SBOM cuando sea apropiado.
+- Establecer procesos para responder ante nuevas vulnerabilidades.
 
 > 🔑 **La primera medida de seguridad para nuestras dependencias es saber exactamente qué tenemos instalado.**
 
-# 📚 Referencias A06
-
-- OWASP Top 10 – A06:2021 Componentes Vulnerables y Desactualizados.
-- OWASP Top 10 – 2021.
-- OWASP Dependency-Check.
-- OWASP Software Component Verification Standard.
-- NIST – National Vulnerability Database (NVD).
-- NIST – Software Bill of Materials (SBOM).
-- MITRE – Common Vulnerabilities and Exposures (CVE).
-- MITRE – Common Weakness Enumeration (CWE).
-- FIRST – Common Vulnerability Scoring System (CVSS).
-
 ---
 
-# 5️⃣ A07:2021 – Fallas de Identificación y Autenticación
+## 7️⃣ A07:2021 — Fallas de Identificación y Autenticación
 
-## 🔐 Introducción
+### 🔐 Introducción
 
-Una aplicación web necesita saber quién está intentando acceder a ella y comprobar que realmente es quien dice ser.
-
-Por ejemplo, cuando un usuario inicia sesión en una plataforma bancaria, la aplicación debe responder preguntas como:
-
-- ¿Quién es el usuario?
-- ¿Cómo demuestra su identidad?
-- ¿La contraseña es correcta?
-- ¿Tiene habilitado un segundo factor?
-- ¿Qué permisos tiene?
-- ¿Cuánto tiempo puede permanecer abierta su sesión?
-- ¿Qué ocurre si pierde su contraseña?
-- ¿Qué sucede después de varios intentos fallidos?
-
-Cuando estos mecanismos están mal diseñados o implementados pueden aparecer vulnerabilidades relacionadas con la identificación, autenticación y gestión de sesiones.
-
-El **A07:2021 – Identification and Authentication Failures** del OWASP Top 10 agrupa diferentes problemas relacionados con la autenticación de usuarios, las credenciales y la gestión de sesiones.
+Una aplicación web necesita saber quién está intentando acceder a ella y comprobar que realmente es quien dice ser. Cuando estos mecanismos están mal diseñados o implementados pueden aparecer vulnerabilidades relacionadas con la identificación, autenticación y gestión de sesiones.
 
 > 💡 En términos sencillos: A07 ocurre cuando una aplicación no comprueba correctamente quién es el usuario o permite que un atacante pueda hacerse pasar por él.
 
----
+### 🧠 Identificación, autenticación y autorización
 
-# 🧠 1. Identificación, autenticación y autorización
+| Concepto | Pregunta | Ejemplo |
+|---|---|---|
+| **Identificación** | ¿Quién eres? | Usuario: William |
+| **Autenticación** | ¿Puedes demostrarlo? | Contraseña + MFA |
+| **Autorización** | ¿Qué puedes hacer? | Consultar su cuenta |
 
-Antes de estudiar A07 debemos diferenciar tres conceptos que suelen confundirse.
-
-## 👤 Identificación
-
-La identificación responde:
-
-> **¿Quién eres?**
-
-Por ejemplo:
+**Analogía:** entrar a una universidad.
 
 ```text
-Usuario: william
-Correo: william@example.com
-```
-
-El usuario está indicando a la aplicación quién dice ser.
-
----
-
-## 🔑 Autenticación
-
-La autenticación responde:
-
-> **¿Puedes demostrar que realmente eres esa persona?**
-
-Ejemplo:
-
-```text
-Usuario
-   +
-Contraseña
-   +
-Código MFA
-```
-
-Si las credenciales son correctas, la aplicación puede considerar que el usuario fue autenticado.
-
----
-
-## 🛂 Autorización
-
-La autorización responde:
-
-> **¿Qué tienes permitido hacer?**
-
-Ejemplo:
-
-```text
-Usuario: William
-       │
-       ▼
-Autenticado ✅
-       │
-       ▼
-¿Puede eliminar usuarios?
-       │
-       ▼
-      NO ❌
+IDENTIFICACIÓN → "Soy William"
+AUTENTICACIÓN  → "Esta es mi tarjeta de identificación"
+AUTORIZACIÓN   → "Mi tarjeta me permite entrar a esta área"
 ```
 
 Estar autenticado **no significa tener acceso a todo**.
 
----
+### 🔴 ¿Qué es A07?
 
-## 📊 Diferencia entre los tres conceptos
-
-| Concepto | Pregunta | Ejemplo |
-|---|---|---|
-| Identificación | ¿Quién eres? | Usuario: William |
-| Autenticación | ¿Puedes demostrarlo? | Contraseña + MFA |
-| Autorización | ¿Qué puedes hacer? | Consultar su cuenta |
-
-### 🧠 Analogía
-
-Podemos compararlo con entrar a una universidad:
+Se presenta cuando existen fallas en mecanismos como inicio de sesión, contraseñas, MFA, recuperación de cuentas, gestión de sesiones, tokens, protección contra ataques automatizados, cierre de sesión y validación de credenciales:
 
 ```text
-IDENTIFICACIÓN
-      ↓
-"Soy William"
-
-      ↓
-
-AUTENTICACIÓN
-      ↓
-"Esta es mi tarjeta de identificación"
-
-      ↓
-
-AUTORIZACIÓN
-      ↓
-"Mi tarjeta me permite entrar a esta área"
+❌ Contraseñas débiles          ❌ Recuperación insegura de cuentas
+❌ Credenciales predeterminadas ❌ Contraseñas almacenadas incorrectamente
+❌ Falta de MFA                 ❌ Sesiones que no expiran
+❌ Fuerza bruta                 ❌ Session Fixation
+❌ Credential Stuffing          ❌ Session Hijacking
 ```
 
----
+### 🔓 Contraseñas débiles y credenciales predeterminadas
 
-# 🔴 2. ¿Qué es A07?
-
-A07 se presenta cuando existen fallas en mecanismos como:
-
-- Inicio de sesión.
-- Contraseñas.
-- MFA.
-- Recuperación de cuentas.
-- Gestión de sesiones.
-- Tokens.
-- Protección contra ataques automatizados.
-- Cierre de sesión.
-- Validación de credenciales.
-
-Algunos ejemplos son:
+Ejemplos de contraseñas fácilmente adivinables: `123456`, `password`, `admin`, `admin123`, `qwerty`. El problema aumenta cuando los usuarios reutilizan la misma contraseña en diferentes servicios, o cuando un sistema mantiene credenciales predeterminadas de fábrica (`admin`/`admin`) en producción.
 
 ```text
-❌ Contraseñas débiles
-❌ Credenciales predeterminadas
-❌ Falta de MFA
-❌ Fuerza bruta
-❌ Credential Stuffing
-❌ Recuperación insegura de cuentas
-❌ Contraseñas almacenadas incorrectamente
-❌ Sesiones que no expiran
-❌ Session Fixation
-❌ Session Hijacking
+❌ Mala práctica                    ✅ Buena práctica
+Instalación                         Instalación
+   ↓                                   ↓
+Usuario/contraseña predeterminados  Cambiar credenciales
+   ↓                                   ↓
+Producción                          Configurar autenticación segura + MFA
+                                        ↓
+                                     Producción
 ```
 
----
-
-# 🔓 3. Contraseñas débiles
-
-Una contraseña débil puede ser fácilmente adivinada o encontrada mediante ataques automatizados.
-
-Ejemplos:
-
-```text
-123456
-password
-admin
-admin123
-qwerty
-```
-
-El problema aumenta cuando los usuarios reutilizan la misma contraseña en diferentes servicios.
-
----
-
-# ⚠️ 4. Credenciales predeterminadas
-
-Algunos sistemas pueden instalarse inicialmente con credenciales conocidas.
-
-Ejemplo:
-
-```text
-Usuario: admin
-Contraseña: admin
-```
-
-Si estas credenciales permanecen activas en producción, un atacante podría intentar utilizarlas.
-
-### ❌ Mala práctica
-
-```text
-Instalación
-    ↓
-Usuario predeterminado
-    ↓
-Contraseña predeterminada
-    ↓
-Producción
-```
-
-### ✅ Buena práctica
-
-```text
-Instalación
-    ↓
-Cambiar credenciales
-    ↓
-Configurar autenticación segura
-    ↓
-MFA cuando corresponda
-    ↓
-Producción
-```
-
----
-
-# 💥 5. Ataque de fuerza bruta
-
-Un ataque de fuerza bruta consiste en realizar numerosos intentos de autenticación buscando encontrar las credenciales correctas.
-
-Ejemplo conceptual:
+### 💥 Fuerza bruta
 
 ```mermaid
 flowchart LR
@@ -1667,36 +832,7 @@ flowchart LR
     G -->|Sí| H["⚠️ Acceso"]
 ```
 
-Una aplicación vulnerable podría permitir una cantidad ilimitada de intentos.
-
-### ❌ Ejemplo
-
-```text
-Intento 1 → incorrecto
-Intento 2 → incorrecto
-Intento 3 → incorrecto
-...
-Intento 10.000 → incorrecto
-```
-
-Sin controles adecuados, el atacante puede continuar intentando.
-
----
-
-# 🛡️ 6. Protección contra fuerza bruta
-
-Algunas medidas de protección incluyen:
-
-- Limitar intentos.
-- Aplicar retrasos progresivos.
-- Utilizar rate limiting.
-- Implementar MFA.
-- Detectar patrones anormales.
-- Monitorear intentos fallidos.
-- Utilizar mecanismos de bloqueo cuidadosamente diseñados.
-- Alertar ante comportamientos sospechosos.
-
-Ejemplo conceptual:
+**Protección:** limitar intentos, retrasos progresivos, rate limiting, MFA, detección de patrones anormales, monitoreo, bloqueos cuidadosamente diseñados y alertas.
 
 ```mermaid
 flowchart LR
@@ -1709,42 +845,9 @@ flowchart LR
 
 > ⚠️ Un bloqueo de cuenta mal diseñado también puede convertirse en un problema de disponibilidad si un atacante puede bloquear intencionalmente cuentas de otros usuarios.
 
----
+### 🧪 Credential Stuffing
 
-# 🧪 7. Credential Stuffing
-
-El **Credential Stuffing** es diferente de la fuerza bruta.
-
-En este caso, el atacante utiliza pares de usuario y contraseña obtenidos previamente, normalmente de una filtración o compromiso de otro servicio.
-
-Ejemplo:
-
-```text
-Servicio A
-────────────────
-usuario@example.com
-contraseña123
-
-        ↓
-Credenciales obtenidas
-        ↓
-        ↓
-        ↓
-
-Servicio B
-────────────────
-usuario@example.com
-contraseña123
-
-        ↓
-⚠️ Intento de acceso
-```
-
-El problema principal es la **reutilización de contraseñas**.
-
----
-
-## 🔄 Fuerza bruta vs Credential Stuffing
+El atacante utiliza pares de usuario/contraseña obtenidos previamente de una filtración de otro servicio y los reutiliza contra la aplicación objetivo. El problema principal es la **reutilización de contraseñas**.
 
 | Característica | Fuerza bruta | Credential Stuffing |
 |---|---|---|
@@ -1753,49 +856,13 @@ El problema principal es la **reutilización de contraseñas**.
 | Principal defensa | Rate limiting + MFA | MFA + detección + contraseñas únicas |
 | Riesgo | Alto | Alto |
 
----
+### 🔐 MFA — Multi-Factor Authentication
 
-# 🔐 8. MFA – Multi-Factor Authentication
+Combina dos o más factores independientes:
 
-MFA significa:
-
-> **Multi-Factor Authentication**
-
-Consiste en utilizar dos o más factores de autenticación independientes.
-
-## Los principales factores
-
-### 🧠 Algo que sabes
-
-Por ejemplo:
-
-```text
-Contraseña
-PIN
-```
-
-### 📱 Algo que tienes
-
-Por ejemplo:
-
-```text
-Teléfono
-Token de seguridad
-Aplicación autenticadora
-```
-
-### 👤 Algo que eres
-
-Por ejemplo:
-
-```text
-Huella digital
-Reconocimiento facial
-```
-
----
-
-## MFA de forma visual
+- **Algo que sabes:** contraseña, PIN.
+- **Algo que tienes:** teléfono, token de seguridad, app autenticadora.
+- **Algo que eres:** huella digital, reconocimiento facial.
 
 ```mermaid
 flowchart LR
@@ -1806,198 +873,44 @@ flowchart LR
     D -->|No| F["❌ Acceso denegado"]
 ```
 
-Si un atacante obtiene la contraseña, todavía tendría que superar el segundo factor.
-
 > 💡 MFA no hace que una aplicación sea invulnerable, pero reduce significativamente el riesgo asociado al robo de credenciales.
 
----
-
-# 🔑 9. Almacenamiento seguro de contraseñas
-
-Una de las reglas más importantes:
+### 🔑 Almacenamiento seguro de contraseñas
 
 > ❌ **Las contraseñas no deben almacenarse en texto plano.**
 
-### ❌ Ejemplo incorrecto
-
 ```text
-Usuario: william
-Password: MiPassword123
+Contraseña → Función de hashing → Hash almacenado
 ```
 
-Si un atacante obtiene la base de datos, puede conocer directamente las contraseñas.
+En el login: `Contraseña ingresada → Verificación → Hash almacenado → ¿Coinciden?`
 
----
+**Salt:** valor aleatorio combinado con la contraseña antes del hashing (`Contraseña + Salt → Hash → Base de datos`), que dificulta ataques con tablas precomputadas.
 
-## ✅ Hashing
+> ⚠️ No debemos implementar nuestro propio algoritmo de hashing de contraseñas; es preferible usar librerías diseñadas específicamente para esto.
 
-En lugar de guardar directamente la contraseña, se almacena un resultado derivado mediante un algoritmo diseñado para contraseñas.
+**Algoritmos recomendados:** Argon2, bcrypt, scrypt, PBKDF2.
+**No deben usarse solos para contraseñas:** MD5, SHA-1, SHA-256 (no están diseñados para resistir ataques de adivinación masiva).
 
-Conceptualmente:
+### 📧 Recuperación de cuentas
 
-```text
-Contraseña
-     │
-     ▼
-Función de hashing
-     │
-     ▼
-Hash almacenado
-```
+❌ Inseguro: preguntas fácilmente adivinables (`¿Cuál es el nombre de tu mascota?`).
 
-Cuando el usuario vuelve a iniciar sesión:
+✅ Más seguro:
 
 ```text
-Contraseña ingresada
-       │
-       ▼
-Verificación
-       │
-       ▼
-Hash almacenado
-       │
-       ▼
-¿Coinciden?
+Usuario solicita recuperación → Servidor genera mecanismo temporal
+→ Usuario recibe enlace con token aleatorio → Token expira → Nueva contraseña
 ```
 
----
-
-# 🧂 10. ¿Qué es un salt?
-
-Un **salt** es un valor aleatorio que se utiliza junto con la contraseña durante el proceso de almacenamiento.
-
-Conceptualmente:
+### 🍪 Sesiones, Session ID y sus riesgos
 
 ```text
-Contraseña + Salt
-       │
-       ▼
-Hash
-       │
-       ▼
-Base de datos
+Usuario → Login → Autenticación correcta → Servidor crea sesión
+→ Session ID / Token → Usuario continúa navegando
 ```
 
-El objetivo es dificultar ataques basados en contraseñas previamente procesadas y evitar que usuarios con la misma contraseña terminen necesariamente con el mismo valor almacenado.
-
-> ⚠️ No debemos implementar nuestro propio algoritmo de hashing de contraseñas. Es preferible utilizar mecanismos y librerías diseñados específicamente para este propósito.
-
----
-
-# 🧰 11. Algoritmos para contraseñas
-
-Para almacenar contraseñas se utilizan algoritmos diseñados para ser costosos computacionalmente, como:
-
-- Argon2.
-- bcrypt.
-- scrypt.
-- PBKDF2.
-
-No debemos confundirlos con hashes rápidos utilizados para otros propósitos.
-
-Ejemplos de algoritmos que **no deben utilizarse por sí solos para almacenar contraseñas**:
-
-```text
-MD5
-SHA-1
-SHA-256
-```
-
-El problema no es que SHA-256 sea "malo", sino que los hashes rápidos no están diseñados específicamente para proteger contraseñas frente a ataques de adivinación masiva.
-
----
-
-# 📧 12. Recuperación de cuentas
-
-La recuperación de una contraseña también forma parte de la seguridad de autenticación.
-
-### ❌ Ejemplo inseguro
-
-```text
-¿Cuál es el nombre de tu mascota?
-```
-
-Si la respuesta puede ser conocida o adivinada, el mecanismo puede ser débil.
-
----
-
-## ✅ Ejemplo más seguro
-
-```text
-Usuario solicita recuperación
-          ↓
-Servidor genera mecanismo temporal
-          ↓
-Usuario recibe enlace
-          ↓
-Enlace con token aleatorio
-          ↓
-Token expira
-          ↓
-Nueva contraseña
-```
-
-El mecanismo de recuperación debe tener controles de seguridad equivalentes a los del inicio de sesión.
-
----
-
-# 🍪 13. ¿Qué es una sesión?
-
-Después de autenticarse correctamente, una aplicación necesita recordar que el usuario ya fue autenticado.
-
-Para esto se utilizan mecanismos de sesión.
-
-Ejemplo:
-
-```text
-Usuario
-   │
-   ▼
-Login
-   │
-   ▼
-Autenticación correcta
-   │
-   ▼
-Servidor crea sesión
-   │
-   ▼
-Session ID / Token
-   │
-   ▼
-Usuario continúa navegando
-```
-
----
-
-# 🎟️ 14. Session ID
-
-Un Session ID es un identificador asociado a la sesión de un usuario.
-
-Conceptualmente:
-
-```text
-Usuario
-   │
-   ▼
-Login correcto
-   │
-   ▼
-Session ID
-   │
-   ▼
-Servidor reconoce la sesión
-```
-
-El identificador debe ser difícil de adivinar y debe protegerse adecuadamente.
-
----
-
-# 🚨 15. Session Hijacking
-
-El **Session Hijacking** ocurre cuando un atacante consigue utilizar una sesión legítima de otra persona.
-
-Conceptualmente:
+**Session Hijacking** — un atacante consigue utilizar la sesión legítima de otra persona:
 
 ```mermaid
 flowchart LR
@@ -2011,168 +924,39 @@ flowchart LR
     D --> G["⚠️ Posible suplantación"]
 ```
 
-Por ejemplo, si un atacante consigue un token de sesión válido, podría intentar utilizarlo para actuar como el usuario.
-
----
-
-# 🔒 16. Session Fixation
-
-La **Session Fixation** es una vulnerabilidad en la que un atacante consigue que la víctima utilice un identificador de sesión conocido por el atacante y posteriormente la víctima se autentica utilizando esa sesión.
-
-Conceptualmente:
+**Session Fixation** — un atacante logra que la víctima utilice un identificador de sesión conocido por él, y luego la víctima se autentica usando esa sesión:
 
 ```text
-Atacante
-   │
-   ▼
-Conoce Session ID
-   │
-   ▼
-Víctima utiliza esa sesión
-   │
-   ▼
-Víctima inicia sesión
-   │
-   ▼
-Sesión autenticada
-   │
-   ▼
-Atacante intenta reutilizarla
+Atacante conoce Session ID → Víctima utiliza esa sesión → Víctima inicia sesión
+→ Sesión autenticada → Atacante intenta reutilizarla
 ```
 
-Una medida importante es **regenerar el identificador de sesión después de una autenticación exitosa**.
+> Una medida importante es **regenerar el identificador de sesión después de una autenticación exitosa**.
 
----
-
-# 🔄 17. Expiración de sesiones
-
-Una sesión no debería permanecer válida indefinidamente.
-
-Podemos tener:
+**Expiración y cierre de sesión:**
 
 ```text
-Login
-  ↓
-Sesión activa
-  ↓
-Inactividad
-  ↓
-Tiempo de expiración
-  ↓
-Sesión invalidada
+❌ Cierre de sesión inseguro         ✅ Cierre de sesión correcto
+Usuario pulsa "Cerrar sesión"        Usuario pulsa "Cerrar sesión"
+   ↓                                    ↓
+Se oculta la página                  Servidor invalida sesión
+   ↓                                    ↓
+Session Token continúa válido        Token deja de ser válido
 ```
 
-También es importante invalidar la sesión cuando el usuario realiza un cierre de sesión.
+**Atributos de seguridad de cookies:**
 
----
+- **HttpOnly** — impide que JavaScript acceda a la cookie mediante `document.cookie`.
+- **Secure** — la cookie solo se transmite por HTTPS.
+- **SameSite=Lax / Strict** — controla el envío de cookies en solicitudes entre sitios.
 
-# 🚪 18. Cierre de sesión
+### 🌐 HTTPS y autenticación
 
-Un error sería simplemente eliminar la información visual de la aplicación y mantener la sesión válida en el servidor.
+Las credenciales y tokens de sesión deben protegerse durante el transporte (HTTPS en lugar de HTTP).
 
-### ❌ Conceptualmente
+### 💻 Ejemplo de código vulnerable vs. mejorado
 
-```text
-Usuario pulsa "Cerrar sesión"
-        ↓
-Se oculta la página
-        ↓
-Session Token continúa válido
-```
-
-### ✅ Mejor práctica
-
-```text
-Usuario pulsa "Cerrar sesión"
-        ↓
-Servidor invalida sesión
-        ↓
-Token deja de ser válido
-        ↓
-Usuario debe autenticarse nuevamente
-```
-
----
-
-# 🔐 19. Cookies y seguridad de sesión
-
-Cuando una aplicación utiliza cookies para mantener sesiones, existen atributos de seguridad importantes.
-
-## HttpOnly
-
-Ayuda a impedir que JavaScript del navegador acceda directamente a la cookie.
-
-```text
-HttpOnly
-   ↓
-Cookie no accesible mediante document.cookie
-```
-
----
-
-## Secure
-
-Indica que la cookie debe transmitirse mediante una conexión HTTPS.
-
-```text
-Secure
-   ↓
-Enviar cookie únicamente mediante HTTPS
-```
-
----
-
-## SameSite
-
-Ayuda a controlar cuándo el navegador envía cookies en solicitudes entre sitios.
-
-Ejemplo:
-
-```text
-SameSite=Lax
-```
-
-o:
-
-```text
-SameSite=Strict
-```
-
-La configuración adecuada depende del diseño de la aplicación.
-
----
-
-# 🌐 20. HTTPS y autenticación
-
-Las credenciales y los tokens de sesión deben protegerse durante el transporte.
-
-### ❌ Situación insegura
-
-```text
-Usuario
-   │
-   │ HTTP
-   ▼
-Servidor
-```
-
-### ✅ Situación recomendada
-
-```text
-Usuario
-   │
-   │ HTTPS 🔒
-   ▼
-Servidor
-```
-
-HTTPS ayuda a proteger la información mientras viaja entre el cliente y el servidor.
-
----
-
-# 💻 21. Ejemplo de código vulnerable
-
-El siguiente ejemplo es **educativo** y representa varias malas prácticas:
+**Vulnerable (educativo):**
 
 ```python
 users = {
@@ -2181,46 +965,25 @@ users = {
 
 @app.route("/login", methods=["POST"])
 def login():
-
     username = request.form["username"]
     password = request.form["password"]
-
     if username in users:
         if users[username] == password:
             return "Login exitoso"
-
     return "Credenciales incorrectas"
 ```
 
-## 🚨 Problemas
+Problemas: contraseña débil, texto plano, sin MFA, sin rate limiting, sin control de intentos, sin gestión segura de sesión, sin monitoreo.
 
-Podemos identificar:
-
-```text
-❌ Contraseña débil
-❌ Contraseña almacenada en texto plano
-❌ No existe MFA
-❌ No existe rate limiting
-❌ No existe control de intentos
-❌ No existe una gestión segura de sesión
-❌ No existe monitoreo
-```
-
----
-
-# 🛠️ 22. Ejemplo conceptual mejorado
-
-Una implementación más segura debería seguir un flujo parecido a:
+**Conceptual mejorado:**
 
 ```python
 @app.route("/login", methods=["POST"])
 def login():
-
     username = request.form["username"]
     password = request.form["password"]
 
     user = get_user(username)
-
     if not user:
         register_failed_attempt(username)
         return "Credenciales incorrectas"
@@ -2233,47 +996,12 @@ def login():
         return "Solicitar segundo factor"
 
     create_secure_session(user)
-
     return "Login exitoso"
 ```
 
-### Ahora tenemos:
+### 🧪 Laboratorio propuesto — A07
 
-```text
-Usuario
-   │
-   ▼
-Buscar cuenta
-   │
-   ▼
-Verificar contraseña
-   │
-   ▼
-Control de intentos
-   │
-   ▼
-MFA
-   │
-   ▼
-Crear sesión segura
-   │
-   ▼
-✅ Acceso
-```
-
----
-
-# 🧪 23. Laboratorio A07
-
-## 🎯 Objetivo
-
-Construir una aplicación de autenticación sencilla, identificar vulnerabilidades y posteriormente aplicar medidas de seguridad.
-
-El laboratorio debe realizarse únicamente en un entorno controlado y local.
-
----
-
-## 🏗️ Arquitectura
+**Objetivo:** construir una aplicación de autenticación sencilla, identificar vulnerabilidades y aplicar medidas de seguridad, únicamente en un entorno controlado y local.
 
 ```mermaid
 flowchart TD
@@ -2285,220 +1013,21 @@ flowchart TD
     C --> G["📊 Logs"]
 ```
 
----
+1. **Fase 1 — Login vulnerable:** crear un login simple y observar qué problemas existen (contraseña segura, almacenamiento, MFA, intentos permitidos, rate limiting, creación/expiración de sesión).
+2. **Fase 2 — Mejorar contraseñas:** reemplazar el almacenamiento directo por hashing seguro (`Contraseña → Hash seguro para passwords → Base de datos`).
+3. **Fase 3 — Protección contra automatización:** implementar un mecanismo de control de múltiples intentos.
+4. **Fase 4 — MFA:** agregar un segundo factor de demostración (código temporal) dentro del entorno de pruebas.
+5. **Fase 5 — Gestión de sesión:** verificar generación, aleatoriedad, regeneración post-login, expiración, invalidación al cerrar sesión y atributos seguros de cookies.
 
-# 🧪 Fase 1 – Login vulnerable
+**Pruebas sugeridas:** contraseñas débiles, intentos repetidos, cierre de sesión, expiración, y verificación de MFA.
 
-Crear una aplicación sencilla con:
+### 🛡️ Herramientas para estudiar A07
 
-```text
-Usuario
-Contraseña
-Botón Login
-```
+- **OWASP ZAP** — análisis de aplicaciones web en pruebas de seguridad.
+- **Burp Suite** — observación y análisis de solicitudes HTTP/HTTPS autorizadas.
+- **DevTools** — inspección de cookies, headers, solicitudes, respuestas y almacenamiento.
 
-El primer objetivo es observar qué problemas existen.
-
-### Ejemplo:
-
-```python
-users = {
-    "admin": "123456"
-}
-```
-
-El grupo debe identificar:
-
-```text
-1. ¿La contraseña es segura?
-2. ¿Cómo está almacenada?
-3. ¿Existe MFA?
-4. ¿Cuántos intentos permite?
-5. ¿Existe rate limiting?
-6. ¿Cómo se crea la sesión?
-7. ¿Cuándo expira?
-```
-
----
-
-# 🧪 Fase 2 – Mejorar las contraseñas
-
-Cambiar el almacenamiento directo de contraseñas por un mecanismo de hashing adecuado.
-
-Flujo:
-
-```text
-Contraseña
-    ↓
-Hash seguro para passwords
-    ↓
-Base de datos
-```
-
-No almacenar:
-
-```text
-password = "123456"
-```
-
-en texto plano.
-
----
-
-# 🧪 Fase 3 – Protección contra intentos automatizados
-
-Implementar un mecanismo para controlar múltiples intentos.
-
-Ejemplo conceptual:
-
-```text
-Intento 1 → ❌
-Intento 2 → ❌
-Intento 3 → ❌
-Intentos repetidos
-       ↓
-Protección
-       ↓
-⏳ Esperar / limitar solicitudes
-```
-
----
-
-# 🧪 Fase 4 – MFA
-
-Agregar un segundo factor de demostración.
-
-Por ejemplo:
-
-```text
-Usuario
-   +
-Contraseña
-   +
-Código temporal
-   ↓
-✅ Acceso
-```
-
-Para un laboratorio académico puede utilizarse un mecanismo de código temporal, siempre dentro del entorno de pruebas.
-
----
-
-# 🧪 Fase 5 – Gestión de sesión
-
-Comprobar:
-
-```text
-☐ ¿Se genera una sesión después del login?
-
-☐ ¿El identificador es suficientemente aleatorio?
-
-☐ ¿Se regenera después de autenticarse?
-
-☐ ¿La sesión expira?
-
-☐ ¿Se invalida al cerrar sesión?
-
-☐ ¿Las cookies utilizan atributos de seguridad?
-```
-
----
-
-# 🔍 24. Pruebas que podemos realizar
-
-Una vez creada la aplicación, podemos revisar:
-
-### Prueba 1 – Contraseña débil
-
-Intentar utilizar contraseñas evidentemente inseguras en el laboratorio.
-
-```text
-123456
-password
-admin
-```
-
-Objetivo:
-
-> Comprobar si la aplicación permite credenciales débiles.
-
----
-
-### Prueba 2 – Intentos repetidos
-
-Realizar varios intentos fallidos controlados.
-
-Objetivo:
-
-> Comprobar si existe protección contra ataques automatizados.
-
----
-
-### Prueba 3 – Cierre de sesión
-
-Cerrar sesión y comprobar si el acceso anterior continúa funcionando.
-
-Objetivo:
-
-> Verificar la invalidación de la sesión.
-
----
-
-### Prueba 4 – Expiración
-
-Esperar el tiempo configurado y comprobar si la sesión continúa válida.
-
-Objetivo:
-
-> Verificar la expiración.
-
----
-
-### Prueba 5 – MFA
-
-Comprobar que conocer solamente la contraseña no sea suficiente cuando MFA está habilitado.
-
----
-
-# 🛡️ 25. Herramientas para estudiar A07
-
-## OWASP ZAP
-
-Puede utilizarse para analizar aplicaciones web durante pruebas de seguridad.
-
-## Burp Suite
-
-Permite observar y analizar solicitudes HTTP/HTTPS durante pruebas autorizadas.
-
-## DevTools
-
-Las herramientas de desarrollador del navegador permiten estudiar:
-
-- Cookies.
-- Headers.
-- Solicitudes.
-- Respuestas.
-- Almacenamiento.
-
-Por ejemplo:
-
-```text
-Browser
-   ↓
-DevTools
-   ↓
-Network
-   ↓
-Request / Response
-```
-
----
-
-# 🧩 26. A07 y DevSecOps
-
-La autenticación segura no debería revisarse solamente al final del proyecto.
-
-Puede incorporarse al ciclo de desarrollo:
+### 🧩 A07 y DevSecOps
 
 ```mermaid
 flowchart LR
@@ -2510,25 +1039,7 @@ flowchart LR
     F --> A
 ```
 
-En cada etapa podemos preguntarnos:
-
-```text
-¿La autenticación es segura?
-
-¿Las sesiones están protegidas?
-
-¿Las contraseñas están correctamente gestionadas?
-
-¿Existe MFA?
-
-¿Hay protección contra automatización?
-
-¿Se registran eventos de seguridad?
-```
-
----
-
-# 📊 27. Matriz de vulnerabilidades A07
+### 📊 Matriz de vulnerabilidades A07
 
 | Vulnerabilidad | Ejemplo | Impacto |
 |---|---|---|
@@ -2543,57 +1054,15 @@ En cada etapa podemos preguntarnos:
 | Session Hijacking | Robo de sesión | 🔴 Alto |
 | Recuperación insegura | Preguntas fáciles | 🟠 Alto |
 
----
+### 🛡️ Buenas prácticas para prevenir A07
 
-# 🛡️ 28. Buenas prácticas para prevenir A07
+- **Contraseñas:** políticas adecuadas, sin predeterminadas, hashing seguro, evitar reutilización.
+- **MFA:** usar cuando sea apropiado, priorizar cuentas administrativas y mecanismos resistentes al phishing.
+- **Protección contra automatización:** rate limiting, control de intentos, monitoreo, detección de anomalías.
+- **Sesiones:** identificadores impredecibles, regeneración post-login, expiración, invalidación al cerrar sesión, cookies protegidas, HTTPS.
+- **Recuperación de cuentas:** mecanismos temporales, tokens aleatorios con expiración, sin preguntas de seguridad débiles.
 
-Las aplicaciones deberían considerar:
-
-### 🔑 Contraseñas
-
-- Utilizar políticas de contraseñas adecuadas.
-- No utilizar contraseñas predeterminadas.
-- No almacenar contraseñas en texto plano.
-- Utilizar algoritmos diseñados para almacenamiento de contraseñas.
-- Evitar reutilización de contraseñas.
-
-### 📱 MFA
-
-- Utilizar MFA cuando sea apropiado.
-- Proteger especialmente cuentas administrativas.
-- Preferir mecanismos resistentes al phishing cuando sea posible.
-
-### 🚦 Protección contra automatización
-
-- Rate limiting.
-- Protección contra intentos excesivos.
-- Monitoreo.
-- Detección de comportamientos anormales.
-
-### 🎟️ Sesiones
-
-- Utilizar identificadores de sesión impredecibles.
-- Regenerar la sesión después de autenticarse.
-- Establecer expiración.
-- Invalidar la sesión al cerrar sesión.
-- Proteger las cookies.
-- Utilizar HTTPS.
-
-### 🔄 Recuperación de cuentas
-
-- Utilizar mecanismos temporales.
-- Utilizar tokens aleatorios.
-- Establecer expiración.
-- No utilizar preguntas de seguridad débiles.
-- No revelar información innecesaria sobre las cuentas.
-
----
-
-# 🔗 29. Relación entre A07 y otros riesgos OWASP
-
-A07 puede relacionarse con otras categorías del OWASP Top 10.
-
-Por ejemplo:
+### 🔗 Relación entre A07 y otros riesgos OWASP
 
 ```mermaid
 flowchart TD
@@ -2606,275 +1075,58 @@ flowchart TD
     D --> G["Control de acceso"]
 ```
 
-Esto demuestra que las categorías del OWASP Top 10 no necesariamente aparecen aisladas.
-
-Una vulnerabilidad puede involucrar diferentes controles de seguridad.
-
----
-
-# 🧠 30. Ejemplo completo
-
-Imaginemos una aplicación bancaria.
-
-El usuario realiza:
+### 🧠 Ejemplo completo (aplicación bancaria)
 
 ```text
-1. Introduce usuario
-       ↓
-2. Introduce contraseña
-       ↓
-3. Sistema verifica contraseña
-       ↓
-4. Solicita MFA
-       ↓
-5. Usuario proporciona segundo factor
-       ↓
-6. Sistema crea sesión
-       ↓
-7. Usuario accede a su cuenta
+1. Introduce usuario → 2. Introduce contraseña → 3. Verifica contraseña
+→ 4. Solicita MFA → 5. Proporciona segundo factor → 6. Crea sesión → 7. Accede a su cuenta
 ```
 
-Una implementación insegura podría tener:
+**Implementación insegura:** contraseña débil, texto plano, sin MFA, sin límite de intentos, sesión permanente, cookie sin protección, sin invalidación al cerrar sesión.
 
-```text
-❌ Contraseña débil
-❌ Contraseña almacenada en texto plano
-❌ Sin MFA
-❌ Sin límite de intentos
-❌ Sesión permanente
-❌ Cookie sin protección
-❌ Sesión no invalidada al cerrar sesión
-```
-
-Mientras una implementación más segura podría tener:
-
-```text
-✅ Contraseña protegida
-✅ MFA
-✅ Rate limiting
-✅ Sesión segura
-✅ Expiración
-✅ Cookies protegidas
-✅ HTTPS
-✅ Invalidación al cerrar sesión
-✅ Monitoreo
-```
-
----
-
-# 📋 31. Checklist A07
-
-```text
-☐ ¿La aplicación identifica correctamente al usuario?
-
-☐ ¿La autenticación está correctamente implementada?
-
-☐ ¿Se utilizan contraseñas seguras?
-
-☐ ¿Se evitan credenciales predeterminadas?
-
-☐ ¿Las contraseñas se almacenan mediante mecanismos seguros?
-
-☐ ¿Existe MFA?
-
-☐ ¿Existe protección contra fuerza bruta?
-
-☐ ¿Existe protección contra Credential Stuffing?
-
-☐ ¿Existe rate limiting?
-
-☐ ¿La recuperación de cuentas es segura?
-
-☐ ¿Las sesiones tienen expiración?
-
-☐ ¿Las sesiones se invalidan al cerrar sesión?
-
-☐ ¿El Session ID se regenera después del login?
-
-☐ ¿Las cookies utilizan atributos de seguridad?
-
-☐ ¿La aplicación utiliza HTTPS?
-
-☐ ¿Se monitorean eventos de autenticación?
-
-☐ ¿Se registran intentos fallidos?
-
-☐ ¿Las cuentas administrativas tienen controles adicionales?
-```
-
----
-
-# 🎓 32. ¿Qué aprendimos de A07?
-
-A07 nos permite comprender que la autenticación es mucho más que colocar un formulario de usuario y contraseña.
-
-Una autenticación segura involucra diferentes elementos:
-
-```text
-              🔐 AUTENTICACIÓN SEGURA
-                       │
-        ┌──────────────┼──────────────┐
-        ▼              ▼              ▼
-   Contraseñas       MFA          Sesiones
-        │              │              │
-        ▼              ▼              ▼
-     Hashing       Segundo       Expiración
-                    factor       Invalidación
-        │              │              │
-        └──────────────┼──────────────┘
-                       ▼
-                  🛡️ Seguridad
-```
-
-Por lo tanto, proteger una cuenta requiere analizar todo el ciclo:
-
-```text
-Registro
-   ↓
-Login
-   ↓
-Autenticación
-   ↓
-MFA
-   ↓
-Sesión
-   ↓
-Uso de aplicación
-   ↓
-Logout
-   ↓
-Invalidación de sesión
-```
-
----
-
-# 🎯 33. Conclusión A07
-
-Las fallas de identificación y autenticación representan un riesgo importante porque pueden permitir que un atacante acceda a una aplicación utilizando credenciales obtenidas, adivinadas o reutilizadas, o aprovechando errores en la gestión de sesiones.
-
-Una autenticación segura debe considerar mucho más que una contraseña. Es necesario proteger el almacenamiento de credenciales, controlar los intentos de autenticación, implementar MFA cuando corresponda, proteger los mecanismos de recuperación de cuentas y gestionar correctamente las sesiones.
-
-También es fundamental recordar que **autenticación y autorización son conceptos diferentes**: primero debemos comprobar quién es el usuario y posteriormente determinar qué acciones tiene permitidas.
+**Implementación segura:** contraseña protegida, MFA, rate limiting, sesión segura con expiración, cookies protegidas, HTTPS, invalidación al cerrar sesión, monitoreo.
 
 > 🔑 **Una contraseña correcta no es suficiente para considerar segura una autenticación. La seguridad debe proteger todo el ciclo de vida de la identidad y la sesión.**
 
 ---
 
-# 🔗 34. Relación entre A06 y A07
+## 8️⃣ A08:2021 — Fallas de Integridad de Software y Datos
 
-Los dos riesgos estudiados pueden aparecer simultáneamente.
-
-Por ejemplo:
-
-```mermaid
-flowchart TD
-    A["Aplicación Web"] --> B["Dependencias"]
-    A --> C["Autenticación"]
-
-    B --> D["A06"]
-    D --> E["Componente vulnerable"]
-
-    C --> F["A07"]
-    F --> G["Contraseña débil"]
-    F --> H["Sin MFA"]
-    F --> I["Sesión insegura"]
-
-    E --> J["⚠️ Superficie de ataque"]
-    G --> J
-    H --> J
-    I --> J
-```
-
-### A06 responde principalmente:
-
-> **¿Son seguros los componentes que utilizamos?**
-
-### A07 responde principalmente:
-
-> **¿Estamos protegiendo correctamente las identidades y sesiones de nuestros usuarios?**
-
----
-
-# 🏁 Conclusión general A06 + A07
-
-El estudio de A06 y A07 permite comprender dos aspectos fundamentales de la seguridad de aplicaciones.
-
-Por un lado, **A06 demuestra que debemos conocer y gestionar los componentes que forman parte de nuestro software**. Una dependencia vulnerable puede convertirse en una puerta de entrada para un atacante.
-
-Por otro lado, **A07 demuestra que debemos proteger adecuadamente las identidades, credenciales y sesiones de los usuarios**.
-
-Ambos riesgos pueden reducirse mediante una combinación de:
-
-```text
-📋 Inventario
-     +
-🔎 Análisis
-     +
-🧪 Pruebas
-     +
-🔐 Controles de seguridad
-     +
-📊 Monitoreo
-     +
-🔄 Actualización continua
-```
-
-Desde una perspectiva DevSecOps, la seguridad debe incorporarse durante todo el ciclo de vida del software y no únicamente cuando la aplicación ya está en producción.
-
-> 🛡️ **La seguridad no consiste solamente en evitar que entren a nuestra aplicación; también consiste en saber qué tenemos dentro, quién puede acceder y cómo controlamos ese acceso.**
-
----
-
-# 📚 Referencias específicas – A07
-
-- OWASP Top 10 – A07:2021 Identification and Authentication Failures.
-- OWASP Authentication Cheat Sheet.
-- OWASP Session Management Cheat Sheet.
-- OWASP Multifactor Authentication Cheat Sheet.
-- OWASP Password Storage Cheat Sheet.
-- OWASP Forgot Password Cheat Sheet.
-- OWASP Credential Stuffing Prevention Cheat Sheet.
-- OWASP Top 10 – 2021.
-- NIST Digital Identity Guidelines.
-- MITRE CWE – Authentication related weaknesses.
-
----
-
-# A08:2021 – Fallas de Integridad de Software y Datos 🧩 Introducción
+### 🧩 Introducción
 
 Cuando hablamos de A06 vimos que una aplicación puede depender de componentes de terceros vulnerables. A08 va un paso más allá: no se trata solo de si un componente tiene una vulnerabilidad conocida, sino de si tenemos alguna forma de verificar que el código, las actualizaciones o los datos que estamos usando realmente vienen de donde creemos que vienen y no fueron alterados en el camino.
 
-El riesgo A08:2021 – Software and Data Integrity Failures del OWASP Top 10 se relaciona con código e infraestructura que no protege contra violaciones de integridad, es decir, situaciones donde se asume que algo es confiable sin haberlo comprobado realmente.
+El riesgo **A08:2021 – Software and Data Integrity Failures** se relaciona con código e infraestructura que no protege contra violaciones de integridad, es decir, situaciones donde se asume que algo es confiable sin haberlo comprobado realmente.
 
-💡 En términos sencillos: A08 ocurre cuando una aplicación confía "a ciegas" en un archivo, una actualización o un objeto de datos, sin verificar su procedencia ni su integridad.
+> 💡 En términos sencillos: A08 ocurre cuando una aplicación confía "a ciegas" en un archivo, una actualización o un objeto de datos, sin verificar su procedencia ni su integridad.
 
-🧠 ¿Qué significa "integridad" aquí?
+### 🧠 ¿Qué significa "integridad" aquí?
 
-En seguridad de la información solemos hablar de tres pilares:
-
+```text
         🔺 TRIADA CIA
               │
    ┌──────────┼──────────┐
    ▼          ▼          ▼
 Confidencialidad   Integridad   Disponibilidad
-Confidencialidad: que solo quien debe ver la información pueda verla.
-Integridad: que la información no haya sido alterada sin autorización.
-Disponibilidad: que la información esté accesible cuando se necesita.
+```
 
-A08 se enfoca específicamente en el segundo pilar: la integridad, tanto de software (código, paquetes, actualizaciones, pipelines) como de datos (objetos serializados, cookies, tokens).
+- **Confidencialidad:** que solo quien debe ver la información pueda verla.
+- **Integridad:** que la información no haya sido alterada sin autorización.
+- **Disponibilidad:** que la información esté accesible cuando se necesita.
 
-🔴 ¿Cuándo aparece A08?
+A08 se enfoca en el segundo pilar, tanto de software (código, paquetes, actualizaciones, pipelines) como de datos (objetos serializados, cookies, tokens).
 
-Podemos encontrarnos con A08 cuando:
+### 🔴 ¿Cuándo aparece A08?
 
-Utilizamos plugins, librerías o contenido servido desde un CDN sin verificar su integridad.
-Un pipeline CI/CD no valida que el código que despliega proviene realmente del repositorio autorizado.
-Una aplicación implementa actualizaciones automáticas sin verificar la firma del paquete.
-Se deserializan objetos que provienen del cliente sin comprobar que no fueron manipulados.
-Se confía en cookies o parámetros para tomar decisiones de seguridad sin validarlos en el servidor.
+- Utilizamos plugins, librerías o contenido servido desde un CDN sin verificar su integridad.
+- Un pipeline CI/CD no valida que el código que despliega proviene realmente del repositorio autorizado.
+- Una aplicación implementa actualizaciones automáticas sin verificar la firma del paquete.
+- Se deserializan objetos que provienen del cliente sin comprobar que no fueron manipulados.
+- Se confía en cookies o parámetros para tomar decisiones de seguridad sin validarlos en el servidor.
 
-📊 Ejemplo sencillo — cadena de confianza rota
+### 📊 Ejemplo — cadena de confianza rota
 
+```text
    Repositorio oficial
           │
           ▼
@@ -2886,123 +1138,106 @@ Verificación   Sin verificación
    │             │
    ▼             ▼
  ✅ Seguro     ⚠️ Riesgo de A08
+```
 
 Si el pipeline no verifica de dónde viene el código o el artefacto que va a desplegar, un atacante que logre insertarse en cualquier punto de esa cadena puede hacer que su código termine ejecutándose en producción, sin que nadie lo note hasta que sea demasiado tarde.
 
-🕵️ Deserialización insegura
+### 🕵️ Deserialización insegura
 
-Uno de los escenarios más citados dentro de A08 es la deserialización insegura, que ocurre cuando una aplicación reconstruye objetos a partir de datos que el usuario puede modificar.
-
-Cliente
-   │
-   ▼
-Objeto serializado
-   │
-   ▼
-Servidor
-   │
-   ▼
-Deserialización
-   │
-   ▼
-¿El objeto fue validado?
+```text
+Cliente → Objeto serializado → Servidor → Deserialización
+→ ¿El objeto fue validado?
      /        \
    Sí          No
    │            │
    ▼            ▼
  Seguro     ⚠️ Ejecución de código
+```
 
 Si el servidor no valida el contenido antes de reconstruir el objeto, un atacante puede manipular esos datos para alterar el comportamiento de la aplicación, e incluso, en algunos lenguajes y frameworks, lograr ejecución remota de código.
 
-💥 Ejemplos de escenarios reales
+### 💥 Ejemplos de escenarios reales
 
-Escenario 1 — Actualización sin firma Un dispositivo (router, decodificador, IoT) descarga actualizaciones de firmware sin verificar una firma digital. Un atacante que logra interceptar o suplantar el servidor de actualizaciones puede distribuir una versión maliciosa a todos los dispositivos que confían en esa fuente.
+- **Actualización sin firma:** un dispositivo (router, decodificador, IoT) descarga actualizaciones de firmware sin verificar una firma digital; un atacante que intercepta o suplanta el servidor de actualizaciones puede distribuir una versión maliciosa.
+- **Dependencia fuera del gestor oficial:** un desarrollador descarga un paquete desde un sitio externo no firmado ni verificado, que puede contener código malicioso.
+- **CI/CD comprometido:** casos como el ataque a la cadena de suministro de SolarWinds muestran cómo comprometer una sola herramienta del pipeline permite distribuir código malicioso a miles de organizaciones.
 
-Escenario 2 — Dependencia descargada fuera del gestor oficial Un desarrollador, al no encontrar la versión de un paquete que necesita en el repositorio oficial (npm, PyPI, Maven), lo descarga de un sitio externo. Ese paquete no está firmado ni verificado, y puede contener código malicioso.
+### 🛠️ Herramientas relacionadas
 
-Escenario 3 — CI/CD comprometido Casos reales como el ataque a la cadena de suministro de SolarWinds muestran cómo comprometer una sola herramienta dentro de un pipeline de construcción permite distribuir código malicioso a miles de organizaciones que confiaban en ese software.
+| Herramienta | Utilización |
+|---|---|
+| **Cosign / Sigstore** | Firma y verificación de artefactos e imágenes de contenedores |
+| **OWASP Dependency-Check** | Verificación de integridad de dependencias |
+| **GPG** | Firma y verificación de paquetes y commits |
+| **Escáneres de deserialización (Java)** | Identificación de puntos vulnerables a deserialización insegura |
 
-🛠️ Herramientas relacionadas
+### 🛡️ ¿Cómo prevenir A08?
 
-Herramienta	Utilización
-Cosign / Sigstore	Firma y verificación de artefactos e imágenes de contenedores
-OWASP Dependency-Check	Verificación de integridad de dependencias
-GPG	Firma y verificación de paquetes y commits
-Escáneres de deserialización (Java)	Identificación de puntos vulnerables a deserialización insegura
+- Utilizar firmas digitales para verificar que el software o los datos provienen de la fuente esperada.
+- Asegurarse de que las dependencias solo se consuman desde repositorios de confianza.
+- Establecer revisión de código y de configuración antes de fusionar cambios.
+- Proteger el pipeline CI/CD con control de acceso y segregación adecuados.
+- No deserializar datos no confiables sin verificación de integridad o firma digital.
 
-🛡️ ¿Cómo prevenir A08?
+### 🧪 Laboratorio propuesto — A08
 
-Utilizar firmas digitales para verificar que el software o los datos provienen de la fuente esperada.
-Asegurarse de que las dependencias solo se consuman desde repositorios de confianza.
-Establecer revisión de código y de configuración antes de fusionar cambios.
-Proteger el pipeline CI/CD con control de acceso y segregación adecuados.
-No deserializar datos no confiables sin verificación de integridad o firma digital.
+**Objetivo:** comprender de forma práctica el concepto de verificación de integridad de un archivo descargado.
 
-🧪 Laboratorio propuesto – A08
+1. Descargar un archivo de ejemplo.
+2. Calcular su hash (`sha256sum archivo`).
+3. Comparar contra el hash publicado por la fuente oficial.
+4. Modificar intencionalmente el archivo (laboratorio propio).
+5. Calcular el hash nuevamente y comparar la diferencia.
 
-Objetivo: Comprender de forma práctica el concepto de verificación de integridad de un archivo descargado.
+> Este ejercicio evidencia por qué verificar la integridad (hashes o firmas) permite detectar si un archivo fue alterado antes de confiar en él.
 
-1. Descargar un archivo de ejemplo
-2. Calcular su hash (sha256sum archivo)
-3. Comparar contra el hash publicado por la fuente oficial
-4. Modificar intencionalmente el archivo (laboratorio propio)
-5. Calcular el hash nuevamente
-6. Comparar y observar la diferencia
-
-El objetivo del ejercicio es evidenciar por qué verificar la integridad (por ejemplo, mediante hashes o firmas) permite detectar si un archivo fue alterado antes de confiar en él.
-
-📋 Checklist A08
-
-☐ ¿Verificamos la firma de nuestras dependencias? ☐ ¿Nuestro pipeline CI/CD valida el origen del código que despliega? ☐ ¿Las actualizaciones automáticas verifican una firma digital? ☐ ¿Deserializamos datos del cliente sin validarlos? ☐ ¿Tenemos control de acceso adecuado sobre nuestro pipeline?
-
-🎯 Conclusión A08
+### 🎯 Conclusión A08
 
 A08 nos recuerda que no basta con que un componente exista o funcione correctamente: también debemos poder confiar en que nadie lo alteró en el camino, desde el repositorio hasta la ejecución en producción. La integridad es un pilar de seguridad tan importante como la confidencialidad, y suele pasar desapercibido hasta que ya es demasiado tarde.
 
-📚 Referencias A08
+---
 
-OWASP Top 10 – A08:2021 Software and Data Integrity Failures.
-OWASP Cheat Sheet: Software Supply Chain Security.
-OWASP Cheat Sheet: Deserialization.
+## 9️⃣ A09:2021 — Fallas de Registro y Monitoreo de Seguridad
 
-# A09:2021 – Fallas de Registro y Monitoreo de Seguridad 🧩 Introducción
+### 🧩 Introducción
 
 Hasta ahora hemos analizado vulnerabilidades que un atacante puede explotar directamente. A09 es distinto: no es una falla que se "ataque" en sí misma, sino una falla que permite que todo lo demás pase desapercibido.
 
-El riesgo A09:2021 – Security Logging and Monitoring Failures del OWASP Top 10 se refiere a la incapacidad de una aplicación u organización para detectar, registrar y responder ante actividad sospechosa o incidentes de seguridad.
+El riesgo **A09:2021 – Security Logging and Monitoring Failures** se refiere a la incapacidad de una aplicación u organización para detectar, registrar y responder ante actividad sospechosa o incidentes de seguridad.
 
-💡 En términos sencillos: A09 ocurre cuando "las luces están apagadas" — un atacante puede estar operando dentro del sistema y nadie se entera.
+> 💡 En términos sencillos: A09 ocurre cuando "las luces están apagadas" — un atacante puede estar operando dentro del sistema y nadie se entera.
 
-🧠 ¿Por qué es tan importante el registro?
+### 🧠 ¿Por qué es tan importante el registro?
 
-        Ataque en curso
-              │
-              ▼
-     ¿Existe registro?
-        /         \
-      Sí            No
-      │              │
-      ▼              ▼
-  Detección      ⚠️ Persistencia
-      │              │
-      ▼              ▼
-  Respuesta      Sin respuesta
+```text
+Ataque en curso
+      │
+      ▼
+ ¿Existe registro?
+    /         \
+  Sí            No
+  │              │
+  ▼              ▼
+Detección      ⚠️ Persistencia
+  │              │
+  ▼              ▼
+Respuesta      Sin respuesta
+```
 
 Sin registro (logging) y monitoreo, los ataques no pueden detectarse. Y sin alertas, aunque exista registro, nadie reacciona a tiempo. Por eso esta categoría abarca tres capas relacionadas: registrar, monitorear y alertar.
 
-🔴 ¿Cuándo tenemos un problema A09?
+### 🔴 ¿Cuándo tenemos un problema A09?
 
-Podemos encontrarnos con A09 cuando:
+- No se registran eventos auditables como inicios de sesión fallidos o transacciones sensibles.
+- Las advertencias y errores no generan mensajes de registro claros.
+- Los registros se almacenan solo localmente, sin respaldo ni protección contra manipulación.
+- No existen umbrales de alerta ni procesos de escalamiento.
+- Hay tantos falsos positivos que las alertas reales se pierden entre el ruido.
+- Se registra información sensible (contraseñas, datos personales) dentro de los propios logs.
 
-No se registran eventos auditables como inicios de sesión fallidos o transacciones sensibles.
-Las advertencias y errores no generan mensajes de registro claros.
-Los registros se almacenan solo localmente, sin respaldo ni protección contra manipulación.
-No existen umbrales de alerta ni procesos de escalamiento.
-Hay tantos falsos positivos que las alertas reales se pierden entre el ruido.
-Se registra información sensible (contraseñas, datos personales) dentro de los propios logs.
+### 📊 Ejemplo sencillo
 
-📊 Ejemplo sencillo
-
+```text
    🏢 EMPRESA
         │
    ┌────┴────┐
@@ -3013,17 +1248,17 @@ Con logging   Sin logging
 Detecta el      Brecha pasa
 ataque en       desapercibida
 minutos/horas   durante meses/años
+```
 
-💥 Ejemplos de escenarios reales
+### 💥 Ejemplos de escenarios reales
 
-Escenario 1 — Ausencia total de monitoreo Una plataforma de salud sufrió el acceso y modificación no autorizada de millones de registros médicos sensibles. Una revisión posterior determinó que, al no existir registro ni monitoreo, la brecha pudo haber estado activa durante años sin que nadie lo notara.
+- **Ausencia total de monitoreo:** una plataforma de salud sufrió el acceso y modificación no autorizada de millones de registros médicos sensibles; sin registro ni monitoreo, la brecha pudo haber estado activa durante años sin que nadie lo notara.
+- **Brecha en un proveedor externo:** una aerolínea sufrió la exposición de más de una década de datos personales de pasajeros, originada en un proveedor externo de hosting en la nube que tardó en notificar el incidente.
+- **Ataques a sistemas de pago sin alerta oportuna:** una aerolínea europea sufrió el robo de cientos de miles de registros de pago, derivando en una sanción millonaria por no detectar ni reportar la brecha a tiempo.
 
-Escenario 2 — Brecha en un proveedor externo Una aerolínea sufrió la exposición de más de una década de datos personales de pasajeros, originada en un proveedor externo de hosting en la nube que tardó en notificar el incidente a la empresa, evidenciando fallas de monitoreo a lo largo de toda la cadena de terceros.
+### 🔍 ¿Qué debería registrarse?
 
-Escenario 3 — Ataques a sistemas de pago sin alerta oportuna Una aerolínea europea sufrió el robo de cientos de miles de registros de pago a través de vulnerabilidades en su aplicación, lo que derivó en una sanción millonaria por no haber detectado ni reportado la brecha a tiempo.
-
-🔍 ¿Qué debería registrarse?
-
+```text
 Evento
    │
    ├── Inicios de sesión (éxito y fallo)
@@ -3032,97 +1267,79 @@ Evento
    ├── Errores de validación del lado del servidor
    ├── Accesos a datos sensibles
    └── Actividad administrativa
+```
 
-🛠️ Herramientas relacionadas
+### 🛠️ Herramientas relacionadas
 
-Herramienta	Utilización
-ELK Stack (Elasticsearch, Logstash, Kibana)	Correlación y visualización de logs
-Splunk	Gestión centralizada de logs y alertas
-OWASP ModSecurity Core Rule Set	Protección y registro a nivel de WAF
-SIEM (genérico)	Correlación de eventos de seguridad y generación de alertas
+| Herramienta | Utilización |
+|---|---|
+| **ELK Stack** (Elasticsearch, Logstash, Kibana) | Correlación y visualización de logs |
+| **Splunk** | Gestión centralizada de logs y alertas |
+| **OWASP ModSecurity Core Rule Set** | Protección y registro a nivel de WAF |
+| **SIEM** (genérico) | Correlación de eventos de seguridad y generación de alertas |
 
-🛡️ ¿Cómo prevenir A09?
+### 🛡️ ¿Cómo prevenir A09?
 
-Registrar todos los eventos relevantes con suficiente contexto (usuario, IP, acción, resultado).
-Proteger la integridad de los registros contra manipulación (por ejemplo, almacenamiento append-only).
-Definir umbrales de alerta y manuales de procedimiento (playbooks) para el equipo de respuesta.
-Usar honeytokens: datos señuelo que nunca deberían usarse en operación normal, de modo que cualquier acceso a ellos dispare una alerta confiable.
-Adoptar un plan formal de respuesta a incidentes (por ejemplo, basado en NIST SP 800-61).
+- Registrar todos los eventos relevantes con suficiente contexto (usuario, IP, acción, resultado).
+- Proteger la integridad de los registros contra manipulación (p. ej. almacenamiento append-only).
+- Definir umbrales de alerta y manuales de procedimiento (*playbooks*) para el equipo de respuesta.
+- Usar **honeytokens**: datos señuelo que nunca deberían usarse en operación normal, de modo que cualquier acceso a ellos dispare una alerta confiable.
+- Adoptar un plan formal de respuesta a incidentes (p. ej. basado en NIST SP 800-61).
 
-🧪 Laboratorio propuesto – A09
+### 🧪 Laboratorio propuesto — A09
 
-Objetivo: Configurar un registro básico de eventos de autenticación y observar cómo permite detectar un patrón de ataque.
+**Objetivo:** configurar un registro básico de eventos de autenticación y observar cómo permite detectar un patrón de ataque.
 
-1. Retomar la aplicación de login del laboratorio A07
-2. Agregar registro de cada intento (éxito/fallo, usuario, IP, hora)
-3. Simular varios intentos fallidos consecutivos
-4. Revisar el archivo/registro generado
-5. Identificar visualmente el patrón de ataque
-6. Proponer un umbral de alerta (ej. 5 fallos en 1 minuto)
+1. Retomar la aplicación de login del laboratorio A07.
+2. Agregar registro de cada intento (éxito/fallo, usuario, IP, hora).
+3. Simular varios intentos fallidos consecutivos.
+4. Revisar el archivo/registro generado.
+5. Identificar visualmente el patrón de ataque.
+6. Proponer un umbral de alerta (p. ej. 5 fallos en 1 minuto).
 
-📋 Checklist A09
-
-☐ ¿Registramos los inicios de sesión fallidos? ☐ ¿Nuestros logs están protegidos contra manipulación? ☐ ¿Tenemos umbrales de alerta definidos? ☐ ¿Alguien revisa las alertas generadas? ☐ ¿Registramos información sensible que no deberíamos registrar? ☐ ¿Tenemos un plan de respuesta a incidentes?
-
-🎯 Conclusión A09
+### 🎯 Conclusión A09
 
 A09 nos enseña que la seguridad no termina en prevenir un ataque: también debemos poder verlo cuando ocurre. Una aplicación puede tener excelentes controles preventivos y, aun así, quedar expuesta durante años si nadie está observando lo que sucede dentro de ella.
 
-📚 Referencias A09
+---
 
-OWASP Top 10 – A09:2021 Security Logging and Monitoring Failures.
-OWASP Cheat Sheet: Logging.
-NIST SP 800-61 – Computer Security Incident Handling Guide.
+## 🔟 A10:2021 — Server-Side Request Forgery (SSRF)
 
-# A10:2021 – Server-Side Request Forgery (SSRF) 🧩 Introducción
+### 🧩 Introducción
 
-Muchas aplicaciones modernas necesitan pedirle a otro servidor que "vaya a buscar algo" en su nombre: descargar una imagen desde una URL, consultar un webhook, generar una vista previa de un enlace, etc. El riesgo A10:2021 – Server-Side Request Forgery (SSRF) del OWASP Top 10 aparece cuando esta funcionalidad no valida correctamente la URL proporcionada por el usuario, permitiendo que el servidor haga solicitudes hacia destinos que no debería alcanzar.
+Muchas aplicaciones modernas necesitan pedirle a otro servidor que "vaya a buscar algo" en su nombre: descargar una imagen desde una URL, consultar un webhook, generar una vista previa de un enlace, etc. El riesgo **A10:2021 – Server-Side Request Forgery (SSRF)** aparece cuando esta funcionalidad no valida correctamente la URL proporcionada por el usuario, permitiendo que el servidor haga solicitudes hacia destinos que no debería alcanzar.
 
-💡 En términos sencillos: SSRF ocurre cuando conseguimos que el propio servidor haga una petición por nosotros, hacia donde nosotros queramos.
+> 💡 En términos sencillos: SSRF ocurre cuando conseguimos que el propio servidor haga una petición por nosotros, hacia donde nosotros queramos.
 
-🧠 ¿Cómo funciona una solicitud SSRF normal (legítima)?
+### 🧠 Solicitud legítima vs. explotada
 
-Usuario
+**Solicitud normal (legítima):**
+
+```text
+Usuario → Aplicación → (URL proporcionada por el usuario)
+Servidor realiza la solicitud → Recurso externo legítimo
+```
+
+**Explotación:** el problema aparece cuando el atacante puede controlar total o parcialmente esa URL y el servidor no valida hacia dónde puede o no puede apuntar.
+
+```text
+Atacante → URL manipulada → Aplicación → Servidor realiza la solicitud
    │
-   ▼
-Aplicación
-   │
-   ▼ (URL proporcionada por el usuario)
-Servidor realiza la solicitud
-   │
-   ▼
-Recurso externo legítimo
-
-Por ejemplo, una función de "vista previa de enlace" que recibe una URL y le pide al servidor que la descargue para generar una miniatura.
-
-🔴 ¿Cómo se explota?
-
-El problema aparece cuando el atacante puede controlar total o parcialmente esa URL, y el servidor no valida hacia dónde puede o no puede apuntar.
-
-Atacante
-   │
-   ▼ URL manipulada
-Aplicación
-   │
-   ▼
-Servidor realiza la solicitud
-   │
-   ▼
    ┌───────────────┬───────────────┐
    ▼               ▼               ▼
 Recurso externo  Red interna   Metadata cloud
  (esperado)      (no debería)  (no debería)
+```
 
 El servidor, al estar dentro de la red interna de la organización, puede alcanzar recursos que el atacante nunca podría contactar directamente desde internet.
 
-💥 Ejemplos de explotación
+### 💥 Ejemplos de explotación
 
-Escenario 1 — Acceso a servicios internos Una aplicación permite ingresar una URL para "importar una imagen desde internet". Un atacante coloca http://localhost:8080/admin o una IP interna (http://192.168.1.10/) y logra que el servidor consulte paneles administrativos u otros servicios internos que no están expuestos públicamente.
+- **Acceso a servicios internos:** una funcionalidad de "importar imagen desde internet" permite ingresar `http://localhost:8080/admin` o una IP interna, logrando que el servidor consulte paneles administrativos u otros servicios internos no expuestos públicamente.
+- **Robo de credenciales de metadatos cloud:** en entornos como AWS, cada instancia tiene un servicio interno de metadatos en `http://169.254.169.254/`. Si una aplicación vulnerable a SSRF permite apuntar hacia esa dirección, un atacante puede obtener credenciales temporales de la instancia.
+- **Escaneo de puertos internos:** un atacante puede usar la funcionalidad vulnerable para probar sistemáticamente distintas IPs y puertos internos, observando diferencias en tiempos de respuesta o mensajes de error, mapeando así la red interna.
 
-Escenario 2 — Robo de credenciales de metadatos cloud En entornos como AWS, cada instancia tiene un servicio interno de metadatos accesible en http://169.254.169.254/. Si una aplicación vulnerable a SSRF permite apuntar hacia esa dirección, un atacante puede obtener credenciales temporales de la instancia y, con ellas, acceder a otros recursos de la cuenta en la nube.
-
-Escenario 3 — Escaneo de puertos internos Un atacante puede usar la funcionalidad vulnerable para probar sistemáticamente distintas IPs y puertos internos, observando diferencias en tiempos de respuesta o mensajes de error, y así mapear la red interna de la organización sin tener acceso directo a ella.
-
+```text
 Atacante
    │
    ▼
@@ -3135,75 +1352,115 @@ Diferencias en respuesta
    │
    ▼
 📊 Mapa de la red interna
+```
 
-🔍 Puntos frecuentes donde aparece SSRF
+### 🔍 Puntos frecuentes donde aparece SSRF
 
-Funciones de "vista previa de URL" o "importar desde una URL".
-Webhooks configurables por el usuario.
-Procesamiento de documentos (PDF, XML) que pueden referenciar recursos externos.
-Integraciones que descargan archivos remotos (avatares, adjuntos).
-Funcionalidades de renderizado de páginas (capturas de pantalla, generación de PDF).
+- Funciones de "vista previa de URL" o "importar desde una URL".
+- Webhooks configurables por el usuario.
+- Procesamiento de documentos (PDF, XML) que pueden referenciar recursos externos.
+- Integraciones que descargan archivos remotos (avatares, adjuntos).
+- Funcionalidades de renderizado de páginas (capturas de pantalla, generación de PDF).
 
-🛠️ Herramientas utilizadas
+### 🛠️ Herramientas utilizadas
 
-Herramienta	Utilización
-Burp Suite	Interceptar y modificar solicitudes que contienen URLs
-SSRFmap	Automatización de pruebas de SSRF
-Servicios de "callback" (Burp Collaborator y similares)	Confirmar si el servidor realizó realmente la solicitud
-Nmap (desde el servidor vulnerable, indirectamente)	Escaneo de red interna aprovechando el SSRF
+| Herramienta | Utilización |
+|---|---|
+| **Burp Suite** | Interceptar y modificar solicitudes que contienen URLs |
+| **SSRFmap** | Automatización de pruebas de SSRF |
+| **Servicios de "callback"** (Burp Collaborator y similares) | Confirmar si el servidor realizó realmente la solicitud |
+| **Nmap** (indirectamente, desde el servidor vulnerable) | Escaneo de red interna aprovechando el SSRF |
 
-⚠️ Estas herramientas deben utilizarse únicamente en sistemas propios, laboratorios o infraestructuras con autorización explícita.
+> ⚠️ Estas herramientas deben utilizarse únicamente en sistemas propios, laboratorios o infraestructuras con autorización explícita.
 
-🛡️ ¿Cómo prevenir SSRF?
+### 🛡️ ¿Cómo prevenir SSRF?
 
-Validar y sanear todos los datos proporcionados por el cliente, incluyendo URLs.
-Aplicar una lista blanca (allowlist) de dominios o direcciones permitidas, en lugar de intentar bloquear los peligrosos (blocklist).
-Bloquear rangos de IP privadas (10.x, 172.16.x, 169.254.x, 127.x) y direcciones de loopback en las solicitudes salientes del servidor.
-Deshabilitar esquemas de URL innecesarios (file://, gopher://, dict://).
-Usar mecanismos como IMDSv2 en AWS para dificultar el abuso del servicio de metadatos.
-Segmentar de red los servicios que realizan solicitudes hacia internet, separándolos de los sistemas internos críticos.
-No devolver directamente al usuario la respuesta cruda de la solicitud realizada por el servidor.
+- Validar y sanear todos los datos proporcionados por el cliente, incluyendo URLs.
+- Aplicar una lista blanca (*allowlist*) de dominios o direcciones permitidas, en lugar de intentar bloquear los peligrosos (*blocklist*).
+- Bloquear rangos de IP privadas (`10.x`, `172.16.x`, `169.254.x`, `127.x`) y direcciones de loopback en las solicitudes salientes del servidor.
+- Deshabilitar esquemas de URL innecesarios (`file://`, `gopher://`, `dict://`).
+- Usar mecanismos como IMDSv2 en AWS para dificultar el abuso del servicio de metadatos.
+- Segmentar de red los servicios que realizan solicitudes hacia internet, separándolos de los sistemas internos críticos.
+- No devolver directamente al usuario la respuesta cruda de la solicitud realizada por el servidor.
 
-🧪 Laboratorio propuesto – A10 (SSRF)
+### 🧪 Laboratorio propuesto — A10 (SSRF)
 
-Objetivo: Comprender el concepto de SSRF mediante un entorno local y controlado.
+**Objetivo:** comprender el concepto de SSRF mediante un entorno local y controlado.
 
-1. Crear un servicio interno de prueba (ej. servidor Flask en localhost:9000)
-   que muestre un mensaje "Acceso interno"
-2. Crear una aplicación que reciba una URL y descargue su contenido
-3. Probar con una URL externa legítima (comportamiento esperado)
-4. Probar apuntando a http://localhost:9000 (comportamiento vulnerable)
-5. Documentar la diferencia de comportamiento
-6. Implementar una validación con lista blanca de dominios
-7. Repetir la prueba y confirmar que el acceso interno ya no es posible
+1. Crear un servicio interno de prueba (p. ej. servidor Flask en `localhost:9000`) que muestre un mensaje "Acceso interno".
+2. Crear una aplicación que reciba una URL y descargue su contenido.
+3. Probar con una URL externa legítima (comportamiento esperado).
+4. Probar apuntando a `http://localhost:9000` (comportamiento vulnerable).
+5. Documentar la diferencia de comportamiento.
+6. Implementar una validación con lista blanca de dominios.
+7. Repetir la prueba y confirmar que el acceso interno ya no es posible.
 
-📋 Checklist A10
-
-☐ ¿Validamos las URLs proporcionadas por el usuario? ☐ ¿Usamos lista blanca en lugar de lista negra? ☐ ¿Bloqueamos rangos de IP privadas y de loopback? ☐ ¿Deshabilitamos esquemas de URL innecesarios? ☐ ¿Segmentamos la red entre servicios expuestos y sistemas internos? ☐ ¿Protegemos el acceso al servicio de metadatos en la nube?
-
-🎯 Conclusión A10
+### 🎯 Conclusión A10
 
 SSRF es un buen recordatorio de que el servidor también es un usuario de la red, y como tal, puede ser engañado para actuar en nombre de un atacante. Cualquier funcionalidad que reciba una URL o dirección proporcionada externamente y la use para realizar una solicitud debe tratarse con el mismo cuidado que cualquier otra entrada no confiable.
 
-📚 Referencias A10
+---
 
-OWASP Top 10 – A10:2021 Server-Side Request Forgery (SSRF).
-OWASP Cheat Sheet: Server-Side Request Forgery Prevention.
-OWASP Top 10 – 2021. https://owasp.org/Top10/2021/
+## 🏁 Conclusión general
 
-🏁 Conclusión general A08 + A09 + A10
+El estudio conjunto de las diez categorías del OWASP Top 10:2021 permite comprender que la seguridad de una aplicación web no depende de un único control, sino de la combinación de múltiples capas de defensa a lo largo de todo el ciclo de vida del software.
 
-Estas tres últimas categorías cierran el ciclo del OWASP Top 10:2021 abordando aspectos que suelen quedar en segundo plano frente a vulnerabilidades más "vistosas" como la inyección o el control de acceso, pero que resultan igual de críticos:
+```text
+🔒 A01 — Control de acceso        ¿Quién puede hacer qué?
+🔑 A02 — Criptografía              ¿Protegemos la información?
+💉 A03 — Inyección                 ¿Separamos datos de código?
+🏗️ A04 — Diseño inseguro            ¿La arquitectura contempla el abuso?
+⚙️ A05 — Configuración incorrecta  ¿Está bien configurado el sistema?
+📦 A06 — Componentes vulnerables   ¿Confiamos en terceros sin verificar?
+🔐 A07 — Autenticación             ¿Protegemos identidades y sesiones?
+📦 A08 — Integridad                ¿Podemos confiar en lo que ejecutamos?
+📊 A09 — Registro y monitoreo      ¿Nos damos cuenta si algo sale mal?
+🌐 A10 — SSRF                      ¿Puede el atacante usar a nuestro servidor
+                                      como intermediario?
+```
 
-📦 A08 — Integridad
-     │  ¿Podemos confiar en lo que ejecutamos?
-     ▼
-📊 A09 — Registro y monitoreo
-     │  ¿Nos damos cuenta si algo sale mal?
-     ▼
-🌐 A10 — SSRF
-     │  ¿Puede el atacante usar a nuestro servidor como intermediario?
+Las categorías **A01** y **A02** muestran que fallar en decidir *quién puede hacer qué* y fallar en *proteger la información* suelen presentarse combinados en ataques reales. **A03**, **A04** y **A05** demuestran que un mismo sistema puede fallar en distintas etapas: desarrollo (inyección), diseño (arquitectura y lógica de negocio) e implementación/despliegue (configuración). **A06** y **A07** recuerdan que también debemos gestionar los componentes de terceros que usamos y proteger adecuadamente las identidades y sesiones de los usuarios. Finalmente, **A08**, **A09** y **A10** cierran el ciclo abordando aspectos que suelen quedar en segundo plano frente a vulnerabilidades más "vistosas", pero igual de críticos: verificar el origen y la integridad de lo que ejecutamos, poder detectar y responder ante un ataque, y evitar que el propio servidor sea utilizado como intermediario hacia la red interna.
 
-A08 nos recuerda verificar el origen y la integridad de lo que ejecutamos. A09 nos recuerda que la prevención no es suficiente si no podemos detectar y responder a un ataque. Y A10 nos muestra cómo una funcionalidad aparentemente inocente —pedirle al servidor que "vaya a buscar algo"— puede convertirse en una puerta de entrada hacia la red interna de una organización.
+> 🔑 **La seguridad de una aplicación no depende de un único control, sino de la combinación de principios como mínimo privilegio, defensa en profundidad, validación del lado del servidor, parametrización, hardening, integridad, visibilidad y validación estricta de cada dato que proviene del exterior — incluyendo aquellos que parecen tan simples como una URL.**
 
-🔑 La seguridad de una aplicación no depende de un único control, sino de la combinación de integridad, visibilidad y validación estricta de cada dato que proviene del exterior — incluyendo aquellos que parecen tan simples como una URL.
+---
+
+## 📚 Referencias generales
+
+**OWASP Foundation**
+
+- OWASP Top 10:2021 — <https://owasp.org/Top10/2021/>
+- OWASP Top Ten Web Application Security Risks — <https://owasp.org/www-project-top-ten/>
+- A03:2021 – Injection — <https://owasp.org/Top10/2021/A03_2021-Injection/>
+- A04:2021 – Insecure Design — <https://owasp.org/Top10/2021/A04_2021-Insecure_Design/>
+- A05:2021 – Security Misconfiguration — <https://owasp.org/Top10/2021/A05_2021-Security_Misconfiguration/>
+- A06:2021 – Componentes Vulnerables y Desactualizados
+- A07:2021 – Identification and Authentication Failures
+- A08:2021 – Software and Data Integrity Failures
+- A09:2021 – Security Logging and Monitoring Failures
+- A10:2021 – Server-Side Request Forgery (SSRF)
+- OWASP Dependency-Check
+- OWASP Software Component Verification Standard
+- OWASP Web Security Testing Guide — <https://owasp.org/www-project-web-security-testing-guide/>
+- OWASP Cheat Sheet Series — <https://cheatsheetseries.owasp.org/>
+- OWASP Authentication Cheat Sheet
+- OWASP Session Management Cheat Sheet
+- OWASP Multifactor Authentication Cheat Sheet
+- OWASP Password Storage Cheat Sheet
+- OWASP Forgot Password Cheat Sheet
+- OWASP Credential Stuffing Prevention Cheat Sheet
+- OWASP Cheat Sheet: Software Supply Chain Security
+- OWASP Cheat Sheet: Deserialization
+- OWASP Cheat Sheet: Logging
+- OWASP Cheat Sheet: Server-Side Request Forgery Prevention
+
+**Otras entidades de referencia**
+
+- NIST — National Vulnerability Database (NVD)
+- NIST — Software Bill of Materials (SBOM)
+- NIST — Digital Identity Guidelines
+- NIST SP 800-61 — Computer Security Incident Handling Guide
+- MITRE — Common Vulnerabilities and Exposures (CVE)
+- MITRE — Common Weakness Enumeration (CWE)
+- MITRE CWE — Authentication related weaknesses
+- FIRST — Common Vulnerability Scoring System (CVSS)
