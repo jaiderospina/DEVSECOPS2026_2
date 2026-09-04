@@ -54,7 +54,7 @@
 12. [A09 — Security Logging and Alerting Failures (Fallas de Registro y Alertas)](#-a09--security-logging-and-alerting-failures-fallas-de-registro-y-alertas)
 13. [A10 — Mishandling of Exceptional Conditions (Mal Manejo de Condiciones Excepcionales)](#-a10--mishandling-of-exceptional-conditions-mal-manejo-de-condiciones-excepcionales)
 14. [Tabla comparativa 2021 → 2025](#-tabla-comparativa-2021--2025)
-15. [Conclusiones y guía para la exposición](#-conclusiones-y-guía-para-la-exposición)
+15. [Conclusiones](#-conclusiones)
 16. [Fuentes](#-fuentes)
 
 ---
@@ -127,9 +127,9 @@ El control de acceso aplica la política de que un usuario **no puede actuar fue
 **Impacto potencial:** exposición o alteración masiva de datos, toma de cuentas ajenas, acceso a redes internas (vía SSRF), pérdida de confianza y sanciones regulatorias.
 
 ### 💥 Métodos de explotación
-- **IDOR**: cambiar `GET /api/facturas/1042` por `1043` y ver la factura de otro cliente.
+- **IDOR** (Referencia Directa Insegura a Objetos): cambiar `GET /api/facturas/1042` por `1043` y ver la factura de otro cliente.
 - **Fuerza bruta de rutas ocultas** con `ffuf` / `gobuster` para encontrar paneles `/admin`, `/backup` sin protección.
-- **SSRF** para consultar el servicio de metadatos de la nube (`http://169.254.169.254/`) y robar credenciales temporales.
+- **SSRF** (Falsificación de Solicitudes del Lado del Servidor): para consultar el servicio de metadatos de la nube (`http://169.254.169.254/`) y robar credenciales temporales.
 - **Herramientas**: Burp Suite (Repeater/Intruder), extensión *Autorize* (prueba automatizada de fallos de autorización), OWASP ZAP.
 - **Caso real**: la brecha de **Capital One (2019)** — una atacante explotó una mala configuración de firewall (WAF) para ejecutar un ataque **SSRF** contra el servicio de metadatos de AWS EC2, robando credenciales IAM y accediendo a datos de más de 100 millones de clientes.
 
@@ -142,7 +142,7 @@ Authorization: Bearer <token-del-usuario-1001>
 El backend nunca valida que el `1002` de la URL coincida con el dueño del token → el usuario 1001 puede leer/editar los pedidos del usuario 1002 con solo cambiar un número.
 
 ### 🎈 Ejemplo sencillo para exponer en clase
-Imagina un **hotel donde la llave de tu habitación abre TODAS las habitaciones**, no solo la tuya. Nadie lo nota hasta que un huésped "curioso" prueba su llave en la puerta de al lado... y entra. Eso es exactamente lo que pasa cuando una app olvida verificar "¿este dato es realmente tuyo?".
+Es como un **hotel donde la llave de cualquier habitación abre TODAS las habitaciones**, no solo la propia. Nadie lo nota hasta que un huésped "curioso" prueba su llave en la puerta de al lado... y entra. Eso es exactamente lo que pasa cuando una app olvida verificar "¿este dato realmente le pertenece a quien lo solicita?".
 
 ### 🛡️ Prevención y mitigación
 - ✅ **Denegar por defecto**: acceso explícitamente permitido, todo lo demás se rechaza.
@@ -166,7 +166,7 @@ Ocurre cuando la aplicación, el servidor, el framework o la infraestructura en 
 **Impacto potencial:** compromiso total del sistema, filtración masiva de datos, acceso administrativo no autorizado.
 
 ### 💥 Métodos de explotación
-- **Reconocimiento con Shodan/Censys** para hallar servicios expuestos a internet (bases de datos, dashboards, cámaras).
+- **Reconocimiento con Shodan/Censys** (motores de busqueda centralizados en Ciberseguridad, Shodan para IoT y Censys para Infra) para hallar servicios expuestos a internet (bases de datos, dashboards, cámaras).
 - **Dorking / fuzzing de directorios** (`gobuster`, `dirb`) para encontrar `.env`, `.git/`, `config.php.bak`.
 - **Herramientas de auditoría cloud**: ScoutSuite, Prowler, para detectar buckets S3 públicos o IAM mal configurado.
 - **Caso real**: decenas de filtraciones masivas por **buckets S3 públicos mal configurados** (empresas como Verizon, Accenture, Dow Jones han sufrido incidentes de este tipo, exponiendo millones de registros sin que fuera necesario "hackear" nada — el dato simplemente estaba abierto al público).
@@ -209,7 +209,7 @@ Es la categoría **con mayor incidencia promedio (5.19%)** en los datos de 2025 
 Un pipeline de CI/CD ejecuta `npm install` sin lockfile ni verificación de checksums; una dependencia transitiva es secuestrada y su script `postinstall` exfiltra las variables de entorno (tokens, claves de API) del entorno de build.
 
 ### 🎈 Ejemplo sencillo para exponer en clase
-Es como comprar un **producto "de marca" a un vendedor ambulante** en la calle: el empaque se ve idéntico al original, pero nadie garantiza qué hay realmente adentro. Confiaste en la etiqueta, no en la fuente.
+Es como comprar un **producto "de marca" a un vendedor ambulante** en la calle: el empaque se ve idéntico al original, pero nadie garantiza qué hay realmente adentro. El comprador confió en la etiqueta, no en la fuente.
 
 ### 🛡️ Prevención y mitigación
 - ✅ **SBOM** (*Software Bill of Materials*) para tener visibilidad completa de cada componente usado.
@@ -251,7 +251,7 @@ password_hash = ph.hash(password)  # ✅ Argon2, con sal automática
 ```
 
 ### 🎈 Ejemplo sencillo para exponer en clase
-Es como escribir tu diario secreto usando el **"cifrado César"** que aprendiste en primaria (correr cada letra una posición): a simple vista parece un código, pero cualquiera lo descifra en segundos. La "protección" es solo apariencia.
+Es como escribir un diario secreto usando el **"cifrado César"** (correr cada letra una posición): a simple vista parece un código, pero cualquiera lo descifra en segundos. La "protección" es solo apariencia.
 
 ### 🛡️ Prevención y mitigación
 - ✅ Cifrar **en tránsito** (TLS 1.2+/1.3 obligatorio, HSTS) y **en reposo** (AES-256).
@@ -330,7 +330,7 @@ POST /api/checkout
 El servidor confía en el `precio_unitario` que **envía el cliente** en vez de recalcularlo desde su propia base de datos → el atacante decide cuánto paga.
 
 ### 🎈 Ejemplo sencillo para exponer en clase
-Es como una **máquina expendedora que te deja escribir tú mismo el precio** en vez de leerlo de su lista interna. No importa qué tan "bien construida" esté la máquina por dentro: **el diseño mismo** ya tiene el fallo.
+Es como una **máquina expendedora que deja que el propio comprador escriba el precio** en vez de leerlo de su lista interna. No importa qué tan "bien construida" esté la máquina por dentro: **el diseño mismo** ya tiene el fallo.
 
 ### 🛡️ Prevención y mitigación
 - ✅ **Modelado de amenazas** (threat modeling, ej. STRIDE) desde las primeras etapas del diseño.
@@ -368,7 +368,7 @@ done
 sin ser detenido ni detectado.
 
 ### 🎈 Ejemplo sencillo para exponer en clase
-Imagina un **guardia de seguridad que deja que cualquiera pruebe el código de la puerta las veces que quiera**, sin sospechar nunca ni avisar a nadie, aunque lleven 10,000 intentos fallidos en una hora. Tarde o temprano, alguien adivina `1234`.
+Es como un **guardia de seguridad que deja que cualquiera pruebe el código de la puerta las veces que quiera**, sin sospechar nunca ni avisar a nadie, aunque lleven 10,000 intentos fallidos en una hora. Tarde o temprano, alguien adivina `1234`.
 
 ### 🛡️ Prevención y mitigación
 - ✅ **MFA (autenticación multifactor)** obligatoria, especialmente en cuentas sensibles.
@@ -405,7 +405,7 @@ Object obj = ois.readObject(); // ❌ deserializa lo que sea, sin validar origen
 Un atacante envía un objeto serializado diseñado para ejecutar comandos del sistema en cuanto se deserializa.
 
 ### 🎈 Ejemplo sencillo para exponer en clase
-Es como **comerte un producto empacado sin sello de garantía** solo porque "se ve parecido" al original. Sin un sello de integridad (como el que traen los medicamentos), no hay forma de saber si alguien lo abrió y le puso algo dañino antes de que llegara a ti.
+Es como **consumir un producto empacado sin sello de garantía** solo porque "se ve parecido" al original. Sin un sello de integridad (como el que traen los medicamentos), no hay forma de saber si alguien lo abrió y le puso algo dañino antes de que llegara al consumidor.
 
 ### 🛡️ Prevención y mitigación
 - ✅ Verificar **firmas digitales** de actualizaciones y paquetes antes de instalarlos.
@@ -507,7 +507,7 @@ Es como un **elevador programado para abrir las puertas automáticamente** cada 
 ## 🎓 Conclusiones
 
 - 🔴 **Broken Access Control** y **Security Misconfiguration** dominan el top 2, reflejando que hoy los mayores riesgos vienen de **fallos de verificación básica** y **complejidad de la nube**, no solo de bugs de código sofisticados.
-- 🆕 Las dos categorías nuevas (**Supply Chain** y **Exceptional Conditions**) muestran que el perímetro de la seguridad ya no es solo "el código": incluye **todo lo que confías sin verificar** (dependencias, pipelines) y **cómo te comportas cuando algo sale mal**.
+- 🆕 Las dos categorías nuevas (**Supply Chain** y **Exceptional Conditions**) muestran que el perímetro de la seguridad ya no es solo "el código": incluye **todo lo que se confía sin verificar** (dependencias, pipelines) y **cómo se responde cuando algo sale mal**.
 - 🧠 **Idea central para la clase**: casi todas estas vulnerabilidades comparten una raíz común — **confiar en algo (una entrada, un componente, un estado) sin verificarlo**.
 
 ---
