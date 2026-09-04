@@ -294,6 +294,8 @@ Una inyección ocurre cuando una aplicación recibe información sin validarla y
 
 ### 📝 Ejemplo de ataque
 
+![A062025](Imagenes/A052025.jpeg)
+
 ## A06:2025 - Diseño Inseguro
 
 ### 🛡️ ¿Qué es?
@@ -318,6 +320,7 @@ Por esta razón, aunque, el sistema sea desarrollado correctamente, puede contin
 
 ### 📝 Ejemplo de ataque
 
+![A062025](Imagenes/A052025.jpeg)
 
 ## A09:2025 - Fallos en el registro y las alertas de seguridad
 
