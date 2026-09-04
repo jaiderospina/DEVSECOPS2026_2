@@ -284,9 +284,15 @@ El atacante podría observar tráfico, pero no debería poder obtener el conteni
 
 Una inyección ocurre cuando una aplicación recibe información sin validarla y la interpreta como una instrucción o comando, permitiendo que un atacante consulte, modifique o elimine información sin autorización.
 
+### 🧱 ¿Cómo prevenir una inyección?
 
+- **Validar los datos:** Revisar que la información ingresada sea correcta y permitida.
+- **Separar datos y comandos:** Evitar que la aplicación confunda la información del usuario con instrucciones del sistema.
+- **Usar consultas parametrizadas:** Enviar los datos como valores independientes, sin unirlos directamente a una consulta.
+- **Limitar los permisos:** Permitir que cada usuario o sistema acceda únicamente a lo necesario.
+- **Realizar pruebas de seguridad:** Revisar el código y probar la aplicación antes de publicarla.
 
-
+### 📝 Ejemplo de ataque
 
 ## A06:2025 - Diseño Inseguro
 
