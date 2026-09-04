@@ -287,12 +287,7 @@ Ocurre cuando un sistema, programa o aplicación se planea sin incluir los contr
 Es decir, el diseño inseguro es diferente a un error de implementación, aquí los controles no fueron considerados o definidos desde el comienzo.
 Por esta razon, aunque, el sistema sea desarrollado correctamente, puede continuar siendo vulnerable.
 
-### 🛠️ Tres partes clave para tener un diseño seguro son:
-
-- **Requisitos de recolección y gestión de recursos**
-- **Creando un diseño seguro**
-- **Tener un ciclo de vida seguro de desarrollo**
-
+![Diseño seguro](Imagenes/Diseno_Seguro.png)
 
 ## A09:2025 - Fallos en el registro y las alertas de seguridad
 
