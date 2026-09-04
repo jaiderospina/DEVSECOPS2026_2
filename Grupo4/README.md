@@ -386,6 +386,8 @@ Cookie: SESSIONID=sesion_trampa_98765
 
 - **Resultado:** El servidor procesa la solicitud asumiendo que proviene de la víctima, permitiendo al atacante visualizar datos bancarios o realizar acciones administrativas sin haber conocido nunca la contraseña.
 
+![Infografía A07 - Fallos de Autenticacion](https://github.com/jaiderospina/DEVSECOPS2026_2/blob/45dca6d696a7c085771690df4f92f1093d8492d7/Grupo4/Imagenes/A07.jpg)
+
 ### Cómo prevenirlo
 - MFA obligatorio (FIDO2/WebAuthn, TOTP — no SMS)
 - Contraseñas ≥12 caracteres, validadas contra listas de filtraciones (Have I Been Pwned)
@@ -477,7 +479,7 @@ document.addEventListener('submit', function(e) {
 - **Mecánica del ataque:** Como el navegador de los usuarios no tiene una directiva `integrity` para contrastar el hash SHA del archivo descargado con un valor esperado, carga y ejecuta el script sin advertencias.
 - **Resultado:** El código modificado opera con pleno acceso al Document Object Model (DOM) del sitio legítimo, capturando y exfiltrando credenciales corporativas en tiempo real.
   
-![Infografía A09 - Fallos en registro y alertas](https://github.com/jaiderospina/DEVSECOPS2026_2/blob/8252844d5c1862b747005859782b06c6159b1b6d/Grupo4/Imagenes/A08.jpg)
+![Infografía A08 - Fallos de Integridad del Software o de los Datos](https://github.com/jaiderospina/DEVSECOPS2026_2/blob/8252844d5c1862b747005859782b06c6159b1b6d/Grupo4/Imagenes/A08.jpg)
 
 ### Cómo prevenirlo
 - Usar **SRI** (`integrity` + `crossorigin`) en scripts externos
