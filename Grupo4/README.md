@@ -278,6 +278,10 @@ El atacante podría observar tráfico, pero no debería poder obtener el conteni
 
 ![Infografía A04 - Fallos en registro y alertas](https://github.com/ALEKINN/TEST-DevSecOps/blob/main/OWASPTOP10-A04-2025.jpg?raw=true)
 
+## A06:2025 - Diseño Inseguro
+
+
+
 ## A09:2025 - Fallos en el registro y las alertas de seguridad
 
 ### 🛡️ ¿Qué es?
