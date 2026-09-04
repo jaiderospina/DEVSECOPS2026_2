@@ -501,7 +501,7 @@ Ocurre cuando la aplicación no guarda registro de lo que pasa (inicios de sesi�
 - **Registros inseguros:** Los archivos de registro pueden ser modificados o borrados por el atacante.
 - **Sin monitoreo:** Nadie revisa los registros para detectar actividades sospechosas.
 
-### 🛠️ Herramientas para la explotación (Ejemplo)
+### 💀 Herramientas para la explotación (Ejemplo)
 - **Hydra / Burp Suite:** Para automatizar intentos de acceso y probar la respuesta del sistema ante ataques de fuerza bruta sin ser detectado.
 
 ### 🛠️ Mejores prácticas de prevención
@@ -533,7 +533,7 @@ Es una categoría nueva. Ocurre cuando el sistema no sabe cómo reaccionar ante 
 - **Errores no registrados:** El sistema falla pero nadie lo sabe porque no quedó registro.
 - **Casos límite no probados:** Los atacantes buscan situaciones que los desarrolladores no consideraron.
 
-### 🛠️ Herramientas para la explotación (Ejemplo)
+### 💀 Herramientas para la explotación (Ejemplo)
 - **Fuzzing (wfuzz, ffuf):** Para enviar datos malformados o inesperados a los parámetros de la aplicación y observar cómo responde el servidor ante errores.
 
 ### 🛠️ Mejores prácticas de prevención
