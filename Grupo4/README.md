@@ -476,6 +476,8 @@ document.addEventListener('submit', function(e) {
 
 - **Mecánica del ataque:** Como el navegador de los usuarios no tiene una directiva `integrity` para contrastar el hash SHA del archivo descargado con un valor esperado, carga y ejecuta el script sin advertencias.
 - **Resultado:** El código modificado opera con pleno acceso al Document Object Model (DOM) del sitio legítimo, capturando y exfiltrando credenciales corporativas en tiempo real.
+  
+![Infografía A09 - Fallos en registro y alertas](https://github.com/jaiderospina/DEVSECOPS2026_2/blob/8252844d5c1862b747005859782b06c6159b1b6d/Grupo4/Imagenes/A08.jpg)
 
 ### Cómo prevenirlo
 - Usar **SRI** (`integrity` + `crossorigin`) en scripts externos
