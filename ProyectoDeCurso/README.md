@@ -254,7 +254,11 @@ Permite al usuario centralizar, controlar y auditar su presencia en múltiples r
 
 La plataforma opera bajo el principio de *privacy by design*: el usuario es el único propietario de sus datos y tiene control granular sobre cada aspecto de su visibilidad digital.
 
-![](Logo.png)
+
+<p align="center">
+  <img src="Logo.png" width="350" alt="Descripción">
+</p>
+
 ---
 
 ### 8.2 Funcionalidades Principales
