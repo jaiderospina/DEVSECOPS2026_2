@@ -17,7 +17,7 @@
 5. [Entregables](#5-entregables)
 6. [Estructura del Informe Técnico](#6-estructura-del-informe-técnico)
 7. [Criterios de Evaluación](#7-criterios-de-evaluación)
-8. [Aplicación de Ejemplo — Proyecto PERSONA](#8-aplicación-de-ejemplo--proyecto-persona)
+8. [Aplicación Bonificable - **Identix** ](#8-aplicación-de-ejemplo--proyecto-persona)
 9. [Notas Finales](#9-notas-finales)
 
 ---
@@ -254,6 +254,7 @@ Permite al usuario centralizar, controlar y auditar su presencia en múltiples r
 
 La plataforma opera bajo el principio de *privacy by design*: el usuario es el único propietario de sus datos y tiene control granular sobre cada aspecto de su visibilidad digital.
 
+![](Logo.png)
 ---
 
 ### 8.2 Funcionalidades Principales
