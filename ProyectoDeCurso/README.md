@@ -1,4 +1,4 @@
-# Trabajo Final de Especialización en Ciberseguridad con Énfasis en DevSecOps
+# Trabajo Final de Curso 
 
 ## Pipeline DevSecOps de Ciclo Completo para una Aplicación Contenerizada de Libre Uso
 
