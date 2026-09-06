@@ -1,8 +1,11 @@
 # OCTAVE **GESTIÓN DEL RIESGO CIBERNÉTICO**
 ## 1. ¿Qué es OCTAVE?
 
-#  Evaluación de Amenazas, Activos y Vulnerabilidades Operacionalmente Críticos.
+<div align="center">
+  <h2>Evaluación de Amenazas, Activos y Vulnerabilidades Operacionalmente Críticos. </h2>
+</div>
 
+ 
 **OCTAVE** significa **Operationally Critical Threat, Asset, and Vulnerability Evaluation**, es decir, **Evaluación de amenazas, activos y vulnerabilidades operacionalmente críticos**. Es una metodología de evaluación de riesgos de seguridad de la información desarrollada por el **Software Engineering Institute, SEI, de Carnegie Mellon University**. Su propósito es ayudar a una organización a identificar activos críticos, analizar amenazas, evaluar vulnerabilidades y priorizar planes de mitigación basados en el impacto para el negocio. ([sei.cmu.edu][1])
 
 A diferencia de enfoques puramente técnicos, OCTAVE se centra en el **riesgo organizacional**: combina personas, procesos, tecnología, información, servicios, instalaciones y objetivos de negocio. En su versión **OCTAVE Allegro**, el enfoque se orienta principalmente a los **activos de información** y al contexto en el que se almacenan, procesan, transportan y usan. ([sei.cmu.edu][1])
