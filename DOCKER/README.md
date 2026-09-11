@@ -42,3 +42,4 @@ Este método asegura que la aplicación funcione de manera consistente en cualqu
 
 - https://www.datacamp.com/es/tutorial/docker-tutorial
 - https://www.docker.com/
+- https://dockerlabs.collabnix.com/docker-workshop/lab1/postgres
