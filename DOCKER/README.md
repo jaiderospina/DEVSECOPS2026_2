@@ -4,6 +4,8 @@
 
 La contenerización es una tecnología que permite empaquetar una aplicación junto con todas sus dependencias (como bibliotecas, configuraciones y archivos necesarios) en una unidad estandarizada llamada contenedor. Este contenedor es una entidad aislada que se ejecuta sobre el sistema operativo del host, proporcionando un entorno consistente para la aplicación, independientemente del lugar donde se despliegue.
 
+![](Docker.png)
+
 ## Principales características de la contenerización:
 
 * **Aislamiento de entornos:** Cada contenedor opera de forma independiente y aislada de otros contenedores y del sistema operativo host. Los procesos dentro de un contenedor no interfieren con los de otro.
@@ -37,3 +39,6 @@ Con contenerización:
 Este método asegura que la aplicación funcione de manera consistente en cualquier infraestructura, simplificando el proceso de despliegue y minimizando incidencias derivadas de configuraciones dispares.
 
 # Referencias.
+
+- https://www.datacamp.com/es/tutorial/docker-tutorial
+- https://www.docker.com/
