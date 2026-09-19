@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="es" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevSecOps: Infografía Animada, Arquitecturas Ciberresilientes y Gestión de Procesos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#070B12',
+                            darker: '#04070D',
+                            card: '#121A2B',
+                            cardLight: '#1B263B',
+                            border: '#22304A',
+                            borderHover: '#3B82F6',
+                            cyan: '#06B6D4',
+                            blue: '#3B82F6',
+                            emerald: '#10B981',
+                            rose: '#F43F5E',
+                            purple: '#8B5CF6',
+                            amber: '#F59E0B'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 14s linear infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                        'glow': 'glow 2.5s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 15px rgba(6, 182, 212, 0.25)' },
+                            '100%': { boxShadow: '0 0 35px rgba(6, 182, 212, 0.75)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans & Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #060911;
+            color: #E2E8F0;
+        }
+        .font-mono-code {
+            font-family: 'Fira Code', monospace;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070B12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1F2E47;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3B82F6;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #38BDF8 0%, #818CF8 50%, #C084FC 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-cyan {
+            background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-emerald {
+            background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Tooltip styling */
+        .tooltip-trigger {
+            position: relative;
+        }
+        .tooltip-trigger:hover .tooltip-box {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .tooltip-box {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 60;
+            pointer-events: none;
+            width: 260px;
+        }
+        /* Presentation Fullscreen Mode Styles */
+        .presentation-active {
+            max-width: 100% !important;
+            padding-left: 2rem !important;
+            padding-right: 2rem !important;
+        }
+        .presentation-active section {
+            scroll-margin-top: 5rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-cyan-500 selection:text-black">
+
+    <!-- Sticky Navigation Bar -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-brand-dark/90 border-b border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center transition-all duration-300" id="header-container">
+            <!-- Brand & Leadership attribution -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/25">
+                    <i class="fa-solid fa-shield-halved text-white text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl font-black tracking-tight text-white">Dev<span class="text-cyan-400">Sec</span>Ops</span>
+                        <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono hidden sm:inline-block">v2.5 Pro</span>
+                    </div>
+                    <div class="text-[11px] text-slate-400 leading-tight">
+                        Por: <span class="text-slate-200 font-semibold">Jaider Ospina Navas</span> <span class="text-cyan-400 font-medium">| CEO TTG Colombia SAS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden xl:flex space-x-5 text-xs font-semibold text-slate-300">
+                <a href="#shift-left" class="hover:text-cyan-400 transition-colors">Shift Left</a>
+                <a href="#ciclo" class="hover:text-cyan-400 transition-colors">Ciclo Continuo</a>
+                <a href="#ciberresiliencia" class="hover:text-cyan-400 transition-colors text-cyan-300">Ciberresiliencia</a>
+                <a href="#simulador" class="hover:text-cyan-400 transition-colors">Simulador CI/CD</a>
+                <a href="#pilares" class="hover:text-cyan-400 transition-colors">Pilares</a>
+                <a href="#calculadora" class="hover:text-cyan-400 transition-colors">Calculadora ROI</a>
+                <a href="#gestion-procesos" class="hover:text-cyan-400 transition-colors text-purple-400 font-bold">Gestión de Procesos</a>
+            </nav>
+
+            <!-- Actions: Jump/Maximize Presentation View -->
+            <div class="flex items-center space-x-2.5">
+                <button id="btn-maximize-presentation" onclick="togglePresentationMode()" class="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/40 shadow-md hover:border-cyan-400 transition-all flex items-center gap-2 group" title="Maximizar la proporción de la presentación y enfocar en pantalla">
+                    <i class="fa-solid fa-expand text-cyan-400 group-hover:scale-110 transition-transform"></i>
+                    <span id="presentation-btn-text" class="hidden sm:inline">Modo Presentación</span>
+                </button>
+
+                <a href="#simulador" class="px-3.5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/20 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-play text-xs text-slate-950"></i> <span class="hidden md:inline">Simulador</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-20 transition-all duration-300" id="main-content-wrapper">
+
+        <!-- Hero Section -->
+        <section id="hero" class="relative rounded-3xl p-8 sm:p-14 overflow-hidden border border-brand-border bg-gradient-to-b from-brand-card to-brand-dark/95 text-center md:text-left shadow-2xl">
+            <!-- Decorative atmospheric lights -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-7 space-y-6">
+                    <!-- Authorship & Credential Badge -->
+                    <div class="inline-flex flex-wrap items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/30 text-xs shadow-inner">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                        <span class="text-slate-300">Dirección y Conceptualización:</span>
+                        <span class="text-cyan-400 font-bold">Jaider Ospina Navas</span>
+                        <span class="text-slate-500 hidden sm:inline">|</span>
+                        <span class="text-slate-300 font-medium hidden sm:inline">CEO TTG Colombia SAS</span>
+                    </div>
+
+                    <!-- Single Main Title requested -->
+                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-tight">
+                        <span class="text-gradient">DevSecOps</span>
+                    </h1>
+
+                    <p class="text-slate-300 text-base sm:text-lg max-w-2xl font-light leading-relaxed">
+                        Integración holística de la seguridad informática en cada pulso del ciclo de vida digital:
+                        desde el análisis de requerimientos y la codificación segura, hasta la entrega continua de
+                        <strong>arquitecturas ciberresilientes</strong>, inmutables y de alta disponibilidad.
+                    </p>
+
+                    <div class="pt-2 flex flex-wrap gap-3.5 justify-center md:justify-start">
+                        <button onclick="jumpToPresentationFocus('ciclo')" class="px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg shadow-cyan-500/25 flex items-center gap-2">
+                            <i class="fa-solid fa-arrows-to-eye"></i> Centralizar Presentación
+                        </button>
+                        <a href="#ciberresiliencia" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/40 font-semibold text-xs transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-network-wired text-cyan-400"></i> Arquitectura Ciberresiliente
+                        </a>
+                        <a href="#gestion-procesos" class="px-5 py-3 rounded-xl bg-purple-900/40 hover:bg-purple-900/60 text-purple-300 border border-purple-500/40 font-semibold text-xs transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-sitemap text-purple-400"></i> Gestión de Procesos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Floating interactive core diagram -->
+                <div class="md:col-span-5 flex justify-center">
+                    <div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
+                        <div class="absolute inset-0 rounded-full border-2 border-dashed border-cyan-500/30 animate-spin-slow"></div>
+                        <div class="absolute inset-5 rounded-full border border-purple-500/30"></div>
+                        <div class="absolute inset-10 rounded-full border border-blue-500/20 animate-pulse-slow"></div>
+
+                        <!-- Orbiting Badges -->
+                        <div class="absolute top-1 left-1/2 -translate-x-1/2 bg-slate-900/90 border border-cyan-500/60 text-cyan-300 px-3 py-1 rounded-full text-xs font-mono shadow-lg flex items-center gap-2">
+                            <i class="fa-solid fa-code text-cyan-400"></i> DEV
+                        </div>
+                        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 bg-slate-900/90 border border-emerald-500/60 text-emerald-300 px-3 py-1 rounded-full text-xs font-mono shadow-lg flex items-center gap-2">
+                            <i class="fa-solid fa-server text-emerald-400"></i> OPS
+                        </div>
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-900/90 border border-rose-500/60 text-rose-300 px-3 py-1 rounded-full text-xs font-mono shadow-lg flex items-center gap-2">
+                            <i class="fa-solid fa-shield-virus text-rose-400"></i> SEC
+                        </div>
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-900/90 border border-purple-500/60 text-purple-300 px-3 py-1 rounded-full text-xs font-mono shadow-lg flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-purple-400"></i> RESILIENCE
+                        </div>
+
+                        <!-- Core Shield -->
+                        <div class="w-36 h-36 rounded-full bg-gradient-to-tr from-cyan-950/90 via-slate-900 to-purple-950/90 border border-cyan-400/50 flex flex-col items-center justify-center p-3 text-center shadow-2xl backdrop-blur-md">
+                            <i class="fa-solid fa-shield-halved text-4xl text-cyan-400 mb-1 animate-bounce"></i>
+                            <span class="text-xs font-black tracking-wider text-slate-100">CYBER DEFENSE</span>
+                            <span class="text-[9px] text-cyan-300 uppercase font-mono">Continuous Trust</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Metric Bar -->
+            <div class="mt-12 pt-8 border-t border-brand-border grid grid-cols-2 md:grid-cols-4 gap-5 text-center">
+                <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-cyan-400 font-mono">80%</div>
+                    <div class="text-xs text-slate-400 mt-1">Menos Incidentes en Producción</div>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">10x</div>
+                    <div class="text-xs text-slate-400 mt-1">Velocidad en Remediación (MTTR)</div>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-purple-400 font-mono">100%</div>
+                    <div class="text-xs text-slate-400 mt-1">Trazabilidad SBOM & Provenance</div>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-rose-400 font-mono">60%+</div>
+                    <div class="text-xs text-slate-400 mt-1">Ahorro en Costes de Parches</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shift Left Section -->
+        <section id="shift-left" class="space-y-8 scroll-mt-24">
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-mono font-bold">
+                    <i class="fa-solid fa-arrows-left-right"></i> PARADIGMA SHIFT LEFT
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Seguridad Temprana vs. Auditoría Tardía</h2>
+                <p class="text-slate-400 text-sm">
+                    Mover los controles de seguridad hacia la izquierda (diseño e IDE) elimina las fricciones operativas y mitiga los riesgos antes de que toquen el pipeline de producción.
+                </p>
+            </div>
+
+            <!-- Comparison Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Tradicional DevOps -->
+                <div class="p-6 sm:p-8 rounded-3xl bg-brand-card/60 border border-rose-900/40 relative overflow-hidden group hover:border-rose-500/50 transition-all">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/30 text-xs font-semibold">
+                            Modelo Tradicional (Seguridad Aislada)
+                        </span>
+                        <i class="fa-solid fa-triangle-exclamation text-rose-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-100 mb-2">Seguridad como "Freno de Emergencia"</h3>
+                    <p class="text-xs text-slate-400 mb-6">Auditorías manuales semanas antes del pase a producción generan cuellos de botella y bloqueos.</p>
+
+                    <div class="space-y-3 relative text-xs">
+                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                            <span class="font-mono text-slate-500 w-20">1. Plan & Code</span>
+                            <div class="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-blue-500 h-full w-full"></div>
+                            </div>
+                            <span class="text-slate-400">Sin validación estática</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                            <span class="font-mono text-slate-500 w-20">2. Deploy</span>
+                            <div class="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-blue-500 h-full w-full"></div>
+                            </div>
+                            <span class="text-slate-400">Código ya desplegado</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-rose-950/40 border border-rose-500/40 animate-pulse">
+                            <span class="font-mono text-rose-400 font-bold w-20">3. Auditoría</span>
+                            <div class="flex-1 h-2 bg-rose-900/50 rounded-full overflow-hidden">
+                                <div class="bg-rose-500 h-full w-full"></div>
+                            </div>
+                            <span class="text-rose-300 font-semibold"><i class="fa-solid fa-bug text-xs"></i> 40+ Fallos críticos detectados</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-3.5 rounded-xl bg-rose-950/30 border border-rose-800/30 text-xs text-rose-300 flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-xmark text-rose-400 mt-0.5"></i>
+                        <span><strong>Impacto:</strong> Retrasos costosos, estrés entre desarrolladores y parches precipitados directamente en servidores productivos.</span>
+                    </div>
+                </div>
+
+                <!-- DevSecOps Shift Left -->
+                <div class="p-6 sm:p-8 rounded-3xl bg-brand-card border border-emerald-500/40 relative overflow-hidden group hover:border-emerald-400 transition-all shadow-xl shadow-emerald-950/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-semibold flex items-center gap-1.5">
+                            <i class="fa-solid fa-bolt text-xs"></i> Enfoque DevSecOps (Shift Left Continuo)
+                        </span>
+                        <i class="fa-solid fa-shield-check text-emerald-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-100 mb-2">Seguridad Automatizada por Diseño</h3>
+                    <p class="text-xs text-slate-400 mb-6">Linters con reglas de seguridad en el editor de código y validación inmediata en pipelines CI/CD.</p>
+
+                    <div class="space-y-3 relative text-xs">
+                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-900/80 border border-emerald-500/30">
+                            <span class="font-mono text-emerald-400 font-bold w-20">1. IDE / Commit</span>
+                            <div class="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-emerald-400 h-full w-full"></div>
+                            </div>
+                            <span class="text-emerald-300"><i class="fa-solid fa-check text-xs"></i> SAST & Pre-commit scan en vivo</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                            <span class="font-mono text-cyan-400 w-20">2. CI Pipeline</span>
+                            <div class="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-cyan-400 h-full w-full"></div>
+                            </div>
+                            <span class="text-slate-300">SCA + Escaneo de Secretos e IaC</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                            <span class="font-mono text-purple-400 w-20">3. Continuous</span>
+                            <div class="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-purple-400 h-full w-full"></div>
+                            </div>
+                            <span class="text-slate-300">Defensa activa en Runtime (RASP)</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-800/30 text-xs text-emerald-300 flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+                        <span><strong>Impacto:</strong> Corrección en minutos mientras el código está fresco en la mente del autor. Cero sorpresas al momento del despliegue.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Escalation Bars -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-brand-card border border-brand-border space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Escalación Exponencial del Coste de Reparación</h3>
+                        <p class="text-xs text-slate-400">Basado en estudios del NIST e IBM Security sobre el ciclo de vida del software (SDLC).</p>
+                    </div>
+                    <div class="text-xs font-mono bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800 text-cyan-400">
+                        <i class="fa-solid fa-chart-line mr-1"></i> Cost-to-Fix Multiplier
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-emerald-500/20 text-center hover:border-emerald-500 transition-all">
+                        <span class="text-[10px] text-slate-400 uppercase font-mono">1. Diseño / IDE</span>
+                        <div class="text-3xl font-black text-emerald-400 my-1">1x</div>
+                        <p class="text-[11px] text-slate-400">Costo Base (~$80 USD)</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-cyan-500/20 text-center hover:border-cyan-500 transition-all">
+                        <span class="text-[10px] text-slate-400 uppercase font-mono">2. Build / CI</span>
+                        <div class="text-3xl font-black text-cyan-400 my-1">5x</div>
+                        <p class="text-[11px] text-slate-400">En revisión de PRs</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-purple-500/20 text-center hover:border-purple-500 transition-all">
+                        <span class="text-[10px] text-slate-400 uppercase font-mono">3. Staging / QA</span>
+                        <div class="text-3xl font-black text-purple-400 my-1">15x</div>
+                        <p class="text-[11px] text-slate-400">Interrumpe el release</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-rose-500/30 text-center hover:border-rose-500 transition-all">
+                        <span class="text-[10px] text-rose-400 uppercase font-mono font-bold">4. Producción</span>
+                        <div class="text-3xl font-black text-rose-500 my-1">100x+</div>
+                        <p class="text-[11px] text-slate-400">Parches urgentes / Brechas</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DevSecOps Infinity Loop Lifecycle -->
+        <section id="ciclo" class="space-y-8 scroll-mt-24">
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-mono font-bold">
+                    <i class="fa-solid fa-infinity"></i> CICLO CONTINUO
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Las 8 Fases del Ciclo DevSecOps</h2>
+                <p class="text-slate-400 text-sm">
+                    Selecciona cualquier etapa para visualizar sus objetivos tácticos, herramientas especializadas y verificaciones de ciberseguridad.
+                </p>
+            </div>
+
+            <!-- Stage Navigation Buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5" id="stage-tabs">
+                <!-- Dynamically rendered by JavaScript -->
+            </div>
+
+            <!-- Dynamic Detail Container -->
+            <div id="stage-detail-card" class="p-6 sm:p-9 rounded-3xl bg-brand-card border border-cyan-500/30 transition-all shadow-2xl relative overflow-hidden">
+                <!-- Injected via renderStageDetail() -->
+            </div>
+        </section>
+
+        <!-- Dedicated Module: Arquitecturas Ciberresilientes & Ciberseguridad -->
+        <section id="ciberresiliencia" class="space-y-8 scroll-mt-24">
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-mono font-bold border border-cyan-500/30">
+                    <i class="fa-solid fa-shield-virus"></i> NÚCLEO ESTRATÉGICO
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Arquitecturas Ciberresilientes</h2>
+                <p class="text-slate-400 text-sm">
+                    La ciberseguridad moderna asume que la brecha puede ocurrir en cualquier instante.
+                    La <strong>ciberresiliencia</strong> diseña sistemas capaces de resistir, contener, auto-repararse y continuar operando bajo ataque sin degradación catastrófica.
+                </p>
+            </div>
+
+            <!-- Pillars of Cyber-resilience Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 1. Zero Trust -->
+                <div class="p-6 rounded-3xl bg-brand-card border border-brand-border hover:border-cyan-500/50 transition-all space-y-4 group">
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-user-lock"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">1. Zero Trust & Menor Privilegio</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Nunca confiar, verificar siempre. Cada microservicio, API y componente autentica sus peticiones mediante mTLS y tokens criptográficos efímeros sin perímetros implícitos.
+                    </p>
+                    <div class="text-[11px] font-mono text-cyan-300 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 space-y-1">
+                        <div><i class="fa-solid fa-check text-cyan-400 text-[9px] mr-1"></i> SPIFFE / SPIRE Workload ID</div>
+                        <div><i class="fa-solid fa-check text-cyan-400 text-[9px] mr-1"></i> mTLS obligatorio de servicio a servicio</div>
+                    </div>
+                </div>
+
+                <!-- 2. Inmutabilidad -->
+                <div class="p-6 rounded-3xl bg-brand-card border border-brand-border hover:border-blue-500/50 transition-all space-y-4 group">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-cube"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">2. Inmutabilidad y Drift Detection</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Los contenedores e infraestructura nunca se modifican en caliente. Todo cambio nace en Git y viaja por el pipeline. Los sistemas con desviaciones se destruyen y recrean automáticamente.
+                    </p>
+                    <div class="text-[11px] font-mono text-blue-300 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 space-y-1">
+                        <div><i class="fa-solid fa-check text-blue-400 text-[9px] mr-1"></i> Read-only root filesystem</div>
+                        <div><i class="fa-solid fa-check text-blue-400 text-[9px] mr-1"></i> Terraform GitOps & Drift kill-switches</div>
+                    </div>
+                </div>
+
+                <!-- 3. Blast Radius Containment -->
+                <div class="p-6 rounded-3xl bg-brand-card border border-brand-border hover:border-purple-500/50 transition-all space-y-4 group">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-box-tissue"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">3. Contención de Radio de Explosión</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Aislamiento estricto de componentes mediante políticas de kernel eBPF, namespaces seguros y sandboxing (gVisor). Si un microservicio cae, el resto de la plataforma permanece inmune.
+                    </p>
+                    <div class="text-[11px] font-mono text-purple-300 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 space-y-1">
+                        <div><i class="fa-solid fa-check text-purple-400 text-[9px] mr-1"></i> Cilium / eBPF network microsegmentation</div>
+                        <div><i class="fa-solid fa-check text-purple-400 text-[9px] mr-1"></i> Prevención de movimientos laterales</div>
+                    </div>
+                </div>
+
+                <!-- 4. Self-healing & Chaos Engineering -->
+                <div class="p-6 rounded-3xl bg-brand-card border border-brand-border hover:border-emerald-500/50 transition-all space-y-4 group">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">4. Auto-reparación & Chaos Security</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Inyección deliberada de fallos de seguridad (Chaos Engineering) para entrenar las sondas de recuperación y ejecutar rollbacks automáticos ante la detección de anomalías en producción.
+                    </p>
+                    <div class="text-[11px] font-mono text-emerald-300 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 space-y-1">
+                        <div><i class="fa-solid fa-check text-emerald-400 text-[9px] mr-1"></i> Rollback canario automático en CD</div>
+                        <div><i class="fa-solid fa-check text-emerald-400 text-[9px] mr-1"></i> Pruebas continuas con Chaos Mesh</div>
+                    </div>
+                </div>
+
+                <!-- 5. Software Supply Chain & SBOM -->
+                <div class="p-6 rounded-3xl bg-brand-card border border-brand-border hover:border-rose-500/50 transition-all space-y-4 group">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-file-shield"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">5. Cadena de Suministro Blindada</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Generación de Manifiesto SBOM (Software Bill of Materials) en estándar CycloneDX o SPDX, con firma criptográfica de artefactos (Sigstore/Cosign) garantizando trazabilidad total.
+                    </p>
+                    <div class="text-[11px] font-mono text-rose-300 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 space-y-1">
+                        <div><i class="fa-solid fa-check text-rose-400 text-[9px] mr-1"></i> Firma Cosign verificada en admisión K8s</div>
+                        <div><i class="fa-solid fa-check text-rose-400 text-[9px] mr-1"></i> Prevención de Dependency Confusion</div>
+                    </div>
+                </div>
+
+                <!-- 6. Virtual Patching & RASP -->
+                <div class="p-6 rounded-3xl bg-brand-card border border-brand-border hover:border-amber-500/50 transition-all space-y-4 group">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-shield-virus"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">6. Virtual Patching & RASP</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Runtime Application Self-Protection (RASP) intercepta llamadas sospechosas dentro de la máquina virtual o runtime antes de que exploten zero-days, otorgando tiempo al equipo para parchar.
+                    </p>
+                    <div class="text-[11px] font-mono text-amber-300 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 space-y-1">
+                        <div><i class="fa-solid fa-check text-amber-400 text-[9px] mr-1"></i> Bloqueo de exploits en memoria</div>
+                        <div><i class="fa-solid fa-check text-amber-400 text-[9px] mr-1"></i> Reglas de mitigación WAF / OpenRASP</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive CI/CD Pipeline Simulator -->
+        <section id="simulador" class="space-y-8 scroll-mt-24">
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold">
+                    <i class="fa-solid fa-terminal"></i> SIMULADOR INTERACTIVO
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Simulador de Pipeline CI/CD Seguro</h2>
+                <p class="text-slate-400 text-sm">
+                    Selecciona un escenario de código y ejecuta el pipeline. Pasa el cursor por cada verificación activa para conocer su función técnica y estándar de ciberseguridad.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-brand-card rounded-3xl border border-brand-border p-6 sm:p-8 shadow-2xl">
+                <!-- Simulator Controls -->
+                <div class="lg:col-span-5 space-y-6 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold">
+                                    1
+                                </div>
+                                <h3 class="text-lg font-bold text-white">Seleccionar Escenario</h3>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-400">8 Casos de Prueba</span>
+                        </div>
+
+                        <!-- Scenarios Dropdown with expanded 8 cases -->
+                        <div class="space-y-2">
+                            <label for="code-scenario" class="block text-xs text-slate-400 font-medium">Caso de Prueba a Simular:</label>
+                            <select id="code-scenario" class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-xl p-3 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-colors">
+                                <option value="clean">01. ✅ Código Limpio y Firmado Criptográficamente (Pass Total)</option>
+                                <option value="sast_sql">02. 🚨 SAST: Inyección SQL en controlador auth/db.js (OWASP A03)</option>
+                                <option value="secret_leak">03. 🔑 Secrets: API Key de AWS expuesta en config/cloud.env (CWE-798)</option>
+                                <option value="sca_cve">04. 📦 SCA: Dependencia crítica Log4j v2.14.0 (CVE-2021-44228)</option>
+                                <option value="iac_s3">05. ☁️ IaC Security: Bucket S3 público y Security Group 0.0.0.0/0 (Checkov)</option>
+                                <option value="container_root">06. 🐳 Container Scan: Imagen Docker ejecutando como ROOT con malware (Trivy)</option>
+                                <option value="dast_api">07. 🌐 DAST API: Falla BOLA / Broken Object Level Auth detectada en Staging</option>
+                                <option value="sbom_unsigned">08. 📜 Supply Chain: Artefacto sin firma Cosign o SBOM alterado (SLSA Lv3)</option>
+                            </select>
+                        </div>
+
+                        <!-- Active Security Verifications with Interactive Tooltips -->
+                        <div class="space-y-2.5 pt-2">
+                            <div class="flex justify-between items-center text-xs text-slate-400">
+                                <span class="font-medium">Verificaciones Activas en el Pipeline:</span>
+                                <span class="text-[10px] text-cyan-400 font-mono"><i class="fa-solid fa-circle-info"></i> Pasa el cursor para ver tooltip</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                                <!-- SAST -->
+                                <div class="tooltip-trigger p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-cyan-300 flex items-center gap-2 cursor-pointer hover:border-cyan-500/50">
+                                    <i class="fa-solid fa-code text-cyan-400"></i>
+                                    <span>SAST Scan</span>
+                                    <div class="tooltip-box bg-slate-900 border border-cyan-500/60 p-3 rounded-xl shadow-2xl text-[11px] text-slate-200 font-sans">
+                                        <div class="font-bold text-cyan-400 flex items-center gap-1.5 mb-1"><i class="fa-solid fa-code"></i> Static AppSec Testing</div>
+                                        Inspecciona el código fuente estático buscando vulnerabilidades como inyecciones, fallas criptográficas y desbordamientos según OWASP Top 10.
+                                    </div>
+                                </div>
+
+                                <!-- SCA -->
+                                <div class="tooltip-trigger p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-purple-300 flex items-center gap-2 cursor-pointer hover:border-purple-500/50">
+                                    <i class="fa-solid fa-boxes-stacked text-purple-400"></i>
+                                    <span>SCA Analysis</span>
+                                    <div class="tooltip-box bg-slate-900 border border-purple-500/60 p-3 rounded-xl shadow-2xl text-[11px] text-slate-200 font-sans">
+                                        <div class="font-bold text-purple-400 flex items-center gap-1.5 mb-1"><i class="fa-solid fa-boxes-stacked"></i> Software Composition</div>
+                                        Audita librerías open-source contra bases de datos NVD y CVEs conocidos para evitar dependencias desactualizadas o vulnerables.
+                                    </div>
+                                </div>
+
+                                <!-- Secret Scanning -->
+                                <div class="tooltip-trigger p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-rose-300 flex items-center gap-2 cursor-pointer hover:border-rose-500/50">
+                                    <i class="fa-solid fa-key text-rose-400"></i>
+                                    <span>Secret Check</span>
+                                    <div class="tooltip-box bg-slate-900 border border-rose-500/60 p-3 rounded-xl shadow-2xl text-[11px] text-slate-200 font-sans">
+                                        <div class="font-bold text-rose-400 flex items-center gap-1.5 mb-1"><i class="fa-solid fa-key"></i> Secret Detection</div>
+                                        Detecta tokens de AWS, JWT, credenciales de base de datos o claves privadas antes de que se almacenen en el historial git.
+                                    </div>
+                                </div>
+
+                                <!-- IaC Security -->
+                                <div class="tooltip-trigger p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-blue-300 flex items-center gap-2 cursor-pointer hover:border-blue-500/50">
+                                    <i class="fa-solid fa-cloud-lock text-blue-400"></i>
+                                    <span>IaC Guard</span>
+                                    <div class="tooltip-box bg-slate-900 border border-blue-500/60 p-3 rounded-xl shadow-2xl text-[11px] text-slate-200 font-sans">
+                                        <div class="font-bold text-blue-400 flex items-center gap-1.5 mb-1"><i class="fa-solid fa-cloud"></i> Infrastructure as Code</div>
+                                        Analiza archivos Terraform, CloudFormation o Helm buscando malas configuraciones de red, puertos abiertos o permisos excesivos.
+                                    </div>
+                                </div>
+
+                                <!-- Container Scan -->
+                                <div class="tooltip-trigger p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-emerald-300 flex items-center gap-2 cursor-pointer hover:border-emerald-500/50">
+                                    <i class="fa-solid fa-cubes text-emerald-400"></i>
+                                    <span>Container Scan</span>
+                                    <div class="tooltip-box bg-slate-900 border border-emerald-500/60 p-3 rounded-xl shadow-2xl text-[11px] text-slate-200 font-sans">
+                                        <div class="font-bold text-emerald-400 flex items-center gap-1.5 mb-1"><i class="fa-solid fa-cubes"></i> Image Hardening</div>
+                                        Escanea capas de imágenes Docker buscando binarios vulnerables del sistema operativo base y ejecución con privilegios root.
+                                    </div>
+                                </div>
+
+                                <!-- DAST API -->
+                                <div class="tooltip-trigger p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-amber-300 flex items-center gap-2 cursor-pointer hover:border-amber-500/50">
+                                    <i class="fa-solid fa-network-wired text-amber-400"></i>
+                                    <span>DAST Fuzzing</span>
+                                    <div class="tooltip-box bg-slate-900 border border-amber-500/60 p-3 rounded-xl shadow-2xl text-[11px] text-slate-200 font-sans">
+                                        <div class="font-bold text-amber-400 flex items-center gap-1.5 mb-1"><i class="fa-solid fa-network-wired"></i> Dynamic AppSec Testing</div>
+                                        Envía peticiones maliciosas simuladas a endpoints en tiempo de ejecución (Staging) para verificar autenticación y control de acceso.
+                                    </div>
+                                </div>
+
+                                <!-- SBOM & Supply Chain -->
+                                <div class="tooltip-trigger p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-indigo-300 flex items-center gap-2 cursor-pointer hover:border-indigo-500/50">
+                                    <i class="fa-solid fa-file-signature text-indigo-400"></i>
+                                    <span>SBOM & Cosign</span>
+                                    <div class="tooltip-box bg-slate-900 border border-indigo-500/60 p-3 rounded-xl shadow-2xl text-[11px] text-slate-200 font-sans">
+                                        <div class="font-bold text-indigo-400 flex items-center gap-1.5 mb-1"><i class="fa-solid fa-signature"></i> Cadena de Suministro</div>
+                                        Genera la lista de componentes de software (CycloneDX) y exige firma criptográfica (Sigstore) para admitir la carga en el clúster.
+                                    </div>
+                                </div>
+
+                                <!-- Policy as Code -->
+                                <div class="tooltip-trigger p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-pink-300 flex items-center gap-2 cursor-pointer hover:border-pink-500/50">
+                                    <i class="fa-solid fa-gavel text-pink-400"></i>
+                                    <span>Policy as Code</span>
+                                    <div class="tooltip-box bg-slate-900 border border-pink-500/60 p-3 rounded-xl shadow-2xl text-[11px] text-slate-200 font-sans">
+                                        <div class="font-bold text-pink-400 flex items-center gap-1.5 mb-1"><i class="fa-solid fa-gavel"></i> Open Policy Agent</div>
+                                        Aplica reglas de gobernanza y cumplimiento (NIST, CIS Benchmarks) codificadas como políticas ejecutables antes del despliegue.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Run Button -->
+                    <div class="pt-4">
+                        <button id="btn-run-pipeline" onclick="runPipelineSimulation()" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-play text-slate-950"></i> Ejecutar Verificación DevSecOps
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dark Terminal Output -->
+                <div class="lg:col-span-7 bg-slate-950 rounded-2xl border border-slate-800 p-4 sm:p-5 font-mono-code text-xs flex flex-col justify-between min-h-[420px] shadow-inner">
+                    <!-- Top Window Bar -->
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800 text-slate-500">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                            <span class="ml-2 text-[11px] text-slate-400">runner-pipeline-devsecops.sh</span>
+                        </div>
+                        <span id="pipeline-status-badge" class="px-2.5 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-400 font-bold">READY</span>
+                    </div>
+
+                    <!-- Log Terminal Output -->
+                    <div id="terminal-logs" class="py-4 space-y-2 overflow-y-auto max-h-[300px] text-slate-300 font-mono leading-relaxed">
+                        <p class="text-slate-500">// Terminal del Pipeline DevSecOps lista para interactuar.</p>
+                        <p class="text-slate-500">// Selecciona cualquiera de los 8 escenarios a la izquierda y pulsa "Ejecutar Verificación DevSecOps".</p>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="pt-3 border-t border-slate-900">
+                        <div class="flex justify-between text-[11px] text-slate-400 mb-1.5">
+                            <span>Progreso de Verificaciones:</span>
+                            <span id="pipeline-percent-label" class="font-bold text-cyan-400 font-mono">0%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                            <div id="pipeline-progress-bar" class="bg-cyan-500 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The 3 Pillars Section -->
+        <section id="pilares" class="space-y-8 scroll-mt-24">
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-mono font-bold">
+                    <i class="fa-solid fa-columns"></i> PILARES FUNDAMENTALES
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Los 3 Pilares de DevSecOps</h2>
+                <p class="text-slate-400 text-sm">
+                    La ciberseguridad integrada requiere un balance simbiótico entre personas capacitadas, procesos ágiles y tecnología automatizada.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Pillar 1 -->
+                <div class="p-6 rounded-3xl bg-brand-card border border-brand-border hover:border-cyan-500/50 transition-all space-y-4 group">
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">1. Cultura y Personas</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Seguridad compartida sin silos ni acusaciones (Blameless culture). Se impulsa la figura de <strong>Security Champions</strong> embebidos directamente en las escuadras de desarrollo.
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-2 pt-2 border-t border-slate-800">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-[10px]"></i> Capacitación continua en código seguro</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-[10px]"></i> Red de Security Champions activa</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400 text-[10px]"></i> Empatía técnica entre Sec y Dev</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="p-6 rounded-3xl bg-brand-card border border-brand-border hover:border-purple-500/50 transition-all space-y-4 group">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-diagram-project"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">2. Procesos y Métodos</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Estandarización de <strong>Quality Gates</strong>, cumplimiento como código (Compliance as Code), SLAs claros de remediación y modelado de amenazas continuo.
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-2 pt-2 border-t border-slate-800">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400 text-[10px]"></i> Modelado de Amenazas (STRIDE)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400 text-[10px]"></i> Políticas de excepción transparentes</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400 text-[10px]"></i> Auditoría continua sin intervención manual</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="p-6 rounded-3xl bg-brand-card border border-brand-border hover:border-emerald-500/50 transition-all space-y-4 group">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">3. Tecnología y Automatización</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Herramientas SAST, SCA, DAST, Secret Scanning e IaC integradas silenciosamente en Git y orquestadores para dar feedback instantáneo sin fricción.
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-2 pt-2 border-t border-slate-800">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Suite de escaneos automáticos en CI/CD</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Gestión de Secretos Dinámicos (Vault)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Observabilidad y telemetría eBPF</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive DevSecOps ROI & Impact Calculator (FIXED DYNAMIC UPDATES) -->
+        <section id="calculadora" class="space-y-8 scroll-mt-24">
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 text-xs font-mono font-bold">
+                    <i class="fa-solid fa-calculator"></i> RETORNO DE INVERSIÓN (ROI)
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Calculadora Dinámica de Impacto & Ciberseguridad</h2>
+                <p class="text-slate-400 text-sm">
+                    Ajusta los parámetros de tu organización. Todos los indicadores —incluyendo <strong>Reducción del Riesgo</strong> y <strong>Velocidad de Parcheo</strong>— se recalculan en tiempo real.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-brand-card rounded-3xl border border-brand-border p-6 sm:p-8 shadow-2xl">
+                <!-- Sliders Controls -->
+                <div class="lg:col-span-6 space-y-6">
+                    <!-- Slider 1 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm font-medium">
+                            <label for="input-devs" class="text-slate-300">Número de Desarrolladores en el Equipo:</label>
+                            <span id="val-devs" class="text-cyan-400 font-bold font-mono">25</span>
+                        </div>
+                        <input type="range" id="input-devs" min="5" max="250" value="25" class="w-full accent-cyan-500 bg-slate-800 h-2.5 rounded-lg cursor-pointer">
+                    </div>
+
+                    <!-- Slider 2 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm font-medium">
+                            <label for="input-deploys" class="text-slate-300">Despliegues / Releases al Mes:</label>
+                            <span id="val-deploys" class="text-purple-400 font-bold font-mono">40</span>
+                        </div>
+                        <input type="range" id="input-deploys" min="5" max="600" value="40" class="w-full accent-purple-500 bg-slate-800 h-2.5 rounded-lg cursor-pointer">
+                    </div>
+
+                    <!-- Slider 3 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm font-medium">
+                            <label for="input-cost" class="text-slate-300">Costo Promedio Hora de Ingeniería ($):</label>
+                            <span id="val-cost" class="text-emerald-400 font-bold font-mono">$45 USD</span>
+                        </div>
+                        <input type="range" id="input-cost" min="20" max="180" value="45" class="w-full accent-emerald-500 bg-slate-800 h-2.5 rounded-lg cursor-pointer">
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs text-slate-400 space-y-1.5">
+                        <div class="flex items-center gap-2 text-cyan-400 font-bold">
+                            <i class="fa-solid fa-circle-info"></i> Modelo Algorítmico de Ciberseguridad:
+                        </div>
+                        <p>
+                            Al automatizar los escaneos en etapas tempranas, la remediación ocurre en minutos. La reducción del riesgo escala conforme aumenta la cadencia de despliegues protegidos, reduciendo la exposición a exploits de día cero.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4 Calculated Outputs (All fully reactive with IDs) -->
+                <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4 flex items-center">
+                    <!-- Metric 1: Hours Saved -->
+                    <div class="p-5 rounded-2xl bg-slate-900/90 border border-cyan-500/30 text-center space-y-1.5 hover:border-cyan-500 transition-all">
+                        <span class="text-xs text-slate-400 uppercase font-mono">Horas Ahorradas / Año</span>
+                        <div id="calc-hours" class="text-3xl font-black text-cyan-400 font-mono">2,020 hrs</div>
+                        <p class="text-[10px] text-slate-500">Menos tiempo en triage manual</p>
+                    </div>
+
+                    <!-- Metric 2: Financial Savings -->
+                    <div class="p-5 rounded-2xl bg-slate-900/90 border border-emerald-500/30 text-center space-y-1.5 hover:border-emerald-500 transition-all">
+                        <span class="text-xs text-slate-400 uppercase font-mono">Ahorro Económico Anual</span>
+                        <div id="calc-savings" class="text-3xl font-black text-emerald-400 font-mono">$90,900 USD</div>
+                        <p class="text-[10px] text-slate-500">Eficiencia técnica recuperada</p>
+                    </div>
+
+                    <!-- Metric 3: Risk Reduction (FIXED: Reactively computed) -->
+                    <div class="p-5 rounded-2xl bg-slate-900/90 border border-purple-500/30 text-center space-y-1.5 hover:border-purple-500 transition-all">
+                        <span class="text-xs text-slate-400 uppercase font-mono">Reducción del Riesgo</span>
+                        <div id="calc-risk" class="text-3xl font-black text-purple-400 font-mono">-74%</div>
+                        <p id="calc-risk-sub" class="text-[10px] text-purple-300/80 font-mono">Índice de exposición residual</p>
+                    </div>
+
+                    <!-- Metric 4: Patching Speed (FIXED: Reactively computed) -->
+                    <div class="p-5 rounded-2xl bg-slate-900/90 border border-rose-500/30 text-center space-y-1.5 hover:border-rose-500 transition-all">
+                        <span class="text-xs text-slate-400 uppercase font-mono">Velocidad de Parcheo</span>
+                        <div id="calc-speed" class="text-3xl font-black text-rose-400 font-mono">5.8x Más Rápido</div>
+                        <p id="calc-speed-sub" class="text-[10px] text-rose-300/80 font-mono">MTTR: De 26 días a 4.5 días</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW SECTION: DevSecOps Process Management & Cybersecurity Governance -->
+        <section id="gestion-procesos" class="space-y-10 scroll-mt-24 pt-6 border-t border-brand-border">
+            <div class="text-center max-w-4xl mx-auto space-y-3">
+                <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-mono font-bold border border-purple-500/30">
+                    <i class="fa-solid fa-sitemap"></i> GOBERNANZA & PROCESS MANAGEMENT
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+                    Gestión de Procesos DevSecOps (Process Management Framework)
+                </h2>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                    Basado en la arquitectura de procesos de referencia de <strong>DevSecOps Guides</strong>.
+                    Estructura cómo se gobierna la ciberseguridad mediante <em>Quality Gates</em>, gestión del ciclo de vida de vulnerabilidades (VMLC), matrices RACI de ciberseguridad y políticas de excepción formal.
+                </p>
+            </div>
+
+            <!-- Interactive Process Navigation Tabs -->
+            <div class="flex flex-wrap justify-center gap-2" id="pm-tabs">
+                <button onclick="switchPMTab('flujo')" id="btn-pm-flujo" class="px-4 py-2.5 rounded-xl text-xs font-bold font-mono transition-all bg-slate-900 border border-cyan-400 text-cyan-400 shadow-md">
+                    <i class="fa-solid fa-diagram-project mr-1.5"></i> 1. Flujo End-to-End
+                </button>
+                <button onclick="switchPMTab('quality-gates')" id="btn-pm-quality-gates" class="px-4 py-2.5 rounded-xl text-xs font-bold font-mono transition-all bg-brand-card border border-brand-border text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-traffic-light mr-1.5"></i> 2. Quality Gates & SLAs
+                </button>
+                <button onclick="switchPMTab('vmlc')" id="btn-pm-vmlc" class="px-4 py-2.5 rounded-xl text-xs font-bold font-mono transition-all bg-brand-card border border-brand-border text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-arrows-spin mr-1.5"></i> 3. Ciclo de Vulnerabilidades (VMLC)
+                </button>
+                <button onclick="switchPMTab('raci')" id="btn-pm-raci" class="px-4 py-2.5 rounded-xl text-xs font-bold font-mono transition-all bg-brand-card border border-brand-border text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-table-cells mr-1.5"></i> 4. Matriz RACI de Ciberseguridad
+                </button>
+                <button onclick="switchPMTab('excepciones')" id="btn-pm-excepciones" class="px-4 py-2.5 rounded-xl text-xs font-bold font-mono transition-all bg-brand-card border border-brand-border text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-file-contract mr-1.5"></i> 5. Gestión de Excepciones
+                </button>
+            </div>
+
+            <!-- Tab Content 1: Interactive End-to-End Process Flow -->
+            <div id="pm-content-flujo" class="p-6 sm:p-8 rounded-3xl bg-brand-card border border-cyan-500/30 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-diagram-project text-cyan-400"></i>
+                            Flujo de Proceso de la Factoría de Software Segura
+                        </h3>
+                        <p class="text-xs text-slate-400">Puntos de control secuenciales desde la necesidad de negocio hasta el despliegue protegido.</p>
+                    </div>
+                    <span class="text-xs font-mono text-cyan-400 bg-cyan-950/60 px-3 py-1 rounded-lg border border-cyan-500/30">
+                        NIST SSDF SP 800-218 Aligned
+                    </span>
+                </div>
+
+                <!-- Process Steps Visualizer -->
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+                    <!-- Step 1 -->
+                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-cyan-500/40 text-left space-y-2 hover:border-cyan-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono font-bold text-cyan-400">FASE 1</span>
+                            <i class="fa-solid fa-pen-ruler text-cyan-400"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white">Requerimientos & Modelado</h4>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                            Definición de requisitos de privacidad, bug bars y Threat Modeling (STRIDE) en épicas y user stories.
+                        </p>
+                        <div class="text-[10px] font-mono text-slate-300 bg-slate-950 p-2 rounded-lg border border-slate-800">
+                            Salida: Threat Model & Security Epics
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-blue-500/40 text-left space-y-2 hover:border-blue-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono font-bold text-blue-400">FASE 2</span>
+                            <i class="fa-solid fa-code text-blue-400"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white">Codificación & Pre-commit</h4>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                            Linters en IDE, pre-commit hooks locales para bloquear credenciales y análisis estático inicial.
+                        </p>
+                        <div class="text-[10px] font-mono text-slate-300 bg-slate-950 p-2 rounded-lg border border-slate-800">
+                            Salida: Código Limpio de Secretos
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-purple-500/40 text-left space-y-2 hover:border-purple-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono font-bold text-purple-400">FASE 3</span>
+                            <i class="fa-solid fa-gears text-purple-400"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white">CI / Verificación Automatizada</h4>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                            Ejecución de SAST, SCA de librerías, escaneo de imagen base y validación de políticas de admisión.
+                        </p>
+                        <div class="text-[10px] font-mono text-slate-300 bg-slate-950 p-2 rounded-lg border border-slate-800">
+                            Salida: Quality Gate Pass / Fail
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-rose-500/40 text-left space-y-2 hover:border-rose-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono font-bold text-rose-400">FASE 4</span>
+                            <i class="fa-solid fa-file-signature text-rose-400"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white">Firma & CD Seguro</h4>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                            Generación de SBOM, firma digital Sigstore/Cosign y despliegue inmutable con secretos de Vault.
+                        </p>
+                        <div class="text-[10px] font-mono text-slate-300 bg-slate-950 p-2 rounded-lg border border-slate-800">
+                            Salida: Artefacto Criptográficamente Verificado
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="p-4 rounded-2xl bg-slate-900/90 border border-emerald-500/40 text-left space-y-2 hover:border-emerald-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-mono font-bold text-emerald-400">FASE 5</span>
+                            <i class="fa-solid fa-tower-broadcast text-emerald-400"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white">Operación & Feedback Continuo</h4>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                            Monitoreo eBPF, detección de amenazas runtime, retroalimentación a backlog y parches virtuales.
+                        </p>
+                        <div class="text-[10px] font-mono text-slate-300 bg-slate-950 p-2 rounded-lg border border-slate-800">
+                            Salida: Telemetría & Acciones Preventivas
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 2: Quality Gates Matrix & SLAs -->
+            <div id="pm-content-quality-gates" class="hidden p-6 sm:p-8 rounded-3xl bg-brand-card border border-purple-500/30 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-traffic-light text-purple-400"></i>
+                            Matriz de Quality Gates & SLAs de Remediación (Bug Bars)
+                        </h3>
+                        <p class="text-xs text-slate-400">Criterios de parada automática de pipeline según severidad CVSS/EPSS.</p>
+                    </div>
+                    <span class="text-xs font-mono text-purple-400 bg-purple-950/60 px-3 py-1 rounded-lg border border-purple-500/30">
+                        Zero Critical Vulnerabilities in Prod
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-slate-900/90 text-slate-400 uppercase font-mono text-[10px]">
+                            <tr>
+                                <th class="p-3.5 rounded-l-xl">Severidad (CVSS)</th>
+                                <th class="p-3.5">Acción en Pipeline CI/CD</th>
+                                <th class="p-3.5">SLA de Remediación</th>
+                                <th class="p-3.5">Notificación / Escalamiento</th>
+                                <th class="p-3.5 rounded-r-xl">Protocolo de Excepción</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 font-sans">
+                            <tr class="hover:bg-slate-900/40">
+                                <td class="p-3.5 font-bold text-rose-400 font-mono">Crítica (9.0 - 10.0)</td>
+                                <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-500/40 font-bold font-mono">BLOCK INMEDIATO</span></td>
+                                <td class="p-3.5 font-bold text-white font-mono">&lt; 24 Horas</td>
+                                <td class="p-3.5">Alerta P1 a Security Champions + CISO</td>
+                                <td class="p-3.5 text-slate-400">Requiere aprobación formal del CISO y mitigación RASP</td>
+                            </tr>
+                            <tr class="hover:bg-slate-900/40">
+                                <td class="p-3.5 font-bold text-amber-400 font-mono">Alta (7.0 - 8.9)</td>
+                                <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-500/40 font-bold font-mono">WARN / CONDITIONAL</span></td>
+                                <td class="p-3.5 font-bold text-white font-mono">&le; 7 Días Calendario</td>
+                                <td class="p-3.5">Ticket automático en Jira a la escuadra</td>
+                                <td class="p-3.5 text-slate-400">Aprobación del Líder de Arquitectura con fecha límite</td>
+                            </tr>
+                            <tr class="hover:bg-slate-900/40">
+                                <td class="p-3.5 font-bold text-yellow-300 font-mono">Media (4.0 - 6.9)</td>
+                                <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-slate-900 text-yellow-300 border border-yellow-500/30 font-mono">LOG & ADVISORY</span></td>
+                                <td class="p-3.5 font-bold text-white font-mono">&le; 30 Días (Sprint)</td>
+                                <td class="p-3.5">Agregado al backlog de deuda técnica</td>
+                                <td class="p-3.5 text-slate-400">Priorización estándar en Sprint Planning</td>
+                            </tr>
+                            <tr class="hover:bg-slate-900/40">
+                                <td class="p-3.5 font-bold text-emerald-400 font-mono">Baja / Info (0.1 - 3.9)</td>
+                                <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-mono">PASS AUTOMÁTICO</span></td>
+                                <td class="p-3.5 font-bold text-white font-mono">&le; 90 Días</td>
+                                <td class="p-3.5">Consolidado en reporte mensual de métricas</td>
+                                <td class="p-3.5 text-slate-400">Sin intervención requerida</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab Content 3: Vulnerability Management Lifecycle (VMLC) -->
+            <div id="pm-content-vmlc" class="hidden p-6 sm:p-8 rounded-3xl bg-brand-card border border-emerald-500/30 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-arrows-spin text-emerald-400"></i>
+                            Ciclo de Gestión de Vulnerabilidades (VMLC)
+                        </h3>
+                        <p class="text-xs text-slate-400">Procedimiento estandarizado de descubrimiento, clasificación, remediación y verificación.</p>
+                    </div>
+                    <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-lg border border-emerald-500/30">
+                        Closed-Loop Remediation
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+                        <div class="text-2xl font-black text-cyan-400 font-mono">01</div>
+                        <h4 class="text-sm font-bold text-white">Detección Continua</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Alimentación constante desde SAST, SCA, escáneres de contenedores y fuentes de inteligencia de amenazas (OSV, NVD, CISA KEV).
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+                        <div class="text-2xl font-black text-purple-400 font-mono">02</div>
+                        <h4 class="text-sm font-bold text-white">Triage & Contexto</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Eliminación de falsos positivos mediante alcanzabilidad de código (Reachability Analysis) y probabilidad de explotación (EPSS).
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+                        <div class="text-2xl font-black text-rose-400 font-mono">03</div>
+                        <h4 class="text-sm font-bold text-white">Remediación en Git</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Generación de Pull Requests automáticos con la versión parcheada de la librería o corrección guiada del código fuente.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+                        <div class="text-2xl font-black text-emerald-400 font-mono">04</div>
+                        <h4 class="text-sm font-bold text-white">Verificación & Cierre</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            El pipeline CI valida la ausencia del fallo, cierra automáticamente el ticket y actualiza el inventario SBOM del artefacto.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 4: Cybersecurity RACI Matrix -->
+            <div id="pm-content-raci" class="hidden p-6 sm:p-8 rounded-3xl bg-brand-card border border-blue-500/30 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-table-cells text-blue-400"></i>
+                            Matriz RACI de Responsabilidades en Ciberseguridad
+                        </h3>
+                        <p class="text-xs text-slate-400">R: Responsable | A: Aprobador / Accountable | C: Consultado | I: Informado</p>
+                    </div>
+                    <span class="text-xs font-mono text-blue-400 bg-blue-950/60 px-3 py-1 rounded-lg border border-blue-500/30">
+                        ISO 27001 & SOC 2 Compliant
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-slate-900/90 text-slate-400 uppercase font-mono text-[10px]">
+                            <tr>
+                                <th class="p-3 rounded-l-xl">Actividad de Proceso DevSecOps</th>
+                                <th class="p-3 text-center">Desarrollador</th>
+                                <th class="p-3 text-center">Security Champion</th>
+                                <th class="p-3 text-center">Equipo Ciberseguridad (AppSec)</th>
+                                <th class="p-3 text-center">Ingeniero DevOps / SRE</th>
+                                <th class="p-3 text-center rounded-r-xl">CISO / Dirección</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 font-sans">
+                            <tr class="hover:bg-slate-900/40">
+                                <td class="p-3 font-semibold text-white">Threat Modeling en diseño</td>
+                                <td class="p-3 text-center font-mono font-bold text-cyan-400">R</td>
+                                <td class="p-3 text-center font-mono font-bold text-emerald-400">A</td>
+                                <td class="p-3 text-center font-mono font-bold text-purple-400">C</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">I</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">I</td>
+                            </tr>
+                            <tr class="hover:bg-slate-900/40">
+                                <td class="p-3 font-semibold text-white">Corrección de alertas SAST/SCA locales</td>
+                                <td class="p-3 text-center font-mono font-bold text-cyan-400">R</td>
+                                <td class="p-3 text-center font-mono font-bold text-emerald-400">C</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">I</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">I</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">I</td>
+                            </tr>
+                            <tr class="hover:bg-slate-900/40">
+                                <td class="p-3 font-semibold text-white">Definición de Quality Gates en CI/CD</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">C</td>
+                                <td class="p-3 text-center font-mono font-bold text-purple-400">C</td>
+                                <td class="p-3 text-center font-mono font-bold text-cyan-400">R</td>
+                                <td class="p-3 text-center font-mono font-bold text-emerald-400">A</td>
+                                <td class="p-3 text-center font-mono font-bold text-purple-400">A</td>
+                            </tr>
+                            <tr class="hover:bg-slate-900/40">
+                                <td class="p-3 font-semibold text-white">Aprobación de Excepciones Críticas</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">I</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">C</td>
+                                <td class="p-3 text-center font-mono font-bold text-cyan-400">R</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">I</td>
+                                <td class="p-3 text-center font-mono font-bold text-rose-400">A</td>
+                            </tr>
+                            <tr class="hover:bg-slate-900/40">
+                                <td class="p-3 font-semibold text-white">Gestión de Secretos & Rotación en Vault</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">C</td>
+                                <td class="p-3 text-center font-mono font-bold text-slate-500">I</td>
+                                <td class="p-3 text-center font-mono font-bold text-purple-400">C</td>
+                                <td class="p-3 text-center font-mono font-bold text-cyan-400">R</td>
+                                <td class="p-3 text-center font-mono font-bold text-emerald-400">A</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab Content 5: Exception & Risk Acceptance Policy -->
+            <div id="pm-content-excepciones" class="hidden p-6 sm:p-8 rounded-3xl bg-brand-card border border-rose-500/30 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-file-contract text-rose-400"></i>
+                            Protocolo de Excepción y Aceptación Temporal de Riesgo
+                        </h3>
+                        <p class="text-xs text-slate-400">Mecanismo formal cuando una vulnerabilidad no puede remediarse antes del lanzamiento a producción.</p>
+                    </div>
+                    <span class="text-xs font-mono text-rose-400 bg-rose-950/60 px-3 py-1 rounded-lg border border-rose-500/30">
+                        Formal Risk Acceptance
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+                        <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-xs">1</div>
+                        <h4 class="text-sm font-bold text-white">Solicitud Justificada</h4>
+                        <p class="text-xs text-slate-400">
+                            El equipo debe documentar el impacto de negocio, la imposibilidad técnica inmediata y el análisis de alcanzabilidad (no explotable directamente).
+                        </p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+                        <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs">2</div>
+                        <h4 class="text-sm font-bold text-white">Control Compensatorio</h4>
+                        <p class="text-xs text-slate-400">
+                            Es obligatorio aplicar una regla temporal de WAF, filtro RASP o aislamiento por política de red antes de autorizar el bypass del Quality Gate.
+                        </p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+                        <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">3</div>
+                        <h4 class="text-sm font-bold text-white">Vigencia con Auto-Expiración</h4>
+                        <p class="text-xs text-slate-400">
+                            Toda excepción tiene una caducidad máxima (p. ej., 15 días). Cumplido el plazo, el pipeline se bloquea de nuevo automáticamente si no se ha aplicado el parche definitivo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="mt-20 border-t border-brand-border bg-brand-dark py-10 text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+                <div class="space-y-1">
+                    <div class="flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-solid fa-shield-halved text-cyan-400 text-base"></i>
+                        <span class="text-white font-bold text-sm tracking-wide">DevSecOps Enterprise Framework</span>
+                    </div>
+                    <p class="text-slate-400 text-xs">
+                        Titularidad de Desarrollo y Conceptualización:
+                        <strong class="text-slate-200">Jaider Ospina Navas</strong>, CEO <span class="text-cyan-400 font-semibold">TTG Colombia SAS</span>.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="jumpToPresentationFocus('hero')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs font-semibold flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-arrow-up text-cyan-400"></i> Volver al Inicio
+                    </button>
+                    <button onclick="togglePresentationMode()" class="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition-all shadow-md shadow-cyan-500/20">
+                        <i class="fa-solid fa-expand"></i> Pantalla Completa
+                    </button>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-slate-500">
+                <p>© 2026 TTG Colombia SAS. Todos los derechos reservados. Basado en metodologías NIST SSDF y DevSecOps Guides.</p>
+                <p class="font-mono text-cyan-400/80">Continuous Security • Resilience by Design • Zero Trust</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* -------------------------------------------------------------
+         * 1. PRESENTATION MODE / MAXIMIZE VIEWPORT LOGIC
+         * ------------------------------------------------------------- */
+        let isPresentationMode = false;
+
+        function togglePresentationMode() {
+            const wrapper = document.getElementById('main-content-wrapper');
+            const btnText = document.getElementById('presentation-btn-text');
+            const headerContainer = document.getElementById('header-container');
+
+            isPresentationMode = !isPresentationMode;
+
+            if (isPresentationMode) {
+                // Request browser fullscreen if available
+                if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                }
+                wrapper.classList.add('presentation-active');
+                wrapper.style.maxWidth = '100%';
+                if (headerContainer) headerContainer.style.maxWidth = '100%';
+                if (btnText) btnText.innerText = 'Salir de Presentación';
+                
+                // Jump smoothly to the main focus area
+                jumpToPresentationFocus('hero');
+            } else {
+                if (document.exitFullscreen && document.fullscreenElement) {
+                    document.exitFullscreen().catch(() => {});
+                }
+                wrapper.classList.remove('presentation-active');
+                wrapper.style.maxWidth = '';
+                if (headerContainer) headerContainer.style.maxWidth = '';
+                if (btnText) btnText.innerText = 'Modo Presentación';
+            }
+        }
+
+        function jumpToPresentationFocus(elementId) {
+            const target = document.getElementById(elementId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Visual highlight effect
+                target.classList.add('ring-2', 'ring-cyan-400', 'ring-offset-4', 'ring-offset-[#060911]');
+                setTimeout(() => {
+                    target.classList.remove('ring-2', 'ring-cyan-400', 'ring-offset-4', 'ring-offset-[#060911]');
+                }, 1800);
+            }
+        }
+
+        /* -------------------------------------------------------------
+         * 2. DEVSECOPS 8-STAGE LIFECYCLE DATA & RENDERING
+         * ------------------------------------------------------------- */
+        const devSecOpsStages = [
+            {
+                id: 'plan',
+                name: 'Plan',
+                icon: 'fa-brain',
+                color: 'text-cyan-400',
+                border: 'border-cyan-500',
+                title: 'Planificación & Threat Modeling',
+                subtitle: 'Identificar riesgos cibernéticos antes de redactar la primera línea de código.',
+                practices: [
+                    'Modelado de Amenazas metodológico (STRIDE, PASTA, DREAD)',
+                    'Definición de Bug Bars y criterios de aceptación de seguridad',
+                    'Alineación de privacidad y normativas (GDPR, PCI-DSS v4.0, ISO 27001)'
+                ],
+                tools: ['OWASP Threat Dragon', 'IriusRisk', 'Jira Security Workflows'],
+                badge: 'Fase Inicial • Shift-Left'
+            },
+            {
+                id: 'code',
+                name: 'Code',
+                icon: 'fa-code',
+                color: 'text-blue-400',
+                border: 'border-blue-500',
+                title: 'Desarrollo Seguro en el IDE',
+                subtitle: 'Prevención proactiva en la estación de trabajo del desarrollador.',
+                practices: [
+                    'Linters de seguridad estática en tiempo real dentro del editor',
+                    'Secret Scanning local en pre-commit hooks para evitar fugas a Git',
+                    'Revisión asistida de código seguro y peer reviews obligatorias'
+                ],
+                tools: ['SonarLint', 'GitGuardian CLI', 'Husky / pre-commit', 'Semgrep Local'],
+                badge: 'Detección en Milisegundos'
+            },
+            {
+                id: 'build',
+                name: 'Build',
+                icon: 'fa-cubes',
+                color: 'text-indigo-400',
+                border: 'border-indigo-500',
+                title: 'Compilación, SCA & Container Hardening',
+                subtitle: 'Inspeccionar el código fuente y las dependencias de terceros en el pipeline CI.',
+                practices: [
+                    'Software Composition Analysis (SCA) para auditar vulnerabilidades (CVEs)',
+                    'Escaneo de imágenes de contenedor en busca de binarios con fallos o privilegios root',
+                    'Construcción reproducible y determinista de binarios'
+                ],
+                tools: ['Snyk Open Source', 'Trivy', 'OWASP Dependency-Check', 'Hadolint'],
+                badge: 'CI Automation'
+            },
+            {
+                id: 'test',
+                name: 'Test',
+                icon: 'fa-vial-virus',
+                color: 'text-purple-400',
+                border: 'border-purple-500',
+                title: 'Pruebas Dinámicas (DAST) & Fuzzing',
+                subtitle: 'Evaluar la aplicación activa en Staging simulando ataques de adversarios.',
+                practices: [
+                    'Dynamic Application Security Testing (DAST) automatizado en APIs REST y GraphQL',
+                    'Interactive Application Security Testing (IAST) durante tests de QA',
+                    'Fuzzing de parámetros y validación de autenticación de endpoints'
+                ],
+                tools: ['OWASP ZAP', 'Burp Suite Enterprise', 'Contrast Security', 'Nuclei'],
+                badge: 'Validación Activa'
+            },
+            {
+                id: 'release',
+                name: 'Release',
+                icon: 'fa-file-signature',
+                color: 'text-pink-400',
+                border: 'border-pink-500',
+                title: 'Firma Digital, SBOM & Supply Chain',
+                subtitle: 'Garantizar la integridad criptográfica del software antes de autorizar su salida.',
+                practices: [
+                    'Generación de Manifiesto SBOM (CycloneDX / SPDX)',
+                    'Firma digital de contenedores y atestados de procedencia (Sigstore/Cosign)',
+                    'Validación de Políticas de Admisión (Policy as Code / OPA Gatekeeper)'
+                ],
+                tools: ['Cosign (Sigstore)', 'Open Policy Agent (OPA)', 'Syft', 'Grype'],
+                badge: 'Supply Chain Security'
+            },
+            {
+                id: 'deploy',
+                name: 'Deploy',
+                icon: 'fa-rocket',
+                color: 'text-rose-400',
+                border: 'border-rose-500',
+                title: 'Despliegue Seguro & Secretos Dinámicos',
+                subtitle: 'Infraestructura inmutable sin credenciales fijas expuestas.',
+                practices: [
+                    'Inyección de credenciales efímeras con rotación automática mediante Vault',
+                    'Verificación estricta de Infraestructura como Código (IaC Checkov)',
+                    'Despliegues Canarios con retroceso (rollback) automático guiado por alertas'
+                ],
+                tools: ['HashiCorp Vault', 'ArgoCD (GitOps)', 'Checkov', 'AWS Secrets Manager'],
+                badge: 'Zero Hardcoded Secrets'
+            },
+            {
+                id: 'operate',
+                name: 'Operate',
+                icon: 'fa-shield-halved',
+                color: 'text-amber-400',
+                border: 'border-amber-500',
+                title: 'Operación & Defensa en Runtime',
+                subtitle: 'Protección activa en los entornos de producción bajo paradigma Zero Trust.',
+                practices: [
+                    'Runtime Application Self-Protection (RASP) y filtrado de exploits en memoria',
+                    'Microsegmentación de red con eBPF y mTLS forzado entre microservicios',
+                    'Gestión de identidades con privilegio mínimo estricto (Least Privilege IAM)'
+                ],
+                tools: ['Cilium (eBPF)', 'Cloudflare WAF / AWS WAF', 'Falco Runtime', 'CyberArk'],
+                badge: 'Runtime Shield'
+            },
+            {
+                id: 'monitor',
+                name: 'Monitor',
+                icon: 'fa-eye',
+                color: 'text-emerald-400',
+                border: 'border-emerald-500',
+                title: 'Monitoreo, SIEM & Feedback Loop',
+                subtitle: 'Observabilidad continua de seguridad que alimenta el próximo ciclo de ingeniería.',
+                practices: [
+                    'Ingesta y correlación de eventos de seguridad (SIEM / SOAR)',
+                    'Detección de comportamientos anómalos mediante inteligencia artificial',
+                    'Retroalimentación directa con tickets automáticos al backlog de desarrollo'
+                ],
+                tools: ['Datadog Cloud SIEM', 'Elastic Security / Splunk', 'Prometheus + Grafana'],
+                badge: 'Closed Feedback Loop'
+            }
+        ];
+
+        let activeStageIndex = 0;
+
+        function renderStageTabs() {
+            const container = document.getElementById('stage-tabs');
+            if (!container) return;
+            container.innerHTML = devSecOpsStages.map((stage, idx) => {
+                const isActive = idx === activeStageIndex;
+                return `
+                    <button onclick="selectStage(${idx})" class="p-3 rounded-2xl flex flex-col items-center gap-2 border transition-all text-center ${
+                        isActive 
+                        ? `bg-slate-900 border-cyan-400 text-cyan-400 shadow-lg shadow-cyan-500/20 scale-105` 
+                        : `bg-brand-card/50 border-brand-border text-slate-400 hover:border-slate-600 hover:text-slate-200`
+                    }">
+                        <i class="fa-solid ${stage.icon} text-lg ${isActive ? 'text-cyan-400' : 'text-slate-400'}"></i>
+                        <span class="text-xs font-bold font-mono">${idx + 1}. ${stage.name}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectStage(idx) {
+            activeStageIndex = idx;
+            renderStageTabs();
+            renderStageDetail();
+        }
+
+        function renderStageDetail() {
+            const stage = devSecOpsStages[activeStageIndex];
+            const container = document.getElementById('stage-detail-card');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-brand-border pb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border ${stage.border} flex items-center justify-center text-2xl ${stage.color} shadow-lg">
+                            <i class="fa-solid ${stage.icon}"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">Etapa ${activeStageIndex + 1} de 8</span>
+                                <span class="px-2.5 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-[10px] font-semibold">${stage.badge}</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">${stage.title}</h3>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="selectStage(${(activeStageIndex - 1 + devSecOpsStages.length) % devSecOpsStages.length})" class="p-2.5 px-3.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-500 text-slate-300 text-xs transition-colors">
+                            <i class="fa-solid fa-chevron-left text-xs mr-1"></i> Anterior
+                        </button>
+                        <button onclick="selectStage(${(activeStageIndex + 1) % devSecOpsStages.length})" class="p-2.5 px-3.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-500 text-slate-300 text-xs transition-colors">
+                            Siguiente <i class="fa-solid fa-chevron-right text-xs ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <p class="text-slate-300 text-sm mt-4 italic font-light">"${stage.subtitle}"</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <!-- Practices -->
+                    <div class="p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved"></i> Controles & Prácticas de Ciberseguridad
+                        </h4>
+                        <ul class="space-y-2.5 text-xs text-slate-300">
+                            ${stage.practices.map(p => `
+                                <li class="flex items-start gap-2.5">
+                                    <i class="fa-solid fa-circle-check text-cyan-400 text-xs mt-0.5"></i>
+                                    <span>${p}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- Tools -->
+                    <div class="p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400 font-mono flex items-center gap-2">
+                            <i class="fa-solid fa-wrench"></i> Herramientas de la Cadena de Confianza
+                        </h4>
+                        <div class="flex flex-wrap gap-2 pt-1">
+                            ${stage.tools.map(t => `
+                                <span class="px-3 py-1.5 rounded-xl bg-purple-950/40 border border-purple-500/30 text-purple-300 text-xs font-mono font-medium flex items-center gap-2">
+                                    <i class="fa-solid fa-terminal text-[10px]"></i> ${t}
+                                </span>
+                            `).join('')}
+                        </div>
+                        <p class="text-[11px] text-slate-500 pt-2 border-t border-slate-800">
+                            Supervisa la integración mediante APIs seguras y control de acceso basado en roles (RBAC).
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* -------------------------------------------------------------
+         * 3. EXPANDED CI/CD PIPELINE SIMULATOR (8 TEST SCENARIOS)
+         * ------------------------------------------------------------- */
+        let isSimulating = false;
+
+        function runPipelineSimulation() {
+            if (isSimulating) return;
+            isSimulating = true;
+
+            const scenario = document.getElementById('code-scenario').value;
+            const btn = document.getElementById('btn-run-pipeline');
+            const logsContainer = document.getElementById('terminal-logs');
+            const progressBar = document.getElementById('pipeline-progress-bar');
+            const percentLabel = document.getElementById('pipeline-percent-label');
+            const statusBadge = document.getElementById('pipeline-status-badge');
+
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            logsContainer.innerHTML = '';
+            statusBadge.innerText = 'EXECUTING';
+            statusBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] bg-cyan-950 text-cyan-400 border border-cyan-500/40 font-bold animate-pulse';
+
+            const addLog = (msg, type = 'info') => {
+                const colors = {
+                    info: 'text-slate-300',
+                    success: 'text-emerald-400 font-bold',
+                    warn: 'text-yellow-400 font-bold',
+                    error: 'text-rose-400 font-bold',
+                    cyan: 'text-cyan-400'
+                };
+                const time = new Date().toLocaleTimeString();
+                logsContainer.innerHTML += `<p class="${colors[type]}">[${time}] ${msg}</p>`;
+                logsContainer.scrollTop = logsContainer.scrollHeight;
+            };
+
+            // Steps configured per scenario
+            let steps = [];
+
+            switch(scenario) {
+                case 'clean':
+                    steps = [
+                        { percent: 15, msg: '🚀 Commit git: #a8f3b2 en rama main. Disparando Runner DevSecOps...', type: 'cyan' },
+                        { percent: 30, msg: '🔍 SAST (Semgrep/SonarQube): Análisis de 142 archivos fuente... 0 vulnerabilidades.', type: 'success' },
+                        { percent: 45, msg: '🔑 Secret Scanning (GitGuardian): Inspección de variables... Cero claves expuestas.', type: 'success' },
+                        { percent: 60, msg: '📦 SCA (Snyk): Verificando 89 librerías de terceros... 0 CVEs críticos reportados.', type: 'success' },
+                        { percent: 75, msg: '☁️ IaC (Checkov): Evaluando infraestructura Terraform... Cumple CIS Benchmarks.', type: 'success' },
+                        { percent: 85, msg: '🐳 Trivy Image Hardening: Escaneando capa base de contenedor... Sin fallos root.', type: 'success' },
+                        { percent: 95, msg: '📜 Sigstore Cosign: Firmando artefacto OCI y atestado SBOM en estándar CycloneDX...', type: 'cyan' },
+                        { percent: 100, msg: '✅ QUALITY GATE SUPERADO. Despliegue seguro aprobado para producción.', type: 'success' }
+                    ];
+                    break;
+
+                case 'sast_sql':
+                    steps = [
+                        { percent: 20, msg: '🚀 Pull Request #482 recibido. Iniciando escaneo de seguridad...', type: 'cyan' },
+                        { percent: 45, msg: '🔍 Ejecutando análisis estático SAST en backend/auth/db.js...', type: 'info' },
+                        { percent: 65, msg: '🚨 ERROR CRÍTICO (CWE-89): Inyección SQL detectada en línea 42 (Parámetro no sanitizado en query SQL).', type: 'error' },
+                        { percent: 85, msg: '🛡️ Violación de Quality Gate: Las reglas corporativas prohíben concatenación de queries SQL.', type: 'warn' },
+                        { percent: 100, msg: '❌ PIPELINE BLOQUEADO. Utilice sentencias preparadas (Prepared Statements) para corregir.', type: 'error' }
+                    ];
+                    break;
+
+                case 'secret_leak':
+                    steps = [
+                        { percent: 20, msg: '🚀 Commit recibido. Analizando diferencias de código Git...', type: 'cyan' },
+                        { percent: 50, msg: '🔑 Secret Scanning activado: Escaneando cadenas de entropía alta...', type: 'info' },
+                        { percent: 70, msg: '🚨 ALERTA ROJA (CWE-798): AWS_SECRET_ACCESS_KEY expuesta en config/cloud.env!', type: 'error' },
+                        { percent: 85, msg: '🔒 Revocación Preventiva iniciada: Webhook disparado a AWS IAM para invalidar credencial.', type: 'warn' },
+                        { percent: 100, msg: '❌ COMMIT RECHAZADO. Almacene secretos exclusivamente en HashiCorp Vault.', type: 'error' }
+                    ];
+                    break;
+
+                case 'sca_cve':
+                    steps = [
+                        { percent: 25, msg: '🚀 Compilando proyecto e inspeccionando árbol de dependencias...', type: 'cyan' },
+                        { percent: 50, msg: '📦 SCA Dependency Audit: Contrastando con base de datos CVE / NVD...', type: 'info' },
+                        { percent: 75, msg: '⚠️ CVE-2021-44228 (Log4j v2.14.0) detectado con severidad CVSS 10.0 (RCE Crítico).', type: 'error' },
+                        { percent: 90, msg: '🔧 Generando Pull Request automatizado para actualizar dependencia a v2.17.1...', type: 'cyan' },
+                        { percent: 100, msg: '🚫 PIPELINE DETENIDO. Actualice la librería antes de permitir el despliegue.', type: 'error' }
+                    ];
+                    break;
+
+                case 'iac_s3':
+                    steps = [
+                        { percent: 20, msg: '🚀 Analizando manifiestos de Infraestructura como Código (IaC)...', type: 'cyan' },
+                        { percent: 50, msg: '☁️ Checkov / tfsec ejecutando pruebas contra terraform/storage.tf...', type: 'info' },
+                        { percent: 75, msg: '🚨 FALLO DE CUMPLIMIENTO: S3 Bucket configurado con acl="public-read" y SG con 0.0.0.0/0 (Puerto 22).', type: 'error' },
+                        { percent: 90, msg: '🛡️ Política OPA violada: Ningún recurso productivo puede admitir tráfico sin cifrar o exponer SSH público.', type: 'warn' },
+                        { percent: 100, msg: '❌ PIPELINE RECHAZADO. Corrija los manifiestos Terraform antes del apply.', type: 'error' }
+                    ];
+                    break;
+
+                case 'container_root':
+                    steps = [
+                        { percent: 20, msg: '🚀 Construyendo contenedor OCI y analizando Dockerfile...', type: 'cyan' },
+                        { percent: 50, msg: '🐳 Hadolint: Advertencia: Directiva "USER root" detectada en contenedor de producción.', type: 'warn' },
+                        { percent: 75, msg: '🚨 Trivy Image Scan: Binario malicioso sospechoso detectado en capa /usr/bin/curl antigua.', type: 'error' },
+                        { percent: 90, msg: '🔒 Regla CIS Docker Benchmark violada: El contenedor debe correr con usuario UID no privilegiado.', type: 'warn' },
+                        { percent: 100, msg: '❌ IMAGEN RECHAZADA por políticas de admisión del clúster Kubernetes.', type: 'error' }
+                    ];
+                    break;
+
+                case 'dast_api':
+                    steps = [
+                        { percent: 25, msg: '🚀 Desplegando en clúster efímero de Staging para pruebas DAST...', type: 'cyan' },
+                        { percent: 55, msg: '🌐 DAST Fuzzing (OWASP ZAP): Inyectando cargas en /api/v1/users/{id}...', type: 'info' },
+                        { percent: 80, msg: '🚨 VULNERABILIDAD OWASP API1:2023: BOLA / IDOR detectada. Usuario A puede leer datos de Usuario B.', type: 'error' },
+                        { percent: 92, msg: '🛡️ La API no valida la propiedad de sesión del objeto consultado.', type: 'warn' },
+                        { percent: 100, msg: '❌ RELEASE CANCELADO. Implemente control de acceso a nivel de objeto antes de lanzar.', type: 'error' }
+                    ];
+                    break;
+
+                case 'sbom_unsigned':
+                    steps = [
+                        { percent: 25, msg: '🚀 Preparando publicación de release para admisión en clúster K8s...', type: 'cyan' },
+                        { percent: 50, msg: '📜 Verificando atestado SBOM (Software Bill of Materials) y procedencia...', type: 'info' },
+                        { percent: 75, msg: '🚨 FALLO DE CADENA DE SUMINISTRO: El contenedor no posee firma criptográfica Sigstore válida.', type: 'error' },
+                        { percent: 90, msg: '🛡️ OPA Gatekeeper / Kyverno bloquea admisión: SLSA Level 3 requiere firma verificable.', type: 'warn' },
+                        { percent: 100, msg: '❌ DESPLIEGUE RECHAZADO por el controlador de admisión del clúster.', type: 'error' }
+                    ];
+                    break;
+            }
+
+            let currentStep = 0;
+            const interval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    const step = steps[currentStep];
+                    progressBar.style.width = step.percent + '%';
+                    percentLabel.innerText = step.percent + '%';
+                    addLog(step.msg, step.type);
+                    currentStep++;
+                } else {
+                    clearInterval(interval);
+                    isSimulating = false;
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+                    if (scenario === 'clean') {
+                        statusBadge.innerText = 'PASSED';
+                        statusBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-500/40 font-bold';
+                    } else {
+                        statusBadge.innerText = 'BLOCKED';
+                        statusBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] bg-rose-950 text-rose-400 border border-rose-500/40 font-bold';
+                    }
+                }
+            }, 750);
+        }
+
+        /* -------------------------------------------------------------
+         * 4. FIXED & DYNAMIC ROI & RISK IMPACT CALCULATOR
+         * ------------------------------------------------------------- */
+        function updateROI() {
+            const devs = parseInt(document.getElementById('input-devs').value, 10) || 25;
+            const deploys = parseInt(document.getElementById('input-deploys').value, 10) || 40;
+            const cost = parseInt(document.getElementById('input-cost').value, 10) || 45;
+
+            // Update UI slider value indicators
+            document.getElementById('val-devs').innerText = devs;
+            document.getElementById('val-deploys').innerText = deploys;
+            document.getElementById('val-cost').innerText = `$${cost} USD`;
+
+            // Metric 1: Hours Saved / Year
+            // Industry benchmark: ~70 hours saved per dev/year + scaling factor by deploy frequency
+            const hoursPerDevYear = 68 + Math.round(deploys * 0.28);
+            const totalHoursSaved = devs * hoursPerDevYear;
+            document.getElementById('calc-hours').innerText = totalHoursSaved.toLocaleString('en-US') + ' hrs';
+
+            // Metric 2: Financial Savings USD
+            const totalSavingsUSD = totalHoursSaved * cost;
+            document.getElementById('calc-savings').innerText = '$' + totalSavingsUSD.toLocaleString('en-US') + ' USD';
+
+            // Metric 3: Risk Reduction (FIXED: Reactively computed between 60% and 88%)
+            // Scales with deploy automation & team coverage
+            const dynamicRiskReduction = Math.min(88, Math.round(58 + (deploys / 25) + Math.log2(devs) * 2.2));
+            document.getElementById('calc-risk').innerText = `-${dynamicRiskReduction}%`;
+            document.getElementById('calc-risk-sub').innerText = `Probabilidad de brecha reducida a ${100 - dynamicRiskReduction}%`;
+
+            // Metric 4: Patching Speed (FIXED: Reactively computed between 3.5x and 12x)
+            // Scales with pipeline frequency and developer maturity
+            const speedMultiplier = (3.2 + Math.min(8.8, (deploys * 0.015) + (devs * 0.018))).toFixed(1);
+            document.getElementById('calc-speed').innerText = `${speedMultiplier}x Más Rápido`;
+
+            // Dynamic calculation of MTTR (Mean Time to Remediate) in days
+            const baselineDays = 28;
+            const newMTTRDays = (baselineDays / parseFloat(speedMultiplier)).toFixed(1);
+            document.getElementById('calc-speed-sub').innerText = `MTTR: De ${baselineDays} días a ${newMTTRDays} días`;
+        }
+
+        // Attach input listeners
+        document.getElementById('input-devs').addEventListener('input', updateROI);
+        document.getElementById('input-deploys').addEventListener('input', updateROI);
+        document.getElementById('input-cost').addEventListener('input', updateROI);
+
+        /* -------------------------------------------------------------
+         * 5. DEVSECOPS PROCESS MANAGEMENT TABS NAVIGATION
+         * ------------------------------------------------------------- */
+        function switchPMTab(tabKey) {
+            const tabs = ['flujo', 'quality-gates', 'vmlc', 'raci', 'excepciones'];
+            tabs.forEach(tab => {
+                const btn = document.getElementById(`btn-pm-${tab}`);
+                const content = document.getElementById(`pm-content-${tab}`);
+                if (btn && content) {
+                    if (tab === tabKey) {
+                        btn.className = 'px-4 py-2.5 rounded-xl text-xs font-bold font-mono transition-all bg-slate-900 border border-cyan-400 text-cyan-400 shadow-md';
+                        content.classList.remove('hidden');
+                    } else {
+                        btn.className = 'px-4 py-2.5 rounded-xl text-xs font-bold font-mono transition-all bg-brand-card border border-brand-border text-slate-400 hover:text-white';
+                        content.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        /* -------------------------------------------------------------
+         * 6. INITIALIZATION ON WINDOW LOAD
+         * ------------------------------------------------------------- */
+        window.onload = function() {
+            renderStageTabs();
+            renderStageDetail();
+            updateROI();
+        };
+    </script>
+</body>
+</html>
