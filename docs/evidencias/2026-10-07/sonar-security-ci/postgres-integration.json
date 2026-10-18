@@ -1,0 +1,14 @@
+{
+  "database": "PostgreSQL 17 immutable digest",
+  "schema_tables": 16,
+  "initialization_sql_files": 12,
+  "non_root_user": 999,
+  "sql_group": 1000,
+  "unrelated_uid_denied": 1001,
+  "incorrect_password_rejected": true,
+  "generated_password_accepted": true,
+  "smtp": "mocked",
+  "external_network": false,
+  "secret_values_logged": false,
+  "bulk_pytest_passed": true
+}

@@ -1,0 +1,170 @@
+{
+  "unexpected_tables": [],
+  "tables": [
+    {
+      "table": "auditoria_eventos",
+      "pre_rows": 0,
+      "post_rows": 0,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "auditoria_outbox",
+      "pre_rows": 0,
+      "post_rows": 0,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "cargas_usuario_filas",
+      "pre_rows": 0,
+      "post_rows": 0,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "cargas_usuarios",
+      "pre_rows": 0,
+      "post_rows": 0,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "companias",
+      "pre_rows": 5,
+      "post_rows": 5,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "credenciales",
+      "pre_rows": 6,
+      "post_rows": 6,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "mfa_desafios",
+      "pre_rows": 0,
+      "post_rows": 0,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "mfa_totp",
+      "pre_rows": 6,
+      "post_rows": 6,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "permisos_migraciones",
+      "pre_rows": 1,
+      "post_rows": 1,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "permisos_usuario_compania",
+      "pre_rows": 2,
+      "post_rows": 2,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "roles_plataforma",
+      "pre_rows": 5,
+      "post_rows": 5,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "sesiones",
+      "pre_rows": 12,
+      "post_rows": 12,
+      "same_digest": false,
+      "changes": [
+        {
+          "row": "10",
+          "columns": [
+            "ultima_actividad"
+          ]
+        },
+        {
+          "row": "11",
+          "columns": [
+            "ultima_actividad"
+          ]
+        },
+        {
+          "row": "12",
+          "columns": [
+            "ultima_actividad"
+          ]
+        },
+        {
+          "row": "7",
+          "columns": [
+            "ultima_actividad"
+          ]
+        },
+        {
+          "row": "8",
+          "columns": [
+            "ultima_actividad"
+          ]
+        },
+        {
+          "row": "9",
+          "columns": [
+            "ultima_actividad"
+          ]
+        }
+      ],
+      "only_expected_changes": true
+    },
+    {
+      "table": "sync_jobs",
+      "pre_rows": 0,
+      "post_rows": 0,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "usuario_companias_plataforma",
+      "pre_rows": 6,
+      "post_rows": 6,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "usuario_roles_plataforma",
+      "pre_rows": 6,
+      "post_rows": 6,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    },
+    {
+      "table": "usuarios_plataforma",
+      "pre_rows": 6,
+      "post_rows": 6,
+      "same_digest": true,
+      "changes": [],
+      "only_expected_changes": true
+    }
+  ]
+}

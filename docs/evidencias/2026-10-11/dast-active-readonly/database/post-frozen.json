@@ -1,0 +1,66 @@
+{
+  "auditoria_eventos": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "auditoria_outbox": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "cargas_usuario_filas": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "cargas_usuarios": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "companias": {
+    "count": 5,
+    "sha256": "2c3802ad0ba5d20c4500c85513360b8c7e5722795eaf7ee45179cf2901d44336"
+  },
+  "credenciales": {
+    "count": 6,
+    "sha256": "a8bbd65c16f81c1e56734e17b50f1480b075459e2924168964468efbe1756bcb"
+  },
+  "mfa_desafios": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "mfa_totp": {
+    "count": 6,
+    "sha256": "196108afbcbea8cb59a5f6ffdebc8a4754544fdfbc68ba01dae6708c79e0d989"
+  },
+  "permisos_migraciones": {
+    "count": 1,
+    "sha256": "274985a7dbd0638f5ee01c04e75f680a90bf6627c1258b4e84bb037a4b0d2cab"
+  },
+  "permisos_usuario_compania": {
+    "count": 2,
+    "sha256": "ab4cce9e822eb85c9e4b79db280f9d487328c129c61bdc6d32c66f06a01ea3e6"
+  },
+  "roles_plataforma": {
+    "count": 5,
+    "sha256": "ed62e14a28cf39a1ce8492fb03cb56fc1d9453b7bee16a01a79a77f18f967353"
+  },
+  "sesiones": {
+    "count": 12,
+    "sha256": "41c06fac87de9b464f7f2457bd4d4ace0b159b2d4a99b213421845ef83f8a556"
+  },
+  "sync_jobs": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "usuario_companias_plataforma": {
+    "count": 6,
+    "sha256": "4fbb27a7180fb29249f5f4470d31fab3e94475a38edc54463b5bff0773f0d17a"
+  },
+  "usuario_roles_plataforma": {
+    "count": 6,
+    "sha256": "e5e895770d1f84d5a536be0a5d06cbf78b2ec17635fdcb8c27c4642f9f5d833b"
+  },
+  "usuarios_plataforma": {
+    "count": 6,
+    "sha256": "4dbee33fa7ad77de459c402a86bb3cc4783b93a6aaa327b124373dccad6bd703"
+  }
+}

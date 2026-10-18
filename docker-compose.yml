@@ -1,0 +1,534 @@
+services:
+
+  # ==========================================================
+  # POSTGRESQL
+  # ==========================================================
+  # Base de datos principal de IAM Secure.
+  # Los datos se conservan mediante un volumen persistente.
+  # ==========================================================
+
+  postgres:
+    image: postgres:17
+    container_name: iam-secure-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: iam_secure
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
+
+    # --------------------------------------------------------
+    # HEALTHCHECK
+    # --------------------------------------------------------
+    # Permite que Identity, Bootstrap y Sync Worker esperen a
+    # que PostgreSQL realmente esté disponible antes de iniciar.
+    # --------------------------------------------------------
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
+    networks:
+      - iam_network
+
+
+  # ==========================================================
+  # IDENTITY SERVICE
+  # ==========================================================
+  # Microservicio responsable de autenticación, identidades,
+  # credenciales, sesiones, compañías y autorización base.
+  #
+  # Los secretos se reciben mediante variables de entorno.
+  # Ninguna contraseña, JWT secret, clave MFA o credencial SMTP
+  # queda escrita directamente en este archivo.
+  # ==========================================================
+
+  identity:
+    build:
+      context: ./servicios/identity-service
+
+    container_name: iam-secure-identity
+    restart: unless-stopped
+
+    environment:
+
+      # ------------------------------------------------------
+      # PostgreSQL
+      # ------------------------------------------------------
+
+      DB_USER: postgres
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: iam_secure
+
+      # ------------------------------------------------------
+      # JWT
+      # ------------------------------------------------------
+
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
+      JWT_EXPIRE_MINUTES: ${JWT_EXPIRE_MINUTES:-30}
+
+      # ------------------------------------------------------
+      # MFA / TOTP
+      # ------------------------------------------------------
+      # La clave real se obtiene exclusivamente desde .env.
+      # ------------------------------------------------------
+
+      MFA_ENCRYPTION_KEY: ${MFA_ENCRYPTION_KEY}
+
+      # ------------------------------------------------------
+      # POLÍTICAS DE CONTRASEÑA Y SESIÓN
+      # ------------------------------------------------------
+      #
+      # Contraseña temporal: 24 horas.
+      # Contraseña definitiva: 60 días.
+      # Recuperación: cooldown de 15 minutos.
+      # Inactividad: 5 minutos.
+      # ------------------------------------------------------
+
+      TEMP_PASSWORD_EXPIRE_HOURS: ${TEMP_PASSWORD_EXPIRE_HOURS:-24}
+      PASSWORD_EXPIRE_DAYS: ${PASSWORD_EXPIRE_DAYS:-60}
+      PASSWORD_RECOVERY_COOLDOWN_MINUTES: ${PASSWORD_RECOVERY_COOLDOWN_MINUTES:-15}
+      SESSION_INACTIVITY_MINUTES: ${SESSION_INACTIVITY_MINUTES:-5}
+
+      # ------------------------------------------------------
+      # CORS
+      # ------------------------------------------------------
+      # Para utilizar IAM Secure desde otro equipo, agregar el
+      # origen correspondiente mediante CORS_ORIGINS en .env.
+      # ------------------------------------------------------
+
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+
+      # ------------------------------------------------------
+      # AUDIT SERVICE
+      # ------------------------------------------------------
+      # Comunicación interna para persistencia centralizada
+      # de eventos de seguridad y administración.
+      #
+      # El token real se obtiene exclusivamente desde .env.
+      # ------------------------------------------------------
+
+
+      # ------------------------------------------------------
+      # SMTP
+      # ------------------------------------------------------
+
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_FROM: ${SMTP_FROM}
+
+    ports:
+      - "8003:8003"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    networks:
+      - iam_network
+
+
+  # ==========================================================
+  # BOOTSTRAP ACADÉMICO DE IDENTIDADES
+  # ==========================================================
+  # Servicio de ejecución puntual.
+  #
+  # NO inicia Uvicorn.
+  # Aprovisiona las identidades académicas iniciales de forma
+  # controlada.
+  #
+  # Las contraseñas temporales son generadas por el backend y
+  # no se almacenan en docker-compose.yml.
+  # ==========================================================
+
+  identity-bootstrap:
+    build:
+      context: ./servicios/identity-service
+
+    profiles:
+      - bootstrap
+
+    environment:
+
+      # ------------------------------------------------------
+      # PostgreSQL
+      # ------------------------------------------------------
+
+      DB_USER: postgres
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: iam_secure
+
+      # ------------------------------------------------------
+      # POLÍTICAS UTILIZADAS POR MÓDULOS COMPARTIDOS
+      # ------------------------------------------------------
+
+      TEMP_PASSWORD_EXPIRE_HOURS: ${TEMP_PASSWORD_EXPIRE_HOURS:-24}
+      PASSWORD_EXPIRE_DAYS: ${PASSWORD_EXPIRE_DAYS:-60}
+      PASSWORD_RECOVERY_COOLDOWN_MINUTES: ${PASSWORD_RECOVERY_COOLDOWN_MINUTES:-15}
+      SESSION_INACTIVITY_MINUTES: ${SESSION_INACTIVITY_MINUTES:-5}
+
+      # ------------------------------------------------------
+      # JWT
+      # ------------------------------------------------------
+      # bootstrap_usuarios_iniciales.py reutiliza componentes
+      # que importan configuración de autenticación.
+      # ------------------------------------------------------
+
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
+      JWT_EXPIRE_MINUTES: ${JWT_EXPIRE_MINUTES:-30}
+
+      # ------------------------------------------------------
+      # MFA / TOTP
+      # ------------------------------------------------------
+
+      MFA_ENCRYPTION_KEY: ${MFA_ENCRYPTION_KEY}
+
+      # ------------------------------------------------------
+      # SMTP
+      # ------------------------------------------------------
+
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_FROM: ${SMTP_FROM}
+
+    command:
+      - python
+      - bootstrap_usuarios_iniciales.py
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    networks:
+      - iam_network
+
+
+  # ==========================================================
+  # SYNC WORKER
+  # ==========================================================
+  # Proceso asíncrono independiente de IAM Secure.
+  #
+  # RESPONSABILIDADES:
+  # - Consumir trabajos desde sync_jobs.
+  # - Reclamar trabajos mediante FOR UPDATE SKIP LOCKED.
+  # - Ejecutar operaciones de sincronización.
+  # - Gestionar reintentos.
+  # - Recuperar trabajos interrumpidos.
+  # - Marcar trabajos COMPLETADO o FALLIDO.
+  #
+  # SEGURIDAD:
+  # - No expone puertos.
+  # - No recibe JWT.
+  # - No recibe secretos MFA.
+  # - No recibe credenciales SMTP.
+  # - Solo recibe la configuración necesaria para PostgreSQL.
+  # - Su Dockerfile utiliza usuario no-root.
+  # ==========================================================
+
+  sync-worker:
+    build:
+      context: ./servicios/sync-service
+
+    container_name: iam-secure-sync-worker
+    restart: unless-stopped
+
+    # --------------------------------------------------------
+    # init:true mejora la gestión de señales y procesos dentro
+    # del contenedor.
+    # --------------------------------------------------------
+
+    init: true
+
+    environment:
+
+      # ------------------------------------------------------
+      # PostgreSQL
+      # ------------------------------------------------------
+
+      DB_USER: postgres
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: iam_secure
+
+      # ------------------------------------------------------
+      # POLLING
+      # ------------------------------------------------------
+      # Tiempo entre consultas cuando no existen trabajos.
+      # ------------------------------------------------------
+
+      SYNC_POLL_SECONDS: ${SYNC_POLL_SECONDS:-5}
+
+      # ------------------------------------------------------
+      # REINTENTOS
+      # ------------------------------------------------------
+      # Tiempo antes de volver a procesar un trabajo que produjo
+      # un error recuperable.
+      # ------------------------------------------------------
+
+      SYNC_RETRY_DELAY_SECONDS: ${SYNC_RETRY_DELAY_SECONDS:-15}
+
+      # ------------------------------------------------------
+      # TIMEOUT DE TRABAJO
+      # ------------------------------------------------------
+      # Si un trabajo queda en PROCESANDO más de este tiempo,
+      # puede ser recuperado por el mecanismo de recuperación.
+      # ------------------------------------------------------
+
+      SYNC_JOB_TIMEOUT_SECONDS: ${SYNC_JOB_TIMEOUT_SECONDS:-300}
+
+      # ------------------------------------------------------
+      # RECUPERACIÓN
+      # ------------------------------------------------------
+      # Frecuencia con la que se buscan trabajos abandonados por
+      # una instancia interrumpida.
+      # ------------------------------------------------------
+
+      SYNC_RECOVERY_CHECK_SECONDS: ${SYNC_RECOVERY_CHECK_SECONDS:-60}
+
+      # ------------------------------------------------------
+      # CONECTOR SIMULADO
+      # ------------------------------------------------------
+      # Tiempo de procesamiento utilizado actualmente para
+      # demostrar el comportamiento asíncrono.
+      # ------------------------------------------------------
+
+      SYNC_SIMULATED_PROCESS_SECONDS: ${SYNC_SIMULATED_PROCESS_SECONDS:-2}
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    # --------------------------------------------------------
+    # El código Python captura SIGTERM y termina de forma
+    # controlada. Docker dispone de este tiempo antes de forzar
+    # la terminación.
+    # --------------------------------------------------------
+
+    stop_grace_period: 15s
+
+    networks:
+      - iam_network
+
+
+  # ==========================================================
+  # AUDIT SERVICE
+  # ==========================================================
+  # Microservicio independiente encargado de persistir eventos
+  # de seguridad y administración de forma append-only.
+  #
+  # SEGURIDAD:
+  # - autenticación interna mediante token dedicado;
+  # - ejecución no-root;
+  # - segunda sanitización de eventos;
+  # - sin endpoints UPDATE o DELETE;
+  # - acceso HTTP del host limitado a localhost.
+  # ==========================================================
+
+  audit-service:
+    build:
+      context: ./servicios/audit-service
+
+    container_name: iam-secure-audit
+    restart: unless-stopped
+
+    environment:
+
+      DB_USER: postgres
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: iam_secure
+
+      AUDIT_INTERNAL_TOKEN: ${AUDIT_INTERNAL_TOKEN}
+
+    ports:
+      - "127.0.0.1:8004:8004"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    networks:
+      - iam_network
+
+
+  # ==========================================================
+  # AUDIT DISPATCHER
+  # ==========================================================
+  # Worker asíncrono que entrega los eventos almacenados en
+  # auditoria_outbox hacia Audit Service.
+  #
+  # SEGURIDAD / RESILIENCIA:
+  # - no expone puertos;
+  # - ejecución no-root;
+  # - reintentos persistentes;
+  # - recuperación de trabajos interrumpidos;
+  # - concurrencia segura mediante FOR UPDATE SKIP LOCKED.
+  # ==========================================================
+
+  audit-dispatcher:
+    build:
+      context: ./servicios/audit-dispatcher
+
+    container_name: iam-secure-audit-dispatcher
+    restart: unless-stopped
+    init: true
+
+    environment:
+
+      # ------------------------------------------------------
+      # PostgreSQL
+      # ------------------------------------------------------
+
+      DB_USER: postgres
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: iam_secure
+
+      # ------------------------------------------------------
+      # AUDIT SERVICE
+      # ------------------------------------------------------
+
+      AUDIT_SERVICE_URL: ${AUDIT_SERVICE_URL:-http://audit-service:8004}
+      AUDIT_INTERNAL_TOKEN: ${AUDIT_INTERNAL_TOKEN}
+      AUDIT_HTTP_TIMEOUT_SECONDS: ${AUDIT_HTTP_TIMEOUT_SECONDS:-3}
+
+      # ------------------------------------------------------
+      # POLÍTICA DEL DISPATCHER
+      # ------------------------------------------------------
+
+      AUDIT_DISPATCH_POLL_SECONDS: ${AUDIT_DISPATCH_POLL_SECONDS:-2}
+      AUDIT_DISPATCH_RETRY_DELAY_SECONDS: ${AUDIT_DISPATCH_RETRY_DELAY_SECONDS:-15}
+      AUDIT_DISPATCH_MAX_ATTEMPTS: ${AUDIT_DISPATCH_MAX_ATTEMPTS:-5}
+      AUDIT_DISPATCH_JOB_TIMEOUT_SECONDS: ${AUDIT_DISPATCH_JOB_TIMEOUT_SECONDS:-120}
+      AUDIT_DISPATCH_RECOVERY_CHECK_SECONDS: ${AUDIT_DISPATCH_RECOVERY_CHECK_SECONDS:-30}
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    networks:
+      - iam_network
+
+    stop_grace_period: 15s
+
+
+  # ==========================================================
+  # FRONTEND
+  # ==========================================================
+  # Aplicación web IAM Secure desarrollada con React y Vite.
+  #
+  # El frontend se compila dentro de Docker para evitar
+  # depender de una instalación local de Node.js.
+  #
+  # VITE_API_URL se establece durante la compilación.
+  # Si queda vacío, App.jsx utiliza automáticamente el hostname
+  # desde el cual se abre la aplicación y el puerto 8003.
+  # ==========================================================
+
+  frontend:
+    build:
+      context: ./servicios/frontend
+
+      args:
+        VITE_API_URL: ${VITE_API_URL:-}
+        VITE_PERMISSIONS_API_URL: ${VITE_PERMISSIONS_API_URL:-}
+        VITE_SESSION_INACTIVITY_MINUTES: ${VITE_SESSION_INACTIVITY_MINUTES:-5}
+
+    container_name: iam-secure-frontend
+    restart: unless-stopped
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - identity
+
+    networks:
+      - iam_network
+
+
+
+  # API independiente: consulta la sesión en IAM, sin secretos JWT/MFA propios.
+  permissions:
+    build:
+      context: ./servicios/permissions-service
+    container_name: iam-secure-permissions
+    restart: unless-stopped
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: iam_secure
+      IAM_BASE_URL: http://identity:8003
+      CORS_ORIGINS: ${PERMISSIONS_CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173,http://localhost:5176,http://127.0.0.1:5176}
+    ports:
+      - "127.0.0.1:8005:8005"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      identity:
+        condition: service_started
+    networks:
+      - iam_network
+
+
+  # Página de la grilla en otro origen; conserva la API en 8005.
+  permissions-grid:
+    build:
+      context: ./servicios/frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL:-}
+        VITE_PERMISSIONS_API_URL: ${VITE_PERMISSIONS_API_URL:-}
+        VITE_SESSION_INACTIVITY_MINUTES: ${VITE_SESSION_INACTIVITY_MINUTES:-5}
+    container_name: iam-secure-permissions-grid
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5176:5173"
+    depends_on:
+      - permissions
+    networks:
+      - iam_network
+
+# ==========================================================
+# VOLÚMENES
+# ==========================================================
+
+volumes:
+  postgres_data:
+
+
+# ==========================================================
+# RED
+# ==========================================================
+
+networks:
+  iam_network:
+    driver: bridge

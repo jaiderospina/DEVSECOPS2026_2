@@ -1,0 +1,336 @@
+{
+  "cut_date": "2026-10-06",
+  "timezone": "America/Bogota",
+  "repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "branch": "feat/bulk-users-excel-20261005",
+  "code_commit": "9b6affcbeea7749e5b16a77ab27ef7343492d9b4",
+  "ci": {
+    "id": 37572601777,
+    "url": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/actions/runs/37572601777",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 112634357420,
+        "name": "gitleaks",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357645,
+        "name": "images (frontend)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357646,
+        "name": "images (usuarios)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357647,
+        "name": "pytest (audit_dispatcher, audit-dispatcher)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357672,
+        "name": "sast (bandit)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357714,
+        "name": "sca-node",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357715,
+        "name": "sast (semgrep)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357722,
+        "name": "pytest (sync_worker, sync-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357723,
+        "name": "bulk-users-tests",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357725,
+        "name": "sca-python (audit-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357747,
+        "name": "frontend-ui",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357752,
+        "name": "model",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357756,
+        "name": "permissions-tests",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357762,
+        "name": "pytest (identity_http, identity-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357777,
+        "name": "sca-python (sync-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357799,
+        "name": "sca-python (identity-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357806,
+        "name": "frontend-lint",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357813,
+        "name": "sca-python (usuarios)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357819,
+        "name": "images (audit-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357833,
+        "name": "pytest (audit_service, audit-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357844,
+        "name": "sca-python (permissions-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357878,
+        "name": "sca-python (audit-dispatcher)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357898,
+        "name": "images (sync-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357910,
+        "name": "images (identity-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357916,
+        "name": "images (audit-dispatcher)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634357976,
+        "name": "images (permissions-service)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 112634650349,
+        "name": "gate",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "image_user_probes": [
+    {
+      "service": "frontend",
+      "image_id": "sha256:1b89586b576c9322a424937b2cb35b8f40d210015091578e8eb6e46efc09b1a3",
+      "declared_user": "nginx",
+      "effective_uid_probe": 101,
+      "size_bytes": 13069479,
+      "scope": "default container user via id; frontend startup verified separately",
+      "job_id": 112634357645
+    },
+    {
+      "service": "usuarios",
+      "image_id": "sha256:01435cc7b2b923e9998b7694d73f1e5cc4a4e6b5c1fa0bbf00d3502e7ce6ecfc",
+      "declared_user": "appuser",
+      "effective_uid_probe": 1000,
+      "size_bytes": 185364453,
+      "scope": "default container user via id; frontend startup verified separately",
+      "job_id": 112634357646
+    },
+    {
+      "service": "audit-service",
+      "image_id": "sha256:7325377199af16900c4ad077142d7f9adef5f467711c6c7a5026e1ce0cdd1520",
+      "declared_user": "audituser",
+      "effective_uid_probe": 100,
+      "size_bytes": 173438614,
+      "scope": "default container user via id; frontend startup verified separately",
+      "job_id": 112634357819
+    },
+    {
+      "service": "sync-service",
+      "image_id": "sha256:690c2c514c2dd9fcad67cb6737d13a378577332baefe3e8161ea533ecf48aa53",
+      "declared_user": "syncworker",
+      "effective_uid_probe": 100,
+      "size_bytes": 157774373,
+      "scope": "default container user via id; frontend startup verified separately",
+      "job_id": 112634357898
+    },
+    {
+      "service": "identity-service",
+      "image_id": "sha256:ad48eb171412ffaae3b2c85460ff63ae991778a9881ba979b88d120076264812",
+      "declared_user": "appuser",
+      "effective_uid_probe": 999,
+      "size_bytes": 218830702,
+      "scope": "default container user via id; frontend startup verified separately",
+      "job_id": 112634357910
+    },
+    {
+      "service": "audit-dispatcher",
+      "image_id": "sha256:48be281907711605a68756931b6918f8a52a071ae0a435677d1d319a443f15f2",
+      "declared_user": "auditdispatcher",
+      "effective_uid_probe": 100,
+      "size_bytes": 157760095,
+      "scope": "default container user via id; frontend startup verified separately",
+      "job_id": 112634357916
+    },
+    {
+      "service": "permissions-service",
+      "image_id": "sha256:8b57f078b8258984d13ab6936b85452858f80db61a377846297d0ac68a6dd24e",
+      "declared_user": "appuser",
+      "effective_uid_probe": 10001,
+      "size_bytes": 174945485,
+      "scope": "default container user via id; frontend startup verified separately",
+      "job_id": 112634357976
+    }
+  ],
+  "frontend_image_comparison": {
+    "before_bytes": 252806015,
+    "after_bytes": 13069479,
+    "reduction_percent": 94.83,
+    "scope": "linux amd64 uncompressed image size; same source/build args"
+  },
+  "tests": {
+    "pytest_total": 147,
+    "pytest_suites": [
+      {
+        "suite": "pytest (audit_dispatcher, audit-dispatcher)",
+        "passed": 22,
+        "job_id": 112634357647
+      },
+      {
+        "suite": "pytest (sync_worker, sync-service)",
+        "passed": 23,
+        "job_id": 112634357722
+      },
+      {
+        "suite": "bulk-users-tests",
+        "passed": 51,
+        "job_id": 112634357723
+      },
+      {
+        "suite": "permissions-tests",
+        "passed": 32,
+        "job_id": 112634357756
+      },
+      {
+        "suite": "pytest (identity_http, identity-service)",
+        "passed": 6,
+        "job_id": 112634357762
+      },
+      {
+        "suite": "pytest (audit_service, audit-service)",
+        "passed": 13,
+        "job_id": 112634357833
+      }
+    ],
+    "browser_total": 11,
+    "browser_passes": [
+      "PASS: pestaña 5176, compañía en encabezado, sesión solo en memoria y cierre desde panel",
+      "PASS: grilla modifica permiso y una nueva sesión de interfaz oculta la opción",
+      "PASS: API no disponible no muestra tarjetas sin verificar permisos",
+      "PASS: abrir la grilla directamente no concede sesión ni acceso a permisos",
+      "PASS: plantilla, compañía, multipart, vista previa, consentimiento y filas inválidas excluidas",
+      "PASS: descarga de resultados y reapertura del lote conservan el progreso confirmado",
+      "PASS: carga masiva desaparece al vencer 5 minutos aunque logout no responde",
+      "PASS: actividad de grilla reinicia plazo; probes no renuevan y al vencer retira permisos",
+      "PASS: grilla verifica su vencimiento aunque el temporizador del panel no se ejecuta",
+      "PASS: cierre manual también elimina sesión sin esperar la red",
+      "PASS: interacción tras suspensión no revive una sesión vencida"
+    ],
+    "node_configuration": {
+      "passed": 6,
+      "failed": 0,
+      "job_id": 112634357806
+    }
+  },
+  "verification_scope": {
+    "uid": "id executed as default configured container user for all seven images; not full backend startup audit",
+    "frontend_runtime": "Nginx main process non-root, nginx -t, Node/npm/source absent, panel/grid HTTP, CSP/security headers, allowed hosts including IPv6, rejection of untrusted/hexadecimal names, SPA fallback, missing asset 404, hidden file 403",
+    "browser": "compiled SPA served by real Nginx containers; API/SMTP mocks; controlled inactivity clock",
+    "integration": "real ephemeral PostgreSQL in Permissions and bulk-user jobs",
+    "size": "linux/amd64 uncompressed image sizes; historical Dockerfile at e20b783 built with same context/arguments; not transfer size",
+    "trivy": "CRITICAL gate including unfixed vulnerabilities; seven image jobs succeeded"
+  },
+  "docker_hub": {
+    "account": "jeancarlosalmenarez8318",
+    "workflow": ".github/workflows/publish-dockerhub.yml",
+    "state": "prepared, not executed with credentials",
+    "images_published_verified": false,
+    "tags_published_verified": false,
+    "required_secret": "DOCKERHUB_TOKEN",
+    "version_chosen": null
+  },
+  "pending": [
+    "integration of PR #3 into master",
+    "Docker Hub token configuration, version choice, actual publication and digest verification",
+    "updated local PC containers",
+    "additional real-email batch trials requested by user"
+  ],
+  "prior_run": {
+    "id": 37571951664,
+    "conclusion": "failure",
+    "reason": "generator host allowlist flagged by Semgrep and working-directory dependent test path; resolved with explicit server_name and import.meta.url path"
+  },
+  "approved_previous_run": {
+    "id": 37572275729,
+    "code_commit": "5c52855e361aef367f5a353f691c1290d44fef0a",
+    "conclusion": "success"
+  }
+}

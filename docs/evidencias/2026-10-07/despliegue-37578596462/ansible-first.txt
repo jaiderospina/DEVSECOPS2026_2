@@ -1,0 +1,50 @@
+
+PLAY [Deploy immutable IAM Secure release to an isolated Linux Docker host] ****
+
+TASK [Validate deployment namespace and absolute Linux directory] **************
+ok: [localhost]
+
+TASK [Validate secret configuration without logging values] ********************
+ok: [localhost]
+
+TASK [Install Ubuntu Docker packages when explicitly enabled] ******************
+skipping: [localhost]
+
+TASK [Enable Docker when installing packages] **********************************
+skipping: [localhost]
+
+TASK [Verify Docker daemon and Compose] ****************************************
+ok: [localhost] => (item=['docker', 'info', '--format', '{{.ServerVersion}}'])
+ok: [localhost] => (item=['docker', 'compose', 'version', '--short'])
+
+TASK [Create private deployment directory] *************************************
+changed: [localhost]
+
+TASK [Copy immutable Compose specification] ************************************
+changed: [localhost]
+
+TASK [Copy schema initialization scripts] **************************************
+changed: [localhost]
+
+TASK [Render runtime configuration without exposing secrets] *******************
+changed: [localhost]
+
+TASK [Validate Compose without printing resolved environment] ******************
+ok: [localhost]
+
+TASK [Pull immutable release images] *******************************************
+ok: [localhost]
+
+TASK [Start and wait for healthy services] *************************************
+changed: [localhost]
+
+TASK [Apply idempotent permissions and bulk schema migrations] *****************
+ok: [localhost] => (item=11-create-permisos.sql)
+ok: [localhost] => (item=12-create-cargas-usuarios.sql)
+
+TASK [Bootstrap a single ADMIN_TI when explicitly enabled] *********************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=12   changed=6    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+

@@ -1,0 +1,56 @@
+{
+  "coverage": [
+    {
+      "target": "servicios/audit-dispatcher/requirements.txt",
+      "type": "pip",
+      "packages_detected": 3,
+      "required_packages_verified": 3
+    },
+    {
+      "target": "servicios/audit-service/requirements.txt",
+      "type": "pip",
+      "packages_detected": 6,
+      "required_packages_verified": 6
+    },
+    {
+      "target": "servicios/identity-service/requirements.txt",
+      "type": "pip",
+      "packages_detected": 15,
+      "required_packages_verified": 15
+    },
+    {
+      "target": "servicios/permissions-service/requirements.txt",
+      "type": "pip",
+      "packages_detected": 6,
+      "required_packages_verified": 6
+    },
+    {
+      "target": "servicios/sync-service/requirements.txt",
+      "type": "pip",
+      "packages_detected": 3,
+      "required_packages_verified": 3
+    },
+    {
+      "target": "servicios/usuarios/requirements.txt",
+      "type": "pip",
+      "packages_detected": 19,
+      "required_packages_verified": 19
+    },
+    {
+      "target": "infraestructura/ansible/requirements.txt",
+      "type": "pip",
+      "packages_detected": 2,
+      "required_packages_verified": 2
+    },
+    {
+      "target": "servicios/frontend/package-lock.json",
+      "type": "npm",
+      "packages_detected": 67,
+      "required_packages_verified": 7
+    }
+  ],
+  "severity_counts": {},
+  "blockers": [],
+  "passed": true,
+  "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+}

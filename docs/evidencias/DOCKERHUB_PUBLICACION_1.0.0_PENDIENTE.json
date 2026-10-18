@@ -1,0 +1,38 @@
+{
+  "state": "historical_pre_dispatch_superseded",
+  "repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "dockerhub_account": "jeancarlosalmenarez8318",
+  "version": "1.0.0",
+  "version_source": "user confirmation",
+  "secret": {
+    "name": "DOCKERHUB_TOKEN",
+    "configured_evidence": "user screenshot: Repository secrets list",
+    "value_read": false,
+    "registry_authentication_verified": false
+  },
+  "workflow": {
+    "path": ".github/workflows/publish-dockerhub.yml",
+    "activation_commit": "51e04f2d2e3540d15a0448fc4d08cbbdf12b6d84",
+    "activation_run": {
+      "id": 37574011009,
+      "conclusion": "success",
+      "jobs": 26
+    },
+    "source_branch": "feat/bulk-users-excel-20261005",
+    "branch_commit": "ab444034719b6da3aab08009606de6dd7d12f26d"
+  },
+  "publication": {
+    "started": false,
+    "images_verified": 0,
+    "tags_verified": false,
+    "expected_own_images": 7
+  },
+  "frontend_guard": "publisher refuses runtime containing Node/npm/node_modules and checks nginx -t",
+  "action_required": "User: Actions > Publish Docker Hub images > Run workflow > branch feat/bulk-users-excel-20261005 > version 1.0.0 > Run workflow",
+  "access_limit": "GitHub connector has no dispatch action; controlled in-app browser has no authenticated GitHub session",
+  "code_pr3_integration": "pending; activation changes workflow files only",
+  "historical_record": true,
+  "superseded_by": "docs/evidencias/2026-10-07/DOCKERHUB_1.0.0_37574847806.json",
+  "superseded_run_id": 37574847806,
+  "note": "Registro histórico de preparación; estado actual publicado/verificado en superseded_by. Los campos originales representan la situación antes de iniciar."
+}

@@ -1,0 +1,28 @@
+{
+  "scan_network_internal": true,
+  "scan_network_direct_backend_blocked": true,
+  "connection_probes": 101,
+  "successful_connections": 0,
+  "gateway_tests": [
+    {
+      "method": "GET",
+      "path": "/auth/me",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/usuarios",
+      "status": 403
+    },
+    {
+      "method": "GET",
+      "path": "/auth/login",
+      "status": 403
+    },
+    {
+      "method": "DELETE",
+      "path": "/auth/sesiones/expiradas",
+      "status": 403
+    }
+  ]
+}

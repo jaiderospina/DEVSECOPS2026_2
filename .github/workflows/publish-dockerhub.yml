@@ -1,0 +1,114 @@
+name: Publish Docker Hub images
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Versión estable MAJOR.MINOR.PATCH, por ejemplo 1.0.0"
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: dockerhub-release
+  cancel-in-progress: false
+jobs:
+  configuration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require semantic version and configured registry token
+        env:
+          VERSION: ${{ inputs.version }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          if [[ ! "$VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "La versión debe ser MAJOR.MINOR.PATCH sin prefijo v."
+            exit 1
+          fi
+          if [[ -z "$DOCKERHUB_TOKEN" ]]; then
+            echo "Configure el secreto DOCKERHUB_TOKEN en GitHub Actions."
+            exit 1
+          fi
+  validation:
+    needs: configuration
+    uses: ./.github/workflows/devsecops-pipeline.yml
+  publish:
+    needs: validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      VERSION: ${{ inputs.version }}
+      DOCKERHUB_USERNAME: jeancarlosalmenarez8318
+      VITE_API_URL: ${{ vars.VITE_API_URL }}
+      VITE_PERMISSIONS_API_URL: ${{ vars.VITE_PERMISSIONS_API_URL }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Build and scan all release images before any publication
+        run: |
+          mkdir -p reports .trivy-cache
+          services=(identity-service sync-service audit-service audit-dispatcher frontend usuarios permissions-service)
+          images=(iam-secure-identity iam-secure-sync-worker iam-secure-audit iam-secure-audit-dispatcher iam-secure-frontend iam-secure-usuarios iam-secure-permissions)
+          for index in "${!services[@]}"; do
+            service="${services[$index]}"
+            image="$DOCKERHUB_USERNAME/${images[$index]}"
+            build_args=()
+            if [[ "$service" == frontend ]]; then
+              build_args=(--build-arg "VITE_API_URL=$VITE_API_URL" --build-arg "VITE_PERMISSIONS_API_URL=$VITE_PERMISSIONS_API_URL" --build-arg VITE_SESSION_INACTIVITY_MINUTES=5)
+            fi
+            docker build --pull "${build_args[@]}" \
+              --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+              --label "org.opencontainers.image.version=$VERSION" \
+              -t "$image:$VERSION" -t "$image:latest" "servicios/$service"
+            test "$(docker run --rm --entrypoint id "$image:$VERSION" -u)" -gt 0
+            if [[ "$service" == frontend ]]; then
+              docker run --rm --entrypoint sh "$image:$VERSION" -ec '
+                ! command -v node
+                ! command -v npm
+                test ! -e /app/node_modules
+                nginx -t
+              '
+            fi
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+              -v "$PWD/reports:/reports" -v "$PWD/.trivy-cache:/root/.cache" \
+              aquasec/trivy:0.65.0 image --scanners vuln --severity CRITICAL --exit-code 1 \
+              --format json --output "/reports/trivy-$service.json" "$image:$VERSION"
+          done
+      - name: Log in to Docker Hub without printing the token
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: printf '%s' "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+      - name: Protect existing versions and publish both tags
+        run: |
+          images=(iam-secure-identity iam-secure-sync-worker iam-secure-audit iam-secure-audit-dispatcher iam-secure-frontend iam-secure-usuarios iam-secure-permissions)
+          for name in "${images[@]}"; do
+            if docker manifest inspect "$DOCKERHUB_USERNAME/$name:$VERSION" > /dev/null 2>&1; then
+              echo "La versión $name:$VERSION ya existe; elija una nueva."
+              exit 1
+            fi
+          done
+          for name in "${images[@]}"; do
+            image="$DOCKERHUB_USERNAME/$name"
+            docker push "$image:$VERSION"
+            docker push "$image:latest"
+          done
+      - name: Pull every published tag and retain digest evidence
+        run: |
+          images=(iam-secure-identity iam-secure-sync-worker iam-secure-audit iam-secure-audit-dispatcher iam-secure-frontend iam-secure-usuarios iam-secure-permissions)
+          for name in "${images[@]}"; do
+            image="$DOCKERHUB_USERNAME/$name"
+            docker pull "$image:$VERSION"
+            docker pull "$image:latest"
+            test "$(docker image inspect "$image:$VERSION" --format '{{.Id}}')" = "$(docker image inspect "$image:latest" --format '{{.Id}}')"
+            docker image inspect "$image:$VERSION" > "reports/$name-published.json"
+          done
+      - name: Remove registry login
+        if: always()
+        run: docker logout
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: dockerhub-release-evidence
+          path: reports/
+          retention-days: 30

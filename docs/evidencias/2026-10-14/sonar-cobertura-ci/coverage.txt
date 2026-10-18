@@ -1,0 +1,54 @@
+Name                                               Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------------------------------------
+dast/check.py                                         34      2     10      1    93%   32-33
+dast/ci.py                                           103     12     36      5    88%   23-26, 33, 42, 53, 120, 126-130
+dast/cleanup.py                                       47      3     22      4    84%   15->exit, 26-27, 30, 41->exit
+dast/dc.py                                            12      0      2      0   100%
+dast/evidence.py                                     117      9     68     10    90%   38->37, 45, 56, 58, 70, 81, 95, 98, 105, 121
+dast/export.py                                        15      1      8      2    87%   7, 13->8
+dast/gateway.py                                       62      4     22      3    89%   8->9, 21->22, 62-65
+dast/phase2.py                                        67      0     22      5    94%   9->10, 10->11, 11->12, 50->exit, 61->60
+dast/postflight2.py                                   33      3     12      2    89%   6->7, 16-18
+dast/preflight2.py                                    22      2      6      2    86%   6->7, 28-29
+dast/prepare.py                                       13      1      2      1    87%   20
+dast/probe_host.py                                    15      2      6      2    81%   9, 12
+dast/record_seed.py                                    9      1      2      1    82%   6
+dast/runtime.py                                       22      2      6      2    86%   31, 33
+dast/summarize2.py                                    52      1     12      1    97%   18
+infraestructura/scripts/check_compose.py              63      1     10      1    97%   66, 83->exit
+infraestructura/scripts/create_test_config.py         27      0      2      1    97%   40->exit
+infraestructura/scripts/verify_deployment.py         120      9     38      5    91%   22, 40->44, 55, 62-66, 105, 154
+scripts/safe_paths.py                                 73      6     34      9    86%   15, 18, 21, 27->29, 43->48, 50->38, 61, 64, 94
+scripts/verify_trivy_sca.py                          132     10     58     11    89%   24, 30, 43->41, 46, 59, 64, 81, 92, 131, 134, 148
+servicios/audit-dispatcher/audit_client.py            55     13     12      5    73%   40, 45, 64, 69, 81-82, 122, 130-137
+servicios/audit-dispatcher/database.py                24      5      2      1    77%   20, 36-37, 59-60
+servicios/audit-dispatcher/main.py                    97     23     20      1    71%   452-511, 517
+servicios/audit-service/database.py                   26      6      4      2    73%   27, 43-44, 49, 75-76
+servicios/audit-service/http_headers.py               14     10      4      0    22%   9, 12-22
+servicios/audit-service/main.py                      102      5     18      3    93%   93, 177, 247, 492, 499
+servicios/audit-service/seguridad.py                  36      4     18      4    85%   138, 160, 172, 194
+servicios/identity-service/audit_outbox.py            34     14      8      4    57%   44-47, 55-58, 67-75, 83-86, 178-198
+servicios/identity-service/auditoria.py               83      4     20      5    91%   61->88, 388, 411, 449, 452
+servicios/identity-service/auditoria_reportes.py      87      0     24      0   100%
+servicios/identity-service/autenticacion.py          527    274    162     36    44%   97-98, 103, 127-128, 133, 159-160, 166, 179, 196-197, 202, 302-400, 415-495, 563-583, 619, 778, 931, 968-1186, 1277-1494, 1536-1735, 1911-1919, 1929-1938, 1948-1957, 1982-1991, 2049-2182, 2203-2212, 2248-2266, 2281-2291, 2345, 2443, 2481, 2530-2541, 2547, 2553, 2606, 2636, 2679, 2689-2700, 2706, 2712, 2727-2773, 2819, 2844, 2904, 2959-3180, 3194-3231, 3259-3287, 3307-3341, 3568-3590, 3653-3704, 3734-3774, 3874->3899, 3893, 3973
+servicios/identity-service/cargas_excel.py           166     15     76     10    90%   27, 33, 35, 38, 69, 87, 89, 91-92, 109, 112-113, 117, 129-130
+servicios/identity-service/cargas_limite.py           32      6     12      4    77%   18->26, 21, 24-25, 30->34, 33, 37-38
+servicios/identity-service/cargas_usuarios.py        183     18     52     10    86%   24, 31, 54, 127-128, 144->161, 160, 194-195, 213->224, 220, 233, 238, 242, 268, 277-282
+servicios/identity-service/companias.py              172    125     44      1    22%   40-42, 47-49, 54-57, 116-176, 201-265, 297-375, 409-745, 766-802, 830-927, 958-1027, 1041-1068, 1106-1146
+servicios/identity-service/correo.py                  62     48     22      0    17%   37-64, 71-72, 84-101, 124-204
+servicios/identity-service/database.py                26      4      4      2    80%   25, 48-49, 54
+servicios/identity-service/http_headers.py            15      0      4      0   100%
+servicios/identity-service/main.py                    58      4     20      6    87%   64, 72, 74->60, 79, 142->141, 148->151, 214
+servicios/identity-service/mfa.py                     85     23     28     11    66%   42, 48-49, 103, 120, 129-130, 152, 157, 197, 202, 260, 270, 294, 309, 345-386
+servicios/identity-service/permisos_iniciales.py      10      1      4      1    86%   28
+servicios/identity-service/seguridad.py              118     27     42     14    74%   28, 43-44, 49, 89-95, 104, 111-112, 149, 155, 161, 207, 225, 264->275, 309-327, 348-363, 532, 540, 576
+servicios/identity-service/sync_jobs.py               21      5     16      7    68%   77, 81->87, 83, 89, 93->103, 98, 104
+servicios/identity-service/usuarios.py               289     61    114     27    76%   71, 105, 112, 147, 154, 404, 510, 522, 545-554, 683, 1071-1097, 1140, 1172, 1344, 1399, 1453, 1580, 1707-1710, 1758, 1821, 1939-2088, 2128, 2189, 2288-2471, 2589, 2770
+servicios/permissions-service/auth.py                 34      2     14      2    92%   14, 25
+servicios/permissions-service/catalog.py               3      0      0      0   100%
+servicios/permissions-service/database.py             10      1      2      1    83%   9
+servicios/permissions-service/main.py                121      4     26      4    95%   21, 54, 147, 172
+servicios/sync-service/database.py                    26      6      4      2    73%   33, 53-54, 59, 105-106
+servicios/sync-service/main.py                       143     32     38      4    73%   132, 295->exit, 622, 714-809, 819
+----------------------------------------------------------------------------------------------
+TOTAL                                               3697    809   1192    235    75%

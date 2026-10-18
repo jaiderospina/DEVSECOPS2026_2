@@ -1,0 +1,3 @@
+# CI-only coverage tool: CPython 3.14, Linux x86_64 and Windows x64.
+# Binary wheels only; dependency-free package, immutable release hashes.
+coverage==7.16.2 --hash=sha256:35f37886699cb9abd29958247d718628d5bc6f39e623dff66a09e546c42a7e03 --hash=sha256:5a27b731c171e43dc8b5f32b76a5051dde2ec9b9366c87028f08a7088ebc2c7b

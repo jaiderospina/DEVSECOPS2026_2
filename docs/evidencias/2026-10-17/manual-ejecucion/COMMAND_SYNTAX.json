@@ -1,0 +1,237 @@
+{
+  "date": "2026-10-17",
+  "blocks": 32,
+  "results": [
+    {
+      "block": 1,
+      "language": "powershell",
+      "syntax": [
+        "PowerShell parser passed; not executed"
+      ]
+    },
+    {
+      "block": 2,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 3,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 4,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 5,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 6,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 7,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 8,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 9,
+      "language": "powershell",
+      "syntax": [
+        "PowerShell parser passed; not executed"
+      ]
+    },
+    {
+      "block": 10,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 11,
+      "language": "powershell",
+      "syntax": [
+        "PowerShell parser passed; not executed"
+      ]
+    },
+    {
+      "block": 12,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 13,
+      "language": "powershell",
+      "syntax": [
+        "PowerShell parser passed; not executed"
+      ]
+    },
+    {
+      "block": 14,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 15,
+      "language": "console",
+      "syntax": [
+        "PowerShell parser passed; not executed",
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 16,
+      "language": "console",
+      "syntax": [
+        "PowerShell parser passed; not executed",
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 17,
+      "language": "dotenv",
+      "syntax": []
+    },
+    {
+      "block": 18,
+      "language": "dotenv",
+      "syntax": []
+    },
+    {
+      "block": 19,
+      "language": "console",
+      "syntax": [
+        "PowerShell parser passed; not executed",
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 20,
+      "language": "console",
+      "syntax": [
+        "PowerShell parser passed; not executed",
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 21,
+      "language": "powershell",
+      "syntax": [
+        "PowerShell parser passed; not executed"
+      ]
+    },
+    {
+      "block": 22,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 23,
+      "language": "console",
+      "syntax": [
+        "PowerShell parser passed; not executed",
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 24,
+      "language": "powershell",
+      "syntax": [
+        "PowerShell parser passed; not executed"
+      ]
+    },
+    {
+      "block": 25,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 26,
+      "language": "console",
+      "syntax": [
+        "PowerShell parser passed; not executed",
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 27,
+      "language": "console",
+      "syntax": [
+        "PowerShell parser passed; not executed",
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 28,
+      "language": "console",
+      "syntax": [
+        "PowerShell parser passed; not executed",
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 29,
+      "language": "powershell",
+      "syntax": [
+        "PowerShell parser passed; not executed"
+      ]
+    },
+    {
+      "block": 30,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    },
+    {
+      "block": 31,
+      "language": "powershell",
+      "syntax": [
+        "PowerShell parser passed; not executed"
+      ]
+    },
+    {
+      "block": 32,
+      "language": "bash",
+      "syntax": [
+        "Bash -n passed in ephemeral no-network container; not executed"
+      ]
+    }
+  ],
+  "fernet_generator_synthetic_check": true,
+  "application_or_smtp_commands_executed": false,
+  "installer_commands_executed": false
+}

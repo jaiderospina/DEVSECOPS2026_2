@@ -1,0 +1,219 @@
+{
+  "stage": "Etapa 1 — API y grilla de permisos",
+  "document_date": "2026-10-05",
+  "timezone": "America/Bogota",
+  "verified_at_utc": "2026-10-06T02:56:34.627Z",
+  "repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "branch": "feat/permissions-grid-20261005",
+  "base_commit": "76cc39d92369ffd55ae887df91a5a1f30d5e901f",
+  "validated_code_commit": "2cf379a29882906df35b510d42636cbdfdba3365",
+  "workflow_run": {
+    "id": 37406285771,
+    "url": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/actions/runs/37406285771",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "2cf379a29882906df35b510d42636cbdfdba3365"
+  },
+  "jobs": [
+    {
+      "id": 112084484514,
+      "name": "permissions-tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484749,
+      "name": "sast (semgrep)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484768,
+      "name": "pytest (identity_http, identity-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484772,
+      "name": "pytest (audit_dispatcher, audit-dispatcher)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484773,
+      "name": "model",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484781,
+      "name": "sca-python (audit-dispatcher)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484788,
+      "name": "sca-python (identity-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484827,
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484836,
+      "name": "sca-python (permissions-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484839,
+      "name": "sca-node",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484840,
+      "name": "pytest (sync_worker, sync-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484843,
+      "name": "images (audit-dispatcher)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484861,
+      "name": "sast (bandit)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484868,
+      "name": "sca-python (sync-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484883,
+      "name": "frontend-lint",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484885,
+      "name": "sca-python (audit-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484893,
+      "name": "pytest (audit_service, audit-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484910,
+      "name": "frontend-ui",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484943,
+      "name": "sca-python (usuarios)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084484963,
+      "name": "images (usuarios)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084485003,
+      "name": "images (identity-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084485020,
+      "name": "images (frontend)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084485027,
+      "name": "images (permissions-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084485080,
+      "name": "images (sync-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084485094,
+      "name": "images (audit-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112084742458,
+      "name": "gate",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "pytest": {
+    "permissions": 32,
+    "identity_http": 6,
+    "audit_dispatcher": 22,
+    "sync_worker": 23,
+    "audit_service": 13,
+    "total": 96
+  },
+  "chromium": {
+    "checks_passed": 2,
+    "scenarios": [
+      "Deshabilitar una opción en la grilla y ocultarla al cargar una sesión nueva del portal",
+      "No mostrar tarjetas cuando no se puede verificar la API"
+    ],
+    "api_contracts_mocked": true
+  },
+  "integration": {
+    "identity_process_real": true,
+    "postgres_real_ephemeral": true,
+    "sessions_test_fixtures": true,
+    "verified": [
+      "Sesión válida",
+      "Sesión revocada",
+      "JWT expirado",
+      "Cambio de contraseña pendiente"
+    ],
+    "real_password_totp_login": false
+  },
+  "security_validation": {
+    "gitleaks": "success",
+    "semgrep": "success",
+    "bandit": "success",
+    "sca_python": "success",
+    "sca_node": "success",
+    "docker_build_trivy_critical": "7 jobs success",
+    "trivy_threshold": "CRITICAL; no se acredita ausencia de hallazgos de menor severidad"
+  },
+  "limits": [
+    "No ejecutado todavía en C:\\Prueba-ProyectoFinal",
+    "Pendiente aceptación con usuarios y compañías reales, MFA y entrega Outbox local",
+    "No se amplía ni acredita todavía DFD/STRIDE, ZAP, IaC o despliegue de producción",
+    "Las opciones protegidas son vistas de referencia, no transacciones de negocio",
+    "La evidencia corresponde al commit de código indicado; el commit documental posterior no modifica código"
+  ]
+}

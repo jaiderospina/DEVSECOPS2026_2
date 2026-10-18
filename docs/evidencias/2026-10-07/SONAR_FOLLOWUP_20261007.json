@@ -1,0 +1,494 @@
+{
+  "date": "2026-10-07",
+  "repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "reviewed_head": "04633f0272af9eb9d23447e78e5b706380f03d7b",
+  "sonar_before": {
+    "check_id": 112858031367,
+    "result": "failure",
+    "security_rating": "C",
+    "required": "A",
+    "annotations": [
+      {
+        "path": ".github/workflows/devsecops-pipeline.yml",
+        "start_line": 407,
+        "end_line": 407,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBnk8iNdX_vW3Asa&open=AaEPdBnk8iNdX_vW3Asa&pullRequest=3",
+        "title": "Using dependencies without locking resolved versions is security-sensitive.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_excel.py",
+        "start_line": 52,
+        "end_line": 52,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmr8iNdX_vW3AsX&open=AaEPdBmr8iNdX_vW3AsX&pullRequest=3",
+        "title": "Refactor this exception test to have only one invocation possibly throwing an exception.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/frontend/src/BulkUserImport.jsx",
+        "start_line": 158,
+        "end_line": 158,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhX8iNdX_vW3AsG&open=AaEPdBhX8iNdX_vW3AsG&pullRequest=3",
+        "title": "Ambiguous spacing before next element select",
+        "raw_details": null
+      },
+      {
+        "path": ".github/workflows/deploy-simulated.yml",
+        "start_line": 37,
+        "end_line": 37,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEU7kjMIIA1DvOUPUpF&open=AaEU7kjMIIA1DvOUPUpF&pullRequest=3",
+        "title": "Using dependencies without locking resolved versions is security-sensitive.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/frontend/src/BulkUserImport.jsx",
+        "start_line": 167,
+        "end_line": 167,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhX8iNdX_vW3AsH&open=AaEPdBhX8iNdX_vW3AsH&pullRequest=3",
+        "title": "Ambiguous spacing before next element input",
+        "raw_details": null
+      },
+      {
+        "path": "infraestructura/ansible/deploy.yml",
+        "start_line": 88,
+        "end_line": 88,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEU7keuIIA1DvOUPUo7&open=AaEU7keuIIA1DvOUPUo7&pullRequest=3",
+        "title": "Make sure granting access to others is safe here.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/frontend/src/BulkUserImport.jsx",
+        "start_line": 179,
+        "end_line": 179,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhX8iNdX_vW3AsJ&open=AaEPdBhX8iNdX_vW3AsJ&pullRequest=3",
+        "title": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+        "raw_details": null
+      },
+      {
+        "path": ".github/workflows/devsecops-pipeline.yml",
+        "start_line": 407,
+        "end_line": 407,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBnk8iNdX_vW3AsZ&open=AaEPdBnk8iNdX_vW3AsZ&pullRequest=3",
+        "title": "Omitting \"--only-binary :all:\" can lead to the execution of setup scripts. Make sure it is safe here.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_excel.py",
+        "start_line": 36,
+        "end_line": 36,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmr8iNdX_vW3AsW&open=AaEPdBmr8iNdX_vW3AsW&pullRequest=3",
+        "title": "Refactor this exception test to have only one invocation possibly throwing an exception.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 31,
+        "end_line": 31,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3Ar1&open=AaEPdBhF8iNdX_vW3Ar1&pullRequest=3",
+        "title": "Document this HTTPException with status code 403 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 218,
+        "end_line": 218,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3Ar-&open=AaEPdBhF8iNdX_vW3Ar-&pullRequest=3",
+        "title": "Document this HTTPException with status code 409 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/frontend/src/BulkUserImport.jsx",
+        "start_line": 110,
+        "end_line": 110,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhX8iNdX_vW3AsE&open=AaEPdBhX8iNdX_vW3AsE&pullRequest=3",
+        "title": "Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/frontend/src/BulkUserImport.jsx",
+        "start_line": 33,
+        "end_line": 33,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhX8iNdX_vW3AsL&open=AaEPdBhX8iNdX_vW3AsL&pullRequest=3",
+        "title": "Client-Side Request Forgery via unsanitized user input",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_initial_views.py",
+        "start_line": 28,
+        "end_line": 28,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPgXWThtLgu9EdgPmu&open=AaEPgXWThtLgu9EdgPmu&pullRequest=3",
+        "title": "Split this composite assertion into separate assertions.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_excel.py",
+        "start_line": 46,
+        "end_line": 46,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhO8iNdX_vW3AsD&open=AaEPdBhO8iNdX_vW3AsD&pullRequest=3",
+        "title": "Refactor this function to reduce its Cognitive Complexity from 63 to the 15 allowed.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_initial_views.py",
+        "start_line": 47,
+        "end_line": 47,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPgXWThtLgu9EdgPmv&open=AaEPgXWThtLgu9EdgPmv&pullRequest=3",
+        "title": "Split this composite assertion into separate assertions.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/frontend/container/write-nginx-config.mjs",
+        "start_line": 10,
+        "end_line": 52,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEUpwXRzQwPPfnDcsym&open=AaEUpwXRzQwPPfnDcsym&pullRequest=3",
+        "title": "`String.raw` should be used to avoid escaping `\\`.",
+        "raw_details": null
+      },
+      {
+        "path": "scripts/verify_trivy_sca.py",
+        "start_line": 34,
+        "end_line": 34,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEWnlkCPOjA81FmN-Ze&open=AaEWnlkCPOjA81FmN-Ze&pullRequest=3",
+        "title": "Refactor this function to reduce its Cognitive Complexity from 27 to the 15 allowed.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_excel.py",
+        "start_line": 21,
+        "end_line": 21,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhO8iNdX_vW3AsC&open=AaEPdBhO8iNdX_vW3AsC&pullRequest=3",
+        "title": "Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed.",
+        "raw_details": null
+      },
+      {
+        "path": ".github/workflows/devsecops-pipeline.yml",
+        "start_line": 395,
+        "end_line": 395,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBnk8iNdX_vW3Asc&open=AaEPdBnk8iNdX_vW3Asc&pullRequest=3",
+        "title": "\"PASSWORD\" detected here, make sure this is not a hard-coded credential.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 128,
+        "end_line": 128,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3Ar5&open=AaEPdBhF8iNdX_vW3Ar5&pullRequest=3",
+        "title": "Document this HTTPException with status code 422 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 206,
+        "end_line": 206,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3Ar8&open=AaEPdBhF8iNdX_vW3Ar8&pullRequest=3",
+        "title": "Document this HTTPException with status code 400 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_import.py",
+        "start_line": 91,
+        "end_line": 91,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmi8iNdX_vW3AsT&open=AaEPdBmi8iNdX_vW3AsT&pullRequest=3",
+        "title": "Split this composite assertion into separate assertions.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_excel.py",
+        "start_line": 58,
+        "end_line": 58,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmr8iNdX_vW3AsY&open=AaEPdBmr8iNdX_vW3AsY&pullRequest=3",
+        "title": "Refactor this exception test to have only one invocation possibly throwing an exception.",
+        "raw_details": null
+      },
+      {
+        "path": "infraestructura/scripts/verify_deployment.py",
+        "start_line": 62,
+        "end_line": 62,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEW0W6W_l81UYI2KZHV&open=AaEW0W6W_l81UYI2KZHV&pullRequest=3",
+        "title": "Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_excel.py",
+        "start_line": 14,
+        "end_line": 14,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmr8iNdX_vW3AsV&open=AaEPdBmr8iNdX_vW3AsV&pullRequest=3",
+        "title": "Split this composite assertion into separate assertions.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 79,
+        "end_line": 79,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3Ar7&open=AaEPdBhF8iNdX_vW3Ar7&pullRequest=3",
+        "title": "Document this HTTPException with status code 404 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 142,
+        "end_line": 142,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3Ar6&open=AaEPdBhF8iNdX_vW3Ar6&pullRequest=3",
+        "title": "Document this HTTPException with status code 429 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_import.py",
+        "start_line": 100,
+        "end_line": 100,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmi8iNdX_vW3AsU&open=AaEPdBmi8iNdX_vW3AsU&pullRequest=3",
+        "title": "Split this composite assertion into separate assertions.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_import.py",
+        "start_line": 20,
+        "end_line": 20,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmi8iNdX_vW3AsO&open=AaEPdBmi8iNdX_vW3AsO&pullRequest=3",
+        "title": "Split this composite assertion into separate assertions.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/session_idle/check.mjs",
+        "start_line": 31,
+        "end_line": 31,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEUlS5dZbq2mkR8oM0Z&open=AaEUlS5dZbq2mkR8oM0Z&pullRequest=3",
+        "title": "Extract this nested ternary operation into an independent statement.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 46,
+        "end_line": 46,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3Ar2&open=AaEPdBhF8iNdX_vW3Ar2&pullRequest=3",
+        "title": "Document this HTTPException with status code 403 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/sca/test_trivy_gate.py",
+        "start_line": 27,
+        "end_line": 27,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEWnlNtPOjA81FmN-Zd&open=AaEWnlNtPOjA81FmN-Zd&pullRequest=3",
+        "title": "Refactor this exception test to have only one invocation possibly throwing an exception.",
+        "raw_details": null
+      },
+      {
+        "path": ".github/workflows/devsecops-pipeline.yml",
+        "start_line": 399,
+        "end_line": 399,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBnk8iNdX_vW3Asd&open=AaEPdBnk8iNdX_vW3Asd&pullRequest=3",
+        "title": "\"PASSWORD\" detected here, make sure this is not a hard-coded credential.",
+        "raw_details": null
+      },
+      {
+        "path": "infraestructura/scripts/verify_deployment.py",
+        "start_line": 51,
+        "end_line": 52,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEW0W6W_l81UYI2KZHW&open=AaEW0W6W_l81UYI2KZHW&pullRequest=3",
+        "title": "Command Argument Injection via faulty LLM-supplied CLI arguments in verify_deployment.command()",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_ui/check.mjs",
+        "start_line": 24,
+        "end_line": 24,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmP8iNdX_vW3AsM&open=AaEPdBmP8iNdX_vW3AsM&pullRequest=3",
+        "title": "Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_import.py",
+        "start_line": 79,
+        "end_line": 79,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmi8iNdX_vW3AsR&open=AaEPdBmi8iNdX_vW3AsR&pullRequest=3",
+        "title": "Split this composite assertion into separate assertions.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 212,
+        "end_line": 212,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3Ar9&open=AaEPdBhF8iNdX_vW3Ar9&pullRequest=3",
+        "title": "Document this HTTPException with status code 503 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 220,
+        "end_line": 220,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3Ar_&open=AaEPdBhF8iNdX_vW3Ar_&pullRequest=3",
+        "title": "Document this HTTPException with status code 409 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 63,
+        "end_line": 63,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3Ar4&open=AaEPdBhF8iNdX_vW3Ar4&pullRequest=3",
+        "title": "Document this HTTPException with status code 403 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_import.py",
+        "start_line": 68,
+        "end_line": 68,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmi8iNdX_vW3AsQ&open=AaEPdBmi8iNdX_vW3AsQ&pullRequest=3",
+        "title": "Split this composite assertion into separate assertions.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 268,
+        "end_line": 268,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3AsB&open=AaEPdBhF8iNdX_vW3AsB&pullRequest=3",
+        "title": "Document this HTTPException with status code 404 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/frontend/src/BulkUserImport.jsx",
+        "start_line": 178,
+        "end_line": 178,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhX8iNdX_vW3AsI&open=AaEPdBhX8iNdX_vW3AsI&pullRequest=3",
+        "title": "Use <output> instead of the \"status\" role to ensure accessibility across all devices.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_import.py",
+        "start_line": 21,
+        "end_line": 21,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBmi8iNdX_vW3AsP&open=AaEPdBmi8iNdX_vW3AsP&pullRequest=3",
+        "title": "Split this composite assertion into separate assertions.",
+        "raw_details": null
+      },
+      {
+        "path": ".github/workflows/deploy-simulated.yml",
+        "start_line": 37,
+        "end_line": 37,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEU7kjMIIA1DvOUPUpE&open=AaEU7kjMIIA1DvOUPUpE&pullRequest=3",
+        "title": "Omitting \"--only-binary :all:\" can lead to the execution of setup scripts. Make sure it is safe here.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/frontend/src/BulkUserImport.jsx",
+        "start_line": 121,
+        "end_line": 121,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhX8iNdX_vW3AsF&open=AaEPdBhX8iNdX_vW3AsF&pullRequest=3",
+        "title": "Unexpected `await` inside a loop.",
+        "raw_details": null
+      },
+      {
+        "path": "tests/bulk_users/test_excel.py",
+        "start_line": 78,
+        "end_line": 78,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdIopTwfNugJomgXh&open=AaEPdIopTwfNugJomgXh&pullRequest=3",
+        "title": "Refactor this exception test to have only one invocation possibly throwing an exception.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/identity-service/cargas_usuarios.py",
+        "start_line": 262,
+        "end_line": 262,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhF8iNdX_vW3AsA&open=AaEPdBhF8iNdX_vW3AsA&pullRequest=3",
+        "title": "Document this HTTPException with status code 409 in the \"responses\" parameter.",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/frontend/src/BulkUserImport.jsx",
+        "start_line": 204,
+        "end_line": 204,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEPdBhX8iNdX_vW3AsK&open=AaEPdBhX8iNdX_vW3AsK&pullRequest=3",
+        "title": "Ambiguous spacing before next element select",
+        "raw_details": null
+      },
+      {
+        "path": "infraestructura/ansible/deploy.yml",
+        "start_line": 82,
+        "end_line": 82,
+        "annotation_level": "warning",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEU7keuIIA1DvOUPUo6&open=AaEU7keuIIA1DvOUPUo6&pullRequest=3",
+        "title": "Make sure granting access to others is safe here.",
+        "raw_details": null
+      }
+    ]
+  },
+  "changes": [
+    "Bulk URLs use deployment API configuration and an explicit route grammar; reject path traversal, encoded delimiters, alternative endpoints, queries, credentials and out-of-range rows.",
+    "Docker commands reconstruct an independent canonical vector from read/probe allowlists; never pass the caller's mutable vector to subprocess.",
+    "CI runs the four new bulk URL security regression tests."
+  ],
+  "verification": {
+    "linux_python_automation": 21,
+    "linux_python_sca": 8,
+    "linux_node": 12,
+    "total": 41,
+    "failures": 0,
+    "skipped": 0,
+    "frontend_source_files_unchanged_hash_verified": 25,
+    "frontend_lint": {
+      "warnings": 0,
+      "errors": 0
+    },
+    "frontend_build": {
+      "vite": "8.2.2",
+      "modules": 28,
+      "result": "passed"
+    },
+    "workflow_yaml": "passed"
+  },
+  "sonar_after": "Pending analysis of the follow-up commit; no gate bypass or false-positive marking.",
+  "limitations": [
+    "Runtime persistence regression uses Docker/HTTP mocks; no new real deployment or email delivery.",
+    "Full GitHub Actions approval remains blocked by exhausted included minutes; billing was not changed.",
+    "Browser authentication redirected to Google and was denied by automatic review; GitHub check diagnostics remained accessible.",
+    "PR stays draft and unmerged."
+  ]
+}

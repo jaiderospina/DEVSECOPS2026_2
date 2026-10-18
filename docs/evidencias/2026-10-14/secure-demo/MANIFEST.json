@@ -1,0 +1,19 @@
+{
+  "evidence": "E34",
+  "date": "2026-10-14",
+  "execution_source_commit": "bdedc774e86e8c7156999beadba5eface9e750a4",
+  "files": [
+    {
+      "path": "ACTIVACION_DEMOSTRACION_SEGURA_2026-10-14.json",
+      "sha256": "a75ac18291006639bf686cafb19c124645652ee39c56f5c4e9d211a5193e0b67"
+    },
+    {
+      "path": "CONFIANZA_CA_DEMOSTRACION_2026-10-14.json",
+      "sha256": "8f6c77f71cb7c2ff36439e51814ace0b80aa1ec5bee45ae105f62af9bc62f27c"
+    },
+    {
+      "path": "README.md",
+      "sha256": "0f0e045ca80e0d740714b6d071b41559c76d81d8d3ec389622b896adcf756620"
+    }
+  ]
+}

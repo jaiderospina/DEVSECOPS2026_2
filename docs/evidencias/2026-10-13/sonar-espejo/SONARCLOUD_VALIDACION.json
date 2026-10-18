@@ -1,0 +1,259 @@
+{
+  "date": "2026-10-13",
+  "timezone": "America/Bogota",
+  "source_repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+  "validated_commit": "f026d197ba28f0a3489e94b2c6123e1934df796f",
+  "project_key": "yeisonfblopez_DevSecOps-proyecto-Final-ci",
+  "workflow": {
+    "id": 38506204582,
+    "run_number": 3,
+    "head_sha": "f026d197ba28f0a3489e94b2c6123e1934df796f",
+    "head_branch": "master",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582",
+    "created_at": "2026-10-14T03:25:48Z",
+    "updated_at": "2026-10-14T03:34:43Z"
+  },
+  "jobs_total": 29,
+  "jobs": [
+    {
+      "id": 115664177040,
+      "name": "SonarQube Cloud analysis",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177040"
+    },
+    {
+      "id": 115664177172,
+      "name": "sca-python (identity-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177172"
+    },
+    {
+      "id": 115664177202,
+      "name": "sca-python (sync-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177202"
+    },
+    {
+      "id": 115664177214,
+      "name": "bulk-users-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177214"
+    },
+    {
+      "id": 115664177221,
+      "name": "sast (bandit)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177221"
+    },
+    {
+      "id": 115664177222,
+      "name": "sca-python (audit-dispatcher)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177222"
+    },
+    {
+      "id": 115664177248,
+      "name": "pytest (identity_http, identity-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177248"
+    },
+    {
+      "id": 115664177261,
+      "name": "sca-python (usuarios)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177261"
+    },
+    {
+      "id": 115664177270,
+      "name": "sca-python (permissions-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177270"
+    },
+    {
+      "id": 115664177271,
+      "name": "frontend-ui",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177271"
+    },
+    {
+      "id": 115664177274,
+      "name": "sca-python (audit-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177274"
+    },
+    {
+      "id": 115664177276,
+      "name": "permissions-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177276"
+    },
+    {
+      "id": 115664177285,
+      "name": "frontend-lint",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177285"
+    },
+    {
+      "id": 115664177291,
+      "name": "images (audit-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177291"
+    },
+    {
+      "id": 115664177298,
+      "name": "sca-trivy-manifests",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177298"
+    },
+    {
+      "id": 115664177302,
+      "name": "images (permissions-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177302"
+    },
+    {
+      "id": 115664177308,
+      "name": "pytest (sync_worker, sync-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177308"
+    },
+    {
+      "id": 115664177332,
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177332"
+    },
+    {
+      "id": 115664177340,
+      "name": "images (audit-dispatcher)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177340"
+    },
+    {
+      "id": 115664177357,
+      "name": "sast (semgrep)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177357"
+    },
+    {
+      "id": 115664177364,
+      "name": "pytest (audit_service, audit-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177364"
+    },
+    {
+      "id": 115664177368,
+      "name": "sca-node",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177368"
+    },
+    {
+      "id": 115664177375,
+      "name": "images (sync-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177375"
+    },
+    {
+      "id": 115664177382,
+      "name": "pytest (audit_dispatcher, audit-dispatcher)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177382"
+    },
+    {
+      "id": 115664177422,
+      "name": "images (usuarios)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177422"
+    },
+    {
+      "id": 115664177428,
+      "name": "model",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177428"
+    },
+    {
+      "id": 115664177435,
+      "name": "images (frontend)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177435"
+    },
+    {
+      "id": 115664177445,
+      "name": "images (identity-service)",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664177445"
+    },
+    {
+      "id": 115664556394,
+      "name": "gate",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38506204582/job/115664556394"
+    }
+  ],
+  "sonar_check": {
+    "id": 115666564286,
+    "name": "SonarCloud Code Analysis",
+    "head_sha": "f026d197ba28f0a3489e94b2c6123e1934df796f",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/runs/115666564286",
+    "details_url": "https://sonarcloud.io/dashboard?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master",
+    "started_at": "2026-10-14T03:26:13Z",
+    "completed_at": "2026-10-14T03:34:37Z",
+    "output": {
+      "title": "Quality Gate passed",
+      "summary": "Issues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [45 New issues](https://sonarcloud.io/project/issues?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted.svg '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&pullRequest=master&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&metric=new_duplicated_lines_density&view=list)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master)\n\n",
+      "text": null,
+      "annotations_count": 0,
+      "annotations_url": "https://api.github.com/repos/yeisonfblopez/DevSecOps-proyecto-Final-ci/check-runs/115666564286/annotations"
+    }
+  },
+  "measures_from_check_summary": {
+    "new_issues": 45,
+    "accepted_issues": 0,
+    "security_hotspots": 0,
+    "coverage_on_new_code_percent": 0.0,
+    "duplication_on_new_code_percent": 0.0
+  },
+  "quality_gate_passed": true,
+  "limits": [
+    "Approval belongs to mirror Sonar project and f026d19; not a new approval of original Sonar project or later commits.",
+    "45 new issues remain reported; Quality Gate passed does not imply zero issues or a verified A security rating.",
+    "0% coverage on new code reported by Sonar is distinct from 69% local statement coverage of five Python services.",
+    "Individual issues and Quality Gate configuration were not audited in this update.",
+    "The workflow gate job does not depend on sonarqube; this record confirms actual external Quality Gate success, not its enforcement as a dependency.",
+    "Earlier CD remains approval of 1.0.0 images, not a new release or deploy of f026d19."
+  ]
+}

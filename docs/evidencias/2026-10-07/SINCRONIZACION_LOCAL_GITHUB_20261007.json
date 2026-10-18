@@ -1,0 +1,67 @@
+{
+  "evidence": "E18",
+  "date": "2026-10-07",
+  "verified_at_utc": "2026-10-07T19:47:19Z",
+  "timezone": "America/Bogota",
+  "repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "project": "C:/Prueba-ProyectoFinal",
+  "branch": "feat/bulk-users-excel-20261005",
+  "previous_local_head": "ce561e304e1d7d8dd75fe74c8f1963e5eac53456",
+  "synchronized_base_revision": "9df06944d42bb86aa93bd4ce7431489e1815ac41",
+  "functional_revision": "7c076613d0525148a0be4914cb8d8be2fc0645a1",
+  "master_revision": "fed4a5d1af32e08af7a4618f1352bcaf05918436",
+  "synchronization": {
+    "method": "git merge --ff-only origin/feat/bulk-users-excel-20261005",
+    "local_and_tracking_head_equal_at_base": true,
+    "working_tree_clean_at_base": true,
+    "previous_local_files": 18,
+    "exact_git_blob_matches": 17,
+    "remaining_file": "docs/CHECKPOINT_PRUEBA_PROYECTOFINAL_2026-10-07.md differs only in line terminators; normalized lines match",
+    "previous_changes_saved_in_stash": "6b8b20d951564a9a1de86e2c1835c02d58c290df",
+    "stash_reapplied": false,
+    "reason": "Local source/document content already included upstream"
+  },
+  "preservation": {
+    "env_file_sha256_unchanged": true,
+    "ignored_local_files_preserved": true,
+    "postgres_started_at": "2026-10-07T13:04:53.896549478Z",
+    "postgres_health": "healthy",
+    "containers_recreated_for_sync": false,
+    "secrets_in_source_backup": false
+  },
+  "pr": {
+    "number": 3,
+    "state": "open",
+    "draft": true,
+    "merged": false
+  },
+  "progress_estimate": {
+    "percent": 80,
+    "range": [
+      75,
+      85
+    ],
+    "official_weighted_score": false,
+    "test_coverage": false
+  },
+  "scope": "Entire versioned source, infrastructure, tests, documentation and evidence synchronized. This documentation-only closeout is added after the verified base. E17 remains historical.",
+  "validation": {
+    "new_application_tests_run": false,
+    "prior_results": "E14/E15/E16 retain their original scopes and overlapping counts",
+    "current_ci_and_sonar_approved": false,
+    "published_1_0_0_images_include_audit": false
+  },
+  "remaining": [
+    "CI and current Sonar gate confirmation",
+    "Updated images and simulated CD",
+    "Three MEDIUM SCA findings review",
+    "Automated ZAP staging",
+    "DFD/STRIDE review/export",
+    "Coverage measurement",
+    "Second-PC clean installation",
+    "Administrative captures and technical documentation completion",
+    "Real mail batch paused",
+    "Academic public visibility, PDF and video",
+    "Separate PR integration decision"
+  ]
+}

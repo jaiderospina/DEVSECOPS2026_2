@@ -1,0 +1,14 @@
+{
+  "workflow": {
+    "id": 38635912285,
+    "head_sha": "d51902c07b22d23fee00f16547d312c705177706",
+    "head_branch": "master",
+    "conclusion": "success",
+    "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38635912285"
+  },
+  "jobs_total": 34,
+  "jobs_successful": 33,
+  "sonar_skipped_explicitly": true,
+  "image_release": "1.0.0",
+  "limits": "Simulated CD validates historical images by digest; not a new release of current source"
+}

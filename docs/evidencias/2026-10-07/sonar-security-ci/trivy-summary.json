@@ -1,0 +1,70 @@
+{
+  "coverage": [
+    {
+      "target": "servicios/audit-dispatcher/requirements.txt",
+      "type": "pip",
+      "packages_detected": 3,
+      "required_packages_verified": 3
+    },
+    {
+      "target": "servicios/audit-service/requirements.txt",
+      "type": "pip",
+      "packages_detected": 6,
+      "required_packages_verified": 6
+    },
+    {
+      "target": "servicios/identity-service/requirements.txt",
+      "type": "pip",
+      "packages_detected": 15,
+      "required_packages_verified": 15
+    },
+    {
+      "target": "servicios/permissions-service/requirements.txt",
+      "type": "pip",
+      "packages_detected": 6,
+      "required_packages_verified": 6
+    },
+    {
+      "target": "servicios/sync-service/requirements.txt",
+      "type": "pip",
+      "packages_detected": 3,
+      "required_packages_verified": 3
+    },
+    {
+      "target": "servicios/usuarios/requirements.txt",
+      "type": "pip",
+      "packages_detected": 19,
+      "required_packages_verified": 19
+    },
+    {
+      "target": "infraestructura/ansible/requirements.txt",
+      "type": "pip",
+      "packages_detected": 2,
+      "required_packages_verified": 2
+    },
+    {
+      "target": "infraestructura/ansible/ci-lock/requirements.txt",
+      "type": "pip",
+      "packages_detected": 97,
+      "required_packages_verified": 97
+    },
+    {
+      "target": "tests/bulk_users/ci-lock/requirements.txt",
+      "type": "pip",
+      "packages_detected": 41,
+      "required_packages_verified": 41
+    },
+    {
+      "target": "servicios/frontend/package-lock.json",
+      "type": "npm",
+      "packages_detected": 67,
+      "required_packages_verified": 7
+    }
+  ],
+  "severity_counts": {
+    "MEDIUM": 3
+  },
+  "blockers": [],
+  "passed": true,
+  "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+}

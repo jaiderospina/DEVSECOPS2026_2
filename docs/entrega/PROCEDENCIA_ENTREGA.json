@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-17",
+  "timezone": "America/Bogota",
+  "project": "I AM SECURE",
+  "course_repository": "jaiderospina/DEVSECOPS2026_2",
+  "delivery_branch": "I-AM-SECURE",
+  "course_base_commit": "b6a3aa2616ed23781dc8316debaffb10b01f3823",
+  "source_repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "source_commit": "0dd6fdd7589b827ebc18960a37e277354ddb7a13",
+  "source_tree": "20add90f3193524fbc7561e7c69b34af8872dd9b",
+  "source_files": 457,
+  "private_source_history_imported": false,
+  "application_code_changed": false,
+  "source_files_adapted": [
+    "README.md"
+  ],
+  "additional_files": [
+    "docs/entrega/ENTREGA_REPOSITORIO_CURSO.md",
+    "docs/entrega/PROCEDENCIA_ENTREGA.json"
+  ],
+  "gitleaks": {
+    "version": "8.24.3",
+    "mode": "dir snapshot, redacted, no container network",
+    "findings": 0
+  },
+  "screenshots_reviewed_for_credentials": 14,
+  "pdfs_preserved": true,
+  "risk_acceptance_changed": false,
+  "runtime_or_local_database_copied": false
+}

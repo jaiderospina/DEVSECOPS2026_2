@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-13",
+  "validated_commit": "2d8b4444447808bd75ed684dd9d0044f4c720d96",
+  "workflow": {
+    "id": 38512781360,
+    "head_sha": "2d8b4444447808bd75ed684dd9d0044f4c720d96",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38512781360"
+  },
+  "jobs_successful": 30,
+  "sonar_external": {
+    "id": 115686312267,
+    "name": "SonarCloud Code Analysis",
+    "status": "completed",
+    "conclusion": "failure",
+    "details_url": "https://sonarcloud.io/dashboard?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master",
+    "output": {
+      "title": "Quality Gate failed",
+      "summary": "Failed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed.svg '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&metric=new_coverage&view=list) (required ≥ 80%)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed.svg '') [84.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&metric=new_duplicated_lines_density&view=list) (required ≤ 3%)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed.svg '') [C Reliability Rating on New Code](https://sonarcloud.io/project/issues?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true) (required ≥ A)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb.svg '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint.svg '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n",
+      "text": null,
+      "annotations_count": 0,
+      "annotations_url": "https://api.github.com/repos/yeisonfblopez/DevSecOps-proyecto-Final-ci/check-runs/115686312267/annotations"
+    }
+  },
+  "zap": {
+    "gate": {
+      "passed": true,
+      "policy": "fail on MEDIUM/HIGH; no ignored alerts",
+      "runs": 7,
+      "api_role_operations": 39,
+      "zap_recorded_requests": 1947,
+      "findings": [],
+      "blockers": []
+    },
+    "lifecycle": {
+      "source_commit": "2d8b4444447808bd75ed684dd9d0044f4c720d96",
+      "repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+      "scan_and_gate_passed": true,
+      "cleanup_completed": true,
+      "runtime_secrets_uploaded": false,
+      "normal_compose_used": false,
+      "normal_database_used": false
+    },
+    "unexpected_database_changes": [],
+    "artifact_zip_sha256": "4c1a7dbb19c0ee6b39cf801fc1a7e6c2fa527e8a5891238a19dca2001da16f3f"
+  },
+  "distinction": "Workflow jobs succeeded; external Sonar Quality Gate failed. Historical E25 approval is not current approval."
+}

@@ -1,0 +1,131 @@
+{
+  "source_commit": "2b0abd4694164ae11b36aab136f2255735c0e598",
+  "zap_version": "2.17.0",
+  "artifacts": [
+    {
+      "path": "SUMMARY.md",
+      "bytes": 4015,
+      "sha256": "737897886af5f42854aa4eb0b6033344689e338bec3ec13ebc61f80baca32a76"
+    },
+    {
+      "path": "audit-public/coverage.json",
+      "bytes": 1775,
+      "sha256": "4b7bdc27b192ebe6a8784083b719a0bd9e12b6a97e0846a1a8c68fdcaa3b974d"
+    },
+    {
+      "path": "audit-public/report.json",
+      "bytes": 1789,
+      "sha256": "c115eccc8c18c2321862273f01ef70a0c9184b376fd22dda0ef6acc526098c10"
+    },
+    {
+      "path": "database/post-frozen.json",
+      "bytes": 2021,
+      "sha256": "76dbcd7acd2d7ca2bc37aa9205a3b6b9008b4b5d978541c57c99850c372c8998"
+    },
+    {
+      "path": "database/pre.json",
+      "bytes": 2021,
+      "sha256": "3e904ef5dcf03c01f74459d7088670eb260d639e108edf0902ac767bdea544da"
+    },
+    {
+      "path": "database-comparison.json",
+      "bytes": 3515,
+      "sha256": "b4600913fcc27670cb10424bd1ba367d558e93ff97095db25e4c9d9d02cf7f0f"
+    },
+    {
+      "path": "identity-admin_soporte/coverage.json",
+      "bytes": 14149,
+      "sha256": "9e2ec3d4346c476a3d3f02f880040e43e2597f232b04f39006ad69c5799d97c0"
+    },
+    {
+      "path": "identity-admin_soporte/report.json",
+      "bytes": 1974,
+      "sha256": "c3f79b089d72075b79a0a7d4de948221c8dc2ec2264e0ff88420fa29a9a66ab2"
+    },
+    {
+      "path": "identity-admin_ti/coverage.json",
+      "bytes": 14144,
+      "sha256": "eef14e6b15e7d3bbed6641c23952afc96c9738033be7bbcd0df6e9856e30e2e8"
+    },
+    {
+      "path": "identity-admin_ti/report.json",
+      "bytes": 1973,
+      "sha256": "d6e53ff34728936d04bcef4f01f100d4f92a88af92361a919220744d8ed23e10"
+    },
+    {
+      "path": "openapi/audit-readonly.openapi.json",
+      "bytes": 722,
+      "sha256": "54634ca062d60e7b8b50e381205e53fc537e6e7be70fce9b9da64a51ab7bb660"
+    },
+    {
+      "path": "openapi/identity-readonly.openapi.json",
+      "bytes": 8350,
+      "sha256": "82d6b57d627717e0a72dda6fb80f07c51a8bffd5bfbb4bad1e66dababca00fd3"
+    },
+    {
+      "path": "openapi/permissions-readonly.openapi.json",
+      "bytes": 4818,
+      "sha256": "e508b0257420f0576d68b740793084cb27637d5d7903b06efeaa906602d0117b"
+    },
+    {
+      "path": "permissions-admin_soporte/coverage.json",
+      "bytes": 8054,
+      "sha256": "3fd3bd9637a9a2003b6709f993b981b07154323a5f76d8669da7f65607e703e7"
+    },
+    {
+      "path": "permissions-admin_soporte/report.json",
+      "bytes": 1995,
+      "sha256": "da14d1c806b8cdf7ad778c47acf5b6aab418ef408f98cce451d94d89732b92ab"
+    },
+    {
+      "path": "permissions-lider_facturacion/coverage.json",
+      "bytes": 8058,
+      "sha256": "ab5ba85c57dfc588e0bb6e68b1d6eba137e011aa0cd1be7fcc0ab6ef7b19918e"
+    },
+    {
+      "path": "permissions-lider_facturacion/report.json",
+      "bytes": 1995,
+      "sha256": "35642e88799ddbfa5ef781335e4e1609000bde50fa5cc672790672db2078b733"
+    },
+    {
+      "path": "permissions-lider_gestion_humana/coverage.json",
+      "bytes": 8065,
+      "sha256": "f737c0f8f60bf99237502ba08f37e4fd6659d7327977580e880e29e884e7a1cc"
+    },
+    {
+      "path": "permissions-lider_gestion_humana/report.json",
+      "bytes": 1995,
+      "sha256": "2a0ad2c84b87c78fdb605faaf853447cb912b0b6e7c5810a8fa2f7a6f1efd346"
+    },
+    {
+      "path": "permissions-lider_logistica/coverage.json",
+      "bytes": 8051,
+      "sha256": "759160e536b581aab4aadd8848ec8102141218639bbc48f9684af803097e88e1"
+    },
+    {
+      "path": "permissions-lider_logistica/report.json",
+      "bytes": 1995,
+      "sha256": "b5cd6f21b1cf007e10dd6d28b903f6ae535d3fcba1fc5dc8f4a87f10311cf2dc"
+    },
+    {
+      "path": "postflight-isolation.json",
+      "bytes": 3510,
+      "sha256": "18cfd59bbf1242ae73f4cf8860fd4897db7abe5846686a2556b812fa01233d86"
+    },
+    {
+      "path": "preflight-isolation.json",
+      "bytes": 518,
+      "sha256": "e81e0e351f34a7f6c73df0f564c311a0979d07b198ff45060709236193c23129"
+    },
+    {
+      "path": "sanitization.json",
+      "bytes": 2244,
+      "sha256": "efb2f771f13b3e9362679955812556d8814bc998afe51978aca38a3d4f47b665"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 12714,
+      "sha256": "4913a371af5aa6087ce996c17c1e18895efb0efe57de25dbcc13be5c001e702b"
+    }
+  ]
+}

@@ -1,0 +1,2104 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2026-10-07T13:51:44.190953068Z",
+  "ArtifactName": "/scan",
+  "ArtifactType": "filesystem",
+  "Results": [
+    {
+      "Target": "infraestructura/ansible/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Packages": [
+        {
+          "Name": "ansible-core",
+          "Identifier": {
+            "PURL": "pkg:pypi/ansible-core@2.21.5",
+            "UID": "4cec417feba2b462"
+          },
+          "Version": "2.21.5",
+          "Locations": [
+            {
+              "StartLine": 1,
+              "EndLine": 1
+            }
+          ]
+        },
+        {
+          "Name": "checkov",
+          "Identifier": {
+            "PURL": "pkg:pypi/checkov@3.3.25",
+            "UID": "e5db5fdeb5cc2bab"
+          },
+          "Version": "3.3.25",
+          "Locations": [
+            {
+              "StartLine": 2,
+              "EndLine": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Target": "servicios/audit-dispatcher/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Packages": [
+        {
+          "Name": "SQLAlchemy",
+          "Identifier": {
+            "PURL": "pkg:pypi/sqlalchemy@2.0.52",
+            "UID": "84da5b53dfdb2590"
+          },
+          "Version": "2.0.52",
+          "Locations": [
+            {
+              "StartLine": 1,
+              "EndLine": 1
+            }
+          ]
+        },
+        {
+          "Name": "psycopg2-binary",
+          "Identifier": {
+            "PURL": "pkg:pypi/psycopg2-binary@2.9.13",
+            "UID": "ba0674cc16880f09"
+          },
+          "Version": "2.9.13",
+          "Locations": [
+            {
+              "StartLine": 2,
+              "EndLine": 2
+            }
+          ]
+        },
+        {
+          "Name": "python-dotenv",
+          "Identifier": {
+            "PURL": "pkg:pypi/python-dotenv@1.2.3",
+            "UID": "5bb23b1f1d96a14e"
+          },
+          "Version": "1.2.3",
+          "Locations": [
+            {
+              "StartLine": 3,
+              "EndLine": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Target": "servicios/audit-service/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Packages": [
+        {
+          "Name": "SQLAlchemy",
+          "Identifier": {
+            "PURL": "pkg:pypi/sqlalchemy@2.0.52",
+            "UID": "153a081eabec7f3d"
+          },
+          "Version": "2.0.52",
+          "Locations": [
+            {
+              "StartLine": 10,
+              "EndLine": 10
+            }
+          ]
+        },
+        {
+          "Name": "fastapi",
+          "Identifier": {
+            "PURL": "pkg:pypi/fastapi@0.141.1",
+            "UID": "c30f2e3c3fbddceb"
+          },
+          "Version": "0.141.1",
+          "Locations": [
+            {
+              "StartLine": 6,
+              "EndLine": 6
+            }
+          ]
+        },
+        {
+          "Name": "psycopg2-binary",
+          "Identifier": {
+            "PURL": "pkg:pypi/psycopg2-binary@2.9.13",
+            "UID": "c767d8ea8f9f973e"
+          },
+          "Version": "2.9.13",
+          "Locations": [
+            {
+              "StartLine": 11,
+              "EndLine": 11
+            }
+          ]
+        },
+        {
+          "Name": "pydantic",
+          "Identifier": {
+            "PURL": "pkg:pypi/pydantic@2.13.5",
+            "UID": "70d7bef30c3f4264"
+          },
+          "Version": "2.13.5",
+          "Locations": [
+            {
+              "StartLine": 8,
+              "EndLine": 8
+            }
+          ]
+        },
+        {
+          "Name": "python-dotenv",
+          "Identifier": {
+            "PURL": "pkg:pypi/python-dotenv@1.2.3",
+            "UID": "8452111cbc95f3aa"
+          },
+          "Version": "1.2.3",
+          "Locations": [
+            {
+              "StartLine": 13,
+              "EndLine": 13
+            }
+          ]
+        },
+        {
+          "Name": "uvicorn",
+          "Identifier": {
+            "PURL": "pkg:pypi/uvicorn@0.52.4",
+            "UID": "eafc4d88e081dba8"
+          },
+          "Version": "0.52.4",
+          "Locations": [
+            {
+              "StartLine": 7,
+              "EndLine": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Target": "servicios/frontend/package-lock.json",
+      "Class": "lang-pkgs",
+      "Type": "npm",
+      "Packages": [
+        {
+          "ID": "@types/react@19.2.18",
+          "Name": "@types/react",
+          "Identifier": {
+            "PURL": "pkg:npm/%40types/react@19.2.18",
+            "UID": "62ff8e0a01bfc032"
+          },
+          "Version": "19.2.18",
+          "Dev": true,
+          "Relationship": "direct",
+          "DependsOn": [
+            "csstype@3.2.3"
+          ],
+          "Locations": [
+            {
+              "StartLine": 659,
+              "EndLine": 668
+            }
+          ]
+        },
+        {
+          "ID": "@types/react-dom@19.2.7",
+          "Name": "@types/react-dom",
+          "Identifier": {
+            "PURL": "pkg:npm/%40types/react-dom@19.2.7",
+            "UID": "e6de97179ff19bcf"
+          },
+          "Version": "19.2.7",
+          "Dev": true,
+          "Relationship": "direct",
+          "DependsOn": [
+            "@types/react@19.2.18"
+          ],
+          "Locations": [
+            {
+              "StartLine": 669,
+              "EndLine": 678
+            }
+          ]
+        },
+        {
+          "ID": "@vitejs/plugin-react@6.1.1",
+          "Name": "@vitejs/plugin-react",
+          "Identifier": {
+            "PURL": "pkg:npm/%40vitejs/plugin-react@6.1.1",
+            "UID": "278c53b84cfd1a94"
+          },
+          "Version": "6.1.1",
+          "Dev": true,
+          "Relationship": "direct",
+          "DependsOn": [
+            "@rolldown/pluginutils@1.0.1",
+            "vite@8.2.2"
+          ],
+          "Locations": [
+            {
+              "StartLine": 679,
+              "EndLine": 708
+            }
+          ]
+        },
+        {
+          "ID": "oxlint@1.82.0",
+          "Name": "oxlint",
+          "Identifier": {
+            "PURL": "pkg:npm/oxlint@1.82.0",
+            "UID": "ada59f80d0264f2b"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Relationship": "direct",
+          "DependsOn": [
+            "@oxlint/binding-android-arm-eabi@1.82.0",
+            "@oxlint/binding-android-arm64@1.82.0",
+            "@oxlint/binding-darwin-arm64@1.82.0",
+            "@oxlint/binding-darwin-x64@1.82.0",
+            "@oxlint/binding-freebsd-x64@1.82.0",
+            "@oxlint/binding-linux-arm-gnueabihf@1.82.0",
+            "@oxlint/binding-linux-arm-musleabihf@1.82.0",
+            "@oxlint/binding-linux-arm64-gnu@1.82.0",
+            "@oxlint/binding-linux-arm64-musl@1.82.0",
+            "@oxlint/binding-linux-ppc64-gnu@1.82.0",
+            "@oxlint/binding-linux-riscv64-gnu@1.82.0",
+            "@oxlint/binding-linux-riscv64-musl@1.82.0",
+            "@oxlint/binding-linux-s390x-gnu@1.82.0",
+            "@oxlint/binding-linux-x64-gnu@1.82.0",
+            "@oxlint/binding-linux-x64-musl@1.82.0",
+            "@oxlint/binding-openharmony-arm64@1.82.0",
+            "@oxlint/binding-win32-arm64-msvc@1.82.0",
+            "@oxlint/binding-win32-ia32-msvc@1.82.0",
+            "@oxlint/binding-win32-x64-msvc@1.82.0"
+          ],
+          "Locations": [
+            {
+              "StartLine": 1051,
+              "EndLine": 1099
+            }
+          ]
+        },
+        {
+          "ID": "react@19.2.8",
+          "Name": "react",
+          "Identifier": {
+            "PURL": "pkg:npm/react@19.2.8",
+            "UID": "b15cb6e47a8db45a"
+          },
+          "Version": "19.2.8",
+          "Relationship": "direct",
+          "Locations": [
+            {
+              "StartLine": 1149,
+              "EndLine": 1157
+            }
+          ]
+        },
+        {
+          "ID": "react-dom@19.2.8",
+          "Name": "react-dom",
+          "Identifier": {
+            "PURL": "pkg:npm/react-dom@19.2.8",
+            "UID": "7162d3b4545e2ff6"
+          },
+          "Version": "19.2.8",
+          "Relationship": "direct",
+          "DependsOn": [
+            "react@19.2.8",
+            "scheduler@0.27.0"
+          ],
+          "Locations": [
+            {
+              "StartLine": 1158,
+              "EndLine": 1169
+            }
+          ]
+        },
+        {
+          "ID": "vite@8.2.2",
+          "Name": "vite",
+          "Identifier": {
+            "PURL": "pkg:npm/vite@8.2.2",
+            "UID": "71fc4457ab0029bd"
+          },
+          "Version": "8.2.2",
+          "Dev": true,
+          "Relationship": "direct",
+          "DependsOn": [
+            "fsevents@2.3.3",
+            "lightningcss@1.33.0",
+            "picomatch@4.0.7",
+            "postcss@8.5.28",
+            "rolldown@1.2.7",
+            "tinyglobby@0.2.17"
+          ],
+          "Locations": [
+            {
+              "StartLine": 1237,
+              "EndLine": 1314
+            }
+          ]
+        },
+        {
+          "ID": "@oxc-project/types@0.148.0",
+          "Name": "@oxc-project/types",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxc-project/types@0.148.0",
+            "UID": "493b13e1fe572753"
+          },
+          "Version": "0.148.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 22,
+              "EndLine": 31
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-android-arm-eabi@1.82.0",
+          "Name": "@oxlint/binding-android-arm-eabi",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-android-arm-eabi@1.82.0",
+            "UID": "624630d32c5135c5"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 32,
+              "EndLine": 48
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-android-arm64@1.82.0",
+          "Name": "@oxlint/binding-android-arm64",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-android-arm64@1.82.0",
+            "UID": "9abcc94ae20baee9"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 49,
+              "EndLine": 65
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-darwin-arm64@1.82.0",
+          "Name": "@oxlint/binding-darwin-arm64",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-darwin-arm64@1.82.0",
+            "UID": "e6d0f409d6ff436"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 66,
+              "EndLine": 82
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-darwin-x64@1.82.0",
+          "Name": "@oxlint/binding-darwin-x64",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-darwin-x64@1.82.0",
+            "UID": "2b1f0e6d40db3778"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 83,
+              "EndLine": 99
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-freebsd-x64@1.82.0",
+          "Name": "@oxlint/binding-freebsd-x64",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-freebsd-x64@1.82.0",
+            "UID": "3cb1e335bfceb406"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 100,
+              "EndLine": 116
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-linux-arm-gnueabihf@1.82.0",
+          "Name": "@oxlint/binding-linux-arm-gnueabihf",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-linux-arm-gnueabihf@1.82.0",
+            "UID": "71096d080bb9fa7c"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 117,
+              "EndLine": 133
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-linux-arm-musleabihf@1.82.0",
+          "Name": "@oxlint/binding-linux-arm-musleabihf",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-linux-arm-musleabihf@1.82.0",
+            "UID": "22b907aa3941d29d"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 134,
+              "EndLine": 150
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-linux-arm64-gnu@1.82.0",
+          "Name": "@oxlint/binding-linux-arm64-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-linux-arm64-gnu@1.82.0",
+            "UID": "88395c0110a3999b"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 151,
+              "EndLine": 170
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-linux-arm64-musl@1.82.0",
+          "Name": "@oxlint/binding-linux-arm64-musl",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-linux-arm64-musl@1.82.0",
+            "UID": "a43ceaae01a0bc04"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 171,
+              "EndLine": 190
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-linux-ppc64-gnu@1.82.0",
+          "Name": "@oxlint/binding-linux-ppc64-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-linux-ppc64-gnu@1.82.0",
+            "UID": "2ccf6f82f240a284"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 191,
+              "EndLine": 210
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-linux-riscv64-gnu@1.82.0",
+          "Name": "@oxlint/binding-linux-riscv64-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-linux-riscv64-gnu@1.82.0",
+            "UID": "fbc1d935d6371869"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 211,
+              "EndLine": 230
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-linux-riscv64-musl@1.82.0",
+          "Name": "@oxlint/binding-linux-riscv64-musl",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-linux-riscv64-musl@1.82.0",
+            "UID": "338bf91f2de70233"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 231,
+              "EndLine": 250
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-linux-s390x-gnu@1.82.0",
+          "Name": "@oxlint/binding-linux-s390x-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-linux-s390x-gnu@1.82.0",
+            "UID": "520252f4b610a5f9"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 251,
+              "EndLine": 270
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-linux-x64-gnu@1.82.0",
+          "Name": "@oxlint/binding-linux-x64-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-linux-x64-gnu@1.82.0",
+            "UID": "f77354e6cd98bfc2"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 271,
+              "EndLine": 290
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-linux-x64-musl@1.82.0",
+          "Name": "@oxlint/binding-linux-x64-musl",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-linux-x64-musl@1.82.0",
+            "UID": "6a62c0125ca0ba12"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 291,
+              "EndLine": 310
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-openharmony-arm64@1.82.0",
+          "Name": "@oxlint/binding-openharmony-arm64",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-openharmony-arm64@1.82.0",
+            "UID": "da943d07adb75111"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 311,
+              "EndLine": 327
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-win32-arm64-msvc@1.82.0",
+          "Name": "@oxlint/binding-win32-arm64-msvc",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-win32-arm64-msvc@1.82.0",
+            "UID": "b46d236e9ad24573"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 328,
+              "EndLine": 344
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-win32-ia32-msvc@1.82.0",
+          "Name": "@oxlint/binding-win32-ia32-msvc",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-win32-ia32-msvc@1.82.0",
+            "UID": "369e431a87a3dd5e"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 345,
+              "EndLine": 361
+            }
+          ]
+        },
+        {
+          "ID": "@oxlint/binding-win32-x64-msvc@1.82.0",
+          "Name": "@oxlint/binding-win32-x64-msvc",
+          "Identifier": {
+            "PURL": "pkg:npm/%40oxlint/binding-win32-x64-msvc@1.82.0",
+            "UID": "53e34de53df44656"
+          },
+          "Version": "1.82.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 362,
+              "EndLine": 378
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-android-arm-eabi@1.2.7",
+          "Name": "@rolldown/binding-android-arm-eabi",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-android-arm-eabi@1.2.7",
+            "UID": "1d1ac4f52f31534d"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 379,
+              "EndLine": 395
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-android-arm64@1.2.7",
+          "Name": "@rolldown/binding-android-arm64",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-android-arm64@1.2.7",
+            "UID": "2376dc5bac505d03"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 396,
+              "EndLine": 412
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-darwin-arm64@1.2.7",
+          "Name": "@rolldown/binding-darwin-arm64",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-darwin-arm64@1.2.7",
+            "UID": "cc292baefa8da64d"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 413,
+              "EndLine": 429
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-darwin-x64@1.2.7",
+          "Name": "@rolldown/binding-darwin-x64",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-darwin-x64@1.2.7",
+            "UID": "c5dc95d04a330dea"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 430,
+              "EndLine": 446
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-freebsd-x64@1.2.7",
+          "Name": "@rolldown/binding-freebsd-x64",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-freebsd-x64@1.2.7",
+            "UID": "fac4947d68298413"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 447,
+              "EndLine": 463
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-linux-arm-gnueabihf@1.2.7",
+          "Name": "@rolldown/binding-linux-arm-gnueabihf",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-linux-arm-gnueabihf@1.2.7",
+            "UID": "c9e4ba36daad4fcf"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 464,
+              "EndLine": 480
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-linux-arm64-gnu@1.2.7",
+          "Name": "@rolldown/binding-linux-arm64-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-linux-arm64-gnu@1.2.7",
+            "UID": "d5442272e9616a62"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 481,
+              "EndLine": 500
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-linux-arm64-musl@1.2.7",
+          "Name": "@rolldown/binding-linux-arm64-musl",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-linux-arm64-musl@1.2.7",
+            "UID": "46a7529eeaac3650"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 501,
+              "EndLine": 520
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-linux-ppc64-gnu@1.2.7",
+          "Name": "@rolldown/binding-linux-ppc64-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-linux-ppc64-gnu@1.2.7",
+            "UID": "32796d2be575d0c"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 521,
+              "EndLine": 540
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-linux-s390x-gnu@1.2.7",
+          "Name": "@rolldown/binding-linux-s390x-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-linux-s390x-gnu@1.2.7",
+            "UID": "f8e6127dee7042a3"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 541,
+              "EndLine": 560
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-linux-x64-gnu@1.2.7",
+          "Name": "@rolldown/binding-linux-x64-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.7",
+            "UID": "3ae81a9621736c85"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 561,
+              "EndLine": 580
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-linux-x64-musl@1.2.7",
+          "Name": "@rolldown/binding-linux-x64-musl",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-linux-x64-musl@1.2.7",
+            "UID": "8728535a52ff43aa"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 581,
+              "EndLine": 600
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-openharmony-arm64@1.2.7",
+          "Name": "@rolldown/binding-openharmony-arm64",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-openharmony-arm64@1.2.7",
+            "UID": "2a4f02a1c30eb6e0"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 601,
+              "EndLine": 617
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-win32-arm64-msvc@1.2.7",
+          "Name": "@rolldown/binding-win32-arm64-msvc",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-win32-arm64-msvc@1.2.7",
+            "UID": "8112df1b2420fdfa"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 618,
+              "EndLine": 634
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/binding-win32-x64-msvc@1.2.7",
+          "Name": "@rolldown/binding-win32-x64-msvc",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/binding-win32-x64-msvc@1.2.7",
+            "UID": "51a15f7237a6e452"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 635,
+              "EndLine": 651
+            }
+          ]
+        },
+        {
+          "ID": "@rolldown/pluginutils@1.0.1",
+          "Name": "@rolldown/pluginutils",
+          "Identifier": {
+            "PURL": "pkg:npm/%40rolldown/pluginutils@1.0.1",
+            "UID": "3941e8241161d152"
+          },
+          "Version": "1.0.1",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 652,
+              "EndLine": 658
+            }
+          ]
+        },
+        {
+          "ID": "csstype@3.2.3",
+          "Name": "csstype",
+          "Identifier": {
+            "PURL": "pkg:npm/csstype@3.2.3",
+            "UID": "9505a979ef9be539"
+          },
+          "Version": "3.2.3",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 709,
+              "EndLine": 715
+            }
+          ]
+        },
+        {
+          "ID": "detect-libc@2.1.2",
+          "Name": "detect-libc",
+          "Identifier": {
+            "PURL": "pkg:npm/detect-libc@2.1.2",
+            "UID": "7a56d31e99250f38"
+          },
+          "Version": "2.1.2",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 716,
+              "EndLine": 725
+            }
+          ]
+        },
+        {
+          "ID": "fdir@6.5.0",
+          "Name": "fdir",
+          "Identifier": {
+            "PURL": "pkg:npm/fdir@6.5.0",
+            "UID": "4d93f5836c3abd8b"
+          },
+          "Version": "6.5.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "DependsOn": [
+            "picomatch@4.0.7"
+          ],
+          "Locations": [
+            {
+              "StartLine": 726,
+              "EndLine": 743
+            }
+          ]
+        },
+        {
+          "ID": "fsevents@2.3.3",
+          "Name": "fsevents",
+          "Identifier": {
+            "PURL": "pkg:npm/fsevents@2.3.3",
+            "UID": "848c803b4f9d8e4e"
+          },
+          "Version": "2.3.3",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 744,
+              "EndLine": 758
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss@1.33.0",
+          "Name": "lightningcss",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss@1.33.0",
+            "UID": "85a0e68124d8e8df"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "DependsOn": [
+            "detect-libc@2.1.2",
+            "lightningcss-android-arm64@1.33.0",
+            "lightningcss-darwin-arm64@1.33.0",
+            "lightningcss-darwin-x64@1.33.0",
+            "lightningcss-freebsd-x64@1.33.0",
+            "lightningcss-linux-arm-gnueabihf@1.33.0",
+            "lightningcss-linux-arm64-gnu@1.33.0",
+            "lightningcss-linux-arm64-musl@1.33.0",
+            "lightningcss-linux-x64-gnu@1.33.0",
+            "lightningcss-linux-x64-musl@1.33.0",
+            "lightningcss-win32-arm64-msvc@1.33.0",
+            "lightningcss-win32-x64-msvc@1.33.0"
+          ],
+          "Locations": [
+            {
+              "StartLine": 759,
+              "EndLine": 788
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-android-arm64@1.33.0",
+          "Name": "lightningcss-android-arm64",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-android-arm64@1.33.0",
+            "UID": "dea0ef5eb9558b36"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 789,
+              "EndLine": 809
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-darwin-arm64@1.33.0",
+          "Name": "lightningcss-darwin-arm64",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-darwin-arm64@1.33.0",
+            "UID": "334cc060aabf4258"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 810,
+              "EndLine": 830
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-darwin-x64@1.33.0",
+          "Name": "lightningcss-darwin-x64",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-darwin-x64@1.33.0",
+            "UID": "dfb0c87dee70b726"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 831,
+              "EndLine": 851
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-freebsd-x64@1.33.0",
+          "Name": "lightningcss-freebsd-x64",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-freebsd-x64@1.33.0",
+            "UID": "874c4aa4c1163226"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 852,
+              "EndLine": 872
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-linux-arm-gnueabihf@1.33.0",
+          "Name": "lightningcss-linux-arm-gnueabihf",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-linux-arm-gnueabihf@1.33.0",
+            "UID": "ea26c744503a2ccd"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 873,
+              "EndLine": 893
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-linux-arm64-gnu@1.33.0",
+          "Name": "lightningcss-linux-arm64-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-linux-arm64-gnu@1.33.0",
+            "UID": "78ac0f6c86c12c32"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 894,
+              "EndLine": 917
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-linux-arm64-musl@1.33.0",
+          "Name": "lightningcss-linux-arm64-musl",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-linux-arm64-musl@1.33.0",
+            "UID": "fe0560cdd6d73afc"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 918,
+              "EndLine": 941
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-linux-x64-gnu@1.33.0",
+          "Name": "lightningcss-linux-x64-gnu",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-linux-x64-gnu@1.33.0",
+            "UID": "9a664402a23bdfb2"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 942,
+              "EndLine": 965
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-linux-x64-musl@1.33.0",
+          "Name": "lightningcss-linux-x64-musl",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-linux-x64-musl@1.33.0",
+            "UID": "d381e3299855c198"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 966,
+              "EndLine": 989
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-win32-arm64-msvc@1.33.0",
+          "Name": "lightningcss-win32-arm64-msvc",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-win32-arm64-msvc@1.33.0",
+            "UID": "ff80126d772e625b"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 990,
+              "EndLine": 1010
+            }
+          ]
+        },
+        {
+          "ID": "lightningcss-win32-x64-msvc@1.33.0",
+          "Name": "lightningcss-win32-x64-msvc",
+          "Identifier": {
+            "PURL": "pkg:npm/lightningcss-win32-x64-msvc@1.33.0",
+            "UID": "b95a9159d8dcc070"
+          },
+          "Version": "1.33.0",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 1011,
+              "EndLine": 1031
+            }
+          ]
+        },
+        {
+          "ID": "nanoid@3.3.18",
+          "Name": "nanoid",
+          "Identifier": {
+            "PURL": "pkg:npm/nanoid@3.3.18",
+            "UID": "9a404017747e21f0"
+          },
+          "Version": "3.3.18",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 1032,
+              "EndLine": 1050
+            }
+          ]
+        },
+        {
+          "ID": "picocolors@1.1.1",
+          "Name": "picocolors",
+          "Identifier": {
+            "PURL": "pkg:npm/picocolors@1.1.1",
+            "UID": "9ca1f42648da0e46"
+          },
+          "Version": "1.1.1",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 1100,
+              "EndLine": 1106
+            }
+          ]
+        },
+        {
+          "ID": "picomatch@4.0.7",
+          "Name": "picomatch",
+          "Identifier": {
+            "PURL": "pkg:npm/picomatch@4.0.7",
+            "UID": "b480d7f7f2fe86ca"
+          },
+          "Version": "4.0.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 1107,
+              "EndLine": 1119
+            }
+          ]
+        },
+        {
+          "ID": "postcss@8.5.28",
+          "Name": "postcss",
+          "Identifier": {
+            "PURL": "pkg:npm/postcss@8.5.28",
+            "UID": "2ae1820b91834054"
+          },
+          "Version": "8.5.28",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "DependsOn": [
+            "nanoid@3.3.18",
+            "picocolors@1.1.1",
+            "source-map-js@1.2.2"
+          ],
+          "Locations": [
+            {
+              "StartLine": 1120,
+              "EndLine": 1148
+            }
+          ]
+        },
+        {
+          "ID": "rolldown@1.2.7",
+          "Name": "rolldown",
+          "Identifier": {
+            "PURL": "pkg:npm/rolldown@1.2.7",
+            "UID": "b9e5378147e24864"
+          },
+          "Version": "1.2.7",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "DependsOn": [
+            "@oxc-project/types@0.148.0",
+            "@rolldown/binding-android-arm-eabi@1.2.7",
+            "@rolldown/binding-android-arm64@1.2.7",
+            "@rolldown/binding-darwin-arm64@1.2.7",
+            "@rolldown/binding-darwin-x64@1.2.7",
+            "@rolldown/binding-freebsd-x64@1.2.7",
+            "@rolldown/binding-linux-arm-gnueabihf@1.2.7",
+            "@rolldown/binding-linux-arm64-gnu@1.2.7",
+            "@rolldown/binding-linux-arm64-musl@1.2.7",
+            "@rolldown/binding-linux-ppc64-gnu@1.2.7",
+            "@rolldown/binding-linux-s390x-gnu@1.2.7",
+            "@rolldown/binding-linux-x64-gnu@1.2.7",
+            "@rolldown/binding-linux-x64-musl@1.2.7",
+            "@rolldown/binding-openharmony-arm64@1.2.7",
+            "@rolldown/binding-win32-arm64-msvc@1.2.7",
+            "@rolldown/binding-win32-x64-msvc@1.2.7",
+            "@rolldown/pluginutils@1.0.1"
+          ],
+          "Locations": [
+            {
+              "StartLine": 1170,
+              "EndLine": 1203
+            }
+          ]
+        },
+        {
+          "ID": "scheduler@0.27.0",
+          "Name": "scheduler",
+          "Identifier": {
+            "PURL": "pkg:npm/scheduler@0.27.0",
+            "UID": "84f5addbc8f08f96"
+          },
+          "Version": "0.27.0",
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 1204,
+              "EndLine": 1209
+            }
+          ]
+        },
+        {
+          "ID": "source-map-js@1.2.2",
+          "Name": "source-map-js",
+          "Identifier": {
+            "PURL": "pkg:npm/source-map-js@1.2.2",
+            "UID": "9c052c9f9e0c50ed"
+          },
+          "Version": "1.2.2",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "Locations": [
+            {
+              "StartLine": 1210,
+              "EndLine": 1219
+            }
+          ]
+        },
+        {
+          "ID": "tinyglobby@0.2.17",
+          "Name": "tinyglobby",
+          "Identifier": {
+            "PURL": "pkg:npm/tinyglobby@0.2.17",
+            "UID": "eb57595862c216cd"
+          },
+          "Version": "0.2.17",
+          "Dev": true,
+          "Indirect": true,
+          "Relationship": "indirect",
+          "DependsOn": [
+            "fdir@6.5.0",
+            "picomatch@4.0.7"
+          ],
+          "Locations": [
+            {
+              "StartLine": 1220,
+              "EndLine": 1236
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Target": "servicios/identity-service/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Packages": [
+        {
+          "Name": "PyJWT",
+          "Identifier": {
+            "PURL": "pkg:pypi/pyjwt@2.15.0",
+            "UID": "3af032e8bd8021d4"
+          },
+          "Version": "2.15.0",
+          "Locations": [
+            {
+              "StartLine": 26,
+              "EndLine": 26
+            }
+          ]
+        },
+        {
+          "Name": "SQLAlchemy",
+          "Identifier": {
+            "PURL": "pkg:pypi/sqlalchemy@2.0.52",
+            "UID": "1c54496b05e90f8a"
+          },
+          "Version": "2.0.52",
+          "Locations": [
+            {
+              "StartLine": 19,
+              "EndLine": 19
+            }
+          ]
+        },
+        {
+          "Name": "cryptography",
+          "Identifier": {
+            "PURL": "pkg:pypi/cryptography@50.0.1",
+            "UID": "5c78db66ebd54de2"
+          },
+          "Version": "50.0.1",
+          "Locations": [
+            {
+              "StartLine": 35,
+              "EndLine": 35
+            }
+          ]
+        },
+        {
+          "Name": "defusedxml",
+          "Identifier": {
+            "PURL": "pkg:pypi/defusedxml@0.7.1",
+            "UID": "e24719601e093c39"
+          },
+          "Version": "0.7.1",
+          "Locations": [
+            {
+              "StartLine": 44,
+              "EndLine": 44
+            }
+          ]
+        },
+        {
+          "Name": "email-validator",
+          "Identifier": {
+            "PURL": "pkg:pypi/email-validator@2.3.0",
+            "UID": "6b09cddce1e9a1d9"
+          },
+          "Version": "2.3.0",
+          "Locations": [
+            {
+              "StartLine": 16,
+              "EndLine": 16
+            }
+          ]
+        },
+        {
+          "Name": "fastapi",
+          "Identifier": {
+            "PURL": "pkg:pypi/fastapi@0.141.1",
+            "UID": "eb9c193d146f3070"
+          },
+          "Version": "0.141.1",
+          "Locations": [
+            {
+              "StartLine": 11,
+              "EndLine": 11
+            }
+          ]
+        },
+        {
+          "Name": "openpyxl",
+          "Identifier": {
+            "PURL": "pkg:pypi/openpyxl@3.1.5",
+            "UID": "8e731e5f70b95d1e"
+          },
+          "Version": "3.1.5",
+          "Locations": [
+            {
+              "StartLine": 43,
+              "EndLine": 43
+            }
+          ]
+        },
+        {
+          "Name": "psycopg2-binary",
+          "Identifier": {
+            "PURL": "pkg:pypi/psycopg2-binary@2.9.13",
+            "UID": "b28d77d54509ee62"
+          },
+          "Version": "2.9.13",
+          "Locations": [
+            {
+              "StartLine": 20,
+              "EndLine": 20
+            }
+          ]
+        },
+        {
+          "Name": "pwdlib",
+          "Identifier": {
+            "PURL": "pkg:pypi/pwdlib@0.3.1",
+            "UID": "d2cd6ab3e80cda1e"
+          },
+          "Version": "0.3.1",
+          "Locations": [
+            {
+              "StartLine": 23,
+              "EndLine": 23
+            }
+          ]
+        },
+        {
+          "Name": "pydantic",
+          "Identifier": {
+            "PURL": "pkg:pypi/pydantic@2.13.5",
+            "UID": "d95d7e5cce287d90"
+          },
+          "Version": "2.13.5",
+          "Locations": [
+            {
+              "StartLine": 15,
+              "EndLine": 15
+            }
+          ]
+        },
+        {
+          "Name": "pyotp",
+          "Identifier": {
+            "PURL": "pkg:pypi/pyotp@2.10.0",
+            "UID": "131d7051001b02ca"
+          },
+          "Version": "2.10.0",
+          "Locations": [
+            {
+              "StartLine": 34,
+              "EndLine": 34
+            }
+          ]
+        },
+        {
+          "Name": "python-dotenv",
+          "Identifier": {
+            "PURL": "pkg:pypi/python-dotenv@1.2.3",
+            "UID": "32a6c83cef0c4fed"
+          },
+          "Version": "1.2.3",
+          "Locations": [
+            {
+              "StartLine": 29,
+              "EndLine": 29
+            }
+          ]
+        },
+        {
+          "Name": "python-multipart",
+          "Identifier": {
+            "PURL": "pkg:pypi/python-multipart@0.0.32",
+            "UID": "f67bc81fbf66179d"
+          },
+          "Version": "0.0.32",
+          "Locations": [
+            {
+              "StartLine": 45,
+              "EndLine": 45
+            }
+          ]
+        },
+        {
+          "Name": "qrcode",
+          "Identifier": {
+            "PURL": "pkg:pypi/qrcode@8.2",
+            "UID": "34e9e601804514c9"
+          },
+          "Version": "8.2",
+          "Locations": [
+            {
+              "StartLine": 40,
+              "EndLine": 40
+            }
+          ]
+        },
+        {
+          "Name": "uvicorn",
+          "Identifier": {
+            "PURL": "pkg:pypi/uvicorn@0.52.4",
+            "UID": "f692edfbc3b29150"
+          },
+          "Version": "0.52.4",
+          "Locations": [
+            {
+              "StartLine": 12,
+              "EndLine": 12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Target": "servicios/permissions-service/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Packages": [
+        {
+          "Name": "SQLAlchemy",
+          "Identifier": {
+            "PURL": "pkg:pypi/sqlalchemy@2.0.52",
+            "UID": "e3ba99e1e7ee4337"
+          },
+          "Version": "2.0.52",
+          "Locations": [
+            {
+              "StartLine": 4,
+              "EndLine": 4
+            }
+          ]
+        },
+        {
+          "Name": "fastapi",
+          "Identifier": {
+            "PURL": "pkg:pypi/fastapi@0.141.1",
+            "UID": "d11ee1e73e4b5d40"
+          },
+          "Version": "0.141.1",
+          "Locations": [
+            {
+              "StartLine": 1,
+              "EndLine": 1
+            }
+          ]
+        },
+        {
+          "Name": "httpx",
+          "Identifier": {
+            "PURL": "pkg:pypi/httpx@0.28.1",
+            "UID": "cb28d938176d97af"
+          },
+          "Version": "0.28.1",
+          "Locations": [
+            {
+              "StartLine": 6,
+              "EndLine": 6
+            }
+          ]
+        },
+        {
+          "Name": "psycopg2-binary",
+          "Identifier": {
+            "PURL": "pkg:pypi/psycopg2-binary@2.9.13",
+            "UID": "c44102b48c0191c0"
+          },
+          "Version": "2.9.13",
+          "Locations": [
+            {
+              "StartLine": 5,
+              "EndLine": 5
+            }
+          ]
+        },
+        {
+          "Name": "pydantic",
+          "Identifier": {
+            "PURL": "pkg:pypi/pydantic@2.13.5",
+            "UID": "db6995cdc57ade01"
+          },
+          "Version": "2.13.5",
+          "Locations": [
+            {
+              "StartLine": 3,
+              "EndLine": 3
+            }
+          ]
+        },
+        {
+          "Name": "uvicorn",
+          "Identifier": {
+            "PURL": "pkg:pypi/uvicorn@0.52.4",
+            "UID": "7fef09626613cdef"
+          },
+          "Version": "0.52.4",
+          "Locations": [
+            {
+              "StartLine": 2,
+              "EndLine": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Target": "servicios/sync-service/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Packages": [
+        {
+          "Name": "SQLAlchemy",
+          "Identifier": {
+            "PURL": "pkg:pypi/sqlalchemy@2.0.52",
+            "UID": "bbd3e0482d635284"
+          },
+          "Version": "2.0.52",
+          "Locations": [
+            {
+              "StartLine": 6,
+              "EndLine": 6
+            }
+          ]
+        },
+        {
+          "Name": "psycopg2-binary",
+          "Identifier": {
+            "PURL": "pkg:pypi/psycopg2-binary@2.9.13",
+            "UID": "4965bccd9bd6a3cc"
+          },
+          "Version": "2.9.13",
+          "Locations": [
+            {
+              "StartLine": 7,
+              "EndLine": 7
+            }
+          ]
+        },
+        {
+          "Name": "python-dotenv",
+          "Identifier": {
+            "PURL": "pkg:pypi/python-dotenv@1.2.3",
+            "UID": "fb2f6e7738375d9"
+          },
+          "Version": "1.2.3",
+          "Locations": [
+            {
+              "StartLine": 8,
+              "EndLine": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Target": "servicios/usuarios/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Packages": [
+        {
+          "Name": "SQLAlchemy",
+          "Identifier": {
+            "PURL": "pkg:pypi/sqlalchemy@2.0.52",
+            "UID": "314ed8c0ac9b1734"
+          },
+          "Version": "2.0.52",
+          "Locations": [
+            {
+              "StartLine": 15,
+              "EndLine": 15
+            }
+          ]
+        },
+        {
+          "Name": "annotated-doc",
+          "Identifier": {
+            "PURL": "pkg:pypi/annotated-doc@0.0.5",
+            "UID": "59d489f68986e421"
+          },
+          "Version": "0.0.5",
+          "Locations": [
+            {
+              "StartLine": 1,
+              "EndLine": 1
+            }
+          ]
+        },
+        {
+          "Name": "annotated-types",
+          "Identifier": {
+            "PURL": "pkg:pypi/annotated-types@0.8.0",
+            "UID": "ec73af4fecfaed2f"
+          },
+          "Version": "0.8.0",
+          "Locations": [
+            {
+              "StartLine": 2,
+              "EndLine": 2
+            }
+          ]
+        },
+        {
+          "Name": "anyio",
+          "Identifier": {
+            "PURL": "pkg:pypi/anyio@4.15.1",
+            "UID": "b990b898c5764709"
+          },
+          "Version": "4.15.1",
+          "Locations": [
+            {
+              "StartLine": 3,
+              "EndLine": 3
+            }
+          ]
+        },
+        {
+          "Name": "click",
+          "Identifier": {
+            "PURL": "pkg:pypi/click@8.5.0",
+            "UID": "985a340df6060ddf"
+          },
+          "Version": "8.5.0",
+          "Locations": [
+            {
+              "StartLine": 4,
+              "EndLine": 4
+            }
+          ]
+        },
+        {
+          "Name": "dnspython",
+          "Identifier": {
+            "PURL": "pkg:pypi/dnspython@2.8.0",
+            "UID": "5d51f6ccb9279a5a"
+          },
+          "Version": "2.8.0",
+          "Locations": [
+            {
+              "StartLine": 5,
+              "EndLine": 5
+            }
+          ]
+        },
+        {
+          "Name": "email-validator",
+          "Identifier": {
+            "PURL": "pkg:pypi/email-validator@2.3.0",
+            "UID": "37cf40bfdbfd85a9"
+          },
+          "Version": "2.3.0",
+          "Locations": [
+            {
+              "StartLine": 6,
+              "EndLine": 6
+            }
+          ]
+        },
+        {
+          "Name": "fastapi",
+          "Identifier": {
+            "PURL": "pkg:pypi/fastapi@0.141.1",
+            "UID": "19a3977343c8cd52"
+          },
+          "Version": "0.141.1",
+          "Locations": [
+            {
+              "StartLine": 7,
+              "EndLine": 7
+            }
+          ]
+        },
+        {
+          "Name": "greenlet",
+          "Identifier": {
+            "PURL": "pkg:pypi/greenlet@3.5.5",
+            "UID": "9a85a1e50228173b"
+          },
+          "Version": "3.5.5",
+          "Locations": [
+            {
+              "StartLine": 8,
+              "EndLine": 8
+            }
+          ]
+        },
+        {
+          "Name": "h11",
+          "Identifier": {
+            "PURL": "pkg:pypi/h11@0.16.0",
+            "UID": "a3e6e1b274fa07d9"
+          },
+          "Version": "0.16.0",
+          "Locations": [
+            {
+              "StartLine": 9,
+              "EndLine": 9
+            }
+          ]
+        },
+        {
+          "Name": "idna",
+          "Identifier": {
+            "PURL": "pkg:pypi/idna@3.19",
+            "UID": "2c69e7b2978f04c6"
+          },
+          "Version": "3.19",
+          "Locations": [
+            {
+              "StartLine": 10,
+              "EndLine": 10
+            }
+          ]
+        },
+        {
+          "Name": "psycopg2-binary",
+          "Identifier": {
+            "PURL": "pkg:pypi/psycopg2-binary@2.9.13",
+            "UID": "3fc9fd9667fada72"
+          },
+          "Version": "2.9.13",
+          "Locations": [
+            {
+              "StartLine": 11,
+              "EndLine": 11
+            }
+          ]
+        },
+        {
+          "Name": "pydantic",
+          "Identifier": {
+            "PURL": "pkg:pypi/pydantic@2.13.5",
+            "UID": "cc0658973783f529"
+          },
+          "Version": "2.13.5",
+          "Locations": [
+            {
+              "StartLine": 12,
+              "EndLine": 12
+            }
+          ]
+        },
+        {
+          "Name": "pydantic_core",
+          "Identifier": {
+            "PURL": "pkg:pypi/pydantic-core@2.46.5",
+            "UID": "5b2a8e3b7721b583"
+          },
+          "Version": "2.46.5",
+          "Locations": [
+            {
+              "StartLine": 13,
+              "EndLine": 13
+            }
+          ]
+        },
+        {
+          "Name": "python-dotenv",
+          "Identifier": {
+            "PURL": "pkg:pypi/python-dotenv@1.2.3",
+            "UID": "f4ef4bd74ba1fbff"
+          },
+          "Version": "1.2.3",
+          "Locations": [
+            {
+              "StartLine": 14,
+              "EndLine": 14
+            }
+          ]
+        },
+        {
+          "Name": "starlette",
+          "Identifier": {
+            "PURL": "pkg:pypi/starlette@1.6.0",
+            "UID": "5f3992c7929db0ee"
+          },
+          "Version": "1.6.0",
+          "Locations": [
+            {
+              "StartLine": 16,
+              "EndLine": 16
+            }
+          ]
+        },
+        {
+          "Name": "typing-inspection",
+          "Identifier": {
+            "PURL": "pkg:pypi/typing-inspection@0.4.4",
+            "UID": "76a7480593746457"
+          },
+          "Version": "0.4.4",
+          "Locations": [
+            {
+              "StartLine": 17,
+              "EndLine": 17
+            }
+          ]
+        },
+        {
+          "Name": "typing_extensions",
+          "Identifier": {
+            "PURL": "pkg:pypi/typing-extensions@4.16.0",
+            "UID": "127df71d6ff8ce12"
+          },
+          "Version": "4.16.0",
+          "Locations": [
+            {
+              "StartLine": 18,
+              "EndLine": 18
+            }
+          ]
+        },
+        {
+          "Name": "uvicorn",
+          "Identifier": {
+            "PURL": "pkg:pypi/uvicorn@0.52.4",
+            "UID": "d63f83d91dd34e1f"
+          },
+          "Version": "0.52.4",
+          "Locations": [
+            {
+              "StartLine": 19,
+              "EndLine": 19
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "title": "Manual de usuario e instalación de IAM Secure en Windows y Linux",
+  "edition_date": "2026-10-17",
+  "timezone": "America/Bogota",
+  "authors": [
+    "Oscar Daniel Acosta",
+    "David Enrique Diaz",
+    "Ingrid Tatiana Vesga",
+    "Jean Carlos Almenarez Ríos",
+    "Yeison Fabián Bernal López"
+  ],
+  "subject": "Seg en Entornos Cloud y Devops",
+  "application_source_commit": "6293194c646b6bf88c4dfe2077b38b7e0e692d12",
+  "pdf_file": "MANUAL_EJECUCION_WINDOWS_LINUX.pdf",
+  "markdown_file": "MANUAL_EJECUCION_WINDOWS_LINUX.md",
+  "pages": 23,
+  "sha256": "251fe1be7c5fc8fcf701e48f1da5f335937ed90a4de4b176206e0322dff9eecd",
+  "markdown_sha256": "b7ae0c9fd40da95d5739a073a2b03d62ac15f228cce7f951f6ca8a251323178e",
+  "chapters": [
+    "1. Elija el recorrido correcto",
+    "2. Prepare lo necesario",
+    "3. Instale y compruebe Git y Docker en Windows",
+    "4. Instale y compruebe Git y Docker en Linux",
+    "5. Clone el repositorio en una carpeta nueva",
+    "6. Revise puertos y contenedores existentes",
+    "7. Cree y proteja el archivo de configuración",
+    "8. Genere claves propias y complete las variables",
+    "9. Configure SMTP para recibir las credenciales",
+    "10. Construya e inicie los ocho servicios",
+    "11. Compruebe las direcciones y la base",
+    "12. Cree el ADMIN_TI inicial",
+    "13. Entre y active Authenticator como ADMIN_TI",
+    "14. Cree un ADMIN_SOPORTE y asigne su compañía",
+    "15. Entre como soporte y conozca los roles",
+    "16. Cree un líder y pruebe la carga Excel",
+    "17. Abra la grilla y compruebe permisos",
+    "18. Revise auditoría, sesiones e inactividad",
+    "19. Detenga y retome sin perder las cuentas",
+    "20. Resuelva errores frecuentes",
+    "21. Compruebe la entrega al otro grupo",
+    "22. Use HTTPS solo si elige el laboratorio seguro",
+    "23. Referencias y versión del manual"
+  ],
+  "code_blocks": 32,
+  "tables": 8,
+  "existing_screenshots": 4,
+  "reference_attachment": {
+    "file": "Manual_Ejecucion_IAM_Secure_para_Otro_Grupo (1).pdf",
+    "pages": 11,
+    "sha256": "60ef05cd0fb19461e9dac85b645ecf12d11033b8917cd4e7e0c3e41d2eadcdfb"
+  },
+  "human_confirmation": {
+    "reported_working_on_another_pc": true,
+    "password_change_mfa_activation_and_mfa_relogin_confirmed": true,
+    "confirmation_date": "2026-10-17",
+    "automated_second_pc_receipt": false,
+    "operating_system_not_asserted": true,
+    "risk_acceptance_changed": false
+  },
+  "verification": {
+    "all_pages_rendered": true,
+    "all_pages_visually_reviewed": true,
+    "toc_links": 46,
+    "bounds_and_unicode_verified": true,
+    "command_syntax_validated": true,
+    "application_commands_executed": false
+  }
+}

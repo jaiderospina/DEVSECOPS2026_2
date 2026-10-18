@@ -1,0 +1,373 @@
+{
+  "date": "2026-10-13",
+  "timezone": "America/Bogota",
+  "source_repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+  "validated_commit": "574bb3e8195c3583ebd973f33d7f48a738689f7d",
+  "workflow": {
+    "id": 38511486612,
+    "run_number": 8,
+    "head_sha": "574bb3e8195c3583ebd973f33d7f48a738689f7d",
+    "head_branch": "codex/zap-staging-ci",
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612",
+    "created_at": "2026-10-14T04:27:35Z",
+    "updated_at": "2026-10-14T04:34:06Z"
+  },
+  "jobs_total": 30,
+  "jobs_successful": 29,
+  "jobs": [
+    {
+      "name": "sca-trivy-manifests",
+      "id": 115680782318,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782318"
+    },
+    {
+      "name": "model",
+      "id": 115680782444,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782444"
+    },
+    {
+      "name": "gitleaks",
+      "id": 115680782447,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782447"
+    },
+    {
+      "name": "frontend-lint",
+      "id": 115680782482,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782482"
+    },
+    {
+      "name": "sca-python (permissions-service)",
+      "id": 115680782483,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782483"
+    },
+    {
+      "name": "sast (bandit)",
+      "id": 115680782498,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782498"
+    },
+    {
+      "name": "pytest (audit_dispatcher, audit-dispatcher)",
+      "id": 115680782530,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782530"
+    },
+    {
+      "name": "frontend-ui",
+      "id": 115680782541,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782541"
+    },
+    {
+      "name": "bulk-users-tests",
+      "id": 115680782551,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782551"
+    },
+    {
+      "name": "zap-staging",
+      "id": 115680782590,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782590"
+    },
+    {
+      "name": "sca-python (sync-service)",
+      "id": 115680782602,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782602"
+    },
+    {
+      "name": "pytest (audit_service, audit-service)",
+      "id": 115680782609,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782609"
+    },
+    {
+      "name": "sca-python (identity-service)",
+      "id": 115680782623,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782623"
+    },
+    {
+      "name": "pytest (identity_http, identity-service)",
+      "id": 115680782636,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782636"
+    },
+    {
+      "name": "pytest (sync_worker, sync-service)",
+      "id": 115680782654,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782654"
+    },
+    {
+      "name": "sast (semgrep)",
+      "id": 115680782657,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782657"
+    },
+    {
+      "name": "permissions-tests",
+      "id": 115680782669,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782669"
+    },
+    {
+      "name": "images (usuarios)",
+      "id": 115680782681,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782681"
+    },
+    {
+      "name": "sca-python (usuarios)",
+      "id": 115680782683,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782683"
+    },
+    {
+      "name": "sca-node",
+      "id": 115680782702,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782702"
+    },
+    {
+      "name": "images (sync-service)",
+      "id": 115680782707,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782707"
+    },
+    {
+      "name": "images (frontend)",
+      "id": 115680782730,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782730"
+    },
+    {
+      "name": "sca-python (audit-service)",
+      "id": 115680782739,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782739"
+    },
+    {
+      "name": "images (permissions-service)",
+      "id": 115680782759,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782759"
+    },
+    {
+      "name": "sca-python (audit-dispatcher)",
+      "id": 115680782766,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782766"
+    },
+    {
+      "name": "images (audit-dispatcher)",
+      "id": 115680782773,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782773"
+    },
+    {
+      "name": "images (identity-service)",
+      "id": 115680782796,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782796"
+    },
+    {
+      "name": "images (audit-service)",
+      "id": 115680782815,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680782815"
+    },
+    {
+      "name": "SonarQube Cloud analysis",
+      "id": 115680783766,
+      "conclusion": "skipped",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115680783766"
+    },
+    {
+      "name": "gate",
+      "id": 115682512692,
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38511486612/job/115682512692"
+    }
+  ],
+  "zap": {
+    "job_id": 115680782590,
+    "gate": {
+      "passed": true,
+      "policy": "fail on MEDIUM/HIGH; no ignored alerts",
+      "runs": 7,
+      "api_role_operations": 39,
+      "zap_recorded_requests": 1947,
+      "findings": [],
+      "blockers": []
+    },
+    "cleanup_completed": true,
+    "unexpected_database_changes": []
+  },
+  "artifact_zip_sha256": "cb191e43064ffe1a2cc5d1b4042078fbdb918a48ecf68a2ea052d0a35fb6c1da",
+  "archived_files": [
+    {
+      "path": "reports/SUMMARY.md",
+      "bytes": 910,
+      "sha256": "2f5668963698613c07c95aa470e7e339fe22fda18457a5545ae79c0e006f64ff"
+    },
+    {
+      "path": "reports/audit-public/coverage.json",
+      "bytes": 1775,
+      "sha256": "442ce0464b5c602af52cc1a79626e113e72090419aad0ff681c61e675dad5a04"
+    },
+    {
+      "path": "reports/audit-public/report.html",
+      "bytes": 20146,
+      "sha256": "29f067698aa4459063a5e9a6d98604bcdb5b3d5f4a1c3f94a2ba7b9473b46735"
+    },
+    {
+      "path": "reports/audit-public/report.json",
+      "bytes": 1794,
+      "sha256": "bff84d0a5e2234969dbf6eb08aa456606f36c948942e7380a7613da2616a84ed"
+    },
+    {
+      "path": "reports/database/post-frozen.json",
+      "bytes": 2021,
+      "sha256": "6deb833404afd755d98f17a8916df0480471b8619cb20d64dd813bf5de8b517a"
+    },
+    {
+      "path": "reports/database/pre.json",
+      "bytes": 2021,
+      "sha256": "7a0a9c1c5047dcc0cd93479c33c338669af44c1aac38786a94d7a68017c70282"
+    },
+    {
+      "path": "reports/database-comparison.json",
+      "bytes": 3515,
+      "sha256": "b4600913fcc27670cb10424bd1ba367d558e93ff97095db25e4c9d9d02cf7f0f"
+    },
+    {
+      "path": "reports/gate.json",
+      "bytes": 185,
+      "sha256": "6e1f9c18ee14f5736189e8447232042f1bee35202139170889c1d2a566862583"
+    },
+    {
+      "path": "reports/identity-admin_soporte/coverage.json",
+      "bytes": 14150,
+      "sha256": "d9573f3c5fdee27ce6bd03674484101441a43d5f6dab3f0271fa06caf760912b"
+    },
+    {
+      "path": "reports/identity-admin_soporte/report.html",
+      "bytes": 20440,
+      "sha256": "1b2a244494411159d48886555688a6a3e1dfd4cc52752de010688fd0c6dd06a9"
+    },
+    {
+      "path": "reports/identity-admin_soporte/report.json",
+      "bytes": 1976,
+      "sha256": "3116f943cc59766b2f08203dcf8cf38addbdd3ea4ddc939e84945463e1d6666f"
+    },
+    {
+      "path": "reports/identity-admin_ti/coverage.json",
+      "bytes": 14146,
+      "sha256": "cdeb1ed426f435a75ffd1001962ee8e5cfbb25905809ed1b3e08cbc75ed274cc"
+    },
+    {
+      "path": "reports/identity-admin_ti/report.html",
+      "bytes": 20439,
+      "sha256": "6526832cfc4f644c08bcf712f32423b954718914844b9f97d733ccdaaa76a3bc"
+    },
+    {
+      "path": "reports/identity-admin_ti/report.json",
+      "bytes": 1975,
+      "sha256": "5d9d1f34c0417903bed7cc62edd387fe496f0dd862dcb2c2a7b9575a83f82f25"
+    },
+    {
+      "path": "reports/lifecycle.json",
+      "bytes": 289,
+      "sha256": "0953036a2ff95c16ed5a80bc37f399c1190816ae60bec5a5ab674a8a94b0e810"
+    },
+    {
+      "path": "reports/manifest.json",
+      "bytes": 4691,
+      "sha256": "7792a150919bdb065fbf29ee84f55481554d65e38c0970b573de595fa05578d6"
+    },
+    {
+      "path": "reports/permissions-admin_soporte/coverage.json",
+      "bytes": 8062,
+      "sha256": "7b643b759b6d4da20ba957099c905e1986190f5c9627af3d656db7dd304f0fc0"
+    },
+    {
+      "path": "reports/permissions-admin_soporte/report.html",
+      "bytes": 20458,
+      "sha256": "27660dad06a9e27b81abe2254add11f6aa30f5d23086b4ee28121de650679031"
+    },
+    {
+      "path": "reports/permissions-admin_soporte/report.json",
+      "bytes": 1997,
+      "sha256": "84e6ef377c5594b3236d26f629811ed0bd7a3ed102d2e79389b7013426b0913d"
+    },
+    {
+      "path": "reports/permissions-lider_facturacion/coverage.json",
+      "bytes": 8068,
+      "sha256": "e659109a0b3809f1a41dfd7adc72b8d9e33f95c5a48084e7e0c2af29e2105b01"
+    },
+    {
+      "path": "reports/permissions-lider_facturacion/report.html",
+      "bytes": 20458,
+      "sha256": "50180e70cb08ac5a9673910d2b7f7637c881181f5806b377ae71fc27b810640c"
+    },
+    {
+      "path": "reports/permissions-lider_facturacion/report.json",
+      "bytes": 1997,
+      "sha256": "bd37094908aabd8b2548b7b606d3a961dea8e546c0669d59eefc4930621c7b75"
+    },
+    {
+      "path": "reports/permissions-lider_gestion_humana/coverage.json",
+      "bytes": 8076,
+      "sha256": "ca0cf5c55ffddc9a1fc19e26bdd55d2a3077108be2eb421d4e9060e79ca847b1"
+    },
+    {
+      "path": "reports/permissions-lider_gestion_humana/report.html",
+      "bytes": 20458,
+      "sha256": "6838b2d6b5118ae91e2a2c9e5c52bea180184a81b5beb77b14fab4e117cff8e7"
+    },
+    {
+      "path": "reports/permissions-lider_gestion_humana/report.json",
+      "bytes": 1997,
+      "sha256": "0347851e066a9f2e30309d09698c4a2b5660edea72714093d58b1c151b880ddd"
+    },
+    {
+      "path": "reports/permissions-lider_logistica/coverage.json",
+      "bytes": 8059,
+      "sha256": "5df7c830fd4fafdb7aeb7bc1df85f5606fed36f2fee96a65fc265c0c6f2d9589"
+    },
+    {
+      "path": "reports/permissions-lider_logistica/report.html",
+      "bytes": 20458,
+      "sha256": "b3a4bc401d2ac436182e1c1bce3b78d1886dfcbe4e77eea6652c99e7c45ee1fc"
+    },
+    {
+      "path": "reports/permissions-lider_logistica/report.json",
+      "bytes": 1997,
+      "sha256": "2f03c1aeeabb48948cdf217b0638bcfd1d0a84671f18cc0949b6cc208b1a4ba1"
+    },
+    {
+      "path": "reports/postflight-isolation.json",
+      "bytes": 3276,
+      "sha256": "660639d8a8c3bb530a08573514d18ade6ebe273a74f5d45fe622a81e4f56bade"
+    },
+    {
+      "path": "reports/summary.json",
+      "bytes": 12647,
+      "sha256": "a08287878bf9110738c8e1f84babbf09ffda3802c68b28860a21ae9bc43368ec"
+    }
+  ],
+  "scope": "Controlled GET-only active ZAP against freshly built disposable API staging; synthetic sessions, 5 rules LOW; not complete application DAST",
+  "sonar": "This branch CI does not run the mirror-master-only Sonar job; E25 remains a separate historical approval.",
+  "local_application_data_used": false,
+  "docker_hub_release_published": false
+}

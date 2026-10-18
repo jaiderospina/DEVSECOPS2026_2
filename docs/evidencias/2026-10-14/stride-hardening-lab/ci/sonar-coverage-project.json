@@ -1,0 +1,63 @@
+{
+  "component": {
+    "id": "AaE4NnzL9mKCljfueGU0",
+    "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci",
+    "name": "DevSecOps-proyecto-Final-ci",
+    "qualifier": "TRK",
+    "measures": [
+      {
+        "metric": "coverage",
+        "value": "56.7",
+        "bestValue": false
+      },
+      {
+        "metric": "new_coverage",
+        "periods": [
+          {
+            "index": 1,
+            "value": "85.60354374307863",
+            "bestValue": false
+          }
+        ]
+      },
+      {
+        "metric": "new_conditions_to_cover",
+        "periods": [
+          {
+            "index": 1,
+            "value": "237"
+          }
+        ]
+      },
+      {
+        "metric": "new_uncovered_lines",
+        "periods": [
+          {
+            "index": 1,
+            "value": "81",
+            "bestValue": false
+          }
+        ]
+      },
+      {
+        "metric": "new_uncovered_conditions",
+        "periods": [
+          {
+            "index": 1,
+            "value": "49",
+            "bestValue": false
+          }
+        ]
+      },
+      {
+        "metric": "new_lines_to_cover",
+        "periods": [
+          {
+            "index": 1,
+            "value": "666"
+          }
+        ]
+      }
+    ]
+  }
+}

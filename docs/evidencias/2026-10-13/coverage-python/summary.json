@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-13",
+  "timezone": "America/Bogota",
+  "branch": "feat/bulk-users-excel-20261005",
+  "repository_head_at_persistence": "57e64a5c8bbb999d3901a6817b6ce74e1fdd5c97",
+  "measurement_commit": "not embedded in original coverage; HEAD at persistence is not proof of execution commit",
+  "coverage_version": "7.16.2",
+  "xml_timestamp_ms": "1791934888863",
+  "statements": 2830,
+  "missing": 889,
+  "covered": 1941,
+  "coverage_percent": 68.58657243816253,
+  "coverage_display_percent": 69,
+  "scope": "Five measured Python services; statement coverage, not full project or branch coverage",
+  "test_counts_source": "Successful local pytest executions observed during measurement; coverage XML does not encode test counts",
+  "services": [
+    {
+      "service": "Identity",
+      "path": "servicios/identity-service",
+      "statements": 2137,
+      "missing": 778,
+      "coverage_display_percent": 64,
+      "tests_passed_reported": 213,
+      "subtests_passed_reported": 0
+    },
+    {
+      "service": "Permissions",
+      "path": "servicios/permissions-service",
+      "statements": 170,
+      "missing": 7,
+      "coverage_display_percent": 96,
+      "tests_passed_reported": 32,
+      "subtests_passed_reported": 0
+    },
+    {
+      "service": "Audit Service",
+      "path": "servicios/audit-service",
+      "statements": 178,
+      "missing": 25,
+      "coverage_display_percent": 86,
+      "tests_passed_reported": 13,
+      "subtests_passed_reported": 0
+    },
+    {
+      "service": "Audit Dispatcher",
+      "path": "servicios/audit-dispatcher",
+      "statements": 176,
+      "missing": 41,
+      "coverage_display_percent": 77,
+      "tests_passed_reported": 22,
+      "subtests_passed_reported": 4
+    },
+    {
+      "service": "Sync Worker",
+      "path": "servicios/sync-service",
+      "statements": 169,
+      "missing": 38,
+      "coverage_display_percent": 78,
+      "tests_passed_reported": 23,
+      "subtests_passed_reported": 4
+    }
+  ],
+  "sha256": {
+    "backend-combined-coverage.xml": "44988e06dda802df231b6b191478c88a4ad3bd9811bb39c66926114777f430fc",
+    "coverage-report.txt": "861a3a55345e0be402b4e2c8ec167fe59522885334f7cc4ce6a4c25d223375f2"
+  },
+  "evidence_note": "The versioned XML was sanitized only to remove absolute workstation paths; coverage counts and hit data were preserved.",
+  "original_xml_sha256_before_path_sanitization": "46f4c123e62c062f98e4b1a300ad26e38ad8dd0747c3d9d856eee98a6d2c9bc4"
+}

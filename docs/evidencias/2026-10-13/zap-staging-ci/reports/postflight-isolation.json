@@ -1,0 +1,131 @@
+{
+  "internal_networks": [
+    "iam-zap-904368458bc0_dast",
+    "iam-zap-904368458bc0_scan"
+  ],
+  "normal_resources_shared": false,
+  "gateway_and_scanners_stopped": true,
+  "preserved_containers": [
+    {
+      "name": "/iam-zap-904368458bc0-audit-public-attempt-20261014-042914",
+      "service": "zap",
+      "state": "exited",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_scan"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-permissions-lider_gestion_humana-attempt-20261014-042914",
+      "service": "zap",
+      "state": "exited",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_scan"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-permissions-lider_logistica-attempt-20261014-042914",
+      "service": "zap",
+      "state": "exited",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_scan"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-permissions-lider_facturacion-attempt-20261014-042914",
+      "service": "zap",
+      "state": "exited",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_scan"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-permissions-admin_soporte-attempt-20261014-042914",
+      "service": "zap",
+      "state": "exited",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_scan"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-identity-admin_soporte-attempt-20261014-042914",
+      "service": "zap",
+      "state": "exited",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_scan"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-identity-admin_ti-attempt-20261014-042914",
+      "service": "zap",
+      "state": "exited",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_scan"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-gateway",
+      "service": "scan-gateway",
+      "state": "exited",
+      "exit_code": 137,
+      "networks": [
+        "iam-zap-904368458bc0_dast",
+        "iam-zap-904368458bc0_scan"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-permissions-1",
+      "service": "permissions",
+      "state": "running",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_dast"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-audit-service-1",
+      "service": "audit-service",
+      "state": "running",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_dast"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-identity-1",
+      "service": "identity",
+      "state": "running",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_dast"
+      ],
+      "published_ports": []
+    },
+    {
+      "name": "/iam-zap-904368458bc0-postgres-1",
+      "service": "postgres",
+      "state": "running",
+      "exit_code": 0,
+      "networks": [
+        "iam-zap-904368458bc0_dast"
+      ],
+      "published_ports": []
+    }
+  ]
+}

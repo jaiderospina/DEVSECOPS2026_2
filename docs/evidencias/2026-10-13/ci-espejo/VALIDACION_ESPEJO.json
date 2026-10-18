@@ -1,0 +1,3045 @@
+{
+  "date": "2026-10-13",
+  "timezone": "America/Bogota",
+  "source_repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+  "destination_repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "validated_commit": "8262da201228f8f601c00a3277f61fd596378350",
+  "both_master_heads_at_comparison": "8262da201228f8f601c00a3277f61fd596378350",
+  "tree_at_comparison": "d91bdf908344c1903decde088590e713ecf31f5d",
+  "code_already_synchronized": true,
+  "ci": {
+    "id": 38502244070,
+    "run_number": 2,
+    "head_branch": "master",
+    "head_sha": "8262da201228f8f601c00a3277f61fd596378350",
+    "event": "push",
+    "conclusion": "success",
+    "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070",
+    "created_at": "2026-10-14T02:40:16Z",
+    "updated_at": "2026-10-14T02:41:50Z",
+    "jobs_total": 28,
+    "jobs": [
+      {
+        "id": 115651672327,
+        "name": "frontend-ui",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672327",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build real frontend runtime for browser tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install and audit isolated browser test dependency",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify grid, bulk upload and session inactivity in real Nginx containers",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672480,
+        "name": "permissions-tests",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672480",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Initialize containers",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install -r servicios/permissions-service/requirements.txt -r servicios/identity-service/requirements.txt pytest==9.0.3",
+            "conclusion": "success"
+          },
+          {
+            "name": "Ephemeral signing key for real HTTP integration tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Apply real PostgreSQL migrations",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pytest tests/permissions -q --junitxml=reports/permissions.xml",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Stop containers",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672566,
+        "name": "sca-trivy-manifests",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672566",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Test dependency coverage and vulnerability gates",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare all Python manifests and frontend lockfile",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy manifest SCA including frontend dev dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prove Trivy blocks a known vulnerable dependency without installing it",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672603,
+        "name": "model",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672603",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install jsonschema==4.25.1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python scripts/validate_threat_model.py",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672611,
+        "name": "sca-python (audit-dispatcher)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672611",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672632,
+        "name": "gitleaks",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672632",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Scan full history with redaction",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672636,
+        "name": "bulk-users-tests",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672636",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install --only-binary :all: --require-hashes -r tests/bulk_users/requirements-ci.lock",
+            "conclusion": "success"
+          },
+          {
+            "name": "Generate disposable PostgreSQL credentials for this job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Start isolated PostgreSQL with the disposable credential",
+            "conclusion": "success"
+          },
+          {
+            "name": "Apply real PostgreSQL migrations",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pytest tests/bulk_users -q --junitxml=reports/bulk-users.xml",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Remove the isolated test database",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672645,
+        "name": "pytest (sync_worker, sync-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672645",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install -r servicios/sync-service/requirements.txt pytest==9.0.3",
+            "conclusion": "success"
+          },
+          {
+            "name": "HTTP test client dependency",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Existing behavioral suites via Pytest, isolated per service",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672655,
+        "name": "frontend-lint",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672655",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm ci",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm run lint",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify shared CSP and static server configuration",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672678,
+        "name": "sast (semgrep)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672678",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Semgrep",
+            "conclusion": "success"
+          },
+          {
+            "name": "Bandit",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672680,
+        "name": "images (identity-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672680",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672685,
+        "name": "sca-node",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672685",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm ci --ignore-scripts",
+            "conclusion": "success"
+          },
+          {
+            "name": "Audit frontend dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672720,
+        "name": "sast (bandit)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672720",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Semgrep",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Bandit",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672728,
+        "name": "sca-python (identity-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672728",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672734,
+        "name": "images (permissions-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672734",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672764,
+        "name": "images (audit-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672764",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672778,
+        "name": "sca-python (permissions-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672778",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672821,
+        "name": "sca-python (audit-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672821",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672844,
+        "name": "sca-python (sync-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672844",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672845,
+        "name": "pytest (identity_http, identity-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672845",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install -r servicios/identity-service/requirements.txt pytest==9.0.3",
+            "conclusion": "success"
+          },
+          {
+            "name": "HTTP test client dependency",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Existing behavioral suites via Pytest, isolated per service",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672861,
+        "name": "images (audit-dispatcher)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672861",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672867,
+        "name": "pytest (audit_service, audit-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672867",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install -r servicios/audit-service/requirements.txt pytest==9.0.3",
+            "conclusion": "success"
+          },
+          {
+            "name": "HTTP test client dependency",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Existing behavioral suites via Pytest, isolated per service",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672875,
+        "name": "images (usuarios)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672875",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672883,
+        "name": "sca-python (usuarios)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672883",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672887,
+        "name": "pytest (audit_dispatcher, audit-dispatcher)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672887",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install -r servicios/audit-dispatcher/requirements.txt pytest==9.0.3",
+            "conclusion": "success"
+          },
+          {
+            "name": "HTTP test client dependency",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Existing behavioral suites via Pytest, isolated per service",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672921,
+        "name": "images (sync-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672921",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115651672971,
+        "name": "images (frontend)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115651672971",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115652056784,
+        "name": "gate",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502244070/job/115652056784",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Require every job to succeed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "id": 38502831730,
+    "run_number": 2,
+    "head_branch": "master",
+    "head_sha": "8262da201228f8f601c00a3277f61fd596378350",
+    "event": "workflow_dispatch",
+    "conclusion": "success",
+    "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730",
+    "created_at": "2026-10-14T02:47:00Z",
+    "updated_at": "2026-10-14T02:50:14Z",
+    "jobs_total": 30,
+    "jobs": [
+      {
+        "id": 115653519458,
+        "name": "iac",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653519458",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install --only-binary :all: --require-hashes -r infraestructura/ansible/requirements-ci.lock",
+            "conclusion": "success"
+          },
+          {
+            "name": "Ansible syntax and Compose security policies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Checkov must scan and pass actual Ansible checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prove Checkov rejects an unsafe fixture without executing it",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653519813,
+        "name": "validation / bulk-users-tests",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653519813",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install --only-binary :all: --require-hashes -r tests/bulk_users/requirements-ci.lock",
+            "conclusion": "success"
+          },
+          {
+            "name": "Generate disposable PostgreSQL credentials for this job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Start isolated PostgreSQL with the disposable credential",
+            "conclusion": "success"
+          },
+          {
+            "name": "Apply real PostgreSQL migrations",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pytest tests/bulk_users -q --junitxml=reports/bulk-users.xml",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Remove the isolated test database",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653519863,
+        "name": "validation / images (identity-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653519863",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653519896,
+        "name": "validation / sca-trivy-manifests",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653519896",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Test dependency coverage and vulnerability gates",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare all Python manifests and frontend lockfile",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy manifest SCA including frontend dev dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prove Trivy blocks a known vulnerable dependency without installing it",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653519900,
+        "name": "validation / sast (bandit)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653519900",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Semgrep",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Bandit",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653519911,
+        "name": "validation / gitleaks",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653519911",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Scan full history with redaction",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653519917,
+        "name": "validation / images (sync-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653519917",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653519944,
+        "name": "validation / images (frontend)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653519944",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653519978,
+        "name": "validation / images (audit-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653519978",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653519994,
+        "name": "validation / permissions-tests",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653519994",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Initialize containers",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install -r servicios/permissions-service/requirements.txt -r servicios/identity-service/requirements.txt pytest==9.0.3",
+            "conclusion": "success"
+          },
+          {
+            "name": "Ephemeral signing key for real HTTP integration tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Apply real PostgreSQL migrations",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pytest tests/permissions -q --junitxml=reports/permissions.xml",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Stop containers",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520017,
+        "name": "validation / sast (semgrep)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520017",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Semgrep",
+            "conclusion": "success"
+          },
+          {
+            "name": "Bandit",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520029,
+        "name": "validation / pytest (audit_service, audit-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520029",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install -r servicios/audit-service/requirements.txt pytest==9.0.3",
+            "conclusion": "success"
+          },
+          {
+            "name": "HTTP test client dependency",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Existing behavioral suites via Pytest, isolated per service",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520031,
+        "name": "validation / frontend-lint",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520031",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm ci",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm run lint",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify shared CSP and static server configuration",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520037,
+        "name": "validation / pytest (sync_worker, sync-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520037",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install -r servicios/sync-service/requirements.txt pytest==9.0.3",
+            "conclusion": "success"
+          },
+          {
+            "name": "HTTP test client dependency",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Existing behavioral suites via Pytest, isolated per service",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520042,
+        "name": "validation / sca-node",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520042",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run npm ci --ignore-scripts",
+            "conclusion": "success"
+          },
+          {
+            "name": "Audit frontend dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520053,
+        "name": "validation / images (audit-dispatcher)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520053",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520062,
+        "name": "validation / model",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520062",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install jsonschema==4.25.1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python scripts/validate_threat_model.py",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520064,
+        "name": "validation / pytest (audit_dispatcher, audit-dispatcher)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520064",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install -r servicios/audit-dispatcher/requirements.txt pytest==9.0.3",
+            "conclusion": "success"
+          },
+          {
+            "name": "HTTP test client dependency",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Existing behavioral suites via Pytest, isolated per service",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520067,
+        "name": "validation / sca-python (audit-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520067",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520074,
+        "name": "validation / pytest (identity_http, identity-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520074",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install -r servicios/identity-service/requirements.txt pytest==9.0.3",
+            "conclusion": "success"
+          },
+          {
+            "name": "HTTP test client dependency",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Existing behavioral suites via Pytest, isolated per service",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520080,
+        "name": "validation / sca-python (sync-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520080",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520095,
+        "name": "validation / frontend-ui",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520095",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build real frontend runtime for browser tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install and audit isolated browser test dependency",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify grid, bulk upload and session inactivity in real Nginx containers",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520113,
+        "name": "validation / sca-python (usuarios)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520113",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520133,
+        "name": "validation / sca-python (identity-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520133",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520141,
+        "name": "validation / sca-python (audit-dispatcher)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520141",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520187,
+        "name": "validation / images (usuarios)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520187",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520201,
+        "name": "validation / sca-python (permissions-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520201",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install pip-audit==2.9.0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve and audit direct and transitive dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve isolated Python inventory for Trivy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Trivy direct and transitive Python dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653520625,
+        "name": "validation / images (permissions-service)",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653520625",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run mkdir -p reports",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build image without application secrets",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify effective non-root UID and image metadata",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify minimal frontend runtime and compare image sizes",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend starts as non-root and serves HTTP",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Trivy critical CVE gate (including unfixed)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653903855,
+        "name": "validation / gate",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653903855",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Require every job to succeed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 115653924287,
+        "name": "deploy",
+        "conclusion": "success",
+        "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38502831730/job/115653924287",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run python -m pip install --only-binary :all: --require-hashes -r infraestructura/ansible/requirements-ci.lock",
+            "conclusion": "success"
+          },
+          {
+            "name": "Define private runner directories",
+            "conclusion": "success"
+          },
+          {
+            "name": "Authenticate only for pulling published images",
+            "conclusion": "success"
+          },
+          {
+            "name": "Generate disposable secrets outside the checkout",
+            "conclusion": "success"
+          },
+          {
+            "name": "Deploy immutable images through Ansible",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prove idempotence without duplicating the administrator",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prove persistence after recreating PostgreSQL",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "conclusion": "success"
+          },
+          {
+            "name": "Remove only this ephemeral CI project and its test volume",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ]
+  },
+  "sonar": {
+    "mirror_check_present": false,
+    "quality_gate_approved": false,
+    "original_check_id": 115652740856,
+    "original_conclusion": "cancelled"
+  },
+  "checkov": {
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0
+  },
+  "ansible_second": {
+    "changed": 0,
+    "failed": 0,
+    "unreachable": 0
+  },
+  "preserved_reports": [
+    {
+      "file": "deploy-runtime-first.json",
+      "sha256": "672e919149039222891e98fa702179bd5ccc2418f208178ed557558653d22886",
+      "source_entry": "runtime-first.json",
+      "archive_sha256": "867ffcf38a4f5a47ec489b0531ceb600597584bdcf6eba427d2c0da1f9be6ac9"
+    },
+    {
+      "file": "deploy-runtime-final.json",
+      "sha256": "b777f634cc3b860043f04f59e61b8095956ee34ab1c68c05156df93b567ec2fe",
+      "source_entry": "runtime-final.json",
+      "archive_sha256": "867ffcf38a4f5a47ec489b0531ceb600597584bdcf6eba427d2c0da1f9be6ac9"
+    },
+    {
+      "file": "iac-compose-policy.json",
+      "sha256": "45dabd471b7ca099459a32474e99dfe8c99085d1f78ee97ca79464fcbe82a8ca",
+      "source_entry": "compose-policy.json",
+      "archive_sha256": "0ad0912bc15115d3fe2e33662b963a494438230cefe2a0ac5c7630a3cbcc34fd"
+    },
+    {
+      "file": "iac-checkov-negative-gate.json",
+      "sha256": "c2ec5cf151893896fc79aa5d9a1c5ee6d31985b0894a2cbaeaf95500c38e2695",
+      "source_entry": "checkov-negative-gate.json",
+      "archive_sha256": "0ad0912bc15115d3fe2e33662b963a494438230cefe2a0ac5c7630a3cbcc34fd"
+    },
+    {
+      "file": "sca-summary.json",
+      "sha256": "d770031ccc31741354372a9f845b701c81d594a5d97f66fc695cc4b9208298e4",
+      "source_entry": "summary.json",
+      "archive_sha256": "d0dec5f7bca0a44c99845dc032f18939b87e8054f1dc475121b3853b08d046f6"
+    }
+  ],
+  "limits": [
+    "CI approval applies to 8262da2 and the configured workflow; later documentation commits are not retrospectively validated.",
+    "tests/identity_security T13/T15 remain local evidence; the approved workflow does not invoke that suite.",
+    "Deployment uses published 1.0.0 images by digest, not the newly built CI images.",
+    "No new Docker Hub publication and no Sonar Quality Gate approval are claimed.",
+    "No complete ZAP staging or real SMTP acceptance is performed by these workflows."
+  ]
+}

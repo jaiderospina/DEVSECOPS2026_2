@@ -1,0 +1,12 @@
+.audit-report { background: #fff; border: 1px solid #d9e1ec; border-radius: 16px; padding: 28px; }
+.audit-report h2 { margin: 8px 0 12px; }
+.audit-report p { line-height: 1.6; }
+.audit-report fieldset { border: 0; padding: 0; margin: 24px 0 0; min-width: 0; }
+.audit-report legend { font-weight: 700; margin-bottom: 16px; }
+.audit-report-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+.audit-report-filters label { display: flex; flex-direction: column; gap: 8px; font-weight: 600; }
+.audit-report-filters input { width: 100%; box-sizing: border-box; min-height: 44px; border: 1px solid #b9c8d5; border-radius: 8px; padding: 10px 12px; background: #fff; color: #182b3a; font: inherit; }
+.audit-report-filters input:focus-visible { outline: 2px solid #176b67; outline-offset: 2px; }
+.audit-report-help { color: #526676; font-size: .9rem; }
+.audit-report-error { color: #a52a2a; }
+.audit-report-success { color: #176b67; }

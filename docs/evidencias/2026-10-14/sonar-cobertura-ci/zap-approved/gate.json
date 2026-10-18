@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "policy": "fail on MEDIUM/HIGH; no ignored alerts",
+  "runs": 7,
+  "api_role_operations": 39,
+  "zap_recorded_requests": 1947,
+  "findings": [],
+  "blockers": []
+}

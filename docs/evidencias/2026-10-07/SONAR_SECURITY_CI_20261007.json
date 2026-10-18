@@ -1,0 +1,148 @@
+{
+  "evidence": "E14",
+  "recorded_at": "2026-10-07T16:11:27.803051+00:00",
+  "base_revision": "149968db57784be8e662dce31b7a45a4a5f4e0da",
+  "pr": 3,
+  "draft": true,
+  "merged": false,
+  "sonar_before": {
+    "check_run_id": 112868976171,
+    "security_rating": "C",
+    "required": "A",
+    "new_issues": 64,
+    "security_issues_supplied": 10
+  },
+  "issue_groups": [
+    {
+      "path": ".github/workflows/deploy-simulated.yml",
+      "lines_before": [
+        37,
+        94
+      ],
+      "count": 3,
+      "remediation": "Three findings: wheel-only installation and complete hashed resolution for both Ansible steps"
+    },
+    {
+      "path": ".github/workflows/devsecops-pipeline.yml",
+      "lines_before": [
+        386,
+        395,
+        399,
+        407
+      ],
+      "count": 5,
+      "remediation": "Disposable generated/masked PostgreSQL credentials and wheel-only hashed bulk dependency lock"
+    },
+    {
+      "path": "infraestructura/ansible/deploy.yml",
+      "lines_before": [
+        82,
+        88
+      ],
+      "count": 2,
+      "remediation": "Compose 0600; SQL 0640/directories 0750; PostgreSQL supplemental non-root group"
+    }
+  ],
+  "dependency_locks": [
+    {
+      "path": "infraestructura/ansible/requirements-ci.lock",
+      "distributions": 97,
+      "platform": "CPython 3.12/Linux x86_64",
+      "sha256": "c37d9311befe8a4e587d3f03326e3f4e4c72e900e438d4f17f70759b7f752da9",
+      "offline_hashed_wheel_install": "passed",
+      "pip_check": "passed"
+    },
+    {
+      "path": "tests/bulk_users/requirements-ci.lock",
+      "distributions": 41,
+      "platform": "CPython 3.14/Linux x86_64",
+      "sha256": "d51c08c91a15061e448c4abdcce71342a63bfed41f33a822dbbc46e480545bf0",
+      "offline_hashed_wheel_install": "passed",
+      "pip_check": "passed"
+    }
+  ],
+  "checkov_change": {
+    "from": "3.3.25",
+    "to": "3.2.506",
+    "reason": "Remove upstream ecdsa dependency with CVE-2024-23342; no patched ecdsa release",
+    "actual_ansible_passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "unsafe_fixture_exit": 1,
+    "negative_checks": [
+      "CKV_ANSIBLE_5",
+      "CKV_ANSIBLE_6"
+    ],
+    "fixture_executed": false,
+    "ignored_cves": []
+  },
+  "local_regressions": {
+    "automation": 21,
+    "sca": 11,
+    "node": 12,
+    "bulk_postgresql": 51,
+    "total": 95,
+    "failed": 0,
+    "skipped": 0,
+    "bulk_warning": "Starlette TestClient httpx deprecation"
+  },
+  "ansible_configuration": {
+    "controller_uid": 1000,
+    "sql_read_gid": 1000,
+    "real_tasks": 9,
+    "sql_files": 12,
+    "second_changed": 0,
+    "compose_mode": "0600",
+    "env_mode": "0600",
+    "deployment_directory_mode": "0700",
+    "sql_mode": "0640",
+    "sql_directory_mode": "0750"
+  },
+  "additional_checks": {
+    "yaml_documents": 3,
+    "duplicate_keys": 0,
+    "workflow_generator_executed": true,
+    "github_mask_verified": true,
+    "tampered_wheel_hash_rejected": true,
+    "compose_negative_cases": 9
+  },
+  "postgresql": {
+    "database": "PostgreSQL 17 immutable digest",
+    "schema_tables": 16,
+    "initialization_sql_files": 12,
+    "non_root_user": 999,
+    "sql_group": 1000,
+    "unrelated_uid_denied": 1001,
+    "incorrect_password_rejected": true,
+    "generated_password_accepted": true,
+    "smtp": "mocked",
+    "external_network": false,
+    "secret_values_logged": false,
+    "bulk_pytest_passed": true
+  },
+  "trivy": {
+    "version": "0.65.0",
+    "manifests": 10,
+    "detected_package_occurrences": 259,
+    "required_package_occurrences": 199,
+    "severity_counts": {
+      "MEDIUM": 3
+    },
+    "high_critical": 0,
+    "passed": true,
+    "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+  },
+  "limits": {
+    "sonar_after": "pending analysis of published revision",
+    "github_actions": "included quota exhausted; full CI pending",
+    "full_eight_container_deployment": "not repeated; ed00530 historical evidence retained",
+    "smtp": "mocked; real batch remains paused",
+    "secrets_in_evidence": false,
+    "quality_gate_changed": false,
+    "issues_accepted": false
+  },
+  "sources": [
+    "https://pypi.org/project/checkov/3.2.506/",
+    "https://github.com/advisories/GHSA-wj6h-64fc-37mp"
+  ]
+}

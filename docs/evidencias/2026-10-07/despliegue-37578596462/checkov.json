@@ -1,0 +1,241 @@
+{
+    "check_type": "ansible",
+    "results": {
+        "passed_checks": [
+            {
+                "check_id": "CKV_ANSIBLE_5",
+                "bc_check_id": "BC_ANSIBLE_GENERAL5",
+                "check_name": "Ensure that packages with untrusted or missing signatures are not used",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Install Ubuntu Docker packages when explicitly enabled",
+                        "ansible.builtin.apt": {
+                            "name": [
+                                "docker.io",
+                                "docker-compose-v2"
+                            ],
+                            "state": "present",
+                            "update_cache": true,
+                            "allow_unauthenticated": false,
+                            "force": false,
+                            "__startline__": 46,
+                            "__endline__": 53
+                        },
+                        "become": true,
+                        "when": "iam_install_docker | bool",
+                        "__startline__": 44,
+                        "__endline__": 56
+                    }
+                },
+                "code_block": [
+                    [
+                        44,
+                        "    - name: Install Ubuntu Docker packages when explicitly enabled\n"
+                    ],
+                    [
+                        45,
+                        "      ansible.builtin.apt:\n"
+                    ],
+                    [
+                        46,
+                        "        name:\n"
+                    ],
+                    [
+                        47,
+                        "          - docker.io\n"
+                    ],
+                    [
+                        48,
+                        "          - docker-compose-v2\n"
+                    ],
+                    [
+                        49,
+                        "        state: present\n"
+                    ],
+                    [
+                        50,
+                        "        update_cache: true\n"
+                    ],
+                    [
+                        51,
+                        "        allow_unauthenticated: false\n"
+                    ],
+                    [
+                        52,
+                        "        force: false\n"
+                    ],
+                    [
+                        53,
+                        "      become: true\n"
+                    ],
+                    [
+                        54,
+                        "      when: iam_install_docker | bool\n"
+                    ],
+                    [
+                        55,
+                        "\n"
+                    ],
+                    [
+                        56,
+                        "    - name: Enable Docker when installing packages\n"
+                    ],
+                    [
+                        57,
+                        "      ansible.builtin.service:\n"
+                    ]
+                ],
+                "file_path": "/infraestructura/ansible/deploy.yml",
+                "file_abs_path": "/home/runner/work/DevSecOps-proyecto-Final/DevSecOps-proyecto-Final/infraestructura/ansible/deploy.yml",
+                "repo_file_path": "/infraestructura/ansible/deploy.yml",
+                "file_line_range": [
+                    44,
+                    57
+                ],
+                "resource": "tasks.ansible.builtin.apt.Install Ubuntu Docker packages when explicitly enabled",
+                "evaluations": null,
+                "check_class": "checkov.ansible.checks.task.builtin.AptAllowUnauthenticated",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/ansible-policies/ansible-compute-policies/ansible-5",
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "CKV_ANSIBLE_6",
+                "bc_check_id": "BC_ANSIBLE_GENERAL6",
+                "check_name": "Ensure that the force parameter is not used, as it disables signature validation and allows packages to be downgraded which can leave the system in a broken or inconsistent state",
+                "check_result": {
+                    "result": "PASSED",
+                    "results_configuration": {
+                        "name": "Install Ubuntu Docker packages when explicitly enabled",
+                        "ansible.builtin.apt": {
+                            "name": [
+                                "docker.io",
+                                "docker-compose-v2"
+                            ],
+                            "state": "present",
+                            "update_cache": true,
+                            "allow_unauthenticated": false,
+                            "force": false,
+                            "__startline__": 46,
+                            "__endline__": 53
+                        },
+                        "become": true,
+                        "when": "iam_install_docker | bool",
+                        "__startline__": 44,
+                        "__endline__": 56
+                    }
+                },
+                "code_block": [
+                    [
+                        44,
+                        "    - name: Install Ubuntu Docker packages when explicitly enabled\n"
+                    ],
+                    [
+                        45,
+                        "      ansible.builtin.apt:\n"
+                    ],
+                    [
+                        46,
+                        "        name:\n"
+                    ],
+                    [
+                        47,
+                        "          - docker.io\n"
+                    ],
+                    [
+                        48,
+                        "          - docker-compose-v2\n"
+                    ],
+                    [
+                        49,
+                        "        state: present\n"
+                    ],
+                    [
+                        50,
+                        "        update_cache: true\n"
+                    ],
+                    [
+                        51,
+                        "        allow_unauthenticated: false\n"
+                    ],
+                    [
+                        52,
+                        "        force: false\n"
+                    ],
+                    [
+                        53,
+                        "      become: true\n"
+                    ],
+                    [
+                        54,
+                        "      when: iam_install_docker | bool\n"
+                    ],
+                    [
+                        55,
+                        "\n"
+                    ],
+                    [
+                        56,
+                        "    - name: Enable Docker when installing packages\n"
+                    ],
+                    [
+                        57,
+                        "      ansible.builtin.service:\n"
+                    ]
+                ],
+                "file_path": "/infraestructura/ansible/deploy.yml",
+                "file_abs_path": "/home/runner/work/DevSecOps-proyecto-Final/DevSecOps-proyecto-Final/infraestructura/ansible/deploy.yml",
+                "repo_file_path": "/infraestructura/ansible/deploy.yml",
+                "file_line_range": [
+                    44,
+                    57
+                ],
+                "resource": "tasks.ansible.builtin.apt.Install Ubuntu Docker packages when explicitly enabled",
+                "evaluations": null,
+                "check_class": "checkov.ansible.checks.task.builtin.AptForce",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": null,
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/ansible-policies/ansible-compute-policies/ansible-6",
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            }
+        ],
+        "failed_checks": [],
+        "skipped_checks": [],
+        "parsing_errors": []
+    },
+    "summary": {
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "parsing_errors": 0,
+        "resource_count": 0,
+        "checkov_version": "3.3.25"
+    },
+    "url": "Add an api key '--bc-api-key <api-key>' to see more detailed insights via https://bridgecrew.cloud"
+}

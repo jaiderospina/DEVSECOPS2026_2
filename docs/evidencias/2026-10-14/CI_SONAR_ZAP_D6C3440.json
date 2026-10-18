@@ -1,0 +1,245 @@
+{
+  "date": "2026-10-14",
+  "timezone": "America/Bogota",
+  "commit": "d6c34403456b03a26610a2cc08950e14b90487ea",
+  "both_remote_master_verified": true,
+  "primary": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "mirror": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+  "ci": {
+    "id": 38513796128,
+    "head_sha": "d6c34403456b03a26610a2cc08950e14b90487ea",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128",
+    "updated_at": "2026-10-14T05:05:49Z"
+  },
+  "jobs": [
+    {
+      "name": "SonarQube Cloud analysis",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687956707"
+    },
+    {
+      "name": "sca-node",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687956916"
+    },
+    {
+      "name": "frontend-lint",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687956924"
+    },
+    {
+      "name": "model",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687956956"
+    },
+    {
+      "name": "gitleaks",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687956966"
+    },
+    {
+      "name": "sca-python (sync-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687956984"
+    },
+    {
+      "name": "bulk-users-tests",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687956988"
+    },
+    {
+      "name": "frontend-ui",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687956989"
+    },
+    {
+      "name": "sca-trivy-manifests",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957017"
+    },
+    {
+      "name": "sast (semgrep)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957031"
+    },
+    {
+      "name": "zap-staging",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957033"
+    },
+    {
+      "name": "sast (bandit)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957038"
+    },
+    {
+      "name": "pytest (audit_dispatcher, audit-dispatcher)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957063"
+    },
+    {
+      "name": "images (identity-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957074"
+    },
+    {
+      "name": "sca-python (identity-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957118"
+    },
+    {
+      "name": "images (sync-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957131"
+    },
+    {
+      "name": "pytest (audit_service, audit-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957133"
+    },
+    {
+      "name": "permissions-tests",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957151"
+    },
+    {
+      "name": "pytest (sync_worker, sync-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957166"
+    },
+    {
+      "name": "images (permissions-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957171"
+    },
+    {
+      "name": "sca-python (audit-dispatcher)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957174"
+    },
+    {
+      "name": "images (audit-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957185"
+    },
+    {
+      "name": "images (usuarios)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957194"
+    },
+    {
+      "name": "sca-python (usuarios)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957198"
+    },
+    {
+      "name": "pytest (identity_http, identity-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957227"
+    },
+    {
+      "name": "images (frontend)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957254"
+    },
+    {
+      "name": "images (audit-dispatcher)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957269"
+    },
+    {
+      "name": "sca-python (permissions-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957289"
+    },
+    {
+      "name": "sca-python (audit-service)",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115687957368"
+    },
+    {
+      "name": "gate",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38513796128/job/115689546783"
+    }
+  ],
+  "sonar_external": {
+    "id": 115691095417,
+    "name": "SonarCloud Code Analysis",
+    "status": "completed",
+    "conclusion": "failure",
+    "details_url": "https://sonarcloud.io/dashboard?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master",
+    "output": {
+      "title": "Quality Gate failed",
+      "summary": "Failed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed.svg '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&metric=new_coverage&view=list) (required ≥ 80%)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master)\n\n",
+      "text": null,
+      "annotations_count": 0,
+      "annotations_url": "https://api.github.com/repos/yeisonfblopez/DevSecOps-proyecto-Final-ci/check-runs/115691095417/annotations"
+    }
+  },
+  "local": {
+    "date": "2026-10-13",
+    "timezone": "America/Bogota",
+    "project": "C:\\Prueba-ProyectoFinal",
+    "before_commit": "2d8b4444447808bd75ed684dd9d0044f4c720d96",
+    "commit": "d6c34403456b03a26610a2cc08950e14b90487ea",
+    "branch": "master",
+    "git_clean": true,
+    "configuration_preserved": true,
+    "postgresql_container_preserved": true,
+    "aggregate_data_counts_preserved": true,
+    "all_running_container_ids_preserved": true,
+    "application_source_unchanged": true,
+    "archived_artifact_hashes_verified": 30,
+    "http": [
+      {
+        "url": "http://127.0.0.1:5173/",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:5176/permissions.html",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:8003/",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:8005/",
+        "status": 200
+      },
+      {
+        "url": "http://127.0.0.1:8004/health",
+        "status": 200
+      }
+    ]
+  },
+  "zap_final": {
+    "gate": {
+      "passed": true,
+      "policy": "fail on MEDIUM/HIGH; no ignored alerts",
+      "runs": 7,
+      "api_role_operations": 39,
+      "zap_recorded_requests": 1947,
+      "findings": [],
+      "blockers": []
+    },
+    "lifecycle": {
+      "source_commit": "d6c34403456b03a26610a2cc08950e14b90487ea",
+      "repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+      "scan_and_gate_passed": true,
+      "cleanup_completed": true,
+      "runtime_secrets_uploaded": false,
+      "normal_compose_used": false,
+      "normal_database_used": false
+    },
+    "unexpected_database_changes": [],
+    "artifact_zip_sha256": "d8f46135d068688683726902b5ff1df1ab3e46ec985c38bd4c8f3971b08e48a0",
+    "manifest_hashes_verified": 28
+  },
+  "versioned_zap_evidence": "docs/evidencias/2026-10-13/zap-staging-ci/README.md",
+  "scope": "GET-only active API staging; not full application DAST",
+  "new_docker_hub_release": false
+}

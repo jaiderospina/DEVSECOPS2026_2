@@ -1,0 +1,128 @@
+{
+  "project": "iam-ci-38635912285-1",
+  "containers": [
+    {
+      "service": "audit-dispatcher",
+      "running": true,
+      "health": "not applicable",
+      "effective_uid": 100,
+      "restart_count": 0,
+      "read_only": true,
+      "capabilities_dropped": true,
+      "image_digest": "sha256:2917901afd11f22a808cdc37e9392c020fa43a3eb0144017ed8611792668ea42"
+    },
+    {
+      "service": "audit-service",
+      "running": true,
+      "health": "healthy",
+      "effective_uid": 100,
+      "restart_count": 0,
+      "read_only": true,
+      "capabilities_dropped": true,
+      "image_digest": "sha256:a6082e5f009c6138f44a543014bc701fce25f25cb3edfa3fb44338edceffe7b2"
+    },
+    {
+      "service": "frontend",
+      "running": true,
+      "health": "healthy",
+      "effective_uid": 101,
+      "restart_count": 0,
+      "read_only": true,
+      "capabilities_dropped": true,
+      "image_digest": "sha256:cad264c9bf5aa6e91a5817349e1f433e224c63edba05364b0f9d75881ecd42bb"
+    },
+    {
+      "service": "identity",
+      "running": true,
+      "health": "healthy",
+      "effective_uid": 999,
+      "restart_count": 0,
+      "read_only": true,
+      "capabilities_dropped": true,
+      "image_digest": "sha256:839ce22bfbf6a50396fc75a77a691750b0bce9ce99e00d9b6c222d12492e750b"
+    },
+    {
+      "service": "permissions",
+      "running": true,
+      "health": "healthy",
+      "effective_uid": 10001,
+      "restart_count": 0,
+      "read_only": true,
+      "capabilities_dropped": true,
+      "image_digest": "sha256:b80cf3ad35ce6a7502570924930e8592d2afd3a42ad07879a61be6475edfccda"
+    },
+    {
+      "service": "permissions-grid",
+      "running": true,
+      "health": "healthy",
+      "effective_uid": 101,
+      "restart_count": 0,
+      "read_only": true,
+      "capabilities_dropped": true,
+      "image_digest": "sha256:cad264c9bf5aa6e91a5817349e1f433e224c63edba05364b0f9d75881ecd42bb"
+    },
+    {
+      "service": "postgres",
+      "running": true,
+      "health": "healthy",
+      "effective_uid": 999,
+      "restart_count": 0,
+      "read_only": true,
+      "capabilities_dropped": true,
+      "image_digest": "sha256:ae69c452f483507a6b99fb654cf93aad7fe156ffd2c56247707eef4e36d3c12b"
+    },
+    {
+      "service": "sync-worker",
+      "running": true,
+      "health": "not applicable",
+      "effective_uid": 100,
+      "restart_count": 0,
+      "read_only": true,
+      "capabilities_dropped": true,
+      "image_digest": "sha256:f5eb8558bfb73d0e69c40d2db99c620d6695d6958e22b41ed55b0447f3e9fc20"
+    }
+  ],
+  "http_checks": [
+    {
+      "check": "frontend",
+      "status": 200
+    },
+    {
+      "check": "grid",
+      "status": 200
+    },
+    {
+      "check": "identity",
+      "status": 200
+    },
+    {
+      "check": "permissions",
+      "status": 200
+    },
+    {
+      "check": "audit",
+      "status": 200
+    },
+    {
+      "check": "identity_auth_gate",
+      "status": 401
+    },
+    {
+      "check": "bulk_auth_gate",
+      "status": 401
+    },
+    {
+      "check": "permissions_auth_gate",
+      "status": 401
+    }
+  ],
+  "schema": [
+    "permisos_usuario_compania",
+    "cargas_usuarios",
+    "cargas_usuario_filas"
+  ],
+  "bootstrap_admin_count": 1,
+  "runtime_env_mode": "0600",
+  "secrets_in_evidence": false,
+  "persistence_verified": false
+}

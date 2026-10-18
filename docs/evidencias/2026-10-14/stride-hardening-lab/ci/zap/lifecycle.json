@@ -1,0 +1,9 @@
+{
+  "source_commit": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+  "repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+  "scan_and_gate_passed": true,
+  "cleanup_completed": true,
+  "runtime_secrets_uploaded": false,
+  "normal_compose_used": false,
+  "normal_database_used": false
+}

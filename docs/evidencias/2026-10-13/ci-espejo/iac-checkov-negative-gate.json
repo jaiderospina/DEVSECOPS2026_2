@@ -1,0 +1,8 @@
+{
+  "rejected": true,
+  "checks": [
+    "CKV_ANSIBLE_5",
+    "CKV_ANSIBLE_6"
+  ],
+  "fixture_executed": false
+}

@@ -1,0 +1,1197 @@
+{
+  "date": "2026-10-14",
+  "timezone": "America/Bogota",
+  "evidence": "E32",
+  "source_commit": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+  "repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+  "branch": "master",
+  "workflow": {
+    "id": 38638956405,
+    "run_number": 24,
+    "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+    "head_branch": "master",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405",
+    "created_at": "2026-10-14T21:16:25Z",
+    "updated_at": "2026-10-14T21:32:48Z"
+  },
+  "jobs_total": 32,
+  "jobs": [
+    {
+      "id": 116109262132,
+      "name": "sca-trivy-manifests",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262132"
+    },
+    {
+      "id": 116109262323,
+      "name": "images (permissions-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262323"
+    },
+    {
+      "id": 116109262331,
+      "name": "pytest (audit_service, audit-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262331"
+    },
+    {
+      "id": 116109262415,
+      "name": "gitleaks",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262415"
+    },
+    {
+      "id": 116109262424,
+      "name": "bulk-users-tests",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262424"
+    },
+    {
+      "id": 116109262437,
+      "name": "zap-staging",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262437"
+    },
+    {
+      "id": 116109262440,
+      "name": "frontend-lint",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262440"
+    },
+    {
+      "id": 116109262457,
+      "name": "pytest (sync_worker, sync-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262457"
+    },
+    {
+      "id": 116109262491,
+      "name": "sca-node",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262491"
+    },
+    {
+      "id": 116109262506,
+      "name": "pytest (audit_dispatcher, audit-dispatcher)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262506"
+    },
+    {
+      "id": 116109262530,
+      "name": "images (identity-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262530"
+    },
+    {
+      "id": 116109262533,
+      "name": "images (frontend)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262533"
+    },
+    {
+      "id": 116109262539,
+      "name": "sast (bandit)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262539"
+    },
+    {
+      "id": 116109262546,
+      "name": "pytest (identity_http, identity-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262546"
+    },
+    {
+      "id": 116109262567,
+      "name": "sca-python (usuarios)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262567"
+    },
+    {
+      "id": 116109262584,
+      "name": "sca-python (audit-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262584"
+    },
+    {
+      "id": 116109262601,
+      "name": "sca-python (permissions-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262601"
+    },
+    {
+      "id": 116109262604,
+      "name": "images (sync-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262604"
+    },
+    {
+      "id": 116109262619,
+      "name": "stride-lab",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262619"
+    },
+    {
+      "id": 116109262626,
+      "name": "sca-python (identity-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262626"
+    },
+    {
+      "id": 116109262639,
+      "name": "frontend-ui",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262639"
+    },
+    {
+      "id": 116109262678,
+      "name": "sca-python (sync-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262678"
+    },
+    {
+      "id": 116109262715,
+      "name": "images (audit-dispatcher)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262715"
+    },
+    {
+      "id": 116109262720,
+      "name": "coverage-tooling",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262720"
+    },
+    {
+      "id": 116109262818,
+      "name": "images (audit-service)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262818"
+    },
+    {
+      "id": 116109262824,
+      "name": "sast (semgrep)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262824"
+    },
+    {
+      "id": 116109262840,
+      "name": "permissions-tests",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262840"
+    },
+    {
+      "id": 116109262919,
+      "name": "images (usuarios)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262919"
+    },
+    {
+      "id": 116109262929,
+      "name": "model",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109262929"
+    },
+    {
+      "id": 116109263023,
+      "name": "sca-python (audit-dispatcher)",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116109263023"
+    },
+    {
+      "id": 116112286850,
+      "name": "SonarQube Cloud analysis",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116112286850"
+    },
+    {
+      "id": 116116416069,
+      "name": "gate",
+      "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38638956405/job/116116416069"
+    }
+  ],
+  "sonar_external": {
+    "id": 116116353368,
+    "name": "SonarCloud Code Analysis",
+    "head_sha": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/runs/116116353368",
+    "details_url": "https://sonarcloud.io/dashboard?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master",
+    "output": {
+      "title": "Quality Gate passed",
+      "summary": "Issues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [42 New issues](https://sonarcloud.io/project/issues?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted.svg '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&pullRequest=master&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [85.6% Coverage on New Code](https://sonarcloud.io/component_measures?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master&metric=new_duplicated_lines_density&view=list)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=yeisonfblopez_DevSecOps-proyecto-Final-ci&branch=master)\n\n",
+      "text": null,
+      "annotations_count": 0,
+      "annotations_url": "https://api.github.com/repos/yeisonfblopez/DevSecOps-proyecto-Final-ci/check-runs/116116353368/annotations"
+    }
+  },
+  "sonar": {
+    "quality_gate": "OK",
+    "new_coverage": 85.60354374307863,
+    "required_new_coverage": 80,
+    "overall_coverage": 56.7,
+    "thresholds_preserved": true,
+    "accepted_issues": 0
+  },
+  "python": {
+    "files": 54,
+    "measured": {
+      "covered_lines": 3210,
+      "num_statements": 4063,
+      "percent_covered": 75.6852507924669,
+      "percent_covered_display": "76",
+      "missing_lines": 853,
+      "excluded_lines": 0,
+      "percent_statements_covered": 79.00566084174255,
+      "percent_statements_covered_display": "79",
+      "num_branches": 1300,
+      "num_partial_branches": 257,
+      "covered_branches": 849,
+      "missing_branches": 451,
+      "percent_branches_covered": 65.3076923076923,
+      "percent_branches_covered_display": "65"
+    }
+  },
+  "frontend": {
+    "LF": 162,
+    "LH": 156,
+    "BRF": 78,
+    "BRH": 73,
+    "files": [
+      "servicios/frontend/container/write-nginx-config.mjs",
+      "servicios/frontend/security-policy.js",
+      "servicios/frontend/src/auditReportUrl.mjs",
+      "servicios/frontend/src/bulkRequestUrl.mjs",
+      "servicios/frontend/src/windowOrigins.mjs"
+    ],
+    "line_percent": 96.29629629629629,
+    "branch_percent": 93.58974358974359
+  },
+  "lab": {
+    "project": "iam-stride-ci-38638956405",
+    "normal_compose_used": false,
+    "normal_database_used": false,
+    "certificate": {
+      "certificate_sha256": "06b584ec95f53af68b4232478d6e54a29f6db2ef9180fe7e1785cfea10ffc088",
+      "ca_sha256": "d2687a54828c5a894d0be5a03166920039e10eabc44e7051b68143424ba6f5a7",
+      "roles": [
+        "iam_audit",
+        "iam_backup",
+        "iam_dispatcher",
+        "iam_identity",
+        "iam_permissions",
+        "iam_sync"
+      ],
+      "certificate_days": 30,
+      "secrets_written": true,
+      "system_trust_modified": false
+    },
+    "checks": {
+      "private_backends_and_separate_runtime_roles": true,
+      "bootstrap_with_restricted_identity_role": true,
+      "runtime_containers_non_root": true,
+      "four_verified_https_endpoints": true,
+      "unknown_ca_rejected": true,
+      "plaintext_and_unknown_hosts_rejected": true,
+      "real_mfa_and_restricted_permissions_https": true,
+      "reset_revocation_and_real_audit_delivery": true,
+      "encrypted_backup_restored_and_acl_reapplied": true,
+      "restored_mfa_decryptable_with_preserved_key": true,
+      "auth_load_throttled_before_backend": true
+    },
+    "cleanup_completed": true,
+    "source_commit": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+    "source_worktree_dirty": false,
+    "repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+    "measured_at_utc": "2026-10-14T21:16:57.044674+00:00",
+    "roles": {
+      "roles_provisioned": 6,
+      "secrets_in_argv": false
+    },
+    "tls_version": "TLSv1.3",
+    "backup": {
+      "encrypted": true,
+      "bytes": 91084,
+      "plaintext_written": false
+    },
+    "restore": {
+      "restored": true,
+      "acl_policy_reapplied": true,
+      "normal_database_used": false
+    },
+    "load": {
+      "requests": 30,
+      "throttled": 28,
+      "server_errors": 0,
+      "forged_forwarded_headers_used": true,
+      "max_auth_connections": 2
+    },
+    "passed": true,
+    "unrelated_container_ids_preserved": true
+  },
+  "gateway_critical_vulnerabilities": 0,
+  "zap": {
+    "summary": {
+      "unique_contract_operations": 15,
+      "api_role_operations": 39,
+      "runs": [
+        {
+          "run": "audit-public",
+          "api": "audit",
+          "role": "PUBLIC",
+          "operations": 1,
+          "zap_recorded_requests": 74,
+          "methods": {
+            "GET": 74
+          },
+          "rules": [
+            "6",
+            "40018",
+            "90019",
+            "90020",
+            "40003"
+          ],
+          "strength": "LOW",
+          "alerts": [],
+          "coverage": [
+            {
+              "operation": "GET /health",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            }
+          ]
+        },
+        {
+          "run": "identity-admin_soporte",
+          "api": "identity",
+          "role": "ADMIN_SOPORTE",
+          "operations": 9,
+          "zap_recorded_requests": 466,
+          "methods": {
+            "GET": 466
+          },
+          "rules": [
+            "6",
+            "40018",
+            "90019",
+            "90020",
+            "40003"
+          ],
+          "strength": "LOW",
+          "alerts": [],
+          "coverage": [
+            {
+              "operation": "GET /",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /auth/me",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /auth/sesiones",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /usuarios",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /usuarios/{usuario_id}",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 2
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /companias",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /companias/asignaciones",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 76
+              },
+              "successful_application_access": false
+            },
+            {
+              "operation": "GET /companias/{compania_id}/contexto",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 2
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /companias/{compania_id}/usuarios",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 2
+              },
+              "successful_application_access": true
+            }
+          ]
+        },
+        {
+          "run": "identity-admin_ti",
+          "api": "identity",
+          "role": "ADMIN_TI",
+          "operations": 9,
+          "zap_recorded_requests": 463,
+          "methods": {
+            "GET": 463
+          },
+          "rules": [
+            "6",
+            "40018",
+            "90019",
+            "90020",
+            "40003"
+          ],
+          "strength": "LOW",
+          "alerts": [],
+          "coverage": [
+            {
+              "operation": "GET /",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /auth/me",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 74
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /auth/sesiones",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /usuarios",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /usuarios/{usuario_id}",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 2
+              },
+              "successful_application_access": false
+            },
+            {
+              "operation": "GET /companias",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /companias/asignaciones",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /companias/{compania_id}/contexto",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 2
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /companias/{compania_id}/usuarios",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 2
+              },
+              "successful_application_access": false
+            }
+          ]
+        },
+        {
+          "run": "permissions-admin_soporte",
+          "api": "permissions",
+          "role": "ADMIN_SOPORTE",
+          "operations": 5,
+          "zap_recorded_requests": 236,
+          "methods": {
+            "GET": 236
+          },
+          "rules": [
+            "6",
+            "40018",
+            "90019",
+            "90020",
+            "40003"
+          ],
+          "strength": "LOW",
+          "alerts": [],
+          "coverage": [
+            {
+              "operation": "GET /",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /v1/companies",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /v1/companies/{company_id}/permissions",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 2
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /v1/me/permissions",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 76
+              },
+              "successful_application_access": false
+            },
+            {
+              "operation": "GET /v1/me/views/{code}",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 2
+              },
+              "successful_application_access": false
+            }
+          ]
+        },
+        {
+          "run": "permissions-lider_facturacion",
+          "api": "permissions",
+          "role": "LIDER_FACTURACION",
+          "operations": 5,
+          "zap_recorded_requests": 236,
+          "methods": {
+            "GET": 236
+          },
+          "rules": [
+            "6",
+            "40018",
+            "90019",
+            "90020",
+            "40003"
+          ],
+          "strength": "LOW",
+          "alerts": [],
+          "coverage": [
+            {
+              "operation": "GET /",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /v1/companies",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 76
+              },
+              "successful_application_access": false
+            },
+            {
+              "operation": "GET /v1/companies/{company_id}/permissions",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 2
+              },
+              "successful_application_access": false
+            },
+            {
+              "operation": "GET /v1/me/permissions",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /v1/me/views/{code}",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 2
+              },
+              "successful_application_access": true
+            }
+          ]
+        },
+        {
+          "run": "permissions-lider_gestion_humana",
+          "api": "permissions",
+          "role": "LIDER_GESTION_HUMANA",
+          "operations": 5,
+          "zap_recorded_requests": 236,
+          "methods": {
+            "GET": 236
+          },
+          "rules": [
+            "6",
+            "40018",
+            "90019",
+            "90020",
+            "40003"
+          ],
+          "strength": "LOW",
+          "alerts": [],
+          "coverage": [
+            {
+              "operation": "GET /",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /v1/companies",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 76
+              },
+              "successful_application_access": false
+            },
+            {
+              "operation": "GET /v1/companies/{company_id}/permissions",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 2
+              },
+              "successful_application_access": false
+            },
+            {
+              "operation": "GET /v1/me/permissions",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /v1/me/views/{code}",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 2
+              },
+              "successful_application_access": false
+            }
+          ]
+        },
+        {
+          "run": "permissions-lider_logistica",
+          "api": "permissions",
+          "role": "LIDER_LOGISTICA",
+          "operations": 5,
+          "zap_recorded_requests": 236,
+          "methods": {
+            "GET": 236
+          },
+          "rules": [
+            "6",
+            "40018",
+            "90019",
+            "90020",
+            "40003"
+          ],
+          "strength": "LOW",
+          "alerts": [],
+          "coverage": [
+            {
+              "operation": "GET /",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /v1/companies",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 76
+              },
+              "successful_application_access": false
+            },
+            {
+              "operation": "GET /v1/companies/{company_id}/permissions",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 2
+              },
+              "successful_application_access": false
+            },
+            {
+              "operation": "GET /v1/me/permissions",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "200": 73
+              },
+              "successful_application_access": true
+            },
+            {
+              "operation": "GET /v1/me/views/{code}",
+              "scan_completed": true,
+              "responses_at_concrete_path": {
+                "403": 2
+              },
+              "successful_application_access": false
+            }
+          ]
+        }
+      ],
+      "unexpected_database_changes": [],
+      "forwarded_methods": {
+        "GET": 1911
+      },
+      "gateway_blocked_requests": {
+        "POST": 1,
+        "GET": 17,
+        "DELETE": 1
+      },
+      "limitations": [
+        "GET-only active scan through scope gateway, five rules at LOW strength",
+        "Synthetic sessions; no login, MFA enrolment, XLSX or write operations",
+        "403 and gateway-rejected inputs do not cover protected business logic",
+        "No frontend spider or complete application DAST coverage",
+        "Fresh application builds; no use of normal Compose or local database"
+      ],
+      "source_commit": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "source_repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+      "gate": {
+        "passed": true,
+        "policy": "fail on MEDIUM/HIGH; no ignored alerts",
+        "runs": 7,
+        "api_role_operations": 39,
+        "zap_recorded_requests": 1947,
+        "findings": [],
+        "blockers": []
+      }
+    },
+    "gate": {
+      "passed": true,
+      "policy": "fail on MEDIUM/HIGH; no ignored alerts",
+      "runs": 7,
+      "api_role_operations": 39,
+      "zap_recorded_requests": 1947,
+      "findings": [],
+      "blockers": []
+    },
+    "lifecycle": {
+      "source_commit": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+      "repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+      "scan_and_gate_passed": true,
+      "cleanup_completed": true,
+      "runtime_secrets_uploaded": false,
+      "normal_compose_used": false,
+      "normal_database_used": false
+    },
+    "database-comparison": {
+      "unexpected_tables": [],
+      "tables": [
+        {
+          "table": "auditoria_eventos",
+          "pre_rows": 0,
+          "post_rows": 0,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "auditoria_outbox",
+          "pre_rows": 0,
+          "post_rows": 0,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "cargas_usuario_filas",
+          "pre_rows": 0,
+          "post_rows": 0,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "cargas_usuarios",
+          "pre_rows": 0,
+          "post_rows": 0,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "companias",
+          "pre_rows": 5,
+          "post_rows": 5,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "credenciales",
+          "pre_rows": 6,
+          "post_rows": 6,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "mfa_desafios",
+          "pre_rows": 0,
+          "post_rows": 0,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "mfa_totp",
+          "pre_rows": 6,
+          "post_rows": 6,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "permisos_migraciones",
+          "pre_rows": 1,
+          "post_rows": 1,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "permisos_usuario_compania",
+          "pre_rows": 2,
+          "post_rows": 2,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "roles_plataforma",
+          "pre_rows": 5,
+          "post_rows": 5,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "sesiones",
+          "pre_rows": 12,
+          "post_rows": 12,
+          "same_digest": false,
+          "changes": [
+            {
+              "row": "10",
+              "columns": [
+                "ultima_actividad"
+              ]
+            },
+            {
+              "row": "11",
+              "columns": [
+                "ultima_actividad"
+              ]
+            },
+            {
+              "row": "12",
+              "columns": [
+                "ultima_actividad"
+              ]
+            },
+            {
+              "row": "7",
+              "columns": [
+                "ultima_actividad"
+              ]
+            },
+            {
+              "row": "8",
+              "columns": [
+                "ultima_actividad"
+              ]
+            },
+            {
+              "row": "9",
+              "columns": [
+                "ultima_actividad"
+              ]
+            }
+          ],
+          "only_expected_changes": true
+        },
+        {
+          "table": "sync_jobs",
+          "pre_rows": 0,
+          "post_rows": 0,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "usuario_companias_plataforma",
+          "pre_rows": 6,
+          "post_rows": 6,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "usuario_roles_plataforma",
+          "pre_rows": 6,
+          "post_rows": 6,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        },
+        {
+          "table": "usuarios_plataforma",
+          "pre_rows": 6,
+          "post_rows": 6,
+          "same_digest": true,
+          "changes": [],
+          "only_expected_changes": true
+        }
+      ]
+    }
+  },
+  "files": [
+    {
+      "path": "ci/sonar-analysis-receipt.json",
+      "bytes": 242,
+      "sha256": "4a7032df70ec3f0b420e3b38e6ee5530ab8b9ed9ed4ebcf4d6e259d4582b70b9"
+    },
+    {
+      "path": "ci/sonar-quality-gate.json",
+      "bytes": 1461,
+      "sha256": "1e52865fc3a9eede185ea1dacb94c0a4cec76abc1a7b99e79407bc68aaf5de10"
+    },
+    {
+      "path": "ci/sonar-coverage-project.json",
+      "bytes": 1232,
+      "sha256": "d8dce0e49cc9018e1b8ef3f9ddeb86a4b6988bf61463ddd178ffb64c1ae27a90"
+    },
+    {
+      "path": "ci/sonar-coverage-files.json",
+      "bytes": 167165,
+      "sha256": "1afb054ac1dec2ebe8f327ae1ceb7dbbb25e11809d119211d28b6883e576e4d5"
+    },
+    {
+      "path": "ci/coverage.xml",
+      "bytes": 194016,
+      "sha256": "129e58d72a57a035df3a92b47d79df0799a15d50ee6b65d13be2080ddc486a11"
+    },
+    {
+      "path": "ci/coverage.txt",
+      "bytes": 7031,
+      "sha256": "8dfd7e9cbd987af64c676a051c72873f4e20daa03de941cb5f22015349e2daa7"
+    },
+    {
+      "path": "ci/coverage.json",
+      "bytes": 340567,
+      "sha256": "7234460b6c24e111f91eec751463a77d145f281397724d15ef4e656deaa29dcf"
+    },
+    {
+      "path": "ci/frontend-coverage.lcov",
+      "bytes": 3320,
+      "sha256": "00d65ad820289da646fbb90c5a3fc6ec60fd35419360a053e90135eb0594315f"
+    },
+    {
+      "path": "ci/stride-secure-lab.json",
+      "bytes": 1888,
+      "sha256": "f1acdc392c13796ce599417c7a69025c024b2dd359bf100f7fc41aa897e3fbd1"
+    },
+    {
+      "path": "ci/stride-tooling.xml",
+      "bytes": 4468,
+      "sha256": "5f788b5bd8c94cc751483ce9570ff8059ebb764595762564e2680d7471d71f33"
+    },
+    {
+      "path": "ci/stride-gateway-trivy.json",
+      "bytes": 12631,
+      "sha256": "5af1bc6858057a918b67bd84979c6b515b424df9024e46003580f23d8c040b4b"
+    },
+    {
+      "path": "ci/zap/summary.json",
+      "bytes": 12647,
+      "sha256": "e517999d700067ff636962c7a649eb310d0019ec8f4481e819c9f42a9913be29"
+    },
+    {
+      "path": "ci/zap/gate.json",
+      "bytes": 185,
+      "sha256": "6e1f9c18ee14f5736189e8447232042f1bee35202139170889c1d2a566862583"
+    },
+    {
+      "path": "ci/zap/lifecycle.json",
+      "bytes": 289,
+      "sha256": "674e2e46974ba1cc9ccf0318d390b3d8fcb84498865052ce67a8e9205434525a"
+    },
+    {
+      "path": "ci/zap/database-comparison.json",
+      "bytes": 3515,
+      "sha256": "b4600913fcc27670cb10424bd1ba367d558e93ff97095db25e4c9d9d02cf7f0f"
+    },
+    {
+      "path": "ci/tests/bulk-users.xml",
+      "bytes": 11504,
+      "sha256": "3595bb9779a987dbfed0d8037ecd662f058f982a8c09c70076c5d67faea7ba9f"
+    },
+    {
+      "path": "ci/tests/identity-security.xml",
+      "bytes": 30999,
+      "sha256": "c453b51fb0c8ef99fe0e4b2200c4e0cdf3f44db9c92bedfea37c056fa15a8723"
+    },
+    {
+      "path": "ci/history/SONAR_BLOCKED_D51902C.json",
+      "bytes": 2480,
+      "sha256": "a551b36335ba3983facccb7b616c07592edf2c33381ba76a1781e40e796879b5"
+    },
+    {
+      "path": "ci/history/CD_SIMULATED_D51902C.json",
+      "bytes": 481,
+      "sha256": "7413ebc6cbb9f2448d97d337bc0f3ceec026e185099298552d73811e11157262"
+    },
+    {
+      "path": "ci/history/cd/runtime-first.json",
+      "bytes": 3284,
+      "sha256": "b1b6e3881925d0cc001e065dc7b77d2331849a8c2ac1319e269ed29d722c5798"
+    },
+    {
+      "path": "ci/history/cd/runtime-final.json",
+      "bytes": 3283,
+      "sha256": "eec51893d226fb269364068e7b77827226ad99ff7f0bac6990101c598afd063b"
+    }
+  ],
+  "limits": [
+    "Six residual risk decisions remain unaccepted/Open; technical lab proof is not human acceptance",
+    "TLS/rate/database logins apply to alternate secure profile; base development profile remains HTTP/admin DB",
+    "Reset MFA atomic outbox and terminal alerts are common code changes; local runtime requires rebuild",
+    "Synthetic private keys, tokens, env files and dump are not archived",
+    "Original release Docker 1.0.0 remains a different historical image cut",
+    "Sonar new/overall coverage and Python/JS coverage measure distinct scopes"
+  ]
+}

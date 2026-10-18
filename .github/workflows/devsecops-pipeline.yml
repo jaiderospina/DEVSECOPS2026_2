@@ -1,0 +1,774 @@
+name: DevSecOps
+on:
+  push:
+    branches: [master, "feat/**"]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+concurrency:
+  group: devsecops-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  sonarqube:
+    name: SonarQube Cloud analysis
+    needs: [pytest, permissions-tests, bulk-users-tests, coverage-tooling, zap-staging, frontend-lint, stride-lab]
+    if: github.repository == 'yeisonfblopez/DevSecOps-proyecto-Final-ci' && github.workflow == 'DevSecOps' && github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    steps:
+      - name: Check SonarQube credentials
+        id: sonar-config
+        run: |
+          if [ -n "$SONAR_TOKEN" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::SONAR_TOKEN is required for the mirror master quality gate."
+            exit 1
+          fi
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        if: steps.sonar-config.outputs.configured == 'true'
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        if: steps.sonar-config.outputs.configured == 'true'
+        with:
+          python-version: "3.14"
+      - run: "python -m pip install --only-binary :all: --require-hashes -r tests/coverage/requirements-ci.lock"
+        if: steps.sonar-config.outputs.configured == 'true'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: steps.sonar-config.outputs.configured == 'true'
+        with:
+          pattern: coverage-python-*
+          path: coverage-input
+          merge-multiple: true
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: steps.sonar-config.outputs.configured == 'true'
+        with:
+          name: coverage-frontend
+          path: reports
+      - name: Merge measured coverage from this run before scanning
+        if: steps.sonar-config.outputs.configured == 'true'
+        run: |
+          mkdir -p reports
+          python -m coverage combine --data-file=reports/coverage-data coverage-input
+          python -m coverage xml --data-file=reports/coverage-data
+          python -m coverage json --data-file=reports/coverage-data -o reports/coverage.json
+          python -m coverage report --data-file=reports/coverage-data > reports/coverage.txt
+          python - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          report = ET.parse('reports/coverage.xml')
+          files = report.findall('.//class')
+          assert files, 'Empty coverage report'
+          for file in files:
+              name = file.attrib['filename']
+              assert not Path(name).is_absolute() and Path(name).is_file(), name
+          assert int(report.getroot().attrib['lines-covered']) > 0, 'No executed lines'
+          print('Verified portable coverage for', len(files), 'Python source files')
+          PY
+      - name: Analyze with SonarQube Cloud
+        if: steps.sonar-config.outputs.configured == 'true'
+        uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3.0
+        env:
+          SONAR_HOST_URL: https://sonarcloud.io
+        with:
+          args: -Dsonar.branch.name=${{ github.ref_name }} -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=600
+      - name: Retain quality gate and per-file coverage diagnostics
+        if: always() && steps.sonar-config.outputs.configured == 'true'
+        run: |
+          python - <<'PY'
+          import json, os, urllib.parse, urllib.request
+          from pathlib import Path
+          assert Path('.scannerwork/report-task.txt').exists(), 'No submitted Sonar analysis; do not attribute prior metrics to this revision'
+          key = 'yeisonfblopez_DevSecOps-proyecto-Final-ci'
+          branch = os.environ['GITHUB_REF_NAME']
+          task = dict(line.split('=', 1) for line in Path('.scannerwork/report-task.txt').read_text().splitlines())
+          request = urllib.request.Request('https://sonarcloud.io/api/ce/task?' + urllib.parse.urlencode({'id': task['ceTaskId']}),
+              headers={'Authorization': 'Bearer ' + os.environ['SONAR_TOKEN']})
+          with urllib.request.urlopen(request, timeout=30) as response:
+              analysis = json.load(response)['task']
+          assert analysis['status'] == 'SUCCESS' and analysis.get('analysisId'), 'No completed analysis for this revision'
+          endpoints = {
+              'sonar-quality-gate': ('qualitygates/project_status', {'analysisId': analysis['analysisId']}),
+              'sonar-coverage-files': ('measures/component_tree', {
+                  'component': key, 'branch': branch, 'qualifiers': 'FIL', 'ps': 500,
+                  'metricKeys': 'new_lines_to_cover,new_uncovered_lines,new_conditions_to_cover,new_uncovered_conditions,coverage,lines_to_cover,uncovered_lines'}),
+              'sonar-coverage-project': ('measures/component', {
+                  'component': key, 'branch': branch,
+                  'metricKeys': 'new_coverage,coverage,new_lines_to_cover,new_uncovered_lines,new_conditions_to_cover,new_uncovered_conditions'})}
+          Path('reports').mkdir(exist_ok=True)
+          Path('reports/sonar-analysis-receipt.json').write_text(json.dumps({
+              'source_commit': os.environ['GITHUB_SHA'], 'repository': os.environ['GITHUB_REPOSITORY'],
+              'branch': branch, 'analysis_id': analysis['analysisId'], 'task_id': task['ceTaskId']}, indent=2), encoding='utf-8')
+          for name, (endpoint, query) in endpoints.items():
+              request = urllib.request.Request('https://sonarcloud.io/api/' + endpoint + '?' + urllib.parse.urlencode(query),
+                  headers={'Authorization': 'Bearer ' + os.environ['SONAR_TOKEN']})
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  data = json.load(response)
+              Path('reports', name + '.json').write_text(json.dumps(data, indent=2), encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.sonar-config.outputs.configured == 'true'
+        with:
+          name: sonar-coverage-evidence
+          path: reports/
+          retention-days: 30
+  gitleaks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - run: mkdir -p reports
+      - name: Scan full history with redaction
+        run: |
+          docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.24.3 git /repo --redact --report-format json --report-path /repo/reports/gitleaks.json --exit-code 1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: gitleaks-redacted
+          path: reports/
+          retention-days: 7
+  sast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        scanner: [semgrep, bandit]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - run: mkdir -p reports
+      - name: Semgrep
+        if: matrix.scanner == 'semgrep'
+        run: |
+          docker pull semgrep/semgrep:1.140.0
+          scan_status=0
+          docker run --rm -v "$PWD:/src:ro" -v "$PWD/reports:/out" -w /src semgrep/semgrep:1.140.0 semgrep scan --config p/owasp-top-ten --config p/python --config p/javascript --metrics off --error --json --output /out/semgrep.json servicios scripts || scan_status=$?
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = Path("reports/semgrep.json")
+          if report.exists():
+              for finding in json.loads(report.read_text()).get("results", []):
+                  print(finding["check_id"], finding["path"], finding["start"]["line"], finding["extra"]["message"])
+          PY
+          exit "$scan_status"
+      - name: Bandit
+        if: matrix.scanner == 'bandit'
+        run: |
+          python -m pip install bandit==1.8.6
+          bandit -r servicios scripts -ll -ii -f json -o reports/bandit.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sast-${{ matrix.scanner }}
+          path: reports/
+          retention-days: 7
+  sca-python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [identity-service, sync-service, audit-service, audit-dispatcher, usuarios, permissions-service]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.14"
+      - run: mkdir -p reports
+      - run: python -m pip install pip-audit==2.9.0
+      - name: Resolve and audit direct and transitive dependencies
+        run: pip-audit -r servicios/${{ matrix.service }}/requirements.txt --format json --output reports/pip-audit.json
+      - name: Resolve isolated Python inventory for Trivy
+        run: |
+          python -m venv "$RUNNER_TEMP/iam-sca-venv"
+          "$RUNNER_TEMP/iam-sca-venv/bin/python" -m pip install -r servicios/${{ matrix.service }}/requirements.txt
+          "$RUNNER_TEMP/iam-sca-venv/bin/python" -m pip freeze > reports/resolved-requirements.txt
+          python scripts/verify_trivy_sca.py prepare --destination "$RUNNER_TEMP/iam-sca-input" --expected reports/trivy-expected.json --resolved reports/resolved-requirements.txt
+      - name: Trivy direct and transitive Python dependencies
+        run: |
+          docker run --rm -v "$RUNNER_TEMP/iam-sca-input:/scan:ro" -v "$PWD/reports:/reports" aquasec/trivy:0.65.0 fs --scanners vuln --include-dev-deps --list-all-pkgs --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --exit-code 0 --format json --output /reports/trivy-dependencies.json /scan
+          python scripts/verify_trivy_sca.py verify --report reports/trivy-dependencies.json --expected reports/trivy-expected.json --output reports/trivy-summary.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sca-${{ matrix.service }}
+          path: reports/
+          retention-days: 30
+  sca-node:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: servicios/frontend
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "22"
+      - run: npm ci --ignore-scripts
+      - name: Audit frontend dependencies
+        run: |
+          audit_status=0
+          npm audit --audit-level=high --json > npm-audit.json || audit_status=$?
+          cat npm-audit.json
+          exit "$audit_status"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sca-frontend
+          path: servicios/frontend/npm-audit.json
+          retention-days: 7
+  sca-trivy-manifests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Test dependency coverage and vulnerability gates
+        run: |
+          python -m unittest discover -s tests/sca -v
+          python -m unittest discover -s tests/automation_security -v
+      - name: Prepare all Python manifests and frontend lockfile
+        run: |
+          mkdir -p reports/sca-trivy
+          python scripts/verify_trivy_sca.py prepare --destination "$RUNNER_TEMP/iam-sca-manifests" --expected reports/sca-trivy/expected.json
+      - name: Trivy manifest SCA including frontend dev dependencies
+        run: |
+          docker run --rm -v "$RUNNER_TEMP/iam-sca-manifests:/scan:ro" -v "$PWD/reports/sca-trivy:/reports" -v "$RUNNER_TEMP/iam-trivy-cache:/root/.cache/trivy" aquasec/trivy:0.65.0 fs --scanners vuln --include-dev-deps --list-all-pkgs --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --exit-code 0 --format json --output /reports/trivy-manifests.json /scan
+          python scripts/verify_trivy_sca.py verify --report reports/sca-trivy/trivy-manifests.json --expected reports/sca-trivy/expected.json --output reports/sca-trivy/summary.json
+      - name: Prove Trivy blocks a known vulnerable dependency without installing it
+        run: |
+          mkdir -p "$RUNNER_TEMP/iam-sca-negative"
+          printf 'Django==2.2.0\n' > "$RUNNER_TEMP/iam-sca-negative/requirements.txt"
+          scan_status=0
+          docker run --rm -v "$RUNNER_TEMP/iam-sca-negative:/scan:ro" -v "$PWD/reports/sca-trivy:/reports" -v "$RUNNER_TEMP/iam-trivy-cache:/root/.cache/trivy" aquasec/trivy:0.65.0 fs --skip-db-update --scanners vuln --list-all-pkgs --severity HIGH,CRITICAL --exit-code 1 --format json --output /reports/trivy-negative.json /scan || scan_status=$?
+          test "$scan_status" = "1"
+          python scripts/verify_trivy_sca.py prepare --destination "$RUNNER_TEMP/iam-sca-negative-expected" --expected reports/sca-trivy/negative-expected.json --resolved "$RUNNER_TEMP/iam-sca-negative/requirements.txt"
+          gate_status=0
+          python scripts/verify_trivy_sca.py verify --report reports/sca-trivy/trivy-negative.json --expected reports/sca-trivy/negative-expected.json --output reports/sca-trivy/negative-summary.json || gate_status=$?
+          test "$gate_status" = "1"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sca-trivy-manifests
+          path: reports/sca-trivy/
+          retention-days: 30
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: identity_http
+            service: identity-service
+          - suite: sync_worker
+            service: sync-service
+          - suite: audit_service
+            service: audit-service
+          - suite: audit_dispatcher
+            service: audit-dispatcher
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.14"
+      - name: Install locked behavioral test dependencies as verified wheels
+        run: "python -m pip install --only-binary :all: --require-hashes -r tests/bulk_users/requirements-ci.lock -r tests/coverage/requirements-ci.lock"
+      - run: mkdir -p reports
+      - name: Existing behavioral suites via Pytest, isolated per service
+        run: python -m coverage run --data-file=reports/coverage-data.${{ matrix.suite }} -m pytest tests/${{ matrix.suite }} -q --junitxml=reports/pytest.xml
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pytest-${{ matrix.suite }}
+          path: reports/
+          retention-days: 7
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: success()
+        with:
+          name: coverage-python-${{ matrix.suite }}
+          path: reports/coverage-data.*
+          if-no-files-found: error
+          retention-days: 7
+  coverage-tooling:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.14"
+      - run: "python -m pip install --only-binary :all: --require-hashes -r tests/coverage/requirements-ci.lock"
+      - name: Measure security tooling behavior and negative controls
+        run: |
+          mkdir -p reports
+          python -m coverage run --data-file=reports/coverage-data.dast -m unittest discover -s dast -p 'test_*.py' -v
+          python -m coverage run --data-file=reports/coverage-data.sca -m unittest discover -s tests/sca -v
+          python -m coverage run --data-file=reports/coverage-data.automation -m unittest discover -s tests/automation_security -v
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: coverage-python-tooling
+          path: reports/coverage-data.*
+          if-no-files-found: error
+          retention-days: 7
+  model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - run: python -m pip install jsonschema==4.25.1
+      - run: python scripts/validate_threat_model.py
+  images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [identity-service, sync-service, audit-service, audit-dispatcher, frontend, usuarios, permissions-service]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - run: mkdir -p reports
+      - name: Build image without application secrets
+        run: docker build --pull -t iam-ci:${{ matrix.service }} servicios/${{ matrix.service }}
+      - name: Verify effective non-root UID and image metadata
+        env:
+          SERVICE: ${{ matrix.service }}
+        run: |
+          uid=$(docker run --rm --entrypoint id "iam-ci:$SERVICE" -u)
+          test "$uid" -gt 0
+          export EFFECTIVE_UID="$uid"
+          docker image inspect "iam-ci:$SERVICE" > /tmp/iam-image.json
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          image = json.loads(Path("/tmp/iam-image.json").read_text())[0]
+          evidence = {
+              "service": os.environ["SERVICE"],
+              "image_id": image["Id"],
+              "declared_user": image["Config"]["User"],
+              "effective_uid_probe": int(os.environ["EFFECTIVE_UID"]),
+              "size_bytes": image["Size"],
+              "scope": "default container user via id; frontend startup verified separately",
+          }
+          Path("reports/runtime-user.json").write_text(json.dumps(evidence, indent=2) + "\n")
+          print(json.dumps(evidence))
+          PY
+      - name: Verify minimal frontend runtime and compare image sizes
+        if: matrix.service == 'frontend'
+        run: |
+          docker run --rm --entrypoint sh iam-ci:frontend -ec '
+            test ! -e /app/node_modules
+            test ! -e /usr/share/nginx/html/src
+            ! command -v node
+            ! command -v npm
+            nginx -t
+          '
+          git show e20b783f7bef2a4aa920be998557bfb68df5bf12:servicios/frontend/Dockerfile > /tmp/iam-frontend-before.Dockerfile
+          docker build -f /tmp/iam-frontend-before.Dockerfile -t iam-ci:frontend-before servicios/frontend
+          before=$(docker image inspect iam-ci:frontend-before --format '{{.Size}}')
+          after=$(docker image inspect iam-ci:frontend --format '{{.Size}}')
+          test "$after" -lt "$before"
+          export BEFORE_BYTES="$before" AFTER_BYTES="$after"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          before, after = int(os.environ["BEFORE_BYTES"]), int(os.environ["AFTER_BYTES"])
+          evidence = {"before_bytes": before, "after_bytes": after,
+                      "reduction_percent": round((1 - after / before) * 100, 2),
+                      "scope": "linux amd64 uncompressed image size; same source/build args"}
+          Path("reports/frontend-size.json").write_text(json.dumps(evidence, indent=2) + "\n")
+          print(json.dumps(evidence))
+          PY
+      - name: Verify frontend starts as non-root and serves HTTP
+        if: matrix.service == 'frontend'
+        run: |
+          docker run -d --name frontend-smoke -p 127.0.0.1:15173:5173 iam-ci:frontend
+          trap 'docker logs frontend-smoke; docker rm -f frontend-smoke' EXIT
+          test "$(docker exec frontend-smoke id -u)" != "0"
+          test "$(docker exec frontend-smoke cat /proc/1/status | awk '/^Uid:/ {print $2}')" -gt 0
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:15173/ > /dev/null; then
+              test "$(curl --silent -o /dev/null -w '%{http_code}' -H 'Host: host.docker.internal:5173' http://127.0.0.1:15173/)" = "200"
+              test "$(curl --silent -o /dev/null -w '%{http_code}' -H 'Host: untrusted.invalid' http://127.0.0.1:15173/)" = "403"
+              test "$(curl --silent -o /dev/null -w '%{http_code}' -H 'Host: deadbeef' http://127.0.0.1:15173/)" = "403"
+              test "$(curl --silent -o /dev/null -w '%{http_code}' -H 'Host: [::1]:5173' http://127.0.0.1:15173/)" = "200"
+              curl --fail --silent -D /tmp/frontend-headers -o /dev/null http://127.0.0.1:15173/
+              grep -qi '^X-Frame-Options: DENY' /tmp/frontend-headers
+              grep -qi '^X-Content-Type-Options: nosniff' /tmp/frontend-headers
+              grep -qi '^Permissions-Policy:' /tmp/frontend-headers
+              grep -qi "^Content-Security-Policy:.*frame-ancestors 'none'" /tmp/frontend-headers
+              grep -qi "^Content-Security-Policy:.*img-src 'self' data: blob:" /tmp/frontend-headers
+              grep -qi "^Content-Security-Policy:.*style-src 'self';" /tmp/frontend-headers
+              if grep -qi "^Content-Security-Policy:.*unsafe-inline" /tmp/frontend-headers; then
+                echo "Frontend CSP must not allow unsafe-inline"
+                exit 1
+              fi
+              test "$(curl --silent -o /dev/null -w '%{http_code}' http://127.0.0.1:15173/permissions.html)" = "200"
+              test "$(curl --silent -o /dev/null -w '%{http_code}' http://127.0.0.1:15173/client-route)" = "200"
+              test "$(curl --silent -o /dev/null -w '%{http_code}' http://127.0.0.1:15173/assets/missing.js)" = "404"
+              test "$(curl --silent -o /dev/null -w '%{http_code}' http://127.0.0.1:15173/.env)" = "403"
+              curl --silent -D /tmp/frontend-forbidden-headers -o /dev/null -H 'Host: untrusted.invalid' http://127.0.0.1:15173/
+              grep -qi '^X-Frame-Options: DENY' /tmp/frontend-forbidden-headers
+              echo "Frontend HTTP, allowed-host and security-header smoke tests passed"
+              exit 0
+            fi
+            sleep 2
+          done
+          exit 1
+      - name: Trivy critical CVE gate (including unfixed)
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD/reports:/reports" aquasec/trivy:0.65.0 image --scanners vuln --severity CRITICAL --exit-code 1 --format json --output /reports/trivy.json iam-ci:${{ matrix.service }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: trivy-${{ matrix.service }}
+          path: reports/
+          retention-days: 7
+  permissions-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: iam_permissions_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: 127.0.0.1
+      DB_PORT: "5432"
+      DB_NAME: iam_permissions_test
+      IAM_BASE_URL: http://127.0.0.1:18003
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.14"
+      - name: Install the common Identity/Permissions test lock and coverage wheels
+        run: "python -m pip install --only-binary :all: --require-hashes -r tests/bulk_users/requirements-ci.lock -r tests/coverage/requirements-ci.lock"
+      - name: Ephemeral signing key for real HTTP integration tests
+        run: |
+          python - <<'PY'
+          import os, secrets
+          with open(os.environ["GITHUB_ENV"], "a") as output:
+              output.write("IAM_TEST_JWT_SECRET=" + secrets.token_hex(32) + "\n")
+          PY
+      - name: Apply real PostgreSQL migrations
+        run: |
+          for migration in postgres-init/*.sql; do
+            psql -h 127.0.0.1 -U postgres -d iam_permissions_test -v ON_ERROR_STOP=1 -f "$migration"
+          done
+      - run: mkdir -p reports
+      - run: python -m coverage run --data-file=reports/coverage-data.permissions -m pytest tests/permissions -q --junitxml=reports/permissions.xml
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pytest-permissions
+          path: reports/
+          retention-days: 7
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: success()
+        with:
+          name: coverage-python-permissions
+          path: reports/coverage-data.*
+          if-no-files-found: error
+          retention-days: 7
+  bulk-users-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DB_USER: postgres
+      DB_HOST: 127.0.0.1
+      DB_PORT: "5432"
+      DB_NAME: iam_bulk_test
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.14"
+      - run: "python -m pip install --only-binary :all: --require-hashes -r tests/bulk_users/requirements-ci.lock"
+      - run: "python -m pip install --only-binary :all: --require-hashes -r tests/coverage/requirements-ci.lock"
+      - name: Generate disposable PostgreSQL credentials for this job
+        run: |
+          python - <<'PY'
+          import os, secrets
+          password = secrets.token_hex(32)
+          print('::add-mask::' + password)
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              for name in ('POSTGRES_PASSWORD', 'DB_PASSWORD', 'PGPASSWORD'):
+                  output.write(name + '=' + password + '\n')
+          PY
+      - name: Start isolated PostgreSQL with the disposable credential
+        run: |
+          docker run --rm -d --name iam-bulk-postgres --user postgres --read-only --cap-drop ALL --security-opt no-new-privileges \
+            --tmpfs /tmp:rw,noexec,nosuid --tmpfs /var/run/postgresql:rw,noexec,nosuid,mode=3775,uid=999,gid=999 \
+            -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD -e POSTGRES_DB=iam_bulk_test \
+            postgres:17@sha256:ae69c452f483507a6b99fb654cf93aad7fe156ffd2c56247707eef4e36d3c12b
+          for attempt in $(seq 1 30); do
+            if docker exec iam-bulk-postgres pg_isready -U postgres -d iam_bulk_test; then exit 0; fi
+            sleep 2
+          done
+          exit 1
+      - name: Apply real PostgreSQL migrations
+        run: |
+          for migration in postgres-init/*.sql; do
+            psql -h 127.0.0.1 -U postgres -d iam_bulk_test -v ON_ERROR_STOP=1 -f "$migration"
+          done
+      - run: mkdir -p reports
+      - run: python -m coverage run --data-file=reports/coverage-data.bulk-users -m pytest tests/bulk_users -q --junitxml=reports/bulk-users.xml
+      - name: Run Identity security regressions against a second disposable database
+        env:
+          DB_NAME: iam_negative_test
+          IAM_NEGATIVE_DISPOSABLE: "1"
+        run: |
+          psql -h 127.0.0.1 -U postgres -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE iam_negative_test'
+          for migration in postgres-init/*.sql; do
+            psql -h 127.0.0.1 -U postgres -d iam_negative_test -v ON_ERROR_STOP=1 -f "$migration"
+          done
+          python -m coverage run --data-file=reports/coverage-data.identity-security -m pytest tests/identity_security -q --junitxml=reports/identity-security.xml
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pytest-bulk-users
+          path: reports/
+          retention-days: 7
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: success()
+        with:
+          name: coverage-python-bulk-users
+          path: reports/coverage-data.*
+          if-no-files-found: error
+          retention-days: 7
+      - name: Remove the isolated test database
+        if: always()
+        run: docker rm -f -v iam-bulk-postgres || true
+  frontend-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: servicios/frontend
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npm run lint
+      - name: Verify shared CSP and static server configuration
+        run: |
+          mkdir -p ../../reports
+          node --experimental-test-coverage --test-coverage-include='**/servicios/frontend/**' --test \
+            --test-reporter=spec --test-reporter-destination=stdout \
+            --test-reporter=lcov --test-reporter-destination=../../reports/frontend-coverage.lcov \
+            ../../tests/frontend_container/config.test.mjs ../../tests/frontend_container/bulk-url.test.mjs ../../tests/frontend_container/audit-report.test.mjs ../../tests/frontend_container/window-origins.test.mjs
+          node --input-type=module - <<'JS'
+          import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+          import { relative, resolve } from 'node:path'
+          const root = process.env.GITHUB_WORKSPACE
+          const file = '../../reports/frontend-coverage.lcov'
+          const content = readFileSync(file, 'utf8').replace(/^SF:(.+)$/gm, (_, path) => {
+            const absolute = resolve(path)
+            const source = relative(root, absolute).replaceAll('\\', '/')
+            if (source.startsWith('../') || !existsSync(absolute)) throw new Error('Invalid LCOV source')
+            return 'SF:' + source
+          })
+          if (!content.includes('SF:servicios/frontend/')) throw new Error('No measured frontend sources')
+          writeFileSync(file, content)
+          JS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: coverage-frontend
+          path: reports/frontend-coverage.lcov
+          if-no-files-found: error
+          retention-days: 7
+  frontend-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "22"
+      - name: Build real frontend runtime for browser tests
+        run: docker build --pull -t iam-ui:frontend servicios/frontend
+      - name: Install and audit isolated browser test dependency
+        run: |
+          npm install --prefix /tmp/iam-permissions-browser --ignore-scripts playwright@1.63.0
+          npm audit --prefix /tmp/iam-permissions-browser --audit-level=high
+          /tmp/iam-permissions-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Verify grid, bulk upload and session inactivity in real Nginx containers
+        env:
+          PLAYWRIGHT_MODULE: /tmp/iam-permissions-browser/node_modules/playwright
+        run: |
+          mkdir -p reports
+          docker run -d --name iam-ui-panel -p 127.0.0.1:5173:5173 iam-ui:frontend
+          docker run -d --name iam-ui-grid -p 127.0.0.1:5176:5173 iam-ui:frontend
+          trap 'docker logs iam-ui-panel; docker logs iam-ui-grid; docker rm -f iam-ui-panel iam-ui-grid' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://localhost:5173/ > /dev/null && curl --fail --silent http://localhost:5176/permissions.html > /dev/null; then
+              node tests/permissions_ui/check.mjs
+              node tests/bulk_ui/check.mjs
+              node tests/session_idle/check.mjs | tee reports/session-idle.txt
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs iam-ui-panel
+          exit 1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: permissions-ui
+          path: reports/
+          retention-days: 7
+  zap-staging:
+    if: github.repository == 'yeisonfblopez/DevSecOps-proyecto-Final-ci'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Define private staging runtime
+        run: echo "IAM_DAST_RUNTIME=$RUNNER_TEMP/iam-dast-${{ github.run_id }}-${{ github.run_attempt }}" >> "$GITHUB_ENV"
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.14"
+      - name: Verify staging isolation, report gate and redaction
+        run: python -m unittest discover -s dast -p 'test_*.py' -v
+      - run: "python -m pip install --only-binary :all: --require-hashes -r tests/coverage/requirements-ci.lock"
+      - name: Build isolated staging and run controlled active ZAP
+        run: python -m coverage run --data-file=reports/coverage-data.zap-staging tests/coverage/run_staging.py run --output reports/zap-staging
+      - name: Clean only this disposable staging project
+        if: always()
+        run: python dast/ci.py cleanup
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: zap-staging-evidence
+          path: reports/zap-staging/
+          retention-days: 30
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: success()
+        with:
+          name: coverage-python-zap-staging
+          path: reports/coverage-data.*
+          if-no-files-found: error
+          retention-days: 7
+  stride-lab:
+    if: github.repository == 'yeisonfblopez/DevSecOps-proyecto-Final-ci'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.14"
+      - name: Install verified wheels from existing complete test locks
+        run: "python -m pip install --only-binary :all: --require-hashes -r tests/bulk_users/requirements-ci.lock -r tests/coverage/requirements-ci.lock"
+      - run: mkdir -p reports
+      - name: Measure STRIDE tooling negative controls
+        run: python -m coverage run --data-file=reports/coverage-data.stride-tooling -m pytest tests/stride_tooling -q --junitxml=reports/stride-tooling.xml
+      - name: Validate fresh TLS, roles, MFA, audit, encrypted restore and rate limits
+        run: python -m coverage run --data-file=reports/coverage-data.stride-lab scripts/validate_secure_lab.py --project "iam-stride-ci-${{ github.run_id }}" --output reports/stride-secure-lab.json
+      - name: Verify non-root gateway image and block CRITICAL vulnerabilities
+        run: |
+          image="iam-stride-ci-${GITHUB_RUN_ID}-gateway"
+          uid=$(docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges --entrypoint id "$image" -u)
+          test "$uid" -gt 0
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD/reports:/reports" aquasec/trivy:0.65.0 image --scanners vuln --severity CRITICAL --exit-code 1 --format json --output /reports/stride-gateway-trivy.json "$image"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: stride-secure-lab-evidence
+          path: |
+            reports/stride-secure-lab.json
+            reports/stride-tooling.xml
+            reports/stride-gateway-trivy.json
+          retention-days: 30
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: success()
+        with:
+          name: coverage-python-stride-lab
+          path: reports/coverage-data.*
+          if-no-files-found: error
+          retention-days: 7
+  gate:
+    if: always()
+    needs: [gitleaks, sast, sca-python, sca-node, sca-trivy-manifests, pytest, permissions-tests, bulk-users-tests, frontend-lint, frontend-ui, model, images, zap-staging, coverage-tooling, sonarqube, stride-lab]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every job to succeed
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+          REPOSITORY: ${{ github.repository }}
+          SONAR_REQUIRED: ${{ github.repository == 'yeisonfblopez/DevSecOps-proyecto-Final-ci' && github.workflow == 'DevSecOps' && github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+        run: |
+          python - <<'PY'
+          import json, os
+          results = json.loads(os.environ["RESULTS"])
+          for name, job in results.items():
+              if name == "sonarqube" and os.environ["SONAR_REQUIRED"] != "true":
+                  assert job["result"] == "skipped", "Unexpected Sonar execution outside mirror master analysis"
+                  continue
+              if name in ("zap-staging", "stride-lab") and os.environ["REPOSITORY"] != "yeisonfblopez/DevSecOps-proyecto-Final-ci":
+                  assert job["result"] == "skipped", "Unexpected staging execution outside mirror"
+                  continue
+              assert job["result"] == "success", "DevSecOps gate failed: " + name
+          PY

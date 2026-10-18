@@ -1,0 +1,18 @@
+# Preserve CI artifact bytes and their SHA-256 hashes on Windows and Linux.
+docs/evidencias/2026-10-13/zap-staging-ci/reports/** -text
+docs/informe/*.pdf binary
+
+# Preserve measured coverage/gate artifact bytes and their SHA-256 receipts.
+docs/evidencias/2026-10-14/sonar-cobertura-ci/** -text
+
+# Preserve the sanitized STRIDE lab receipt/artifact byte hashes.
+docs/evidencias/2026-10-14/stride-hardening-lab/** -text
+
+# Preserve sanitized local demonstration receipts and manifest hashes.
+docs/evidencias/2026-10-14/secure-demo/** -text
+
+# Preserve manual QA receipts and their hashes.
+docs/evidencias/2026-10-17/manual-ejecucion/** -text
+docs/usuario/*.pdf binary
+docs/usuario/MANUAL_EJECUCION_WINDOWS_LINUX.md text eol=lf
+docs/usuario/MANUAL_EJECUCION_WINDOWS_LINUX_METADATA.json text eol=lf

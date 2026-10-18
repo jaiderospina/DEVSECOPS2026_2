@@ -1,0 +1,140 @@
+{
+  "date": "2026-10-14",
+  "timezone": "America/Bogota",
+  "evidence": "E29",
+  "source_commit": "f87243ebf8486c9e5cc5cb781fef1fceb0816e15",
+  "repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+  "branch": "master",
+  "analysis_id": "525e6555-5250-4627-951d-ec6bc2b31140",
+  "task_id": "AaE7B6tjAn0_fsDEda6U",
+  "workflow_run": 38587861186,
+  "workflow_url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/actions/runs/38587861186",
+  "quality_gate": "OK",
+  "required_new_coverage": 80,
+  "sonar_new_code_coverage_percent": 88.14432989690722,
+  "sonar_overall_coverage_percent": 54.5,
+  "python_source_files_in_report": 50,
+  "python_measured": {
+    "covered_lines": 2888,
+    "num_statements": 3697,
+    "percent_covered": 74.80057271425649,
+    "percent_covered_display": "75",
+    "missing_lines": 809,
+    "excluded_lines": 0,
+    "percent_statements_covered": 78.11739248038951,
+    "percent_statements_covered_display": "78",
+    "num_branches": 1192,
+    "num_partial_branches": 235,
+    "covered_branches": 769,
+    "missing_branches": 423,
+    "percent_branches_covered": 64.51342281879195,
+    "percent_branches_covered_display": "65"
+  },
+  "frontend_measured": {
+    "LF": 143,
+    "LH": 137,
+    "BRF": 63,
+    "BRH": 58,
+    "files": [
+      "servicios/frontend/container/write-nginx-config.mjs",
+      "servicios/frontend/security-policy.js",
+      "servicios/frontend/src/auditReportUrl.mjs",
+      "servicios/frontend/src/bulkRequestUrl.mjs"
+    ],
+    "line_coverage_percent": 95.8041958041958,
+    "branch_coverage_percent": 92.06349206349206
+  },
+  "limitations": [
+    "New code coverage and overall coverage are separate Sonar metrics",
+    "LCOV covers four executed JavaScript modules, not the entire React frontend",
+    "Staging coverage measures host scripts, not every process inside Docker",
+    "STRIDE residual risk decisions and runtime security controls are unchanged"
+  ],
+  "files": [
+    {
+      "path": "python-ci-coverage.xml",
+      "source_artifact_path": "coverage.xml",
+      "bytes": 177306,
+      "sha256": "0a21f058e63df6e42552a77f0cb69b0f42dd116889a4d9d2eef77677206c9724"
+    },
+    {
+      "path": "coverage.json",
+      "source_artifact_path": "coverage.json",
+      "bytes": 317743,
+      "sha256": "db2539269ee81511751151a333ff5098524a9205774e0a064a2fa5a76b9c2611"
+    },
+    {
+      "path": "coverage.txt",
+      "source_artifact_path": "coverage.txt",
+      "bytes": 6576,
+      "sha256": "c613410363ca4c4d14a74efa6516531b21d2c03f1d047f6c255d9f8172df4f61"
+    },
+    {
+      "path": "frontend-coverage.lcov",
+      "source_artifact_path": "frontend-coverage.lcov",
+      "bytes": 2773,
+      "sha256": "c568554211baffd453c4c33db96eefd0c01ffca91683c4864190c9f47599eea1"
+    },
+    {
+      "path": "sonar-analysis-receipt.json",
+      "source_artifact_path": "sonar-analysis-receipt.json",
+      "bytes": 242,
+      "sha256": "5e2a5b95d52441dd86a1a4d191125e0255a428076d214b3184ce0cc3c4bac793"
+    },
+    {
+      "path": "sonar-quality-gate.json",
+      "source_artifact_path": "sonar-quality-gate.json",
+      "bytes": 1461,
+      "sha256": "20de5e9ed17b5dd7426e2edcdc04859d545217def2af2419410d1334b462843c"
+    },
+    {
+      "path": "sonar-coverage-project.json",
+      "source_artifact_path": "sonar-coverage-project.json",
+      "bytes": 1232,
+      "sha256": "aabce825b9723f7ddc4f8ca924eb01606c84a68ef32a066efc0e723aa51aca9c"
+    },
+    {
+      "path": "sonar-coverage-files.json",
+      "source_artifact_path": "sonar-coverage-files.json",
+      "bytes": 157897,
+      "sha256": "717f0983554d902f8ec848c2261028e90acae515267e2df1dbbd24ff7386baa6"
+    }
+  ],
+  "sonar_external_check": {
+    "id": 115940864111,
+    "url": "https://github.com/yeisonfblopez/DevSecOps-proyecto-Final-ci/runs/115940864111",
+    "conclusion": "success",
+    "title": "Quality Gate passed",
+    "new_issues_reported": 43,
+    "accepted_issues_reported": 0
+  },
+  "identity_ci_tests": {
+    "bulk_users": 86,
+    "security_t13_t15": 121
+  },
+  "period_and_thresholds_preserved_against_26ae3ae": true,
+  "zap_same_run": {
+    "source_commit": "f87243ebf8486c9e5cc5cb781fef1fceb0816e15",
+    "workflow_run": 38587861186,
+    "artifact_id": 11905639895,
+    "artifact_zip_sha256": "72d77753612338952eb014657364aa231c82880cda4ac4b7907fc89597581144",
+    "files": [
+      {
+        "path": "zap-approved/gate.json",
+        "sha256": "6e1f9c18ee14f5736189e8447232042f1bee35202139170889c1d2a566862583"
+      },
+      {
+        "path": "zap-approved/lifecycle.json",
+        "sha256": "836bf04044a0be93b1f341e2642aa4826a0c968163096f8639421c1b219f68cb"
+      },
+      {
+        "path": "zap-approved/database-comparison.json",
+        "sha256": "b4600913fcc27670cb10424bd1ba367d558e93ff97095db25e4c9d9d02cf7f0f"
+      },
+      {
+        "path": "zap-approved/summary.json",
+        "sha256": "455b0ce6f3129a6d985ce5e81729aa2b918ebf7c83079a4af4adb7a7bc823676"
+      }
+    ]
+  }
+}

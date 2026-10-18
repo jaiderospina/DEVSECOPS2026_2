@@ -1,0 +1,49 @@
+.permissions-page { max-width: 1500px; padding: 36px; margin: auto; min-height: 100vh; }
+.permissions-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 28px; }
+.permissions-header h1 { margin: 12px 0; }
+.permissions-header p { color: #50657e; max-width: 740px; }
+.permissions-header > div:last-child { display: grid; gap: 14px; }
+.permissions-toolbar { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; padding: 22px; background: white; border: 1px solid #d9e1ec; border-radius: 12px; }
+.permissions-toolbar label { display: grid; gap: 8px; font-weight: 600; }
+.permissions-toolbar input, .permissions-toolbar select { min-width: 260px; padding: 12px; border: 1px solid #bccadd; border-radius: 8px; background: white; color: #172033; }
+.permissions-table-wrapper { overflow-x: auto; background: white; border: 1px solid #d9e1ec; border-radius: 12px; }
+.permissions-table { border-collapse: collapse; width: 100%; text-align: left; }
+.permissions-table th { background: #eaf0f8; padding: 16px; }
+.permissions-table td { padding: 16px; border-top: 1px solid #e6edf5; vertical-align: middle; }
+.permissions-table small { display: block; color: #50657e; margin-top: 6px; }
+.permissions-table input[type=checkbox] { width: 24px; height: 24px; accent-color: #204d7c; cursor: pointer; }
+.permissions-table input:disabled { cursor: wait; }
+.permissions-success { padding: 16px; border: 1px solid #bfddca; border-radius: 8px; color: #286344; background: #f1faf4; }
+.permissions-page button:focus-visible, .permissions-page input:focus-visible, .permissions-page select:focus-visible { outline: 3px solid #348bcc; outline-offset: 3px; }
+@media (max-width: 720px) { .permissions-page { padding: 18px; } .permissions-header { flex-direction: column; } .permissions-toolbar { align-items: stretch; } .permissions-toolbar label, .permissions-toolbar input, .permissions-toolbar select { width: 100%; min-width: 0; } }
+
+.permissions-header .permissions-company { font-size: 1.8rem; font-weight: 750; color: #183c63; margin: 8px 0; }
+.permissions-company-code { display: inline-block; padding: 5px 10px; background: #eaf0f8; border-radius: 6px; color: #204d7c; font-weight: 650; }
+
+/* Identidad visual propia del portal de permisos. */
+body:has(.permissions-page) { background: #f2f0fa; }
+.permissions-page { position: relative; max-width: 1540px; color: #292342; background: radial-gradient(ellipse at 100% 0%, #e5e0fc 0%, transparent 48%), #f5f3fb; }
+.permissions-header { position: relative; overflow: hidden; padding: 30px; border-radius: 22px; background: linear-gradient(120deg, #302356, #58418e 65%, #246f75); color: #fff; box-shadow: 0 14px 30px #33234c18; }
+.permissions-header::after { content: ''; position: absolute; width: 260px; height: 260px; right: 7%; top: -155px; border: 35px solid #ffffff0b; border-radius: 50%; pointer-events: none; }
+.permissions-header > div { position: relative; z-index: 1; }
+.permissions-header .eyebrow { color: #e7dcff; }
+.permissions-header h1 { font-size: clamp(1.65rem, 3vw, 2.3rem); }
+.permissions-header p { color: #e9e4f6; }
+.permissions-header .permissions-company { color: #fff; font-size: clamp(1.5rem, 3vw, 2rem); margin: 6px 0 12px; }
+.permissions-header .permissions-company-code { background: #ffffff1c; color: #fff; border: 1px solid #ffffff30; letter-spacing: .1em; }
+.permissions-header .secondary-action-button { background: #fff; color: #493375; border-color: #ffffff; }
+.permissions-toolbar { margin-bottom: 28px; border-color: #dfd8ec; box-shadow: 0 5px 20px #30235608; border-radius: 16px; }
+.permissions-toolbar select:focus, .permissions-toolbar input:focus { border-color: #7653b9; }
+.permissions-page .secondary-action-button { border-radius: 10px; }
+.permissions-table-wrapper { border-color: #dfd8ec; border-radius: 16px; box-shadow: 0 7px 24px #30235608; }
+.permissions-table th { background: #eee8f8; color: #493375; text-transform: uppercase; font-size: .77rem; letter-spacing: .065em; }
+.permissions-table td { border-color: #eeeaf5; }
+.permissions-table tbody tr:hover { background: #faf8ff; }
+.permissions-table small { color: #696078; }
+.permissions-table input[type=checkbox] { accent-color: #5f3e96; }
+.permission-state { display: inline-flex; align-items: center; gap: 8px; font-size: .83rem; font-weight: 700; padding: 7px 11px; border-radius: 999px; white-space: nowrap; }
+.permission-state::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.permission-state.is-enabled { color: #176151; background: #e0f3ed; }
+.permission-state.is-disabled { color: #684557; background: #f2e8ee; }
+.permissions-page button:focus-visible, .permissions-page input:focus-visible, .permissions-page select:focus-visible { outline-color: #9165ce; }
+@media (max-width: 720px) { .permissions-header { padding: 22px; border-radius: 16px; } }

@@ -1,0 +1,24 @@
+# Dependencias locales
+node_modules
+
+# Build generado localmente
+dist
+nginx.conf
+
+# Git
+.git
+.gitignore
+
+# Logs
+*.log
+npm-debug.log*
+
+# Archivos del sistema/editor
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+# Configuración privada: solo usar ARG públicos de compilación
+.env
+.env.*
+!.env.example

@@ -1,0 +1,359 @@
+{
+  "api": "permissions",
+  "role": "LIDER_GESTION_HUMANA",
+  "zap_version": "2.17.0",
+  "rules": [
+    "6",
+    "40018",
+    "90019",
+    "90020",
+    "40003"
+  ],
+  "strength": "LOW",
+  "spider": false,
+  "methods": {
+    "GET": 236
+  },
+  "operations": [
+    {
+      "operation": "GET /",
+      "url": "http://permissions:8005/",
+      "scan_id": "0",
+      "progress": "100",
+      "requests": [
+        "http://permissions:8005",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "587",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "1234",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "311",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "711",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "249",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /v1/companies",
+      "url": "http://permissions:8005/v1/companies",
+      "scan_id": "1",
+      "progress": "100",
+      "requests": [
+        "http://permissions:8005",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "1415",
+                "18",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "1187",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "433",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "1140",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "550",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /v1/companies/{company_id}/permissions",
+      "url": "http://permissions:8005/v1/companies/4/permissions",
+      "scan_id": "url_not_found",
+      "progress": "100",
+      "requests": [
+        "http://permissions:8005",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "1415",
+                "18",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "1187",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "433",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "1140",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "550",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /v1/me/permissions",
+      "url": "http://permissions:8005/v1/me/permissions",
+      "scan_id": "2",
+      "progress": "100",
+      "requests": [
+        "http://permissions:8005",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "785",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "1265",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "481",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "1307",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "402",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /v1/me/views/{code}",
+      "url": "http://permissions:8005/v1/me/views/gestion_humana.colaboradores.consultar",
+      "scan_id": "url_not_found",
+      "progress": "100",
+      "requests": [
+        "http://permissions:8005",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "785",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "1265",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "481",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "1307",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "402",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

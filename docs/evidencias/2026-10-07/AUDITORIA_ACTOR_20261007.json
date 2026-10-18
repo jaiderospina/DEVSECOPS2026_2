@@ -1,0 +1,64 @@
+{
+  "evidence": "E16",
+  "date": "2026-10-07",
+  "base_revision": "0bd1173a7cdcef2942b9744417d00933f3021245",
+  "feature": "Nombre y correo del usuario que ejecutó cada evento",
+  "actor_columns": [
+    "ID usuario actor",
+    "Nombre usuario actor (actual)",
+    "Usuario actor (correo actual)"
+  ],
+  "identity_source": "LEFT JOIN usuarios_plataforma by actor_usuario_id; current directory data, historical actor ID retained",
+  "missing_actor": "Sin usuario identificado",
+  "unavailable_actor": "Usuario no disponible; historical ID retained",
+  "target_and_download_requester_not_used_as_actor": true,
+  "authentication": "ADMIN_TI with current session and MFA, unchanged",
+  "verification": {
+    "pytest_passed": 86,
+    "pytest_failures": 0,
+    "pytest_skipped": 0,
+    "audit_cases": 35,
+    "new_actor_cases": 4,
+    "existing_bulk_cases": 51,
+    "checks": [
+      "actual event actor differs from download requester and target",
+      "missing or unknown actor retains event",
+      "inactive/renamed actor uses current directory fields with explicit labels",
+      "formula-like name/email remain text and illegal controls removed",
+      "existing authorization, filters, limits and sanitization regressions"
+    ],
+    "warning": "Existing Starlette httpx deprecation",
+    "local_runtime_sample": {
+      "events": 10,
+      "actors_found": 10,
+      "columns": 12,
+      "no_formulas": true
+    },
+    "identity_build": "passed"
+  },
+  "local_deployment": {
+    "project": "C:/Prueba-ProyectoFinal",
+    "identity_image": "sha256:07b9bddb06a576909edd7bf9c577f39c751506e6a186620c29f24c7985ccb2fc",
+    "identity_started_utc": "2026-10-07T19:14:38.092015439Z",
+    "frontend_recreated": false,
+    "postgres_recreated": false,
+    "postgres_started_utc": "2026-10-07T13:04:53.896549478Z",
+    "rollback_image": "prueba-proyectofinal-identity:antes-actor-d5feeac"
+  },
+  "limits": {
+    "days": 31,
+    "events": 5000,
+    "unchanged": true
+  },
+  "limitations": {
+    "historical_name_snapshot": false,
+    "published_1_0_0_images_updated": false,
+    "github_ci_and_sonar_pending": true,
+    "pr_draft": true,
+    "pr_merged": false,
+    "authenticated_browser_download_after_change": "not performed; regenerate Excel to include new columns"
+  },
+  "artifacts": [
+    "auditoria-actor/pytest-audit-actor.xml"
+  ]
+}

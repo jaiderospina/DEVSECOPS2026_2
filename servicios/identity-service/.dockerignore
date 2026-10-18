@@ -1,0 +1,51 @@
+# ============================================================
+# IAM SECURE - Docker build context
+# ============================================================
+
+# Entornos virtuales locales
+venv/
+.venv/
+
+# Caché y artefactos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Variables de entorno y secretos locales
+.env
+.env.*
+!.env.example
+
+# Control de versiones
+.git/
+.gitignore
+.gitattributes
+
+# IDE / sistema operativo
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs y archivos temporales
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# Artefactos de empaquetado Python
+build/
+dist/
+*.egg-info/
+
+# Archivos locales de base de datos
+*.db
+*.sqlite
+*.sqlite3

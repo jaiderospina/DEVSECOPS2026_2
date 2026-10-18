@@ -1,0 +1,178 @@
+{
+  "scope": "Stage 2 source commit. CI with ephemeral PostgreSQL, fixture JWT sessions, simulated email and mocked Chromium API contracts. Does not prove local activation, SMTP delivery or real login/TOTP.",
+  "source_commit": "9e5a360d13541e402565f30fb12a4f91278b738d",
+  "workflow_run_id": 37413477933,
+  "workflow_run_url": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/actions/runs/37413477933",
+  "jobs": [
+    {
+      "id": 112106859875,
+      "name": "permissions-tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860033,
+      "name": "sast (bandit)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860047,
+      "name": "gitleaks",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860110,
+      "name": "images (permissions-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860121,
+      "name": "sast (semgrep)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860122,
+      "name": "bulk-users-tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860140,
+      "name": "frontend-ui",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860141,
+      "name": "model",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860165,
+      "name": "frontend-lint",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860183,
+      "name": "sca-node",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860215,
+      "name": "pytest (sync_worker, sync-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860244,
+      "name": "images (frontend)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860268,
+      "name": "pytest (identity_http, identity-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860271,
+      "name": "sca-python (audit-dispatcher)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860273,
+      "name": "sca-python (usuarios)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860275,
+      "name": "images (sync-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860279,
+      "name": "sca-python (sync-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860280,
+      "name": "pytest (audit_service, audit-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860289,
+      "name": "pytest (audit_dispatcher, audit-dispatcher)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860290,
+      "name": "images (audit-dispatcher)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860310,
+      "name": "images (audit-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860321,
+      "name": "sca-python (identity-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860327,
+      "name": "sca-python (permissions-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860345,
+      "name": "sca-python (audit-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860365,
+      "name": "images (identity-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112106860369,
+      "name": "images (usuarios)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112107143867,
+      "name": "gate",
+      "conclusion": "success"
+    }
+  ],
+  "pytest_suites": {
+    "bulk_users": {
+      "job_id": 112106860122,
+      "passed": 44
+    },
+    "permissions-tests": {
+      "job_id": 112106859875,
+      "passed": 32
+    },
+    "pytest (sync_worker, sync-service)": {
+      "job_id": 112106860215,
+      "passed": 23
+    },
+    "pytest (identity_http, identity-service)": {
+      "job_id": 112106860268,
+      "passed": 6
+    },
+    "pytest (audit_service, audit-service)": {
+      "job_id": 112106860280,
+      "passed": 13
+    },
+    "pytest (audit_dispatcher, audit-dispatcher)": {
+      "job_id": 112106860289,
+      "passed": 22
+    }
+  },
+  "pytest_total": 140,
+  "chromium_contract_checks": 6,
+  "manual_pending": [
+    "Apply migration 12 on existing local volume",
+    "Rebuild local Identity and frontend",
+    "Authorized Excel import with SMTP delivery",
+    "New user password change, MFA enrollment and explicit permission grants"
+  ],
+  "production_deployment": "not performed"
+}

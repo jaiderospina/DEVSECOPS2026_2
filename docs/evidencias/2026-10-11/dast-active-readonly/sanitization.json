@@ -1,0 +1,88 @@
+{
+  "reports_reviewed": 14,
+  "known_secret_values_checked": 10,
+  "original_report_findings": 0,
+  "artifacts": [
+    {
+      "artifact": "audit-public/report.html",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "audit-public/report.json",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "identity-admin_soporte/report.html",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "identity-admin_soporte/report.json",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "identity-admin_ti/report.html",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "identity-admin_ti/report.json",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "permissions-admin_soporte/report.html",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "permissions-admin_soporte/report.json",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "permissions-lider_facturacion/report.html",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "permissions-lider_facturacion/report.json",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "permissions-lider_gestion_humana/report.html",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "permissions-lider_gestion_humana/report.json",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "permissions-lider_logistica/report.html",
+      "findings_before": [],
+      "findings_after": []
+    },
+    {
+      "artifact": "permissions-lider_logistica/report.json",
+      "findings_before": [],
+      "findings_after": []
+    }
+  ],
+  "omitted": [
+    "zap.env",
+    "fixtures.json",
+    "config.json",
+    "raw DB per-cell digests",
+    "raw gateway/network/daemon logs",
+    "job files",
+    "contexts",
+    "HTML reports"
+  ],
+  "method": "Exact runtime secret/token matching plus JWT, Authorization/Bearer, MFA URI, Argon2 and private-key patterns; local workspace paths normalized"
+}

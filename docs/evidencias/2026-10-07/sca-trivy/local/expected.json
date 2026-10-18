@@ -1,0 +1,111 @@
+{
+  "servicios/audit-dispatcher/requirements.txt": {
+    "packages": {
+      "sqlalchemy": "2.0.52",
+      "psycopg2-binary": "2.9.13",
+      "python-dotenv": "1.2.3"
+    },
+    "source_sha256": "2f81ce66e2559eb1b4c451e11a73365d57da1fd884d6f19e581465816dfbb0ef",
+    "scan_sha256": "2f81ce66e2559eb1b4c451e11a73365d57da1fd884d6f19e581465816dfbb0ef"
+  },
+  "servicios/audit-service/requirements.txt": {
+    "packages": {
+      "fastapi": "0.141.1",
+      "uvicorn": "0.52.4",
+      "pydantic": "2.13.5",
+      "sqlalchemy": "2.0.52",
+      "psycopg2-binary": "2.9.13",
+      "python-dotenv": "1.2.3"
+    },
+    "source_sha256": "89b7e768183de32ef65dd4b9ac215d00fb7aa0bb03cbe77d990118f1134b104b",
+    "scan_sha256": "89b7e768183de32ef65dd4b9ac215d00fb7aa0bb03cbe77d990118f1134b104b"
+  },
+  "servicios/identity-service/requirements.txt": {
+    "packages": {
+      "fastapi": "0.141.1",
+      "uvicorn": "0.52.4",
+      "pydantic": "2.13.5",
+      "email-validator": "2.3.0",
+      "sqlalchemy": "2.0.52",
+      "psycopg2-binary": "2.9.13",
+      "pwdlib": "0.3.1",
+      "pyjwt": "2.15.0",
+      "python-dotenv": "1.2.3",
+      "pyotp": "2.10.0",
+      "cryptography": "50.0.1",
+      "qrcode": "8.2",
+      "openpyxl": "3.1.5",
+      "defusedxml": "0.7.1",
+      "python-multipart": "0.0.32"
+    },
+    "source_sha256": "9795d1fb6ea58b6d43df6b07dc131157af89104b8ce62c19a9bc0c2374732c3c",
+    "scan_sha256": "9feee9cf8175e440dccd3cfee8b51dcdd8cec5c59f6bd51eae79d75c0e36fdc0"
+  },
+  "servicios/permissions-service/requirements.txt": {
+    "packages": {
+      "fastapi": "0.141.1",
+      "uvicorn": "0.52.4",
+      "pydantic": "2.13.5",
+      "sqlalchemy": "2.0.52",
+      "psycopg2-binary": "2.9.13",
+      "httpx": "0.28.1"
+    },
+    "source_sha256": "8ee10c86cedeadea937f1be5edc2a4b159d52074cafefcdb914ad10758e5e410",
+    "scan_sha256": "8ee10c86cedeadea937f1be5edc2a4b159d52074cafefcdb914ad10758e5e410"
+  },
+  "servicios/sync-service/requirements.txt": {
+    "packages": {
+      "sqlalchemy": "2.0.52",
+      "psycopg2-binary": "2.9.13",
+      "python-dotenv": "1.2.3"
+    },
+    "source_sha256": "472a4b8cb49aeeaab37cf9ae582818bbbe517a8fd9c7753c2b8a96f4135cc88f",
+    "scan_sha256": "472a4b8cb49aeeaab37cf9ae582818bbbe517a8fd9c7753c2b8a96f4135cc88f"
+  },
+  "servicios/usuarios/requirements.txt": {
+    "packages": {
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "click": "8.5.0",
+      "dnspython": "2.8.0",
+      "email-validator": "2.3.0",
+      "fastapi": "0.141.1",
+      "greenlet": "3.5.5",
+      "h11": "0.16.0",
+      "idna": "3.19",
+      "psycopg2-binary": "2.9.13",
+      "pydantic": "2.13.5",
+      "pydantic-core": "2.46.5",
+      "python-dotenv": "1.2.3",
+      "sqlalchemy": "2.0.52",
+      "starlette": "1.6.0",
+      "typing-inspection": "0.4.4",
+      "typing-extensions": "4.16.0",
+      "uvicorn": "0.52.4"
+    },
+    "source_sha256": "bb8f5b528287aee3e8322b1fad5c7b529015a6f72b359a91f6331c254e51ccc9",
+    "scan_sha256": "b5d1cf1e0d742851dcd53241cc2c01324854c92b29511c5ac873859a5e0ad7fe"
+  },
+  "infraestructura/ansible/requirements.txt": {
+    "packages": {
+      "ansible-core": "2.21.5",
+      "checkov": "3.3.25"
+    },
+    "source_sha256": "4f3ab64056428ef34c165d29cf2a6fb4d3e0af6e9290738cfd43e682deeecf3e",
+    "scan_sha256": "4f3ab64056428ef34c165d29cf2a6fb4d3e0af6e9290738cfd43e682deeecf3e"
+  },
+  "servicios/frontend/package-lock.json": {
+    "packages": {
+      "react": "19.2.8",
+      "react-dom": "19.2.8",
+      "@types/react": "19.2.18",
+      "@types/react-dom": "19.2.7",
+      "@vitejs/plugin-react": "6.1.1",
+      "oxlint": "1.82.0",
+      "vite": "8.2.2"
+    },
+    "source_sha256": "5153bfca93cd81848d0cc9e57fdc7e985ba717b7b44f71f23b9e28ea21fedbce",
+    "scan_sha256": "5153bfca93cd81848d0cc9e57fdc7e985ba717b7b44f71f23b9e28ea21fedbce"
+  }
+}

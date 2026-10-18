@@ -1,0 +1,25 @@
+IAM SECURE - VALIDACION INSTALACION LIMPIA
+Fecha: Tue Oct 13 12:53:26 -05 2026
+
+=== GIT ===
+6d7e51c fix(security): harden MFA reset and validate RBAC controls
+
+=== DOCKER ===
+Docker Server: 29.8.2
+Docker Compose version v5.6.0
+
+=== SERVICIOS ===
+NAME                          IMAGE                               COMMAND                  SERVICE            CREATED         STATUS                   PORTS
+iam-secure-audit              iam-secure-clean-audit-service      "uvicorn main:app --…"   audit-service      3 minutes ago   Up 3 minutes             127.0.0.1:8004->8004/tcp
+iam-secure-audit-dispatcher   iam-secure-clean-audit-dispatcher   "python main.py"         audit-dispatcher   3 minutes ago   Up 3 minutes
+iam-secure-frontend           iam-secure-clean-frontend           "nginx -g 'daemon of…"   frontend           3 minutes ago   Up 3 minutes             0.0.0.0:5173->5173/tcp, [::]:5173->5173/tcp
+iam-secure-identity           iam-secure-clean-identity           "uvicorn main:app --…"   identity           3 minutes ago   Up 3 minutes             0.0.0.0:8003->8003/tcp, [::]:8003->8003/tcp
+iam-secure-permissions        iam-secure-clean-permissions        "uvicorn main:app --…"   permissions        3 minutes ago   Up 3 minutes             127.0.0.1:8005->8005/tcp
+iam-secure-permissions-grid   iam-secure-clean-permissions-grid   "nginx -g 'daemon of…"   permissions-grid   3 minutes ago   Up 3 minutes             127.0.0.1:5176->5173/tcp
+iam-secure-postgres           postgres:17                         "docker-entrypoint.s…"   postgres           3 minutes ago   Up 3 minutes (healthy)   0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp
+iam-secure-sync-worker        iam-secure-clean-sync-worker        "python main.py"         sync-worker        3 minutes ago   Up 3 minutes
+
+=== PERSISTENCIA ===
+usuarios=2
+mfa=2
+roles_asignados=2

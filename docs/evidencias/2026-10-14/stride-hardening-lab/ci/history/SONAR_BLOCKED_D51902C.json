@@ -1,0 +1,84 @@
+{
+  "source_commit": "d51902c07b22d23fee00f16547d312c705177706",
+  "quality_gate": {
+    "projectStatus": {
+      "status": "ERROR",
+      "conditions": [
+        {
+          "status": "OK",
+          "metricKey": "new_reliability_rating",
+          "comparator": "GT",
+          "periodIndex": 1,
+          "errorThreshold": "1",
+          "actualValue": "1"
+        },
+        {
+          "status": "ERROR",
+          "metricKey": "new_security_rating",
+          "comparator": "GT",
+          "periodIndex": 1,
+          "errorThreshold": "1",
+          "actualValue": "3"
+        },
+        {
+          "status": "OK",
+          "metricKey": "new_maintainability_rating",
+          "comparator": "GT",
+          "periodIndex": 1,
+          "errorThreshold": "1",
+          "actualValue": "1"
+        },
+        {
+          "status": "OK",
+          "metricKey": "new_coverage",
+          "comparator": "LT",
+          "periodIndex": 1,
+          "errorThreshold": "80",
+          "actualValue": "85.5"
+        },
+        {
+          "status": "OK",
+          "metricKey": "new_duplicated_lines_density",
+          "comparator": "GT",
+          "periodIndex": 1,
+          "errorThreshold": "3",
+          "actualValue": "0.0"
+        },
+        {
+          "status": "OK",
+          "metricKey": "new_security_hotspots_reviewed",
+          "comparator": "LT",
+          "periodIndex": 1,
+          "errorThreshold": "100",
+          "actualValue": "100.0"
+        }
+      ],
+      "periods": [
+        {
+          "index": 1,
+          "mode": "previous_version",
+          "date": "2026-10-14T03:00:08+0000"
+        }
+      ],
+      "ignoredConditions": false
+    }
+  },
+  "security_issues": [
+    {
+      "rule": "pythonsecurity:S8707",
+      "component": "yeisonfblopez_DevSecOps-proyecto-Final-ci:scripts/provision_runtime_roles.py",
+      "line": 50,
+      "message": "Path Traversal via faulty LLM-supplied CLI arguments",
+      "severity": "MAJOR"
+    },
+    {
+      "rule": "pythonsecurity:S5145",
+      "component": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/auditoria.py",
+      "line": 527,
+      "message": "Log Injection via unsanitized user input in auditoria.registrar_evento()",
+      "severity": "MINOR"
+    }
+  ],
+  "corrected_source_commit": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+  "resolution": "Private roles file confinement and single-line ASCII JSON logging; reanalyzed without issue acceptance or threshold changes"
+}

@@ -1,0 +1,314 @@
+{
+  "date": "2026-10-14",
+  "timezone": "America/Bogota",
+  "evidence": "E31",
+  "stage": "local preparation before branch CI",
+  "base_commit": "467a98fdfea5120561817fea1a5fdab43a79ca7d",
+  "worktree_was_dirty": true,
+  "tests": {
+    "identity-security": {
+      "tests": 182,
+      "failures": 0,
+      "errors": 0,
+      "source": "local isolated preparation"
+    },
+    "bulk-users": {
+      "tests": 86,
+      "failures": 0,
+      "errors": 0,
+      "source": "local isolated preparation"
+    },
+    "tooling": {
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "source": "local isolated preparation"
+    },
+    "dispatcher": {
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "source": "local isolated preparation",
+      "cases": 25,
+      "subtests": 4,
+      "xml_counts_subtests": true
+    }
+  },
+  "javascript_cases": 24,
+  "lab_file_sha256": "92a797bb06370fcca06d09e0105f3fff7c85909f5efd887263ca4b0c171abd06",
+  "source_file_hashes": [
+    {
+      "path": "servicios/identity-service/audit_outbox.py",
+      "sha256": "d23a9643f4afa6b709d929b07aa326311a08bbb42a8d30830adb072853d5d132"
+    },
+    {
+      "path": "servicios/identity-service/auditoria.py",
+      "sha256": "4480d2b926b92b7ed2b29d5a865613900a1eba6b9fbb2bb9918d4fa01bafca13"
+    },
+    {
+      "path": "servicios/identity-service/auditoria_reportes.py",
+      "sha256": "00552769759197c0430dcae6a6029836f716cf68d894599bdb86a4461f82b7a8"
+    },
+    {
+      "path": "servicios/identity-service/autenticacion.py",
+      "sha256": "c4b7ff59a6a702b13b3e84f5dbaec92d2dfc31390b9b92146767f90d51044940"
+    },
+    {
+      "path": "servicios/identity-service/bootstrap_admin_ti.py",
+      "sha256": "1fc547926fa6b2b66b502b37a7218deb2ae8d4ebd733dc5a5cd7835c1c564827"
+    },
+    {
+      "path": "servicios/identity-service/bootstrap_usuarios_iniciales.py",
+      "sha256": "c67d386d80fa562f0fb6b4030d0177293ff2af11ebf9b3d571287eff60ac50b1"
+    },
+    {
+      "path": "servicios/identity-service/cargas_excel.py",
+      "sha256": "2aace4a5f178a3953c18849c6d1ae6ec4d753402d9e034d9e0c5e77484feed66"
+    },
+    {
+      "path": "servicios/identity-service/cargas_limite.py",
+      "sha256": "959aad8345310c748fdec32e4290ecca9779488e3499291f3d5b921afcfcb790"
+    },
+    {
+      "path": "servicios/identity-service/cargas_usuarios.py",
+      "sha256": "52f2706abd172a70d374021ad0cf11490896de7fce0c88a4add6b80739e2aa8e"
+    },
+    {
+      "path": "servicios/identity-service/companias.py",
+      "sha256": "840baffd88b0311b9e575b94e41f3b09cf3685e8fbb6650115c1a371aa501ed5"
+    },
+    {
+      "path": "servicios/identity-service/correo.py",
+      "sha256": "1b7a685f3f98481567c6a5aa887ee6de62e0ff71a3cbeabda4e320f8297f5137"
+    },
+    {
+      "path": "servicios/identity-service/database.py",
+      "sha256": "5177f4e02cec26ff96985035e8c5a72070070a11ea407e444b3858225b1dfd92"
+    },
+    {
+      "path": "servicios/identity-service/http_headers.py",
+      "sha256": "a8d7f55eee268dbcecacdda03130ce7d890559593f26d519dc264313de3d46c2"
+    },
+    {
+      "path": "servicios/identity-service/main.py",
+      "sha256": "04d5bde11262af108f333b8ae2a4df556cf51b9bf31b44a965a7c4422ab9743c"
+    },
+    {
+      "path": "servicios/identity-service/mfa.py",
+      "sha256": "4b1c8b4e1973e986440ad0890b99efe4d6b98fde6821c3f5d89331d93fdb6ca3"
+    },
+    {
+      "path": "servicios/identity-service/permisos_iniciales.py",
+      "sha256": "d0fb590b639bd3cc7adcf7a513966b0b499cbb95923bdbd9831f7fbd6098bd3f"
+    },
+    {
+      "path": "servicios/identity-service/seguridad.py",
+      "sha256": "1a166e19d5ed043869c0e4a18a5d04f72d4e24bdccce0859b9302a792a3fbfe8"
+    },
+    {
+      "path": "servicios/identity-service/sync_jobs.py",
+      "sha256": "9d019f10c69b93adff30f0a5a209d2eee51de3cbb78d779811b10019d87012f6"
+    },
+    {
+      "path": "servicios/identity-service/usuarios.py",
+      "sha256": "90022009546de4d278005985740fd840dc599a174f9c08861ba6b4f9f5bbda3e"
+    },
+    {
+      "path": "servicios/permissions-service/auth.py",
+      "sha256": "344420db346fc65c6a454092c2cda2c8c7210c465f6513b97606543b3797f64e"
+    },
+    {
+      "path": "servicios/permissions-service/catalog.py",
+      "sha256": "448bc352e3ad7798a57adda02e4c748507134a2f20a5905b640bcf2357c0781c"
+    },
+    {
+      "path": "servicios/permissions-service/database.py",
+      "sha256": "618e101582a4a645a757b98aa199472255c22add70acc0b4f2ad9d91770857a5"
+    },
+    {
+      "path": "servicios/permissions-service/main.py",
+      "sha256": "5a169b17e7064fec731fd6a422fe07c31dd7743d2e871ac9e018fd3f7fb9f3c0"
+    },
+    {
+      "path": "servicios/frontend/container/write-nginx-config.mjs",
+      "sha256": "983dcad449853f842466c18ce7fd67cfc33a98d59fed1514cc1654ab4cdd57f7"
+    },
+    {
+      "path": "servicios/frontend/package-lock.json",
+      "sha256": "f6e48ed81db79ab502b987535ed6534ca70ef23e4b2a00a22f34460e3390c532"
+    },
+    {
+      "path": "servicios/frontend/package.json",
+      "sha256": "da44d839b91b060d383dbe341495599b175de8505dc2a278c9467b7ea777f339"
+    },
+    {
+      "path": "servicios/frontend/security-policy.js",
+      "sha256": "1d3a619b15754f7a855836d349dc3664f1f337085d6e067d29eb29da228edf70"
+    },
+    {
+      "path": "servicios/frontend/src/App.jsx",
+      "sha256": "2075bc1594fd7dba33074cb79902f241c648e57243d9bdb5042aaba69c0f76fa"
+    },
+    {
+      "path": "servicios/frontend/src/AuditReport.jsx",
+      "sha256": "076d2b8b037115e1b403a37e8040779695a2f538dfe59da157e0ab70f26371c5"
+    },
+    {
+      "path": "servicios/frontend/src/auditReportUrl.mjs",
+      "sha256": "6dcebb031237ac80d77cc8ac411123947848fed2b0caf19eac7cf8eed89cb76e"
+    },
+    {
+      "path": "servicios/frontend/src/bulkRequestUrl.mjs",
+      "sha256": "42a4c1203b591125f99de09466831ed5312797861abd335d298874e043df6e57"
+    },
+    {
+      "path": "servicios/frontend/src/BulkUserImport.jsx",
+      "sha256": "024bc38cb1728c2822518fa8c31fab133acbac1bf6364d2e6fd67de3978257c6"
+    },
+    {
+      "path": "servicios/frontend/src/main.jsx",
+      "sha256": "ae81f1c01f2c8018a1ba5cf73171921c8982d90b049bb6b039ea82f8e1dec958"
+    },
+    {
+      "path": "servicios/frontend/src/PermissionCards.jsx",
+      "sha256": "9569e47464682f58757c4397837a6fb450b994de5fb2b91861ed9a9a88d5793b"
+    },
+    {
+      "path": "servicios/frontend/src/PermissionGrid.jsx",
+      "sha256": "44d41ea3dbf65a7d73d6d70a447a2bb2b71f025f124137c68b3a16236e244d2d"
+    },
+    {
+      "path": "servicios/frontend/src/permissions-api.js",
+      "sha256": "35e691d0aec394697b22b7c6498e7a92021f5dce7f43a5f2c72a04aa6ed0256f"
+    },
+    {
+      "path": "servicios/frontend/src/permissions-main.jsx",
+      "sha256": "224c4b3fae20dd97c6fd28f476ffdf715099b428eb495839c11dfbf5e148f33c"
+    },
+    {
+      "path": "servicios/frontend/src/PermissionsWindow.jsx",
+      "sha256": "a4e6db6bef2cc611b3149e4615ebac8aef3ee022ecc25aeb8fca85b18c7c0a82"
+    },
+    {
+      "path": "servicios/frontend/src/usePermissionWindow.js",
+      "sha256": "f7b9e2b5786a0ce9e57b43014caea2d84668bc8baf2b9557279a5b3002134195"
+    },
+    {
+      "path": "servicios/frontend/src/windowOrigins.mjs",
+      "sha256": "80491b322e373d20519bcaccb55eaec46a837bdc5c8100d7abd3d5d804ada57d"
+    },
+    {
+      "path": "servicios/frontend/vite.config.js",
+      "sha256": "40e92712205fefa110420cb476a3377369dd57a6aad37813e175d65fccc8bb15"
+    },
+    {
+      "path": "servicios/audit-dispatcher/audit_client.py",
+      "sha256": "ee6d3bf26442188b37705d4a61bf0649ba68885f34c93d8efecbffee81680b4a"
+    },
+    {
+      "path": "servicios/audit-dispatcher/database.py",
+      "sha256": "5b4bef2c561d87f3a33570b6bb5e9d661566adae8188645f4a245468d22ab82c"
+    },
+    {
+      "path": "servicios/audit-dispatcher/main.py",
+      "sha256": "048fb91e2686bf59f4d2dd50c923cb042055be6d6a8f3994843f5ac2be0f6a2a"
+    },
+    {
+      "path": "postgres-init/01-create-usuarios.sql",
+      "sha256": "2780866b16e990c2e1e6e0abc20d9a9346329502aeeefd5e0b24e0ccffe5f933"
+    },
+    {
+      "path": "postgres-init/02-create-auth-platform.sql",
+      "sha256": "43c1419564a37f89d48be15f510bde61741e1b021c64c30420590842866f7fb9"
+    },
+    {
+      "path": "postgres-init/03-create-sesiones.sql",
+      "sha256": "10b3641ea791523451b0d93eda8edba8a555ffae70fa08c180069c5fd1a77f74"
+    },
+    {
+      "path": "postgres-init/04-create-companias.sql",
+      "sha256": "e53ea230bb430d1441131c360e71ca421fd12ff68355767e5ce6712b90601dcd"
+    },
+    {
+      "path": "postgres-init/05-backfill-password-expiry.sql",
+      "sha256": "d23df3a432bf125d1f5110c17c420177e5597a5f03d821561cc0094638f88dbe"
+    },
+    {
+      "path": "postgres-init/06-create-mfa-totp.sql",
+      "sha256": "9cb88170676420609b47feeed8e8a8b28e5e9fb2c33ca08a2a1ced3a9fe95ff3"
+    },
+    {
+      "path": "postgres-init/07-create-mfa-desafios.sql",
+      "sha256": "382a4ca40cf5eab9bf6a42e7fcc0b17ba84c2a439e1c9cb25a8c05422bb1de77"
+    },
+    {
+      "path": "postgres-init/08-create-sync-jobs.sql",
+      "sha256": "5bf660fd879c66f48730fadc1b5aabc73c718846bb494533f07723e8a804ba62"
+    },
+    {
+      "path": "postgres-init/09-create-auditoria-eventos.sql",
+      "sha256": "d5ceba42bd30be17beedf23a5dddd7fe6b76a2293a20acd2300e2527f6c47c6b"
+    },
+    {
+      "path": "postgres-init/10-create-auditoria-outbox.sql",
+      "sha256": "b56604615134612bec0d9ac77ecb5ed66d0571c39c9725ae70e456e1a648175f"
+    },
+    {
+      "path": "postgres-init/11-create-permisos.sql",
+      "sha256": "9d4f2643b08afa96cf51c9f9835c5b671a278967453765e8f742608386431a0d"
+    },
+    {
+      "path": "postgres-init/12-create-cargas-usuarios.sql",
+      "sha256": "6110cbb99033eb8a4afc93f70695ba6d877dfa1fa4d92d99e1054e8425d56f3e"
+    },
+    {
+      "path": "postgres-init/13-runtime-roles.sql",
+      "sha256": "c5ab08a99940a9c2a69c615c7d13654d86d03b83d61e2aaafda0c8b5d0f13ccb"
+    },
+    {
+      "path": "scripts/create_secure_lab_config.py",
+      "sha256": "ae5be8b76ffd249b821a1268cabeb220153abebe57e8ea1b0d5c4f54eb551451"
+    },
+    {
+      "path": "scripts/encrypted_backup.py",
+      "sha256": "e52880927108fcc5d120a55f955e614627b9d95fc9832db6b0e0362fa063d539"
+    },
+    {
+      "path": "scripts/provision_runtime_roles.py",
+      "sha256": "a5c93bb13b8d0b0b64d860eac9713716faa4541aca5a73783320e1e5b8f0cbd2"
+    },
+    {
+      "path": "scripts/safe_paths.py",
+      "sha256": "abdb5102f0160febfc6f544602103953c2ee7a1cbc1692e0f4bccd0dcadb4bd4"
+    },
+    {
+      "path": "scripts/seed_identity_demo.py",
+      "sha256": "8361a3b14b7d5d88e9b49df4c25f751536a338088edd1c20a1e276aef1f8b374"
+    },
+    {
+      "path": "scripts/validate_secure_lab.py",
+      "sha256": "e9d0d3be41515d7f4e2e83120d856d1fc39aaa0427c8d4870596d88520839163"
+    },
+    {
+      "path": "scripts/validate_threat_model.py",
+      "sha256": "0549c7a265044051014442b631dd30246cc7ddb0dab237452bfec718406f06a5"
+    },
+    {
+      "path": "scripts/verify_trivy_sca.py",
+      "sha256": "561c82e8fae05f8b0db6480617bf56fcacda87806a16c74f6ec2e390cd4cac5c"
+    },
+    {
+      "path": "infraestructura/tls/nginx.conf",
+      "sha256": "72e43244b9f9c9a1564f31bb2fe33ea2485dbe83ccf5a20b632ab724e861a608"
+    },
+    {
+      "path": "orquestacion/compose.secure-lab.json",
+      "sha256": "23e1f3fbad9c640f5e20c638bc2cf63669f5f4a0e3d9790fe39c74fb6d166dbc"
+    },
+    {
+      "path": "orquestacion/compose.simulated.json",
+      "sha256": "6d12ffe52bbbc3e86904b8b60f6931e1766f00bd8edbd362bc746e39a689918b"
+    }
+  ],
+  "risk_statuses_and_human_acceptance_changed": false
+}

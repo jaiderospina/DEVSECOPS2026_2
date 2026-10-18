@@ -1,0 +1,656 @@
+{
+  "project": "Prueba-ProyectoFinal / IAM Secure",
+  "date": "2026-10-07",
+  "timezone": "America/Bogota",
+  "repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "implementation_commit": "73154a437cc6b3456fab8a34c3ee99dab670701d",
+  "ci_python_source_commit": "1ee4a985df9596f84b7731355e1089377d222226",
+  "ci_python_run": 37630594353,
+  "ci_python_jobs": [
+    {
+      "id": 112823517414,
+      "name": "sca-python (audit-dispatcher)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112823517499,
+      "name": "sca-python (identity-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112823517514,
+      "name": "sca-python (permissions-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112823517592,
+      "name": "sca-python (audit-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112823517666,
+      "name": "sca-python (usuarios)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112823518072,
+      "name": "sca-python (sync-service)",
+      "conclusion": "success"
+    }
+  ],
+  "latest_ci": {
+    "id": 37631174925,
+    "url": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/actions/runs/37631174925",
+    "status": "failed before jobs started",
+    "annotations": [
+      {
+        "path": ".github",
+        "start_line": 1,
+        "end_line": 1,
+        "annotation_level": "failure",
+        "message": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+        "title": "",
+        "raw_details": ""
+      }
+    ],
+    "blocking_condition": "Included GitHub Actions minute quota exhausted; no runner allocated"
+  },
+  "pull_request": {
+    "number": 3,
+    "draft": true,
+    "merged": false
+  },
+  "local_tests": {
+    "passed": 8,
+    "failed": 0
+  },
+  "scanner": {
+    "version": "0.65.0",
+    "image_digest": "sha256:a22415a38938a56c379387a8163fcb0ce38b10ace73e593475d3658d578b2436",
+    "database": {
+      "Version": 2,
+      "NextUpdate": "2026-10-08T07:38:55.515026457Z",
+      "UpdatedAt": "2026-10-07T07:38:55.515026687Z",
+      "DownloadedAt": "2026-10-07T13:51:44.029815178Z"
+    }
+  },
+  "not_credited": [
+    "CI approval for latest implementation revision",
+    "transitive Trivy coverage of Ansible/Checkov",
+    "new publication or application deployment",
+    "ZAP automated staging"
+  ],
+  "local_manifests": {
+    "coverage": [
+      {
+        "target": "servicios/audit-dispatcher/requirements.txt",
+        "type": "pip",
+        "packages_detected": 3,
+        "required_packages_verified": 3
+      },
+      {
+        "target": "servicios/audit-service/requirements.txt",
+        "type": "pip",
+        "packages_detected": 6,
+        "required_packages_verified": 6
+      },
+      {
+        "target": "servicios/identity-service/requirements.txt",
+        "type": "pip",
+        "packages_detected": 15,
+        "required_packages_verified": 15
+      },
+      {
+        "target": "servicios/permissions-service/requirements.txt",
+        "type": "pip",
+        "packages_detected": 6,
+        "required_packages_verified": 6
+      },
+      {
+        "target": "servicios/sync-service/requirements.txt",
+        "type": "pip",
+        "packages_detected": 3,
+        "required_packages_verified": 3
+      },
+      {
+        "target": "servicios/usuarios/requirements.txt",
+        "type": "pip",
+        "packages_detected": 19,
+        "required_packages_verified": 19
+      },
+      {
+        "target": "infraestructura/ansible/requirements.txt",
+        "type": "pip",
+        "packages_detected": 2,
+        "required_packages_verified": 2
+      },
+      {
+        "target": "servicios/frontend/package-lock.json",
+        "type": "npm",
+        "packages_detected": 67,
+        "required_packages_verified": 7
+      }
+    ],
+    "severity_counts": {},
+    "blockers": [],
+    "passed": true,
+    "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+  },
+  "ci_python_artifacts": [
+    {
+      "name": "sca-sync-service",
+      "artifact_id": 11486575214,
+      "sha256": "sha256:219f061942e111c1a5fe0d0d73de2e4de418850b6daf863008562a3dae8fa217",
+      "summary": {
+        "coverage": [
+          {
+            "target": "requirements.txt",
+            "type": "pip",
+            "packages_detected": 5,
+            "required_packages_verified": 5
+          }
+        ],
+        "severity_counts": {},
+        "blockers": [],
+        "passed": true,
+        "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+      }
+    },
+    {
+      "name": "sca-permissions-service",
+      "artifact_id": 11486480232,
+      "sha256": "sha256:5686f4901f0ddd988f13e2557d6b32dde51736415d3f193e7f074246f9193799",
+      "summary": {
+        "coverage": [
+          {
+            "target": "requirements.txt",
+            "type": "pip",
+            "packages_detected": 19,
+            "required_packages_verified": 19
+          }
+        ],
+        "severity_counts": {},
+        "blockers": [],
+        "passed": true,
+        "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+      }
+    },
+    {
+      "name": "sca-audit-dispatcher",
+      "artifact_id": 11486261664,
+      "sha256": "sha256:321e3619fc29f73a07eb7a0a0cfd100bb82c71ff4607f805c60e6c239505ec1f",
+      "summary": {
+        "coverage": [
+          {
+            "target": "requirements.txt",
+            "type": "pip",
+            "packages_detected": 5,
+            "required_packages_verified": 5
+          }
+        ],
+        "severity_counts": {},
+        "blockers": [],
+        "passed": true,
+        "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+      }
+    },
+    {
+      "name": "sca-usuarios",
+      "artifact_id": 11486092145,
+      "sha256": "sha256:de0d86dfa0c9fa6974000f3f45e1f4db3b1e9c7c30cc465a2d2eaf4ff225c7d2",
+      "summary": {
+        "coverage": [
+          {
+            "target": "requirements.txt",
+            "type": "pip",
+            "packages_detected": 19,
+            "required_packages_verified": 19
+          }
+        ],
+        "severity_counts": {},
+        "blockers": [],
+        "passed": true,
+        "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+      }
+    },
+    {
+      "name": "sca-identity-service",
+      "artifact_id": 11485364919,
+      "sha256": "sha256:5aa46cf44f1e0baa5879f119a6fd9c79f65694a41d8edccb9ec4de4dcda79c95",
+      "summary": {
+        "coverage": [
+          {
+            "target": "requirements.txt",
+            "type": "pip",
+            "packages_detected": 33,
+            "required_packages_verified": 33
+          }
+        ],
+        "severity_counts": {},
+        "blockers": [],
+        "passed": true,
+        "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+      }
+    },
+    {
+      "name": "sca-audit-service",
+      "artifact_id": 11484979900,
+      "sha256": "sha256:2439997cc76ce357cb8fdd7c6226a5d0a042d57ddda37c0210a79561e1fb8b3d",
+      "summary": {
+        "coverage": [
+          {
+            "target": "requirements.txt",
+            "type": "pip",
+            "packages_detected": 17,
+            "required_packages_verified": 17
+          }
+        ],
+        "severity_counts": {},
+        "blockers": [],
+        "passed": true,
+        "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+      }
+    }
+  ],
+  "fixture": {
+    "package": "Django==2.2.0",
+    "installed": false,
+    "executed": false,
+    "trivy_exit_code": 1,
+    "policy_exit_code": 1,
+    "coverage": [
+      {
+        "target": "requirements.txt",
+        "type": "pip",
+        "packages_detected": 1,
+        "required_packages_verified": 1
+      }
+    ],
+    "severity_counts": {
+      "CRITICAL": 6,
+      "HIGH": 16
+    },
+    "blockers": [
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2019-14234",
+        "package": "Django",
+        "severity": "CRITICAL",
+        "installed": "2.2.0",
+        "fixed": "1.11.23, 2.1.11, 2.2.4"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2019-19844",
+        "package": "Django",
+        "severity": "CRITICAL",
+        "installed": "2.2.0",
+        "fixed": "1.11.27, 2.2.9, 3.0.1"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2020-7471",
+        "package": "Django",
+        "severity": "CRITICAL",
+        "installed": "2.2.0",
+        "fixed": "1.11.28, 2.2.10, 3.0.3"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2022-28346",
+        "package": "Django",
+        "severity": "CRITICAL",
+        "installed": "2.2.0",
+        "fixed": "2.2.28, 3.2.13, 4.0.4"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2022-28347",
+        "package": "Django",
+        "severity": "CRITICAL",
+        "installed": "2.2.0",
+        "fixed": "2.2.28, 3.2.13, 4.0.4"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2025-64459",
+        "package": "Django",
+        "severity": "CRITICAL",
+        "installed": "2.2.0",
+        "fixed": "5.2.8, 5.1.14, 4.2.26"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2019-14232",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "1.11.23, 2.1.11, 2.2.4"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2019-14233",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "1.11.23, 2.1.11, 2.2.4"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2019-14235",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "1.11.23, 2.1.11, 2.2.4"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2019-19118",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "2.1.15, 2.2.8"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2020-13254",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "2.2.13, 3.0.7"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2020-24583",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "2.2.16, 3.0.10, 3.1.1"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2020-9402",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "1.11.29, 2.2.11, 3.0.4"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2021-31542",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "2.2.21, 3.1.9, 3.2.1"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2021-33571",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "2.2.24, 3.1.12, 3.2.4"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2021-45115",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "2.2.26, 3.2.11, 4.0.1"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2021-45116",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "2.2.26, 3.2.11, 4.0.1"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2022-23833",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "2.2.27, 3.2.12, 4.0.2"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2022-36359",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "3.2.15, 4.0.7"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2025-57833",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "4.2.24, 5.1.12, 5.2.6"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2025-64458",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "5.2.8, 5.1.14, 4.2.26"
+      },
+      {
+        "target": "requirements.txt",
+        "id": "CVE-2026-15307",
+        "package": "Django",
+        "severity": "HIGH",
+        "installed": "2.2.0",
+        "fixed": "5.2.17, 6.0.8"
+      }
+    ],
+    "passed": false,
+    "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+  },
+  "package_occurrences": {
+    "manifest_scan": 121,
+    "python_resolved": 98,
+    "unique_packages": false
+  },
+  "manifest_integrity": [
+    {
+      "path": "infraestructura/ansible/requirements.txt",
+      "bytes": 37,
+      "prefix": "616e7369",
+      "git_sha": "6998d34f18db170fafcd29c619fd4208b87998f8",
+      "matches": true
+    },
+    {
+      "path": "servicios/audit-dispatcher/requirements.txt",
+      "bytes": 64,
+      "prefix": "53514c41",
+      "git_sha": "f12d593e5644b74176f6db392f21cc752ea798fc",
+      "matches": true
+    },
+    {
+      "path": "servicios/audit-service/requirements.txt",
+      "bytes": 296,
+      "prefix": "23203d3d",
+      "git_sha": "ff5b8b5e797fc420f8b61ceb804c24dd43bb8a61",
+      "matches": true
+    },
+    {
+      "path": "servicios/frontend/package-lock.json",
+      "bytes": 40949,
+      "prefix": "7b0a2020",
+      "git_sha": "907302bf17db50557c562d4e56cf936c6cd3b567",
+      "matches": true
+    },
+    {
+      "path": "servicios/frontend/package.json",
+      "bytes": 524,
+      "prefix": "7b0a2020",
+      "git_sha": "61001eec84b5820337ff846b59047afa5bb0190b",
+      "matches": true
+    },
+    {
+      "path": "servicios/identity-service/requirements.txt",
+      "bytes": 1403,
+      "prefix": "23203d3d",
+      "git_sha": "423d1a9f82ddfdabce1f3d8e3ecebbb8dc6eb7be",
+      "matches": true
+    },
+    {
+      "path": "servicios/permissions-service/requirements.txt",
+      "bytes": 107,
+      "prefix": "66617374",
+      "git_sha": "0f571252ebe9dc2a282da766139e8387e28f9a2f",
+      "matches": true
+    },
+    {
+      "path": "servicios/sync-service/requirements.txt",
+      "bytes": 242,
+      "prefix": "23203d3d",
+      "git_sha": "ad773c0995435d2a431a090bfe7b9b5c521055e6",
+      "matches": true
+    },
+    {
+      "path": "servicios/usuarios/requirements.txt",
+      "bytes": 748,
+      "prefix": "fffe6100",
+      "git_sha": "a2932c51360fd0c2ee43137156e2eab5fb773659",
+      "matches": true
+    }
+  ],
+  "reports": [
+    {
+      "path": "sca-trivy/local/expected.json",
+      "sha256": "2e6ed0be8ec62cca919afa31cc08ceab5f8607b4301b56e210d7667f95ef7f11"
+    },
+    {
+      "path": "sca-trivy/local/trivy-manifests.json",
+      "sha256": "bba1ba13e71b003fbbc4559d9f874959be65277b18a7635cdc319173aec8b84e"
+    },
+    {
+      "path": "sca-trivy/local/summary.json",
+      "sha256": "07fb3afa47a15b45e061de6839b01a5513309b9d776dd39c88356f65b5dc3896"
+    },
+    {
+      "path": "sca-trivy/local/trivy-negative.json",
+      "sha256": "0ceecdb2e7c104e50728e564af560049f9c62f2c38fa3b378db331dd06a06001"
+    },
+    {
+      "path": "sca-trivy/local/negative-expected.json",
+      "sha256": "899cd0e2ad92e101eca7a564eba8426467f81e3729f8934c7303005a4ca9e912"
+    },
+    {
+      "path": "sca-trivy/local/negative-summary.json",
+      "sha256": "e84c5573961a6c6bc558c2236eb9ef8c4505c4be01afeedbc10a5d9d13d28fea"
+    },
+    {
+      "path": "sca-trivy/ci/sca-sync-service/resolved-requirements.txt",
+      "sha256": "7d463c23cc4f3e76ca950cc5a0c571631c874fc40d5a1a2dfc7d3d06f73927c1"
+    },
+    {
+      "path": "sca-trivy/ci/sca-sync-service/trivy-expected.json",
+      "sha256": "a26793b3f59ef5c25036577c627b07db1d4b999f5e2f80f70f10513d8fabb6ff"
+    },
+    {
+      "path": "sca-trivy/ci/sca-sync-service/trivy-dependencies.json",
+      "sha256": "d4003c520f6e23f6dd372369b0450396f2587eb2a1daa363acafa02f96418479"
+    },
+    {
+      "path": "sca-trivy/ci/sca-sync-service/trivy-summary-current.json",
+      "sha256": "c3699a3f90ef833dca8038458adea614e0dcc17845a1b312219f3c43d59d75b8"
+    },
+    {
+      "path": "sca-trivy/ci/sca-permissions-service/resolved-requirements.txt",
+      "sha256": "e801af1334950cf9c4658ebe7b408b1cdc09c41d17c211325a85b58152125379"
+    },
+    {
+      "path": "sca-trivy/ci/sca-permissions-service/trivy-expected.json",
+      "sha256": "3bed844b22e733479cfba9e724a95b59f49de7b47aa467e8760b21832decd3c1"
+    },
+    {
+      "path": "sca-trivy/ci/sca-permissions-service/trivy-dependencies.json",
+      "sha256": "0aeb1bbe1d0f9fcffc75f1f1630409c90aa6b279befd35309a634b51f4a43873"
+    },
+    {
+      "path": "sca-trivy/ci/sca-permissions-service/trivy-summary-current.json",
+      "sha256": "640b7c368fd47c711b85dc8d090c5d17048d199558d382232535044fb4e9ed9b"
+    },
+    {
+      "path": "sca-trivy/ci/sca-audit-dispatcher/resolved-requirements.txt",
+      "sha256": "7d463c23cc4f3e76ca950cc5a0c571631c874fc40d5a1a2dfc7d3d06f73927c1"
+    },
+    {
+      "path": "sca-trivy/ci/sca-audit-dispatcher/trivy-expected.json",
+      "sha256": "a26793b3f59ef5c25036577c627b07db1d4b999f5e2f80f70f10513d8fabb6ff"
+    },
+    {
+      "path": "sca-trivy/ci/sca-audit-dispatcher/trivy-dependencies.json",
+      "sha256": "80d2a7b082b2e519e8c0b3e6f8307251470cfea991e92e50f1450a31eba2e828"
+    },
+    {
+      "path": "sca-trivy/ci/sca-audit-dispatcher/trivy-summary-current.json",
+      "sha256": "c3699a3f90ef833dca8038458adea614e0dcc17845a1b312219f3c43d59d75b8"
+    },
+    {
+      "path": "sca-trivy/ci/sca-usuarios/resolved-requirements.txt",
+      "sha256": "b5d1cf1e0d742851dcd53241cc2c01324854c92b29511c5ac873859a5e0ad7fe"
+    },
+    {
+      "path": "sca-trivy/ci/sca-usuarios/trivy-expected.json",
+      "sha256": "e0d91649c91b6f5419de4a09cc0f3546fc62c02c91f48f869edc13162b410eeb"
+    },
+    {
+      "path": "sca-trivy/ci/sca-usuarios/trivy-dependencies.json",
+      "sha256": "4f89d38b64429e47da97a61fbc43d594cab349948ba9cc3968b43744113f0006"
+    },
+    {
+      "path": "sca-trivy/ci/sca-usuarios/trivy-summary-current.json",
+      "sha256": "640b7c368fd47c711b85dc8d090c5d17048d199558d382232535044fb4e9ed9b"
+    },
+    {
+      "path": "sca-trivy/ci/sca-identity-service/resolved-requirements.txt",
+      "sha256": "4ea6be5e93dcfae8c73383f063c131063408a9b0c5d918faffcc1204abb4d010"
+    },
+    {
+      "path": "sca-trivy/ci/sca-identity-service/trivy-expected.json",
+      "sha256": "489f35d22833250648f5932d2a496d252d773eac3f6a845c3315d4c056fa34b0"
+    },
+    {
+      "path": "sca-trivy/ci/sca-identity-service/trivy-dependencies.json",
+      "sha256": "aaf2e6d56b3821083f3c6bc617471ea56b45515d3ff0bfcd36c468c197f9bdb8"
+    },
+    {
+      "path": "sca-trivy/ci/sca-identity-service/trivy-summary-current.json",
+      "sha256": "52cf303be34948126249c716809cff5ca55fdb91a794ed681c00dd98b1c20d21"
+    },
+    {
+      "path": "sca-trivy/ci/sca-audit-service/resolved-requirements.txt",
+      "sha256": "604541845b08433f4da1df9e6d8ec74cae721b05c75f2464fd2b355eb0b4cab2"
+    },
+    {
+      "path": "sca-trivy/ci/sca-audit-service/trivy-expected.json",
+      "sha256": "c6dae574cde6a6e142d550b9e956478988297175d0036d7aa6732f988711ef72"
+    },
+    {
+      "path": "sca-trivy/ci/sca-audit-service/trivy-dependencies.json",
+      "sha256": "fc0f9e706bf4421b544c5a60ff69ea7b399a907fdd74e4ba3341742ba919b939"
+    },
+    {
+      "path": "sca-trivy/ci/sca-audit-service/trivy-summary-current.json",
+      "sha256": "86bb935b5416fbd4c0e95fb273e6b420fc3f216701194b5e4c2bfe0a8044dd06"
+    }
+  ],
+  "billing_screenshot": {
+    "source": "User-provided screenshot, 2026-10-07",
+    "included_minutes": 2000,
+    "used_minutes": 2000,
+    "billable_usage_usd": 0,
+    "consumed_usage_usd": 12,
+    "discounts_usd": 12,
+    "reset_in_days": 25,
+    "paid_usage_authorized": false
+  }
+}

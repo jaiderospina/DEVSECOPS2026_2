@@ -1,0 +1,62 @@
+{
+  "project": "iam-stride-ci-38638956405",
+  "normal_compose_used": false,
+  "normal_database_used": false,
+  "certificate": {
+    "certificate_sha256": "06b584ec95f53af68b4232478d6e54a29f6db2ef9180fe7e1785cfea10ffc088",
+    "ca_sha256": "d2687a54828c5a894d0be5a03166920039e10eabc44e7051b68143424ba6f5a7",
+    "roles": [
+      "iam_audit",
+      "iam_backup",
+      "iam_dispatcher",
+      "iam_identity",
+      "iam_permissions",
+      "iam_sync"
+    ],
+    "certificate_days": 30,
+    "secrets_written": true,
+    "system_trust_modified": false
+  },
+  "checks": {
+    "private_backends_and_separate_runtime_roles": true,
+    "bootstrap_with_restricted_identity_role": true,
+    "runtime_containers_non_root": true,
+    "four_verified_https_endpoints": true,
+    "unknown_ca_rejected": true,
+    "plaintext_and_unknown_hosts_rejected": true,
+    "real_mfa_and_restricted_permissions_https": true,
+    "reset_revocation_and_real_audit_delivery": true,
+    "encrypted_backup_restored_and_acl_reapplied": true,
+    "restored_mfa_decryptable_with_preserved_key": true,
+    "auth_load_throttled_before_backend": true
+  },
+  "cleanup_completed": true,
+  "source_commit": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+  "source_worktree_dirty": false,
+  "repository": "yeisonfblopez/DevSecOps-proyecto-Final-ci",
+  "measured_at_utc": "2026-10-14T21:16:57.044674+00:00",
+  "roles": {
+    "roles_provisioned": 6,
+    "secrets_in_argv": false
+  },
+  "tls_version": "TLSv1.3",
+  "backup": {
+    "encrypted": true,
+    "bytes": 91084,
+    "plaintext_written": false
+  },
+  "restore": {
+    "restored": true,
+    "acl_policy_reapplied": true,
+    "normal_database_used": false
+  },
+  "load": {
+    "requests": 30,
+    "throttled": 28,
+    "server_errors": 0,
+    "forged_forwarded_headers_used": true,
+    "max_auth_connections": 2
+  },
+  "passed": true,
+  "unrelated_container_ids_preserved": true
+}

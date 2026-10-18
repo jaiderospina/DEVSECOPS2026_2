@@ -1,0 +1,506 @@
+{
+  "services": {
+    "postgres": {
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "init": true,
+      "pids_limit": 128,
+      "mem_limit": "512m",
+      "restart": "unless-stopped",
+      "tmpfs": [
+        "/tmp:rw,noexec,nosuid,size=64m,mode=1777",
+        "/var/run/postgresql:rw,noexec,nosuid,size=16m,mode=3775,uid=999,gid=999"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "postgres:17@sha256:ae69c452f483507a6b99fb654cf93aad7fe156ffd2c56247707eef4e36d3c12b",
+      "user": "postgres",
+      "environment": {
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_DB": "iam_secure",
+        "POSTGRES_PASSWORD": "${POSTGRES_PASSWORD:?required}"
+      },
+      "volumes": [
+        "postgres_data:/var/lib/postgresql/data",
+        "./postgres-init:/docker-entrypoint-initdb.d:ro"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD-SHELL",
+          "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
+        ],
+        "interval": "5s",
+        "timeout": "4s",
+        "retries": 30,
+        "start_period": "10s"
+      },
+      "networks": [
+        "data"
+      ],
+      "group_add": [
+        "${IAM_SQL_READ_GID:?required}"
+      ]
+    },
+    "identity": {
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "init": true,
+      "pids_limit": 128,
+      "mem_limit": "256m",
+      "restart": "unless-stopped",
+      "tmpfs": [
+        "/tmp:rw,noexec,nosuid,size=64m,mode=1777"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "jeancarlosalmenarez8318/iam-secure-identity:1.0.0@sha256:839ce22bfbf6a50396fc75a77a691750b0bce9ce99e00d9b6c222d12492e750b",
+      "environment": {
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "${POSTGRES_PASSWORD:?required}",
+        "DB_HOST": "postgres",
+        "DB_PORT": "5432",
+        "DB_NAME": "iam_secure",
+        "JWT_SECRET": "${JWT_SECRET:?required}",
+        "JWT_ALGORITHM": "HS256",
+        "JWT_EXPIRE_MINUTES": "30",
+        "MFA_ENCRYPTION_KEY": "${MFA_ENCRYPTION_KEY:?required}",
+        "TEMP_PASSWORD_EXPIRE_HOURS": "24",
+        "PASSWORD_EXPIRE_DAYS": "60",
+        "PASSWORD_RECOVERY_COOLDOWN_MINUTES": "15",
+        "SESSION_INACTIVITY_MINUTES": "5",
+        "CORS_ORIGINS": "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5176,http://127.0.0.1:5176",
+        "SMTP_HOST": "${SMTP_HOST:-smtp.example.invalid}",
+        "SMTP_PORT": "${SMTP_PORT:-587}",
+        "SMTP_USER": "${SMTP_USER:-}",
+        "SMTP_PASSWORD": "${SMTP_PASSWORD:-}",
+        "SMTP_FROM": "${SMTP_FROM:-iam@example.invalid}"
+      },
+      "ports": [
+        "127.0.0.1:8003:8003"
+      ],
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        }
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8003/', timeout=3)"
+        ],
+        "interval": "5s",
+        "timeout": "4s",
+        "retries": 24,
+        "start_period": "10s"
+      },
+      "networks": [
+        "data",
+        "edge"
+      ]
+    },
+    "permissions": {
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "init": true,
+      "pids_limit": 128,
+      "mem_limit": "256m",
+      "restart": "unless-stopped",
+      "tmpfs": [
+        "/tmp:rw,noexec,nosuid,size=64m,mode=1777"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "jeancarlosalmenarez8318/iam-secure-permissions:1.0.0@sha256:b80cf3ad35ce6a7502570924930e8592d2afd3a42ad07879a61be6475edfccda",
+      "environment": {
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "${POSTGRES_PASSWORD:?required}",
+        "DB_HOST": "postgres",
+        "DB_PORT": "5432",
+        "DB_NAME": "iam_secure",
+        "IAM_BASE_URL": "http://identity:8003",
+        "CORS_ORIGINS": "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5176,http://127.0.0.1:5176"
+      },
+      "ports": [
+        "127.0.0.1:8005:8005"
+      ],
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "identity": {
+          "condition": "service_healthy"
+        }
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8005/', timeout=3)"
+        ],
+        "interval": "5s",
+        "timeout": "4s",
+        "retries": 24,
+        "start_period": "10s"
+      },
+      "networks": [
+        "data",
+        "edge"
+      ]
+    },
+    "audit-service": {
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "init": true,
+      "pids_limit": 128,
+      "mem_limit": "256m",
+      "restart": "unless-stopped",
+      "tmpfs": [
+        "/tmp:rw,noexec,nosuid,size=64m,mode=1777"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "jeancarlosalmenarez8318/iam-secure-audit:1.0.0@sha256:a6082e5f009c6138f44a543014bc701fce25f25cb3edfa3fb44338edceffe7b2",
+      "environment": {
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "${POSTGRES_PASSWORD:?required}",
+        "DB_HOST": "postgres",
+        "DB_PORT": "5432",
+        "DB_NAME": "iam_secure",
+        "AUDIT_INTERNAL_TOKEN": "${AUDIT_INTERNAL_TOKEN:?required}"
+      },
+      "ports": [
+        "127.0.0.1:8004:8004"
+      ],
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        }
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8004/health', timeout=3)"
+        ],
+        "interval": "5s",
+        "timeout": "4s",
+        "retries": 24,
+        "start_period": "10s"
+      },
+      "networks": [
+        "data",
+        "edge"
+      ]
+    },
+    "sync-worker": {
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "init": true,
+      "pids_limit": 128,
+      "mem_limit": "256m",
+      "restart": "unless-stopped",
+      "tmpfs": [
+        "/tmp:rw,noexec,nosuid,size=64m,mode=1777"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "jeancarlosalmenarez8318/iam-secure-sync-worker:1.0.0@sha256:f5eb8558bfb73d0e69c40d2db99c620d6695d6958e22b41ed55b0447f3e9fc20",
+      "environment": {
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "${POSTGRES_PASSWORD:?required}",
+        "DB_HOST": "postgres",
+        "DB_PORT": "5432",
+        "DB_NAME": "iam_secure",
+        "SYNC_POLL_SECONDS": "5",
+        "SYNC_RETRY_DELAY_SECONDS": "15",
+        "SYNC_JOB_TIMEOUT_SECONDS": "300",
+        "SYNC_RECOVERY_CHECK_SECONDS": "60",
+        "SYNC_SIMULATED_PROCESS_SECONDS": "2"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        }
+      },
+      "stop_grace_period": "15s",
+      "networks": [
+        "data"
+      ]
+    },
+    "audit-dispatcher": {
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "init": true,
+      "pids_limit": 128,
+      "mem_limit": "256m",
+      "restart": "unless-stopped",
+      "tmpfs": [
+        "/tmp:rw,noexec,nosuid,size=64m,mode=1777"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "jeancarlosalmenarez8318/iam-secure-audit-dispatcher:1.0.0@sha256:2917901afd11f22a808cdc37e9392c020fa43a3eb0144017ed8611792668ea42",
+      "environment": {
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "${POSTGRES_PASSWORD:?required}",
+        "DB_HOST": "postgres",
+        "DB_PORT": "5432",
+        "DB_NAME": "iam_secure",
+        "AUDIT_SERVICE_URL": "http://audit-service:8004",
+        "AUDIT_INTERNAL_TOKEN": "${AUDIT_INTERNAL_TOKEN:?required}",
+        "AUDIT_HTTP_TIMEOUT_SECONDS": "3",
+        "AUDIT_DISPATCH_POLL_SECONDS": "2",
+        "AUDIT_DISPATCH_RETRY_DELAY_SECONDS": "15",
+        "AUDIT_DISPATCH_MAX_ATTEMPTS": "5",
+        "AUDIT_DISPATCH_JOB_TIMEOUT_SECONDS": "120",
+        "AUDIT_DISPATCH_RECOVERY_CHECK_SECONDS": "30"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "audit-service": {
+          "condition": "service_healthy"
+        }
+      },
+      "stop_grace_period": "15s",
+      "networks": [
+        "data",
+        "edge"
+      ]
+    },
+    "frontend": {
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "init": true,
+      "pids_limit": 128,
+      "mem_limit": "256m",
+      "restart": "unless-stopped",
+      "tmpfs": [
+        "/tmp:rw,noexec,nosuid,size=64m,mode=1777"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "jeancarlosalmenarez8318/iam-secure-frontend:1.0.0@sha256:cad264c9bf5aa6e91a5817349e1f433e224c63edba05364b0f9d75881ecd42bb",
+      "ports": [
+        "127.0.0.1:5173:5173"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "wget",
+          "-q",
+          "-O",
+          "/dev/null",
+          "http://127.0.0.1:5173/"
+        ],
+        "interval": "5s",
+        "timeout": "4s",
+        "retries": 24
+      },
+      "depends_on": {
+        "identity": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "edge"
+      ]
+    },
+    "permissions-grid": {
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "init": true,
+      "pids_limit": 128,
+      "mem_limit": "256m",
+      "restart": "unless-stopped",
+      "tmpfs": [
+        "/tmp:rw,noexec,nosuid,size=64m,mode=1777"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "jeancarlosalmenarez8318/iam-secure-frontend:1.0.0@sha256:cad264c9bf5aa6e91a5817349e1f433e224c63edba05364b0f9d75881ecd42bb",
+      "ports": [
+        "127.0.0.1:5176:5173"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "wget",
+          "-q",
+          "-O",
+          "/dev/null",
+          "http://127.0.0.1:5173/"
+        ],
+        "interval": "5s",
+        "timeout": "4s",
+        "retries": 24
+      },
+      "depends_on": {
+        "permissions": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "edge"
+      ]
+    },
+    "bootstrap-admin": {
+      "read_only": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "init": true,
+      "pids_limit": 128,
+      "mem_limit": "256m",
+      "restart": "no",
+      "tmpfs": [
+        "/tmp:rw,noexec,nosuid,size=64m,mode=1777"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "jeancarlosalmenarez8318/iam-secure-identity:1.0.0@sha256:839ce22bfbf6a50396fc75a77a691750b0bce9ce99e00d9b6c222d12492e750b",
+      "profiles": [
+        "bootstrap"
+      ],
+      "environment": {
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "${POSTGRES_PASSWORD:?required}",
+        "DB_HOST": "postgres",
+        "DB_PORT": "5432",
+        "DB_NAME": "iam_secure",
+        "JWT_SECRET": "${JWT_SECRET:?required}",
+        "JWT_ALGORITHM": "HS256",
+        "JWT_EXPIRE_MINUTES": "30",
+        "MFA_ENCRYPTION_KEY": "${MFA_ENCRYPTION_KEY:?required}",
+        "TEMP_PASSWORD_EXPIRE_HOURS": "24",
+        "PASSWORD_EXPIRE_DAYS": "60",
+        "PASSWORD_RECOVERY_COOLDOWN_MINUTES": "15",
+        "SESSION_INACTIVITY_MINUTES": "5",
+        "CORS_ORIGINS": "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5176,http://127.0.0.1:5176",
+        "SMTP_HOST": "${SMTP_HOST:-smtp.example.invalid}",
+        "SMTP_PORT": "${SMTP_PORT:-587}",
+        "SMTP_USER": "${SMTP_USER:-}",
+        "SMTP_PASSWORD": "${SMTP_PASSWORD:-}",
+        "SMTP_FROM": "${SMTP_FROM:-iam@example.invalid}",
+        "BOOTSTRAP_ADMIN_TI_PASSWORD": "${BOOTSTRAP_ADMIN_TI_PASSWORD:-}"
+      },
+      "command": [
+        "python",
+        "bootstrap_admin_ti.py"
+      ],
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "data"
+      ]
+    }
+  },
+  "networks": {
+    "data": {
+      "driver": "bridge",
+      "internal": true
+    },
+    "edge": {
+      "driver": "bridge"
+    }
+  },
+  "volumes": {
+    "postgres_data": {}
+  }
+}

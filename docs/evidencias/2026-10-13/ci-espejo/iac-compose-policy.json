@@ -1,0 +1,6 @@
+{
+  "compose_security": "passed",
+  "services": 9,
+  "negative_gate_tests": 9,
+  "secrets_printed": false
+}

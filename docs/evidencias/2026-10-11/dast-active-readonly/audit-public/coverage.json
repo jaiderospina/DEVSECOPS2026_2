@@ -1,0 +1,87 @@
+{
+  "api": "audit",
+  "role": "PUBLIC",
+  "zap_version": "2.17.0",
+  "rules": [
+    "6",
+    "40018",
+    "90019",
+    "90020",
+    "40003"
+  ],
+  "strength": "LOW",
+  "spider": false,
+  "methods": {
+    "GET": 74
+  },
+  "operations": [
+    {
+      "operation": "GET /health",
+      "url": "http://audit-service:8004/health",
+      "scan_id": "0",
+      "progress": "100",
+      "requests": [
+        "http://audit-service:8004",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "533",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "803",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "281",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "694",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "248",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

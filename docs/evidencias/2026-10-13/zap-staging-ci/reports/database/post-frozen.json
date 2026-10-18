@@ -1,0 +1,66 @@
+{
+  "auditoria_eventos": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "auditoria_outbox": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "cargas_usuario_filas": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "cargas_usuarios": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "companias": {
+    "count": 5,
+    "sha256": "8166f704ce31e759c2c9da126f2a9a63277e32175ce0644e91b6ac3daf9dda4f"
+  },
+  "credenciales": {
+    "count": 6,
+    "sha256": "9f8f4e410a13a2a064053b79c7093f33cd8ec5604b3b7dc7f25a2e400c9f7105"
+  },
+  "mfa_desafios": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "mfa_totp": {
+    "count": 6,
+    "sha256": "d7a202ac65171f06d26c7d10c86d0d26a04353c965b571987bad70ef1fc87337"
+  },
+  "permisos_migraciones": {
+    "count": 1,
+    "sha256": "fbdaf95b8f11099337cb1205545961538bb95e42e75007f5cae48a68d20f5d34"
+  },
+  "permisos_usuario_compania": {
+    "count": 2,
+    "sha256": "89f61238230319ba3c0ab295b3b409f6eac13487f43e313fada9010d3b2f913e"
+  },
+  "roles_plataforma": {
+    "count": 5,
+    "sha256": "77e5418caae4fd7c21533624db4a298816f13cadbd5f0c51639dadd45d79965c"
+  },
+  "sesiones": {
+    "count": 12,
+    "sha256": "0871f6e93d7b38d941d0b42419a1701d27ac77ebdccd33681905ecff701a3b34"
+  },
+  "sync_jobs": {
+    "count": 0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "usuario_companias_plataforma": {
+    "count": 6,
+    "sha256": "8fd44746fcc4ec2dfb97e3362d9a80ed8e353c8f293831b5bd6417bc97903c53"
+  },
+  "usuario_roles_plataforma": {
+    "count": 6,
+    "sha256": "3222136ab9660beed9b72937ede5cd75a7670b4d0b38dbb369ea5b614a75edab"
+  },
+  "usuarios_plataforma": {
+    "count": 6,
+    "sha256": "aa63ef9f5df89474d4704e770a7fc0546ed5705726681ec79184fe5319076b5f"
+  }
+}

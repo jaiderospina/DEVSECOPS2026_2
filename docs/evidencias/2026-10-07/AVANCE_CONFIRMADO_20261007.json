@@ -1,0 +1,81 @@
+{
+  "evidence": "E17",
+  "date": "2026-10-07",
+  "timezone": "America/Bogota",
+  "repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "functional_revision": "7c076613d0525148a0be4914cb8d8be2fc0645a1",
+  "master_revision": "fed4a5d1af32e08af7a4618f1352bcaf05918436",
+  "pr": {
+    "number": 3,
+    "state": "open",
+    "draft": true,
+    "merged": false
+  },
+  "user_acceptance": {
+    "audit_menu": true,
+    "excel_download_confirmed": true,
+    "event_actor_name_and_email_confirmed": true,
+    "final_confirmation": "ya esta correcto",
+    "screenshot_confirmation": "User supplied Excel view showing current actor name/email separately from target user ID",
+    "source": "Direct user messages and attachments in this conversation; no new automated E2E run"
+  },
+  "verification": {
+    "E14": {
+      "tests": 95,
+      "scope": "security/automation/SCA/bulk",
+      "manifests": 10,
+      "high_critical": 0,
+      "medium": 3
+    },
+    "E15": {
+      "tests": 98,
+      "scope": "initial audit export; 82 PostgreSQL and 16 Node"
+    },
+    "E16": {
+      "tests": 86,
+      "scope": "51 bulk and 35 audit PostgreSQL",
+      "new_actor_cases": 4
+    },
+    "counts_overlap": true,
+    "coverage_measured": false,
+    "historical_cd": {
+      "revision": "ed00530990a494a616fe39770de65c2529915b96",
+      "run": 37578596462,
+      "jobs_passed": 29,
+      "idempotent": true,
+      "postgres_persisted_after_recreation": true
+    },
+    "current_ci": {
+      "revision": "7c076613d0525148a0be4914cb8d8be2fc0645a1",
+      "job": 112970033792,
+      "run": 37673232788,
+      "job_not_started": true,
+      "reason": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+      "sonar_check_present": false,
+      "latest_quality_gate_confirmed": false
+    }
+  },
+  "local": {
+    "project": "C:/Prueba-ProyectoFinal",
+    "head": "ce561e304e1d7d8dd75fe74c8f1963e5eac53456",
+    "working_changes_present": true,
+    "frontend_updated": true,
+    "identity_updated": true,
+    "postgres_recreated_for_update": false,
+    "code_backup": "Saved separately in the user-facing checkpoint package",
+    "published_1_0_0_images_include_audit": false
+  },
+  "remaining": {
+    "integration": "Keep PR draft; separate review/authorization and CI/Sonar before merge",
+    "images": "Build, scan, publish new version and repeat simulated CD with audit",
+    "sca": "Review three MEDIUM and approve current integral CI",
+    "dast": "Automate ZAP against staging; cover Permissions, companies, Excel/audit/roles",
+    "threat_model": "Review/export DFD0/1 and STRIDE for extended scope",
+    "docs": "Complete administrative delivery captures and technical-document scope review",
+    "coverage": "Measure and add coverage badge",
+    "installation": "Complete clean second-PC install and real email verification",
+    "mail_batch": "Paused until functional addresses are available",
+    "academic": "Public visibility, final PDF and 10–15 minute video",
+    "optional": "Prometheus/Grafana, Loki/ELK, Falco not implemented"
+  }
+}

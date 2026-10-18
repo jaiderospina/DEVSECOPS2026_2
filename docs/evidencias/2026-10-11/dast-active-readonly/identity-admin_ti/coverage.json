@@ -1,0 +1,631 @@
+{
+  "api": "identity",
+  "role": "ADMIN_TI",
+  "zap_version": "2.17.0",
+  "rules": [
+    "6",
+    "40018",
+    "90019",
+    "90020",
+    "40003"
+  ],
+  "strength": "LOW",
+  "spider": false,
+  "methods": {
+    "GET": 463
+  },
+  "operations": [
+    {
+      "operation": "GET /",
+      "url": "http://identity:8003/",
+      "scan_id": "0",
+      "progress": "100",
+      "requests": [
+        "http://identity:8003",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "531",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "765",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "281",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "676",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "250",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /auth/me",
+      "url": "http://identity:8003/auth/me",
+      "scan_id": "1",
+      "progress": "100",
+      "requests": [
+        "http://identity:8003",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "555",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "829",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "298",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "711",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "274",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /auth/sesiones",
+      "url": "http://identity:8003/auth/sesiones",
+      "scan_id": "2",
+      "progress": "100",
+      "requests": [
+        "http://identity:8003",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "555",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "823",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "303",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "713",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "263",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /usuarios",
+      "url": "http://identity:8003/usuarios",
+      "scan_id": "3",
+      "progress": "100",
+      "requests": [
+        "http://identity:8003",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "609",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "859",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "296",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "736",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "279",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /usuarios/{usuario_id}",
+      "url": "http://identity:8003/usuarios/3",
+      "scan_id": "url_not_found",
+      "progress": "100",
+      "requests": [
+        "http://identity:8003",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "609",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "859",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "296",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "736",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "279",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /companias",
+      "url": "http://identity:8003/companias",
+      "scan_id": "4",
+      "progress": "100",
+      "requests": [
+        "http://identity:8003",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "553",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "857",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "320",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "722",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "260",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /companias/asignaciones",
+      "url": "http://identity:8003/companias/asignaciones",
+      "scan_id": "5",
+      "progress": "100",
+      "requests": [
+        "http://identity:8003",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "569",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "855",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "315",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "714",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "270",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /companias/{compania_id}/contexto",
+      "url": "http://identity:8003/companias/4/contexto",
+      "scan_id": "url_not_found",
+      "progress": "100",
+      "requests": [
+        "http://identity:8003",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "569",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "855",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "315",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "714",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "270",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operation": "GET /companias/{compania_id}/usuarios",
+      "url": "http://identity:8003/companias/4/usuarios",
+      "scan_id": "url_not_found",
+      "progress": "100",
+      "requests": [
+        "http://identity:8003",
+        {
+          "HostProcess": [
+            {
+              "Plugin": [
+                "Path Traversal",
+                "6",
+                "release",
+                "Complete",
+                "569",
+                "15",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "SQL Injection",
+                "40018",
+                "release",
+                "Complete",
+                "855",
+                "22",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Server Side Code Injection",
+                "90019",
+                "release",
+                "Complete",
+                "315",
+                "8",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "Remote OS Command Injection",
+                "90020",
+                "release",
+                "Complete",
+                "714",
+                "19",
+                "0"
+              ]
+            },
+            {
+              "Plugin": [
+                "CRLF Injection",
+                "40003",
+                "release",
+                "Complete",
+                "270",
+                "7",
+                "0"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

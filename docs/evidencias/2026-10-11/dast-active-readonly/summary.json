@@ -1,0 +1,494 @@
+{
+  "unique_contract_operations": 15,
+  "api_role_operations": 39,
+  "runs": [
+    {
+      "run": "audit-public",
+      "api": "audit",
+      "role": "PUBLIC",
+      "operations": 1,
+      "zap_recorded_requests": 74,
+      "methods": {
+        "GET": 74
+      },
+      "rules": [
+        "6",
+        "40018",
+        "90019",
+        "90020",
+        "40003"
+      ],
+      "strength": "LOW",
+      "alerts": [],
+      "coverage": [
+        {
+          "operation": "GET /health",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        }
+      ]
+    },
+    {
+      "run": "identity-admin_soporte",
+      "api": "identity",
+      "role": "ADMIN_SOPORTE",
+      "operations": 9,
+      "zap_recorded_requests": 466,
+      "methods": {
+        "GET": 466
+      },
+      "rules": [
+        "6",
+        "40018",
+        "90019",
+        "90020",
+        "40003"
+      ],
+      "strength": "LOW",
+      "alerts": [],
+      "coverage": [
+        {
+          "operation": "GET /",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /auth/me",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /auth/sesiones",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /usuarios",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /usuarios/{usuario_id}",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 2
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /companias",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /companias/asignaciones",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 76
+          },
+          "successful_application_access": false
+        },
+        {
+          "operation": "GET /companias/{compania_id}/contexto",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 2
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /companias/{compania_id}/usuarios",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 2
+          },
+          "successful_application_access": true
+        }
+      ]
+    },
+    {
+      "run": "identity-admin_ti",
+      "api": "identity",
+      "role": "ADMIN_TI",
+      "operations": 9,
+      "zap_recorded_requests": 463,
+      "methods": {
+        "GET": 463
+      },
+      "rules": [
+        "6",
+        "40018",
+        "90019",
+        "90020",
+        "40003"
+      ],
+      "strength": "LOW",
+      "alerts": [],
+      "coverage": [
+        {
+          "operation": "GET /",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 74
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /auth/me",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 75
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /auth/sesiones",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 74
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /usuarios",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 74
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /usuarios/{usuario_id}",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 3
+          },
+          "successful_application_access": false
+        },
+        {
+          "operation": "GET /companias",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 74
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /companias/asignaciones",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 74
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /companias/{compania_id}/contexto",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 3
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /companias/{compania_id}/usuarios",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 3
+          },
+          "successful_application_access": false
+        }
+      ]
+    },
+    {
+      "run": "permissions-admin_soporte",
+      "api": "permissions",
+      "role": "ADMIN_SOPORTE",
+      "operations": 5,
+      "zap_recorded_requests": 236,
+      "methods": {
+        "GET": 236
+      },
+      "rules": [
+        "6",
+        "40018",
+        "90019",
+        "90020",
+        "40003"
+      ],
+      "strength": "LOW",
+      "alerts": [],
+      "coverage": [
+        {
+          "operation": "GET /",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /v1/companies",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /v1/companies/{company_id}/permissions",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 2
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /v1/me/permissions",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 76
+          },
+          "successful_application_access": false
+        },
+        {
+          "operation": "GET /v1/me/views/{code}",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 2
+          },
+          "successful_application_access": false
+        }
+      ]
+    },
+    {
+      "run": "permissions-lider_facturacion",
+      "api": "permissions",
+      "role": "LIDER_FACTURACION",
+      "operations": 5,
+      "zap_recorded_requests": 236,
+      "methods": {
+        "GET": 236
+      },
+      "rules": [
+        "6",
+        "40018",
+        "90019",
+        "90020",
+        "40003"
+      ],
+      "strength": "LOW",
+      "alerts": [],
+      "coverage": [
+        {
+          "operation": "GET /",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /v1/companies",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 76
+          },
+          "successful_application_access": false
+        },
+        {
+          "operation": "GET /v1/companies/{company_id}/permissions",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 2
+          },
+          "successful_application_access": false
+        },
+        {
+          "operation": "GET /v1/me/permissions",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /v1/me/views/{code}",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 2
+          },
+          "successful_application_access": true
+        }
+      ]
+    },
+    {
+      "run": "permissions-lider_gestion_humana",
+      "api": "permissions",
+      "role": "LIDER_GESTION_HUMANA",
+      "operations": 5,
+      "zap_recorded_requests": 236,
+      "methods": {
+        "GET": 236
+      },
+      "rules": [
+        "6",
+        "40018",
+        "90019",
+        "90020",
+        "40003"
+      ],
+      "strength": "LOW",
+      "alerts": [],
+      "coverage": [
+        {
+          "operation": "GET /",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /v1/companies",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 76
+          },
+          "successful_application_access": false
+        },
+        {
+          "operation": "GET /v1/companies/{company_id}/permissions",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 2
+          },
+          "successful_application_access": false
+        },
+        {
+          "operation": "GET /v1/me/permissions",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /v1/me/views/{code}",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 2
+          },
+          "successful_application_access": false
+        }
+      ]
+    },
+    {
+      "run": "permissions-lider_logistica",
+      "api": "permissions",
+      "role": "LIDER_LOGISTICA",
+      "operations": 5,
+      "zap_recorded_requests": 236,
+      "methods": {
+        "GET": 236
+      },
+      "rules": [
+        "6",
+        "40018",
+        "90019",
+        "90020",
+        "40003"
+      ],
+      "strength": "LOW",
+      "alerts": [],
+      "coverage": [
+        {
+          "operation": "GET /",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /v1/companies",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 76
+          },
+          "successful_application_access": false
+        },
+        {
+          "operation": "GET /v1/companies/{company_id}/permissions",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 2
+          },
+          "successful_application_access": false
+        },
+        {
+          "operation": "GET /v1/me/permissions",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "200": 73
+          },
+          "successful_application_access": true
+        },
+        {
+          "operation": "GET /v1/me/views/{code}",
+          "scan_completed": true,
+          "responses_at_concrete_path": {
+            "403": 2
+          },
+          "successful_application_access": false
+        }
+      ]
+    }
+  ],
+  "unexpected_database_changes": [],
+  "forwarded_methods": {
+    "GET": 1932
+  },
+  "gateway_blocked_requests": {
+    "POST": 1,
+    "GET": 17,
+    "DELETE": 1
+  },
+  "no_commits_or_push": true,
+  "limitations": [
+    "Five selected active rules at LOW strength; not all ZAP rules",
+    "403 responses do not cover protected business logic",
+    "Synthetic sessions; no login/MFA flow executed",
+    "Gateway rejects out-of-scope mutated URLs; those inputs do not reach the API",
+    "Preflight negative method probes were rejected before the pre-scan snapshot",
+    "First setup attempt imported the filtered Identity contract but failed before any active scan; preserved separately"
+  ],
+  "no_cleanup_at_scan_completion": true,
+  "cleanup": {
+    "remaining_DAST": {
+      "container": 0,
+      "network": 0,
+      "volume": 0
+    },
+    "non_DAST_resource_fingerprints_unchanged": true,
+    "normal_compose_used": false,
+    "original_secret_files_absent": true
+  }
+}

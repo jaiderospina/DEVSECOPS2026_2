@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-14",
+  "timezone": "America/Bogota",
+  "title": "IAM Secure - Informe técnico DevSecOps",
+  "authors": [
+    "Oscar Daniel Acosta",
+    "David Enrique Diaz",
+    "Ingrid Tatiana Vesga",
+    "Jean Carlos Almenarez Ríos",
+    "Yeison Fabián Bernal López"
+  ],
+  "subject": "Seg en Entornos Cloud y Devops",
+  "pages": 21,
+  "sha256": "bbfcbd7ff7f98b233ce282e629e5cce937b86d49c45e7f3f3ad84ac35c89d9af",
+  "technical_cut_commit": "f87243ebf8486c9e5cc5cb781fef1fceb0816e15",
+  "chapters_in_order": [
+    "Portada",
+    "Tabla de contenido",
+    "Introducción",
+    "Arquitectura/UML",
+    "Threat Dragon/STRIDE",
+    "Pipeline",
+    "Resultados/tabla de hallazgos",
+    "Conclusiones"
+  ],
+  "verification": {
+    "all_pages_rendered_and_visually_reviewed": true,
+    "table_of_contents_link_annotations": 56,
+    "authors_and_subject_verified": true,
+    "unicode_and_page_bounds_verified": true
+  },
+  "sonar": "Quality Gate passed: new coverage 88.1% >= 80%; overall 54.5%; thresholds and period preserved; 43 reported new issues, zero accepted",
+  "diagrams": "Vector redraws for report readability, derived from repository UML and original Threat Dragon DFD; full originals remain versioned",
+  "evidence": "E30",
+  "source_evidence": "E29",
+  "workflow_run": 38587861186,
+  "previous_edition_preserved": "INFORME_TECNICO_IAM_SECURE_2026-10-14.pdf"
+}

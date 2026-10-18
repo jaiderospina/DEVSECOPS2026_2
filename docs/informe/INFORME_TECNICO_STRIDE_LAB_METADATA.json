@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-14",
+  "timezone": "America/Bogota",
+  "title": "IAM Secure - Informe técnico DevSecOps",
+  "authors": [
+    "Oscar Daniel Acosta",
+    "David Enrique Diaz",
+    "Ingrid Tatiana Vesga",
+    "Jean Carlos Almenarez Ríos",
+    "Yeison Fabián Bernal López"
+  ],
+  "subject": "Seg en Entornos Cloud y Devops",
+  "pages": 23,
+  "sha256": "df39b02c80d054a3146a6ea420129ee65734182756acd9c82a79bbbc0c403054",
+  "technical_cut_commit": "61a1f7acab2c76ef8e3669ae8f6ddc7fc7172df4",
+  "chapters_in_order": [
+    "Portada",
+    "Tabla de contenido",
+    "Introducción",
+    "Arquitectura/UML",
+    "Threat Dragon/STRIDE",
+    "Pipeline",
+    "Resultados/tabla de hallazgos",
+    "Conclusiones"
+  ],
+  "verification": {
+    "all_pages_rendered_and_visually_reviewed": true,
+    "table_of_contents_link_annotations": 60,
+    "authors_and_subject_verified": true,
+    "unicode_and_page_bounds_verified": true,
+    "local_activation_evidence_and_master_reference_verified": true
+  },
+  "sonar": "Quality Gate passed: new 85,6% >= 80%; overall 56,7%; 42 new issues; zero accepted; thresholds preserved",
+  "diagrams": "Vector redraws for report readability, derived from repository UML and original Threat Dragon DFD; full originals remain versioned; alternate secure-lab deployment diagram explicitly separated from development as-is",
+  "evidence": "E33",
+  "source_evidence": "E32",
+  "workflow_run": 38638956405,
+  "previous_edition_preserved": "INFORME_TECNICO_IAM_SECURE_2026-10-14_CIERRE_SONAR.pdf",
+  "file": "INFORME_TECNICO_IAM_SECURE_2026-10-14_STRIDE_LAB.pdf",
+  "additional_local_evidence": "E34: interactive secure laboratory activated from bdedc77; CA trusted with user authorization in CurrentUser/Root; first login/password change/MFA pending"
+}

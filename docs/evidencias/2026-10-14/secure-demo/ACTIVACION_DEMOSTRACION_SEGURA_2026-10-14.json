@@ -1,0 +1,139 @@
+{
+  "date_utc": "2026-10-14T22:55:33.348503+00:00",
+  "source_commit": "bdedc774e86e8c7156999beadba5eface9e750a4",
+  "project": "iam-stride-demo-20261014",
+  "checkout": "C:\\Prueba-ProyectoFinal",
+  "private_directory": "C:\\Prueba-ProyectoFinal\\.private\\demostracion-20261014",
+  "status": "running",
+  "profile": "independent interactive secure laboratory",
+  "new_database_volume": "iam-stride-demo-20261014_secure_lab_data",
+  "real_users_imported": false,
+  "bootstrap": {
+    "email": "CamiloCoordiTI@areati.demo",
+    "mandatory_password_change": true,
+    "mfa_enrollment": "pending human first login",
+    "password_location": "runtime.env / BOOTSTRAP_ADMIN_TI_PASSWORD (private, do not share)"
+  },
+  "certificates": {
+    "certificate_sha256": "6bbea417d2354188d8302d5d58f85936a377c087d3cb1e1263a89e2fd795d93a",
+    "ca_sha256": "d369e7b45e2988b56f04117f95d1f2d2379ce33ebf51793d7aa0237c61ec9865",
+    "roles": [
+      "iam_audit",
+      "iam_backup",
+      "iam_dispatcher",
+      "iam_identity",
+      "iam_permissions",
+      "iam_sync"
+    ],
+    "certificate_days": 30,
+    "secrets_written": true,
+    "system_trust_modified": false
+  },
+  "tls_version": "TLSv1.3",
+  "https": [
+    {
+      "url": "https://localhost:8443/",
+      "status": 200
+    },
+    {
+      "url": "https://localhost:8444/",
+      "status": 200
+    },
+    {
+      "url": "https://localhost:8445/",
+      "status": 200
+    },
+    {
+      "url": "https://localhost:8446/",
+      "status": 200
+    }
+  ],
+  "grid_path_status": 200,
+  "unknown_ca_rejected": true,
+  "plaintext_rejected": true,
+  "unknown_host_rejected": true,
+  "rate_limit": {
+    "requests": 30,
+    "throttled": 24,
+    "server_errors": 0,
+    "forged_xff_tested": true
+  },
+  "runtime": [
+    {
+      "service": "audit-dispatcher",
+      "uid": 100,
+      "read_only": true,
+      "container_id": "26b59d26ad20112604d71357580cce5e1427b44a392654eaebba7e07b7426781"
+    },
+    {
+      "service": "audit-service",
+      "uid": 100,
+      "read_only": true,
+      "container_id": "2ee77a73ed4f6450fd6c13e1bb289893c5831d8e9cf85a5a987afb2e9d0debcf"
+    },
+    {
+      "service": "frontend",
+      "uid": 101,
+      "read_only": true,
+      "container_id": "fc1dcc1587784553acf1729617b094c5ebb1d956f0977eb4ebb377341b1ee845"
+    },
+    {
+      "service": "gateway",
+      "uid": 101,
+      "read_only": true,
+      "container_id": "e47cd02105c220c4e723cf400e995e0aba3591ddb6ffe10a53a06dbca94663e6"
+    },
+    {
+      "service": "identity",
+      "uid": 999,
+      "read_only": true,
+      "container_id": "f451d3b34c9525e3457dea63453e8b6e9c2bdfbb12bd214084eeebdd2aab2467"
+    },
+    {
+      "service": "permissions",
+      "uid": 10001,
+      "read_only": true,
+      "container_id": "d17c0f4a0277a64c9b0286549de783fc2c048051d9cbe1b9e1ad16a46d5976de"
+    },
+    {
+      "service": "permissions-grid",
+      "uid": 101,
+      "read_only": true,
+      "container_id": "4a97b6d6a32effa9b980511ddc5ecc90d3e3123bce7a6af887ae42743f7d3e10"
+    },
+    {
+      "service": "postgres",
+      "uid": 999,
+      "read_only": true,
+      "container_id": "fb2db2bfd478bf07238e61c072eee703b7512a89f477b03d62a6193908c3b469"
+    },
+    {
+      "service": "sync-worker",
+      "uid": 100,
+      "read_only": true,
+      "container_id": "86bba711096b85d87a752eb05793e1f045508720b505ec57cf69f7074c5a7fa5"
+    }
+  ],
+  "restricted_database_logins": 6,
+  "role_memberships": 0,
+  "initial_backup": {
+    "encrypted": true,
+    "bytes": 89464,
+    "plaintext_written": false
+  },
+  "previous_containers_preserved": 28,
+  "development_data_counts_preserved": true,
+  "development_env_preserved": true,
+  "development_database_container_not_restarted": true,
+  "git_clean": true,
+  "system_trust_modified": false,
+  "risk_acceptance_changed": false,
+  "limitations": [
+    "fresh demonstration data only",
+    "SMTP intentionally invalid",
+    "internal Docker traffic not mTLS",
+    "certificate expires in 30 days",
+    "browser CA trust review pending",
+    "MFA enrollment and password change require human first login"
+  ]
+}

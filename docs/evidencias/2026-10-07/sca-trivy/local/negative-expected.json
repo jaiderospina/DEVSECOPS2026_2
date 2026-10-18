@@ -1,0 +1,9 @@
+{
+  "requirements.txt": {
+    "packages": {
+      "django": "2.2.0"
+    },
+    "source_sha256": "a28ed216aec05e20e1e31cc579d65c9ad9eb2ee4940904a31e137c341d2ad07a",
+    "scan_sha256": "e0cb38b961b8f45bb85a58eebff8d72514131182af24b46f62425de05a46185f"
+  }
+}

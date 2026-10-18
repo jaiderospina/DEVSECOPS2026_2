@@ -1,0 +1,344 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Identity Service",
+    "version": "1.0.0"
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {}
+  },
+  "servers": [
+    {
+      "url": "http://identity:8003"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Inicio",
+        "operationId": "inicio__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": [
+          "Autenticaci\u00f3n"
+        ],
+        "summary": "Obtener Mi Usuario",
+        "description": "Devuelve el contexto m\u00ednimo y seguro del usuario autenticado.\n\nSEGURIDAD:\n- No expone contrase\u00f1as, hashes, JWT, JTI ni datos de sesi\u00f3n.\n- ADMIN_TI y ADMIN_SOPORTE conservan la respuesta administrativa\n  que ya utiliza el frontend.\n- Los l\u00edderes reciben \u00fanicamente su propia compa\u00f1\u00eda activa.\n- No se concede a los l\u00edderes acceso al endpoint /companias.\n- Se exige exactamente una compa\u00f1\u00eda activa para una identidad l\u00edder.",
+        "operationId": "obtener_mi_usuario_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/auth/sesiones": {
+      "get": {
+        "tags": [
+          "Autenticaci\u00f3n"
+        ],
+        "summary": "Listar Sesiones",
+        "operationId": "listar_sesiones_auth_sesiones_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/usuarios": {
+      "get": {
+        "tags": [
+          "Usuarios de plataforma"
+        ],
+        "summary": "Obtener Usuarios",
+        "operationId": "obtener_usuarios_usuarios_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/usuarios/{usuario_id}": {
+      "get": {
+        "tags": [
+          "Usuarios de plataforma"
+        ],
+        "summary": "Obtener Usuario",
+        "operationId": "obtener_usuario_usuarios__usuario_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usuario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Usuario Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companias": {
+      "get": {
+        "tags": [
+          "Compa\u00f1\u00edas"
+        ],
+        "summary": "Obtener Companias",
+        "operationId": "obtener_companias_companias_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/companias/asignaciones": {
+      "get": {
+        "tags": [
+          "Compa\u00f1\u00edas"
+        ],
+        "summary": "Listar Asignaciones",
+        "operationId": "listar_asignaciones_companias_asignaciones_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/companias/{compania_id}/contexto": {
+      "get": {
+        "tags": [
+          "Compa\u00f1\u00edas"
+        ],
+        "summary": "Obtener Contexto Compania",
+        "operationId": "obtener_contexto_compania_companias__compania_id__contexto_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "compania_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Compania Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companias/{compania_id}/usuarios": {
+      "get": {
+        "tags": [
+          "Compa\u00f1\u00edas"
+        ],
+        "summary": "Obtener Usuarios Compania",
+        "operationId": "obtener_usuarios_compania_companias__compania_id__usuarios_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "compania_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Compania Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

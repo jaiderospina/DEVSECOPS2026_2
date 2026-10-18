@@ -1,0 +1,264 @@
+{
+  "commit": "b7704bcffd7e64e79fd05b68f9d54189959e67bb",
+  "pull_request": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/pull/1",
+  "pull_request_draft": true,
+  "runs": [
+    {
+      "id": 36814237618,
+      "url": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/actions/runs/36814237618",
+      "event": "pull_request",
+      "head_sha": "b7704bcffd7e64e79fd05b68f9d54189959e67bb",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "sca-node",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (identity-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sast (semgrep)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "model",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-python (audit-dispatcher)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sast (bandit)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (sync-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-python (sync-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-python (audit-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "gitleaks",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "pytest (audit_dispatcher, audit-dispatcher)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "pytest (identity_http, identity-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-python (identity-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (audit-dispatcher)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "pytest (audit_service, audit-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (frontend)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (audit-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (usuarios)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "pytest (sync_worker, sync-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-python (usuarios)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "gate",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 36814230828,
+      "url": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/actions/runs/36814230828",
+      "event": "push",
+      "head_sha": "b7704bcffd7e64e79fd05b68f9d54189959e67bb",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "model",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "pytest (identity_http, identity-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (frontend)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-python (audit-dispatcher)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "gitleaks",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "pytest (audit_dispatcher, audit-dispatcher)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sast (semgrep)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sast (bandit)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "pytest (audit_service, audit-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-python (identity-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-python (audit-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-node",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-python (sync-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "pytest (sync_worker, sync-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (sync-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (audit-dispatcher)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (usuarios)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (identity-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "images (audit-service)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "sca-python (usuarios)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "gate",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "pytest": [
+    {
+      "job": "pytest (audit_dispatcher, audit-dispatcher)",
+      "result": [
+        "2026-10-01T04:15:50.8295567Z 22 passed in 0.31s"
+      ]
+    },
+    {
+      "job": "pytest (identity_http, identity-service)",
+      "result": [
+        "2026-10-01T04:16:17.1363750Z 6 passed in 0.40s"
+      ]
+    },
+    {
+      "job": "pytest (audit_service, audit-service)",
+      "result": [
+        "2026-10-01T04:15:53.8767722Z 13 passed in 0.65s"
+      ]
+    },
+    {
+      "job": "pytest (sync_worker, sync-service)",
+      "result": [
+        "2026-10-01T04:15:59.7776926Z 23 passed in 0.29s"
+      ]
+    }
+  ],
+  "pytest_total": 64
+}

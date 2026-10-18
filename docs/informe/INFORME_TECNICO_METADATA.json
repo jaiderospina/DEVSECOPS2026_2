@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-14",
+  "timezone": "America/Bogota",
+  "title": "IAM Secure - Informe técnico DevSecOps",
+  "authors": [
+    "Oscar Daniel Acosta",
+    "David Enrique Diaz",
+    "Ingrid Tatiana Vesga",
+    "Jean Carlos Almenarez Ríos",
+    "Yeison Fabián Bernal López"
+  ],
+  "subject": "Seg en Entornos Cloud y Devops",
+  "pages": 21,
+  "sha256": "e384838e291fc3a53f755bd3f3feb6f88d29e4ddb9691e7c8f7b97965558fd15",
+  "technical_cut_commit": "d6c34403456b03a26610a2cc08950e14b90487ea",
+  "chapters_in_order": [
+    "Portada",
+    "Tabla de contenido",
+    "Introducción",
+    "Arquitectura/UML",
+    "Threat Dragon/STRIDE",
+    "Pipeline",
+    "Resultados/tabla de hallazgos",
+    "Conclusiones"
+  ],
+  "verification": {
+    "all_pages_rendered_and_visually_reviewed": true,
+    "table_of_contents_link_annotations": 56,
+    "authors_and_subject_verified": true,
+    "unicode_and_page_bounds_verified": true
+  },
+  "sonar": "Quality Gate failed: new-code coverage 0%, required 80%; duplication/reliability no longer failed conditions",
+  "diagrams": "Vector redraws for report readability, derived from repository UML and original Threat Dragon DFD; full originals remain versioned"
+}

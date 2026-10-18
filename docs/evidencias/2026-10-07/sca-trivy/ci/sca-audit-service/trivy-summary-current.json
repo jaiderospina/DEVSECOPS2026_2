@@ -1,0 +1,14 @@
+{
+  "coverage": [
+    {
+      "target": "requirements.txt",
+      "type": "pip",
+      "packages_detected": 17,
+      "required_packages_verified": 17
+    }
+  ],
+  "severity_counts": {},
+  "blockers": [],
+  "passed": true,
+  "policy": "HIGH/CRITICAL, including unfixed; no ignored CVEs"
+}

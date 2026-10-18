@@ -1,0 +1,70 @@
+/* ============================================================
+   IAM SECURE - ESTILOS GLOBALES
+   ============================================================
+   Este archivo contiene únicamente la normalización básica
+   de la aplicación.
+
+   Los estilos visuales, componentes, portales administrativos
+   y temas de compañías se administran desde App.css.
+   ============================================================ */
+
+:root {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Modelo de caja uniforme para toda la aplicación. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/*
+ * El contenedor raíz no establece ancho máximo, centrado,
+ * colores ni temas. De esta forma App.css mantiene el control
+ * completo sobre la interfaz de IAM Secure.
+ */
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}

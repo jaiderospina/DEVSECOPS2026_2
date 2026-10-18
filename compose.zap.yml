@@ -1,0 +1,95 @@
+x-db: &db
+  DB_USER: postgres
+  DB_PASSWORD: ${POSTGRES_PASSWORD:?ephemeral password required}
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  DB_NAME: iam_zap
+x-identity-env: &identity-env
+  <<: *db
+  JWT_SECRET: ${JWT_SECRET:?ephemeral JWT required}
+  JWT_ALGORITHM: HS256
+  JWT_EXPIRE_MINUTES: "30"
+  MFA_ENCRYPTION_KEY: ${MFA_ENCRYPTION_KEY:?ephemeral Fernet key required}
+  SESSION_INACTIVITY_MINUTES: "5"
+  CORS_ORIGINS: http://localhost:18003
+x-api: &api
+  restart: "no"
+  networks: [dast]
+  mem_limit: 512m
+  cpus: 1.0
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+services:
+  postgres:
+    image: postgres:17
+    restart: "no"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?ephemeral password required}
+      POSTGRES_DB: iam_zap
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d:ro
+    networks: [dast]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U postgres -d iam_zap']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    mem_limit: 512m
+  identity:
+    <<: *api
+    build: ./servicios/identity-service
+    environment: *identity-env
+    depends_on:
+      postgres: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8003/", timeout=3)']
+      interval: 3s
+      timeout: 4s
+      retries: 30
+  audit-service:
+    <<: *api
+    build: ./servicios/audit-service
+    environment:
+      <<: *db
+      AUDIT_INTERNAL_TOKEN: ${AUDIT_INTERNAL_TOKEN:?ephemeral audit token required}
+    depends_on:
+      postgres: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8004/health", timeout=3)']
+      interval: 3s
+      timeout: 4s
+      retries: 30
+  permissions:
+    <<: *api
+    build: ./servicios/permissions-service
+    environment:
+      <<: *db
+      IAM_BASE_URL: http://identity:8003
+      CORS_ORIGINS: http://localhost:18005
+    depends_on:
+      postgres: {condition: service_healthy}
+      identity: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8005/", timeout=3)']
+      interval: 3s
+      timeout: 4s
+      retries: 30
+  support:
+    <<: *api
+    build: ./servicios/identity-service
+    profiles: [support]
+    environment: *identity-env
+    volumes:
+      - ./dast:/support:ro
+    working_dir: /app
+    entrypoint: [python]
+    command: [/support/validate.py]
+    depends_on:
+      postgres: {condition: service_healthy}
+networks:
+  dast:
+    internal: true
+volumes:
+  pgdata:

@@ -1,0 +1,248 @@
+{
+  "fecha_corte": "2026-10-06",
+  "zona_horaria": "America/Bogota",
+  "repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "branch": "feat/bulk-users-excel-20261005",
+  "code_commit": "624ab1dc83e469c1b65b0e6fdd94c0524e4d3830",
+  "run": {
+    "id": 37570583715,
+    "url": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/actions/runs/37570583715",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "jobs": [
+    {
+      "id": 112628046914,
+      "name": "sca-node",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047065,
+      "name": "pytest (sync_worker, sync-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047081,
+      "name": "permissions-tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047089,
+      "name": "sca-python (usuarios)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047090,
+      "name": "pytest (audit_dispatcher, audit-dispatcher)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047099,
+      "name": "bulk-users-tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047154,
+      "name": "frontend-lint",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047156,
+      "name": "pytest (identity_http, identity-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047165,
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047176,
+      "name": "sca-python (identity-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047208,
+      "name": "sast (semgrep)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047234,
+      "name": "images (usuarios)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047240,
+      "name": "sca-python (permissions-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047241,
+      "name": "sast (bandit)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047243,
+      "name": "sca-python (audit-dispatcher)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047262,
+      "name": "images (identity-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047293,
+      "name": "images (permissions-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047315,
+      "name": "model",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047328,
+      "name": "pytest (audit_service, audit-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047343,
+      "name": "images (audit-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047356,
+      "name": "sca-python (sync-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047358,
+      "name": "sca-python (audit-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047375,
+      "name": "images (sync-service)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047400,
+      "name": "images (frontend)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047415,
+      "name": "images (audit-dispatcher)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628047419,
+      "name": "frontend-ui",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 112628404927,
+      "name": "gate",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "pytest": [
+    {
+      "name": "pytest (sync_worker, sync-service)",
+      "id": 112628047065,
+      "passed": 23
+    },
+    {
+      "name": "permissions-tests",
+      "id": 112628047081,
+      "passed": 32
+    },
+    {
+      "name": "pytest (audit_dispatcher, audit-dispatcher)",
+      "id": 112628047090,
+      "passed": 22
+    },
+    {
+      "name": "bulk-users-tests",
+      "id": 112628047099,
+      "passed": 51
+    },
+    {
+      "name": "pytest (identity_http, identity-service)",
+      "id": 112628047156,
+      "passed": 6
+    },
+    {
+      "name": "pytest (audit_service, audit-service)",
+      "id": 112628047328,
+      "passed": 13
+    }
+  ],
+  "pytest_total": 147,
+  "browser_checks_total": 11,
+  "browser_checks": [
+    "PASS: pestaña 5176, compañía en encabezado, sesión solo en memoria y cierre desde panel",
+    "PASS: grilla modifica permiso y una nueva sesión de interfaz oculta la opción",
+    "PASS: API no disponible no muestra tarjetas sin verificar permisos",
+    "PASS: abrir la grilla directamente no concede sesión ni acceso a permisos",
+    "PASS: plantilla, compañía, multipart, vista previa, consentimiento y filas inválidas excluidas",
+    "PASS: descarga de resultados y reapertura del lote conservan el progreso confirmado",
+    "PASS: carga masiva desaparece al vencer 5 minutos aunque logout no responde",
+    "PASS: actividad de grilla reinicia plazo; probes no renuevan y al vencer retira permisos",
+    "PASS: grilla verifica su vencimiento aunque el temporizador del panel no se ejecuta",
+    "PASS: cierre manual también elimina sesión sin esperar la red",
+    "PASS: interacción tras suspensión no revive una sesión vencida"
+  ],
+  "alcance": "Pytest por servicio, integración con PostgreSQL efímero; APIs/SMTP simulados donde corresponde. Chromium sobre SPA compilada. Cinco escenarios de inactividad con reloj controlado; no cuentas ni correos reales.",
+  "local": {
+    "build": "Vite aprobado",
+    "edge_idle_checks": 5,
+    "edge_regression_checks": 6,
+    "python_syntax": "aprobada",
+    "diff_check": "aprobado",
+    "lint": "CI aprobado; intento local previo bloqueado por Control de aplicaciones de Windows"
+  },
+  "pendientes": [
+    "Integración del PR #3 en master",
+    "Lote con varias filas y correos funcionales",
+    "ZAP automatizado contra staging y nuevo alcance",
+    "Reproducción integral en otro PC"
+  ],
+  "archivos_funcionales": [
+    "servicios/frontend/src/App.jsx",
+    "servicios/frontend/src/PermissionsWindow.jsx",
+    "servicios/frontend/src/usePermissionWindow.js",
+    "servicios/identity-service/seguridad.py",
+    "tests/session_idle/check.mjs",
+    ".github/workflows/devsecops-pipeline.yml"
+  ]
+}

@@ -1,0 +1,4183 @@
+{
+  "version": "2.6.2",
+  "summary": {
+    "title": "IAM Secure",
+    "owner": "Jean Carlos Almenarez",
+    "description": "Modelo as-is integrado en master mediante PR #3; referencias CI/DAST revisadas el 14 de octubre de 2026 (E27). Revisión humana de riesgo residual registrada el 13 de octubre de 2026 para alcance académico/local: T13 y T15 mitigadas técnicamente; 18 amenazas permanecen Open. La aceptación académica/local no equivale a aceptación productiva. Tratamiento local posterior E32 61a1f7a: perfil TLS/roles/backup/rate limit y reset MFA atómico verificados en CI 32/32 y Quality Gate aprobado; el modelo as-is conserva estados y la decisión humana anterior. El perfil seguro es una alternativa documentada, no convierte el Compose de desarrollo en producción."
+  },
+  "detail": {
+    "contributors": [],
+    "reviewer": "Revisión humana de riesgo residual registrada — 2026-10-13",
+    "diagramTop": 2,
+    "threatTop": 20,
+    "diagrams": [
+      {
+        "id": 0,
+        "title": "DFD nivel 0 — contexto",
+        "diagramType": "STRIDE",
+        "version": "2.6.2",
+        "thumbnail": "",
+        "description": "El proceso 0 se descompone en nivel 1. SMTP externo; conector simulado sin sistema externo.",
+        "cells": [
+          {
+            "id": "b0",
+            "shape": "trust-boundary-box",
+            "zIndex": -1,
+            "position": {
+              "x": 550,
+              "y": 80
+            },
+            "size": {
+              "width": 460,
+              "height": 520
+            },
+            "attrs": {
+              "label": {
+                "text": "Host Docker / IAM Secure"
+              }
+            },
+            "data": {
+              "type": "tm.BoundaryBox",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "description": "Host Docker / IAM Secure"
+            }
+          },
+          {
+            "position": {
+              "x": 40,
+              "y": 180
+            },
+            "size": {
+              "width": 260,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "Usuario / administrador",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "u0",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Actor",
+              "name": "Usuario / administrador",
+              "description": "Usuario / administrador",
+              "hasOpenThreats": false,
+              "outOfScope": false,
+              "threats": []
+            }
+          },
+          {
+            "position": {
+              "x": 650,
+              "y": 210
+            },
+            "size": {
+              "width": 260,
+              "height": 180
+            },
+            "attrs": {
+              "text": {
+                "text": "0. IAM Secure",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "p0",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Process",
+              "name": "0. IAM Secure",
+              "description": "0. IAM Secure",
+              "hasOpenThreats": false,
+              "outOfScope": false,
+              "threats": []
+            }
+          },
+          {
+            "position": {
+              "x": 1250,
+              "y": 245
+            },
+            "size": {
+              "width": 260,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "Proveedor SMTP",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "smtp0",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Actor",
+              "name": "Proveedor SMTP",
+              "description": "Proveedor SMTP",
+              "hasOpenThreats": false,
+              "outOfScope": false,
+              "threats": []
+            }
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f01 · Credenciales, MFA, operaciones y\ncarga XLSX",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.45,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Credenciales, MFA, operaciones y carga XLSX",
+              "description": "Credenciales, MFA, operaciones y carga XLSX",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f01",
+            "source": {
+              "cell": "u0",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "p0",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": [
+              {
+                "x": 400,
+                "y": 235
+              },
+              {
+                "x": 400,
+                "y": 240
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f02 · JWT, QR, vistas, plantilla y\nresultados XLSX",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.55,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "JWT, QR, vistas, plantilla y resultados XLSX",
+              "description": "JWT, QR, vistas, plantilla y resultados XLSX",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f02",
+            "source": {
+              "cell": "p0",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "u0",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "vertices": [
+              {
+                "x": 780,
+                "y": 470
+              },
+              {
+                "x": 170,
+                "y": 470
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f03 · Correo de contraseña temporal",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Correo de contraseña temporal",
+              "description": "Correo de contraseña temporal",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": true,
+              "isPublicNetwork": false,
+              "protocol": "SMTP STARTTLS",
+              "threats": []
+            },
+            "id": "f03",
+            "source": {
+              "cell": "p0",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "smtp0",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": []
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "title": "DFD nivel 1 — servicios y datos",
+        "diagramType": "STRIDE",
+        "version": "2.6.2",
+        "thumbnail": "",
+        "description": "React y grilla en navegador, servidos por Nginx; Permissions e Identity en Docker. D1–D6 son almacenes lógicos de un PostgreSQL compartido. HTTP/DB sin TLS demostrado.",
+        "cells": [
+          {
+            "id": "b1",
+            "shape": "trust-boundary-box",
+            "zIndex": -1,
+            "position": {
+              "x": 900,
+              "y": 60
+            },
+            "size": {
+              "width": 1650,
+              "height": 2000
+            },
+            "attrs": {
+              "label": {
+                "text": "Host Docker / iam_network\nD1–D6: particiones lógicas del mismo PostgreSQL"
+              }
+            },
+            "data": {
+              "type": "tm.BoundaryBox",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "description": "Servicios y PostgreSQL compartido; frontend Nginx distribuye código que se ejecuta fuera de este límite."
+            }
+          },
+          {
+            "position": {
+              "x": 20,
+              "y": 200
+            },
+            "size": {
+              "width": 260,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "Usuario / administrador",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "u1",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Actor",
+              "name": "Usuario / administrador",
+              "description": "Usuario / administrador",
+              "hasOpenThreats": false,
+              "outOfScope": false,
+              "threats": []
+            }
+          },
+          {
+            "position": {
+              "x": 400,
+              "y": 180
+            },
+            "size": {
+              "width": 260,
+              "height": 180
+            },
+            "attrs": {
+              "text": {
+                "text": "Panel React (servido por\nNginx)",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "spa",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Process",
+              "name": "Panel React (servido por Nginx)",
+              "description": "Panel React (servido por Nginx)",
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "threatId": "iam-threat-9",
+                  "number": 9,
+                  "title": "T09 Robo de sesión por XSS",
+                  "type": "Information disclosure",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Script malicioso en SPA puede acceder al contexto autenticado.",
+                  "mitigation": "CSP restrictiva en servicios/frontend/security-policy.js y Nginx; token del panel en sessionStorage, grilla en memoria. Retest pasivo histórico y comprobaciones CI de CSP. DAST activo archivado en f624196: laboratorio aislado, GET controlado, 39 combinaciones API/rol, 7 scans, 1.947 requests, 0 alertas en ese alcance. docs/evidencias/2026-10-11/dast-active-readonly/SUMMARY.md. No es active scan completo de toda la aplicación ni cubre mutaciones, login/MFA o canal entre ventanas. Pendiente prueba XSS específica del frontend. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva. Automatización posterior E26/E27: ZAP staging GET-only ejecutado en CI del espejo sobre d6c3440, 7 scans, 39 operaciones/API-rol y 1.947 requests; gate MEDIUM/HIGH y limpieza aprobados. No amplía la cobertura a frontend, mutaciones, login/MFA o XLSX."
+                },
+                {
+                  "threatId": "iam-threat-16",
+                  "number": 16,
+                  "title": "T16 Dependencias o imágenes comprometidas",
+                  "type": "Tampering",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Cadena de suministro introduce código no confiable.",
+                  "mitigation": "Gitleaks, Semgrep, Bandit, pip-audit/npm audit, builds y Trivy integrados; evidencia histórica docs/evidencias/2026-10-06/CONTENEDORES_CI_9b6affc.json y docs/evidencias/2026-10-07/DOCKERHUB_1.0.0_37574847806.json. E27 acredita CI del espejo en d6c3440 (30/30); el Quality Gate externo Sonar falla únicamente por cobertura nueva 0 % frente a 80 %. No declara resuelta la facturación del principal. Revisar advisories y riesgo residual. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva."
+                }
+              ]
+            }
+          },
+          {
+            "position": {
+              "x": 1050,
+              "y": 180
+            },
+            "size": {
+              "width": 260,
+              "height": 180
+            },
+            "attrs": {
+              "text": {
+                "text": "Identity Service",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "idp",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Process",
+              "name": "Identity Service",
+              "description": "Identity Service",
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "threatId": "iam-threat-1",
+                  "number": 1,
+                  "title": "T01 Suplantación por robo de JWT",
+                  "type": "Spoofing",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Un token robado permite acciones mientras la sesión permanezca válida.",
+                  "mitigation": "JWT jti, sesiones revocables e inactividad; tests/permissions/test_iam_http.py cubre revocación, expiración y cambio obligatorio. Pendiente escenario específico de token robado. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva."
+                },
+                {
+                  "threatId": "iam-threat-10",
+                  "number": 10,
+                  "title": "T10 Agotamiento por login y MFA",
+                  "type": "Denial of service",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Solicitudes concurrentes consumen hash/DB y bloquean usuarios.",
+                  "mitigation": "Gateway del perfil seguro limita /auth antes de las APIs: 10 solicitudes/minuto por cliente, ráfaga 5, 30/segundo global y dos conexiones de autenticación simultáneas. XFF no define el bucket. Laboratorio: 30 requests, respuestas 429 y cero 5xx; no prueba carga distribuida ni un entorno productivo. El Compose de desarrollo no incorpora el gateway. Riesgo residual no aceptado en la revisión humana del 13 de octubre de 2026. Tratamiento verificado en laboratorio E32 (61a1f7a); revisión residual posterior y adopción del perfil seguro pendientes. No acredita producción."
+                },
+                {
+                  "threatId": "iam-threat-13",
+                  "number": 13,
+                  "title": "T13 Escalada entre roles o compañías",
+                  "type": "Elevation of privilege",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Mitigated",
+                  "description": "Manipular IDs de usuarios/compañías puede eludir el alcance RBAC.",
+                  "mitigation": "Controles backend probados: 92 pruebas de Identity en tests/identity_security/test_t13_identity.py, con casos negativos parametrizados de RBAC/multitenancy, controles positivos y pérdida inmediata de alcance con el mismo token. Regresión Identity 6, Permissions 32 y Excel 86 aprobada. Evidencia: docs/evidencias/2026-10-13/T13_T15_VALIDACION.md. Tratamiento técnico verificado en el alcance probado. Riesgo residual aceptado para el alcance académico/local el 13 de octubre de 2026; no constituye aceptación productiva."
+                },
+                {
+                  "threatId": "iam-threat-15",
+                  "number": 15,
+                  "title": "T15 Intento de restablecimiento MFA fuera de jerarquía/compañía",
+                  "type": "Elevation of privilege",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Mitigated",
+                  "description": "Un actor intenta restablecer MFA de un objetivo fuera de su jerarquía o compañía mediante cualquiera de las rutas administrativas.",
+                  "mitigation": "Controles probados: 29 pruebas en tests/identity_security/test_t15_mfa_reset.py sobre ambas rutas reales, jerarquía, compañías, autogestión, revocación de sesiones/desafíos, token anterior inválido (también en Permissions) y re-enrolamiento TOTP. /usuarios/{id}/mfa/restablecer rechaza objetivo inactivo con HTTP 400; sin MFA previo se conserva /auth 200 y /usuarios 409. Evidencia: docs/evidencias/2026-10-13/T13_T15_VALIDACION.md. Tratamiento técnico verificado. Atomicidad de auditoría post-COMMIT sigue separada en T06. Riesgo residual aceptado para el alcance académico/local el 13 de octubre de 2026; no constituye aceptación productiva."
+                },
+                {
+                  "threatId": "iam-threat-20",
+                  "number": 20,
+                  "title": "T20 Abuso de carga masiva",
+                  "type": "Denial of service",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Validaciones/cargas repetidas o concurrentes agotan parsing, DB o SMTP.",
+                  "mitigation": "2 MiB, 500 filas, ZIP expandido 10 MiB, middleware de tamaño y cuota 10 lotes/10 minutos por actor. Cuota posterior al parsing: no limita todo el consumo previo ni todos los rechazos. Procesamiento por fila con bloqueo/transacción; tests/bulk_users/test_security.py. Rate limit previo, concurrencia y carga pendientes. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva."
+                }
+              ]
+            }
+          },
+          {
+            "position": {
+              "x": 1050,
+              "y": 1050
+            },
+            "size": {
+              "width": 260,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "D1 Identidades / sesiones\n/ MFA",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "db",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D1 Identidades / sesiones / MFA",
+              "description": "D1 Identidades / sesiones / MFA",
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "threatId": "iam-threat-7",
+                  "number": 7,
+                  "title": "T07 Exposición de secretos MFA y datos personales",
+                  "type": "Information disclosure",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Acceso DB y clave MFA conjunta permite recuperar secretos.",
+                  "mitigation": "MFA sigue cifrada con Fernet; el perfil seguro genera credenciales independientes por servicio y archivos privados (Unix 0700/0600, ACL Windows). Clave TLS PKCS8 cifrada, backup PostgreSQL autenticado/cifrado con clave separada y rol solo lectura, restauración en DB nueva con clave MFA preservada. Custodia/rotación/offsite y entorno destino siguen por validar. Riesgo residual no aceptado en la revisión humana del 13 de octubre de 2026. Tratamiento verificado en laboratorio E32 (61a1f7a); revisión residual posterior y adopción del perfil seguro pendientes. No acredita producción."
+                },
+                {
+                  "threatId": "iam-threat-14",
+                  "number": 14,
+                  "title": "T14 Privilegios excesivos de servicios DB",
+                  "type": "Elevation of privilege",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Compromiso de un microservicio permite acceder a todas las tablas.",
+                  "mitigation": "Seis roles DB sin superusuario, creación de bases/roles o propiedad del esquema; ACL por servicio. Permissions conserva locks con funciones fijas y search_path seguro, sin UPDATE de identidades/compañías. 48 casos verifican restricciones y operaciones válidas. PostgreSQL compartido; el Compose de desarrollo conserva postgres y el perfil seguro usa roles restringidos. Riesgo residual no aceptado en la revisión humana del 13 de octubre de 2026. Tratamiento verificado en laboratorio E32 (61a1f7a); revisión residual posterior y adopción del perfil seguro pendientes. No acredita producción."
+                }
+              ]
+            }
+          },
+          {
+            "position": {
+              "x": 1050,
+              "y": 650
+            },
+            "size": {
+              "width": 260,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "D2 sync_jobs",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "jobs",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D2 sync_jobs",
+              "description": "D2 sync_jobs",
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "threatId": "iam-threat-4",
+                  "number": 4,
+                  "title": "T04 Manipulación de trabajos por acceso DB",
+                  "type": "Tampering",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Un servicio comprometido con usuario postgres puede alterar sync_jobs.",
+                  "mitigation": "13-runtime-roles.sql separa logins sin superusuario ni permisos DDL. Identity produce sync_jobs; iam_sync solo puede actualizar estado operativo, no identidad/payload. Conexiones reales verifican operaciones permitidas y denegadas (E32). Solo el perfil seguro selecciona estos logins; desarrollo conserva postgres. Riesgo residual no aceptado en la revisión humana del 13 de octubre de 2026. Tratamiento verificado en laboratorio E32 (61a1f7a); revisión residual posterior y adopción del perfil seguro pendientes. No acredita producción."
+                }
+              ]
+            }
+          },
+          {
+            "position": {
+              "x": 1050,
+              "y": 1550
+            },
+            "size": {
+              "width": 260,
+              "height": 180
+            },
+            "attrs": {
+              "text": {
+                "text": "Sync Worker (simulado)",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "sync",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Process",
+              "name": "Sync Worker (simulado)",
+              "description": "Sync Worker (simulado)",
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "threatId": "iam-threat-12",
+                  "number": 12,
+                  "title": "T12 Trabajos abandonados / concurrencia",
+                  "type": "Denial of service",
+                  "modelType": "STRIDE",
+                  "severity": "Medium",
+                  "status": "Open",
+                  "description": "Una caída durante ejecución deja trabajos en PROCESANDO.",
+                  "mitigation": "SKIP LOCKED y recuperación tests/sync_worker/test_worker.py; conector real aún simulado. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva."
+                }
+              ]
+            }
+          },
+          {
+            "position": {
+              "x": 2200,
+              "y": 1050
+            },
+            "size": {
+              "width": 260,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "D3 auditoria_outbox",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "outbox",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D3 auditoria_outbox",
+              "description": "D3 auditoria_outbox",
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "threatId": "iam-threat-6",
+                  "number": 6,
+                  "title": "T06 Pérdida de trazabilidad de operaciones",
+                  "type": "Repudiation",
+                  "modelType": "STRIDE",
+                  "severity": "Medium",
+                  "status": "Open",
+                  "description": "Eventos fallidos o no cubiertos dejan acciones sin evidencia.",
+                  "mitigation": "Ambas rutas de reset MFA persisten outbox sanitizada dentro de la misma transacción que borrado MFA y revocación. 13 casos T06 verifican INSERT/COMMIT fallidos, rollback, idempotencia y ausencia de éxito en denegaciones; entrega real en el laboratorio. Dispatcher alerta AUDIT_OUTBOX_FALLIDO sin payload. Otros eventos históricos best-effort y atención operativa de fallidos mantienen límites. Riesgo residual no aceptado en la revisión humana del 13 de octubre de 2026. Tratamiento verificado en laboratorio E32 (61a1f7a); revisión residual posterior y adopción del perfil seguro pendientes. No acredita producción."
+                }
+              ]
+            }
+          },
+          {
+            "position": {
+              "x": 2200,
+              "y": 1400
+            },
+            "size": {
+              "width": 260,
+              "height": 180
+            },
+            "attrs": {
+              "text": {
+                "text": "Audit Dispatcher",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "dispatcher",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Process",
+              "name": "Audit Dispatcher",
+              "description": "Audit Dispatcher",
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "threatId": "iam-threat-11",
+                  "number": 11,
+                  "title": "T11 Acumulación de outbox por caída de Audit",
+                  "type": "Denial of service",
+                  "modelType": "STRIDE",
+                  "severity": "Medium",
+                  "status": "Open",
+                  "description": "Fallos sostenidos incrementan cola y retrasan auditoría.",
+                  "mitigation": "Reintentos/recuperación tests/audit_dispatcher/test_dispatcher.py; métricas y alertas pendientes. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva."
+                }
+              ]
+            }
+          },
+          {
+            "position": {
+              "x": 2200,
+              "y": 1750
+            },
+            "size": {
+              "width": 260,
+              "height": 180
+            },
+            "attrs": {
+              "text": {
+                "text": "Audit Service",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "audit",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Process",
+              "name": "Audit Service",
+              "description": "Audit Service",
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "threatId": "iam-threat-2",
+                  "number": 2,
+                  "title": "T02 Suplantación del dispatcher",
+                  "type": "Spoofing",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Robo del token interno permite inyectar eventos.",
+                  "mitigation": "Token dedicado y validación: servicios/audit-service/main.py; tests/audit_service/test_audit_service.py. Pendiente rotación y TLS interno. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva."
+                }
+              ]
+            }
+          },
+          {
+            "position": {
+              "x": 1750,
+              "y": 1800
+            },
+            "size": {
+              "width": 260,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "D4 auditoria_eventos",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "events",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D4 auditoria_eventos",
+              "description": "D4 auditoria_eventos",
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "threatId": "iam-threat-5",
+                  "number": 5,
+                  "title": "T05 Borrado de auditoría por acceso privilegiado",
+                  "type": "Repudiation",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Append-only HTTP no impide DELETE directo con rol postgres.",
+                  "mitigation": "Sin endpoints de borrado; trigger append-only en postgres-init/09-create-auditoria-eventos.sql bloquea UPDATE/DELETE. Administrador DB puede alterar controles; separación de roles y retención inmutable pendientes. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva."
+                }
+              ]
+            }
+          },
+          {
+            "position": {
+              "x": 2700,
+              "y": 180
+            },
+            "size": {
+              "width": 260,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "Proveedor SMTP",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "actor",
+            "id": "smtp1",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Actor",
+              "name": "Proveedor SMTP",
+              "description": "Proveedor SMTP",
+              "hasOpenThreats": false,
+              "outOfScope": false,
+              "threats": []
+            }
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f11 · Carga SPA",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Carga SPA",
+              "description": "Carga SPA",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f11",
+            "source": {
+              "cell": "u1",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "spa",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f12 · Login/MFA/JWT y operaciones",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Login/MFA/JWT y operaciones",
+              "description": "Login/MFA/JWT y operaciones",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": [
+                {
+                  "threatId": "iam-threat-3",
+                  "number": 3,
+                  "title": "T03 Alteración del tráfico HTTP",
+                  "type": "Tampering",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "HTTP local sin TLS permite interceptar credenciales y JWT si se expone la red.",
+                  "mitigation": "El Compose de desarrollo conserva HTTP. orquestacion/compose.secure-lab.json agrega gateway TLS 1.2/1.3 con CA de laboratorio y APIs sin puertos directos. HTTPS con CA verificada, CA desconocida/HTTP/host no autorizado rechazados. Tráfico interno Docker en la red de confianza, sin mTLS. Riesgo residual no aceptado en la revisión humana del 13 de octubre de 2026. Tratamiento verificado en laboratorio E32 (61a1f7a); revisión residual posterior y adopción del perfil seguro pendientes. No acredita producción."
+                }
+              ]
+            },
+            "id": "f12",
+            "source": {
+              "cell": "spa",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "idp",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": [
+              {
+                "x": 810,
+                "y": 240
+              },
+              {
+                "x": 810,
+                "y": 240
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f13 · Respuestas, JWT, QR",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.58,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Respuestas, JWT, QR",
+              "description": "Respuestas, JWT, QR",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f13",
+            "source": {
+              "cell": "idp",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "spa",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1180,
+                "y": 450
+              },
+              {
+                "x": 530,
+                "y": 450
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f14 · CRUD identidad / sesiones",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.78,
+                  "offset": 18,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "CRUD identidad / sesiones",
+              "description": "CRUD identidad / sesiones",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f14",
+            "source": {
+              "cell": "idp",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "db",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1140,
+                "y": 540
+              },
+              {
+                "x": 1140,
+                "y": 1000
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f15 · Credenciales / alcance compañía",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.15,
+                  "offset": -18,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Credenciales / alcance compañía",
+              "description": "Credenciales / alcance compañía",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f15",
+            "source": {
+              "cell": "db",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "idp",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1360,
+                "y": 1105
+              },
+              {
+                "x": 1360,
+                "y": 270
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f16 · Encola sincronización",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.6,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Encola sincronización",
+              "description": "Encola sincronización",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f16",
+            "source": {
+              "cell": "idp",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "jobs",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1250,
+                "y": 530
+              },
+              {
+                "x": 1250,
+                "y": 610
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f17 · Reclama trabajo",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.55,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Reclama trabajo",
+              "description": "Reclama trabajo",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f17",
+            "source": {
+              "cell": "jobs",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "sync",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1090,
+                "y": 1300
+              },
+              {
+                "x": 1090,
+                "y": 1510
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f18 · Resultado / reintento",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.45,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Resultado / reintento",
+              "description": "Resultado / reintento",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f18",
+            "source": {
+              "cell": "sync",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "target": {
+              "cell": "jobs",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": [
+              {
+                "x": 950,
+                "y": 1640
+              },
+              {
+                "x": 950,
+                "y": 705
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f19 · Evento administrativo",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.65,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Evento administrativo",
+              "description": "Evento administrativo",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f19",
+            "source": {
+              "cell": "idp",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "outbox",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1470,
+                "y": 390
+              },
+              {
+                "x": 1470,
+                "y": 920
+              },
+              {
+                "x": 2330,
+                "y": 920
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f20 · Reclama evento",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Reclama evento",
+              "description": "Reclama evento",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f20",
+            "source": {
+              "cell": "outbox",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "dispatcher",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f21 · Estado / reintento",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Estado / reintento",
+              "description": "Estado / reintento",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f21",
+            "source": {
+              "cell": "dispatcher",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "outbox",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "vertices": [
+              {
+                "x": 2520,
+                "y": 1490
+              },
+              {
+                "x": 2520,
+                "y": 1105
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f22 · Evento UUID + token interno",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Evento UUID + token interno",
+              "description": "Evento UUID + token interno",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f22",
+            "source": {
+              "cell": "dispatcher",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "audit",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f23 · ACK idempotente",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "ACK idempotente",
+              "description": "ACK idempotente",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f23",
+            "source": {
+              "cell": "audit",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "target": {
+              "cell": "dispatcher",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": [
+              {
+                "x": 2130,
+                "y": 1840
+              },
+              {
+                "x": 2130,
+                "y": 1490
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f24 · INSERT evento",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "INSERT evento",
+              "description": "INSERT evento",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f24",
+            "source": {
+              "cell": "audit",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "target": {
+              "cell": "events",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "vertices": []
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f25 · Contraseña temporal /\nrecuperación",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.6,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Contraseña temporal / recuperación",
+              "description": "Contraseña temporal / recuperación",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": true,
+              "isPublicNetwork": false,
+              "protocol": "SMTP STARTTLS",
+              "threats": [
+                {
+                  "threatId": "iam-threat-8",
+                  "number": 8,
+                  "title": "T08 Contraseña temporal en buzón",
+                  "type": "Information disclosure",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Compromiso del correo expone contraseña temporal.",
+                  "mitigation": "STARTTLS en correo.py y expiración; enlace de recuperación de un solo uso pendiente de evaluación. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva."
+                }
+              ]
+            },
+            "id": "f25",
+            "source": {
+              "cell": "idp",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "smtp1",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1600,
+                "y": 270
+              },
+              {
+                "x": 2040,
+                "y": 270
+              }
+            ]
+          },
+          {
+            "position": {
+              "x": 400,
+              "y": 650
+            },
+            "size": {
+              "width": 260,
+              "height": 180
+            },
+            "attrs": {
+              "text": {
+                "text": "permissions-grid (origen\n:5176)",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "grid",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Process",
+              "name": "permissions-grid (origen :5176)",
+              "description": "permissions-grid (origen :5176)",
+              "hasOpenThreats": false,
+              "outOfScope": false,
+              "threats": []
+            }
+          },
+          {
+            "position": {
+              "x": 1750,
+              "y": 650
+            },
+            "size": {
+              "width": 260,
+              "height": 180
+            },
+            "attrs": {
+              "text": {
+                "text": "Permissions Service",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "process",
+            "id": "permissions",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Process",
+              "name": "Permissions Service",
+              "description": "Permissions Service",
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "threatId": "iam-threat-17",
+                  "number": 17,
+                  "title": "T17 Manipulación de permisos entre compañías/usuarios",
+                  "type": "Elevation of privilege",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Alteración de concesiones para un objetivo o compañía fuera del alcance.",
+                  "mitigation": "Consulta online /auth/me, alcance vigente PostgreSQL, catálogo cerrado, versionado 409 y outbox atómico. tests/permissions/test_permissions.py y test_auth.py. DAST activo archivado en f624196: laboratorio aislado, GET controlado, 39 combinaciones API/rol, 7 scans, 1.947 requests, 0 alertas en ese alcance. docs/evidencias/2026-10-11/dast-active-readonly/SUMMARY.md. No es active scan completo de toda la aplicación ni cubre mutaciones, login/MFA o canal entre ventanas. E2E integral y mutaciones DAST pendientes. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva. Automatización posterior E26/E27: ZAP staging GET-only ejecutado en CI del espejo sobre d6c3440, 7 scans, 39 operaciones/API-rol y 1.947 requests; gate MEDIUM/HIGH y limpieza aprobados. No amplía la cobertura a frontend, mutaciones, login/MFA o XLSX."
+                }
+              ]
+            }
+          },
+          {
+            "position": {
+              "x": 1750,
+              "y": 1050
+            },
+            "size": {
+              "width": 260,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "D5 Permisos por usuario /\ncompañía",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "grants",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D5 Permisos por usuario / compañía",
+              "description": "D5 Permisos por usuario / compañía",
+              "hasOpenThreats": false,
+              "outOfScope": false,
+              "threats": []
+            }
+          },
+          {
+            "position": {
+              "x": 1400,
+              "y": 1450
+            },
+            "size": {
+              "width": 260,
+              "height": 110
+            },
+            "attrs": {
+              "text": {
+                "text": "D6 cargas_usuarios /\nfilas",
+                "fontSize": 14
+              },
+              "body": {
+                "stroke": "#333333",
+                "strokeWidth": 1.5,
+                "strokeDasharray": ""
+              }
+            },
+            "visible": true,
+            "shape": "store",
+            "id": "loads",
+            "zIndex": 3,
+            "data": {
+              "type": "tm.Store",
+              "name": "D6 cargas_usuarios / filas",
+              "description": "D6 cargas_usuarios / filas",
+              "hasOpenThreats": false,
+              "outOfScope": false,
+              "threats": []
+            }
+          },
+          {
+            "id": "browser-panel",
+            "shape": "trust-boundary-box",
+            "zIndex": -1,
+            "position": {
+              "x": 350,
+              "y": 110
+            },
+            "size": {
+              "width": 380,
+              "height": 310
+            },
+            "attrs": {
+              "label": {
+                "text": "Navegador: origen panel :5173"
+              }
+            },
+            "data": {
+              "type": "tm.BoundaryBox",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "description": "Navegador: origen panel :5173"
+            }
+          },
+          {
+            "id": "browser-grid",
+            "shape": "trust-boundary-box",
+            "zIndex": -1,
+            "position": {
+              "x": 350,
+              "y": 580
+            },
+            "size": {
+              "width": 380,
+              "height": 310
+            },
+            "attrs": {
+              "label": {
+                "text": "Navegador: origen grilla :5176"
+              }
+            },
+            "data": {
+              "type": "tm.BoundaryBox",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "description": "Navegador: origen grilla :5176"
+            }
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f26 · Sesión, nonce, expiresAt / fin",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.2,
+                  "offset": -25,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Sesión, nonce, expiresAt / fin",
+              "description": "Sesión, nonce, expiresAt / fin",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "postMessage",
+              "threats": [
+                {
+                  "threatId": "iam-threat-18",
+                  "number": 18,
+                  "title": "T18 Suplantación del canal panel↔permissions-grid",
+                  "type": "Spoofing",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Mensajes falsificados o sesión entregada a otra ventana/origen; posible divulgación de JWT.",
+                  "mitigation": "usePermissionWindow.js y PermissionsWindow.jsx: ventana, origen exacto, nonce criptográfico, rol soporte, expiresAt y sesión en memoria. tests/permissions_ui/check.mjs y tests/session_idle/check.mjs: alcance simulado; pruebas adversariales completas pendientes. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva."
+                }
+              ]
+            },
+            "id": "f26",
+            "source": {
+              "cell": "spa",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "grid",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 470,
+                "y": 500
+              },
+              {
+                "x": 470,
+                "y": 540
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f27 · Ready, probe, actividad /\nexpiración",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.65,
+                  "offset": 20,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Ready, probe, actividad / expiración",
+              "description": "Ready, probe, actividad / expiración",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "postMessage",
+              "threats": []
+            },
+            "id": "f27",
+            "source": {
+              "cell": "grid",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "target": {
+              "cell": "spa",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": [
+              {
+                "x": 300,
+                "y": 740
+              },
+              {
+                "x": 300,
+                "y": 270
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f28 · JWT y gestión de permisos",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.75,
+                  "offset": -28,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "JWT y gestión de permisos",
+              "description": "JWT y gestión de permisos",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f28",
+            "source": {
+              "cell": "grid",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": [
+              {
+                "x": 790,
+                "y": 690
+              },
+              {
+                "x": 1640,
+                "y": 690
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f29 · Grilla, versiones y resultados",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.7,
+                  "offset": 25,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Grilla, versiones y resultados",
+              "description": "Grilla, versiones y resultados",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f29",
+            "source": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "grid",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1620,
+                "y": 840
+              },
+              {
+                "x": 790,
+                "y": 840
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f30 · JWT y consulta de vistas",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.55,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "JWT y consulta de vistas",
+              "description": "JWT y consulta de vistas",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f30",
+            "source": {
+              "cell": "spa",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "target": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 760,
+                "y": 150
+              },
+              {
+                "x": 1640,
+                "y": 150
+              },
+              {
+                "x": 1640,
+                "y": 600
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f31 · Permisos / vista autorizada",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.8,
+                  "offset": -22,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Permisos / vista autorizada",
+              "description": "Permisos / vista autorizada",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f31",
+            "source": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "target": {
+              "cell": "spa",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "vertices": [
+              {
+                "x": 2010,
+                "y": 500
+              },
+              {
+                "x": 530,
+                "y": 500
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f32 · Bearer: validación /auth/me",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.35,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Bearer: validación /auth/me",
+              "description": "Bearer: validación /auth/me",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f32",
+            "source": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "target": {
+              "cell": "idp",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1880,
+                "y": 550
+              },
+              {
+                "x": 1510,
+                "y": 550
+              },
+              {
+                "x": 1510,
+                "y": 160
+              },
+              {
+                "x": 1180,
+                "y": 160
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f33 · Estado de sesión y usuario",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.18,
+                  "offset": -20,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Estado de sesión y usuario",
+              "description": "Estado de sesión y usuario",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f33",
+            "source": {
+              "cell": "idp",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1430,
+                "y": 320
+              },
+              {
+                "x": 1430,
+                "y": 600
+              },
+              {
+                "x": 1800,
+                "y": 600
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f34 · Consulta/bloqueo de roles y\ncompañía",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.35,
+                  "offset": -25,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Consulta/bloqueo de roles y compañía",
+              "description": "Consulta/bloqueo de roles y compañía",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f34",
+            "source": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "target": {
+              "cell": "db",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1610,
+                "y": 740
+              },
+              {
+                "x": 1610,
+                "y": 1020
+              },
+              {
+                "x": 1240,
+                "y": 1020
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f35 · Identidad y alcance vigentes",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.6,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Identidad y alcance vigentes",
+              "description": "Identidad y alcance vigentes",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f35",
+            "source": {
+              "cell": "db",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1400,
+                "y": 1105
+              },
+              {
+                "x": 1400,
+                "y": 900
+              },
+              {
+                "x": 1880,
+                "y": 900
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f36 · Consulta / modificación\nversionada",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Consulta / modificación versionada",
+              "description": "Consulta / modificación versionada",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f36",
+            "source": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "grants",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1820,
+                "y": 950
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f37 · Concesiones y versión",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Concesiones y versión",
+              "description": "Concesiones y versión",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f37",
+            "source": {
+              "cell": "grants",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "vertices": [
+              {
+                "x": 2050,
+                "y": 1105
+              },
+              {
+                "x": 2050,
+                "y": 740
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f38 · Evento de cambio de permiso",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Evento de cambio de permiso",
+              "description": "Evento de cambio de permiso",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f38",
+            "source": {
+              "cell": "permissions",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "outbox",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 2330,
+                "y": 740
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f39 · XLSX, compañía, confirmación /\nfila",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.5,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "XLSX, compañía, confirmación / fila",
+              "description": "XLSX, compañía, confirmación / fila",
+              "hasOpenThreats": true,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": [
+                {
+                  "threatId": "iam-threat-19",
+                  "number": 19,
+                  "title": "T19 Manipulación de XLSX",
+                  "type": "Tampering",
+                  "modelType": "STRIDE",
+                  "severity": "High",
+                  "status": "Open",
+                  "description": "Estructura o contenido manipulado para evadir límites, introducir fórmulas o roles no permitidos.",
+                  "mitigation": "cargas_excel.py: ZIP limitado, defusedxml, referencias físicas, rechazo macros/vínculos externos, filas con fórmulas inválidas, validación de roles/duplicados y exportación como texto. tests/bulk_users/test_excel.py y test_security.py. Fuzzing y DAST de carga pendientes. Riesgo residual aceptado únicamente para el alcance académico/local el 13 de octubre de 2026; la amenaza permanece Open por controles, pruebas o mejoras complementarias pendientes y no constituye aceptación productiva."
+                }
+              ]
+            },
+            "id": "f39",
+            "source": {
+              "cell": "spa",
+              "anchor": {
+                "name": "right"
+              }
+            },
+            "target": {
+              "cell": "idp",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": [
+              {
+                "x": 760,
+                "y": 310
+              },
+              {
+                "x": 850,
+                "y": 310
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f40 · Plantilla, vista previa /\nresultados XLSX",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.6,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Plantilla, vista previa / resultados XLSX",
+              "description": "Plantilla, vista previa / resultados XLSX",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "HTTP",
+              "threats": []
+            },
+            "id": "f40",
+            "source": {
+              "cell": "idp",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "target": {
+              "cell": "spa",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1180,
+                "y": 70
+              },
+              {
+                "x": 530,
+                "y": 70
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f41 · Persistir lote, confirmación /\nfila",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.65,
+                  "offset": 14,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Persistir lote, confirmación / fila",
+              "description": "Persistir lote, confirmación / fila",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f41",
+            "source": {
+              "cell": "idp",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "target": {
+              "cell": "loads",
+              "anchor": {
+                "name": "left"
+              }
+            },
+            "vertices": [
+              {
+                "x": 840,
+                "y": 270
+              },
+              {
+                "x": 840,
+                "y": 1505
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f42 · Lote, propietario y resultados",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.82,
+                  "offset": -18,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Lote, propietario y resultados",
+              "description": "Lote, propietario y resultados",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f42",
+            "source": {
+              "cell": "loads",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "target": {
+              "cell": "idp",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1530,
+                "y": 1380
+              },
+              {
+                "x": 1530,
+                "y": 110
+              },
+              {
+                "x": 1260,
+                "y": 110
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": ""
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "labels": [
+              {
+                "markup": [
+                  {
+                    "tagName": "ellipse",
+                    "selector": "labelBody"
+                  },
+                  {
+                    "tagName": "text",
+                    "selector": "labelText"
+                  }
+                ],
+                "attrs": {
+                  "labelText": {
+                    "text": "f43 · Permisos iniciales del líder",
+                    "textAnchor": "middle",
+                    "textVerticalAnchor": "middle",
+                    "fontSize": 12
+                  },
+                  "labelBody": {
+                    "ref": "labelText",
+                    "refRx": "50%",
+                    "refRy": "60%",
+                    "fill": "#fff",
+                    "strokeWidth": 0
+                  }
+                },
+                "position": {
+                  "distance": 0.82,
+                  "offset": 30,
+                  "args": {
+                    "keepGradient": false,
+                    "ensureLegibility": true
+                  }
+                }
+              }
+            ],
+            "connector": "normal",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Permisos iniciales del líder",
+              "description": "Permisos iniciales del líder",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "PostgreSQL",
+              "threats": []
+            },
+            "id": "f43",
+            "source": {
+              "cell": "idp",
+              "anchor": {
+                "name": "bottom"
+              }
+            },
+            "target": {
+              "cell": "grants",
+              "anchor": {
+                "name": "top"
+              }
+            },
+            "vertices": [
+              {
+                "x": 1330,
+                "y": 370
+              },
+              {
+                "x": 1330,
+                "y": 970
+              },
+              {
+                "x": 1880,
+                "y": 970
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

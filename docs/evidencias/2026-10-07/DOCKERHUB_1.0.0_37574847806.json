@@ -1,0 +1,128 @@
+{
+  "state": "published_verified",
+  "verified_date_local": "2026-10-07",
+  "timezone": "America/Bogota",
+  "version": "1.0.0",
+  "tags": [
+    "1.0.0",
+    "latest"
+  ],
+  "account": "jeancarlosalmenarez8318",
+  "source_branch": "feat/bulk-users-excel-20261005",
+  "source_commit": "ab444034719b6da3aab08009606de6dd7d12f26d",
+  "run": {
+    "id": 37574847806,
+    "url": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/actions/runs/37574847806",
+    "conclusion": "success",
+    "jobs_total": 29,
+    "jobs_succeeded": 29,
+    "created_at": "2026-10-07T05:08:23Z",
+    "updated_at": "2026-10-07T05:13:03Z"
+  },
+  "publish_job_id": 112641659881,
+  "verification": {
+    "images_count": 7,
+    "pushed_tags": 14,
+    "pulled_tags": 14,
+    "per_image_both_tags_same_digest": true,
+    "workflow_image_id_comparison_step": "success",
+    "login": "success",
+    "trivy_critical_all_images": "success",
+    "uid_nonroot_all_images": "success",
+    "frontend_minimal_nginx_guard": "success",
+    "secret_value_read": false,
+    "anonymous_pull_or_public_visibility_verified": false,
+    "application_full_deployment_from_hub_verified": false,
+    "github_release_created": false,
+    "pr3_code_merged_into_master": false
+  },
+  "images": [
+    {
+      "repository": "jeancarlosalmenarez8318/iam-secure-identity",
+      "pushed": {
+        "1.0.0": "sha256:839ce22bfbf6a50396fc75a77a691750b0bce9ce99e00d9b6c222d12492e750b",
+        "latest": "sha256:839ce22bfbf6a50396fc75a77a691750b0bce9ce99e00d9b6c222d12492e750b"
+      },
+      "pulled": {
+        "1.0.0": "sha256:839ce22bfbf6a50396fc75a77a691750b0bce9ce99e00d9b6c222d12492e750b",
+        "latest": "sha256:839ce22bfbf6a50396fc75a77a691750b0bce9ce99e00d9b6c222d12492e750b"
+      }
+    },
+    {
+      "repository": "jeancarlosalmenarez8318/iam-secure-sync-worker",
+      "pushed": {
+        "1.0.0": "sha256:f5eb8558bfb73d0e69c40d2db99c620d6695d6958e22b41ed55b0447f3e9fc20",
+        "latest": "sha256:f5eb8558bfb73d0e69c40d2db99c620d6695d6958e22b41ed55b0447f3e9fc20"
+      },
+      "pulled": {
+        "1.0.0": "sha256:f5eb8558bfb73d0e69c40d2db99c620d6695d6958e22b41ed55b0447f3e9fc20",
+        "latest": "sha256:f5eb8558bfb73d0e69c40d2db99c620d6695d6958e22b41ed55b0447f3e9fc20"
+      }
+    },
+    {
+      "repository": "jeancarlosalmenarez8318/iam-secure-audit",
+      "pushed": {
+        "1.0.0": "sha256:a6082e5f009c6138f44a543014bc701fce25f25cb3edfa3fb44338edceffe7b2",
+        "latest": "sha256:a6082e5f009c6138f44a543014bc701fce25f25cb3edfa3fb44338edceffe7b2"
+      },
+      "pulled": {
+        "1.0.0": "sha256:a6082e5f009c6138f44a543014bc701fce25f25cb3edfa3fb44338edceffe7b2",
+        "latest": "sha256:a6082e5f009c6138f44a543014bc701fce25f25cb3edfa3fb44338edceffe7b2"
+      }
+    },
+    {
+      "repository": "jeancarlosalmenarez8318/iam-secure-audit-dispatcher",
+      "pushed": {
+        "1.0.0": "sha256:2917901afd11f22a808cdc37e9392c020fa43a3eb0144017ed8611792668ea42",
+        "latest": "sha256:2917901afd11f22a808cdc37e9392c020fa43a3eb0144017ed8611792668ea42"
+      },
+      "pulled": {
+        "1.0.0": "sha256:2917901afd11f22a808cdc37e9392c020fa43a3eb0144017ed8611792668ea42",
+        "latest": "sha256:2917901afd11f22a808cdc37e9392c020fa43a3eb0144017ed8611792668ea42"
+      }
+    },
+    {
+      "repository": "jeancarlosalmenarez8318/iam-secure-frontend",
+      "pushed": {
+        "1.0.0": "sha256:cad264c9bf5aa6e91a5817349e1f433e224c63edba05364b0f9d75881ecd42bb",
+        "latest": "sha256:cad264c9bf5aa6e91a5817349e1f433e224c63edba05364b0f9d75881ecd42bb"
+      },
+      "pulled": {
+        "1.0.0": "sha256:cad264c9bf5aa6e91a5817349e1f433e224c63edba05364b0f9d75881ecd42bb",
+        "latest": "sha256:cad264c9bf5aa6e91a5817349e1f433e224c63edba05364b0f9d75881ecd42bb"
+      }
+    },
+    {
+      "repository": "jeancarlosalmenarez8318/iam-secure-usuarios",
+      "pushed": {
+        "1.0.0": "sha256:35e32e2be0840ee09bde2375c44066a66ab67dfa320e0c9d7279d70a0af049d3",
+        "latest": "sha256:35e32e2be0840ee09bde2375c44066a66ab67dfa320e0c9d7279d70a0af049d3"
+      },
+      "pulled": {
+        "1.0.0": "sha256:35e32e2be0840ee09bde2375c44066a66ab67dfa320e0c9d7279d70a0af049d3",
+        "latest": "sha256:35e32e2be0840ee09bde2375c44066a66ab67dfa320e0c9d7279d70a0af049d3"
+      }
+    },
+    {
+      "repository": "jeancarlosalmenarez8318/iam-secure-permissions",
+      "pushed": {
+        "1.0.0": "sha256:b80cf3ad35ce6a7502570924930e8592d2afd3a42ad07879a61be6475edfccda",
+        "latest": "sha256:b80cf3ad35ce6a7502570924930e8592d2afd3a42ad07879a61be6475edfccda"
+      },
+      "pulled": {
+        "1.0.0": "sha256:b80cf3ad35ce6a7502570924930e8592d2afd3a42ad07879a61be6475edfccda",
+        "latest": "sha256:b80cf3ad35ce6a7502570924930e8592d2afd3a42ad07879a61be6475edfccda"
+      }
+    }
+  ],
+  "artifact": {
+    "id": 11461914923,
+    "name": "dockerhub-release-evidence",
+    "url": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/actions/runs/37574847806/artifacts/11461914923",
+    "size_bytes": 34922,
+    "expires_at": "2026-11-06T05:12:59Z",
+    "zip_sha256": "c25b0c33ac0f78c1dbcaf8e53237f3131820d6c7bec216e5123fa523414b1b72",
+    "files_count_from_logs": 14
+  },
+  "evidence_method": "GitHub workflow run/jobs and publish job logs; per-tag push/pull digests extracted and compared. Full inspect/Trivy JSON remain in the expiring Actions artifact; durable digest summary saved in Git."
+}

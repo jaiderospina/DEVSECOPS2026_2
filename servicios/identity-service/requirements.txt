@@ -1,0 +1,45 @@
+# ============================================================
+# IAM SECURE - IDENTITY SERVICE
+# Dependencias directas del microservicio
+# ============================================================
+# Se mantienen únicamente dependencias utilizadas directamente
+# por la aplicación. pip resolverá automáticamente las
+# dependencias transitivas compatibles.
+# ============================================================
+
+# API REST
+fastapi==0.141.1
+uvicorn==0.52.4
+
+# Validación de modelos y direcciones de correo
+pydantic==2.13.5
+email-validator==2.3.0
+
+# Persistencia PostgreSQL
+SQLAlchemy==2.0.52
+psycopg2-binary==2.9.13
+
+# Hash seguro de contraseñas con Argon2
+pwdlib[argon2]==0.3.1
+
+# JSON Web Tokens
+PyJWT==2.15.0
+
+# Variables de entorno para ejecución local controlada
+python-dotenv==1.2.3
+
+# Autenticación multifactor (MFA/TOTP)
+# PyOTP implementa códigos temporales compatibles con aplicaciones Authenticator.
+# Cryptography protege mediante cifrado el secreto TOTP antes de persistirlo.
+pyotp==2.10.0
+cryptography==50.0.1
+
+# Generación segura del código QR para el enrolamiento MFA.
+# El QR contiene temporalmente la URI otpauth y se genera únicamente
+# para que el usuario la escanee con su aplicación Authenticator.
+qrcode[pil]==8.2
+
+# Carga Excel con XML protegido y multipart
+openpyxl==3.1.5
+defusedxml==0.7.1
+python-multipart==0.0.32

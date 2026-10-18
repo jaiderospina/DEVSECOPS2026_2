@@ -1,0 +1,6952 @@
+{
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 500,
+    "total": 120
+  },
+  "baseComponent": {
+    "id": "AaE4NnzL9mKCljfueGU0",
+    "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci",
+    "name": "DevSecOps-proyecto-Final-ci",
+    "qualifier": "TRK",
+    "measures": []
+  },
+  "components": [
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LN",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/01-create-usuarios.sql",
+      "name": "01-create-usuarios.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/01-create-usuarios.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LJ",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/02-create-auth-platform.sql",
+      "name": "02-create-auth-platform.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/02-create-auth-platform.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LH",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/03-create-sesiones.sql",
+      "name": "03-create-sesiones.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/03-create-sesiones.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LL",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/04-create-companias.sql",
+      "name": "04-create-companias.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/04-create-companias.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LC",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/05-backfill-password-expiry.sql",
+      "name": "05-backfill-password-expiry.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/05-backfill-password-expiry.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LK",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/06-create-mfa-totp.sql",
+      "name": "06-create-mfa-totp.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/06-create-mfa-totp.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LF",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/07-create-mfa-desafios.sql",
+      "name": "07-create-mfa-desafios.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/07-create-mfa-desafios.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LD",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/08-create-sync-jobs.sql",
+      "name": "08-create-sync-jobs.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/08-create-sync-jobs.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LE",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/09-create-auditoria-eventos.sql",
+      "name": "09-create-auditoria-eventos.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/09-create-auditoria-eventos.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LG",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/10-create-auditoria-outbox.sql",
+      "name": "10-create-auditoria-outbox.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/10-create-auditoria-outbox.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LM",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/11-create-permisos.sql",
+      "name": "11-create-permisos.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/11-create-permisos.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LI",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:postgres-init/12-create-cargas-usuarios.sql",
+      "name": "12-create-cargas-usuarios.sql",
+      "qualifier": "FIL",
+      "path": "postgres-init/12-create-cargas-usuarios.sql",
+      "language": "plsql",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KM",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/App.css",
+      "name": "App.css",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/App.css",
+      "language": "css",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KQ",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/App.jsx",
+      "name": "App.jsx",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/App.jsx",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "791"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "791",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JL",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/archive_evidence.py",
+      "name": "archive_evidence.py",
+      "qualifier": "FIL",
+      "path": "dast/archive_evidence.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "52"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "52",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KG",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/audit-report.css",
+      "name": "audit-report.css",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/audit-report.css",
+      "language": "css",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Ko",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/audit-dispatcher/audit_client.py",
+      "name": "audit_client.py",
+      "qualifier": "FIL",
+      "path": "servicios/audit-dispatcher/audit_client.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "73.1",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "55"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "13",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jt",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/audit_outbox.py",
+      "name": "audit_outbox.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/audit_outbox.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "57.1",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "34"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "14",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_J2",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/auditoria.py",
+      "name": "auditoria.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/auditoria.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "91.3",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "83"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "4",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jv",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/auditoria_reportes.py",
+      "name": "auditoria_reportes.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/auditoria_reportes.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "100.0",
+          "bestValue": true
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "87"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "0",
+          "bestValue": true
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KO",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/AuditReport.jsx",
+      "name": "AuditReport.jsx",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/AuditReport.jsx",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "46"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "46",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KE",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/auditReportUrl.mjs",
+      "name": "auditReportUrl.mjs",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/auditReportUrl.mjs",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "96.2",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "28"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "0",
+          "bestValue": true
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Ju",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/autenticacion.py",
+      "name": "autenticacion.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/autenticacion.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "44.3",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "527"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "274",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_J6",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/permissions-service/auth.py",
+      "name": "auth.py",
+      "qualifier": "FIL",
+      "path": "servicios/permissions-service/auth.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "91.7",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "34"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "2",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_K7",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:docs/evidencias/2026-10-13/coverage-python/backend-combined-coverage.xml",
+      "name": "backend-combined-coverage.xml",
+      "qualifier": "FIL",
+      "path": "docs/evidencias/2026-10-13/coverage-python/backend-combined-coverage.xml",
+      "language": "xml",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_J1",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/bootstrap_admin_ti.py",
+      "name": "bootstrap_admin_ti.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/bootstrap_admin_ti.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "52"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "52",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jm",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/bootstrap_usuarios_iniciales.py",
+      "name": "bootstrap_usuarios_iniciales.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/bootstrap_usuarios_iniciales.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "95"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "95",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KF",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/bulk-users.css",
+      "name": "bulk-users.css",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/bulk-users.css",
+      "language": "css",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KH",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/bulkRequestUrl.mjs",
+      "name": "bulkRequestUrl.mjs",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/bulkRequestUrl.mjs",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "90.7",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "23"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "2",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KI",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/BulkUserImport.jsx",
+      "name": "BulkUserImport.jsx",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/BulkUserImport.jsx",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "113"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "113",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_J0",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/cargas_excel.py",
+      "name": "cargas_excel.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/cargas_excel.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "89.7",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "166"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "15",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jp",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/cargas_limite.py",
+      "name": "cargas_limite.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/cargas_limite.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "77.3",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "32"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "6",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jz",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/cargas_usuarios.py",
+      "name": "cargas_usuarios.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/cargas_usuarios.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "86.4",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "183"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "18",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_J7",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/permissions-service/catalog.py",
+      "name": "catalog.py",
+      "qualifier": "FIL",
+      "path": "servicios/permissions-service/catalog.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "100.0",
+          "bestValue": true
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "3"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "0",
+          "bestValue": true
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jh",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/check.py",
+      "name": "check.py",
+      "qualifier": "FIL",
+      "path": "dast/check.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "93.2",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "34"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "2",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LW",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:infraestructura/scripts/check_compose.py",
+      "name": "check_compose.py",
+      "qualifier": "FIL",
+      "path": "infraestructura/scripts/check_compose.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "97.3",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "63"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "1",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4vQrxBwaXbO5ozHMT",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/ci.py",
+      "name": "ci.py",
+      "qualifier": "FIL",
+      "path": "dast/ci.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "87.8",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "103"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "36"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "103"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "5",
+              "bestValue": false
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "12",
+              "bestValue": false
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "12",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JT",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/cleanup.py",
+      "name": "cleanup.py",
+      "qualifier": "FIL",
+      "path": "dast/cleanup.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "84.1",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "47"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "3",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jr",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/companias.py",
+      "name": "companias.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/companias.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "22.2",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "172"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "125",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jo",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/correo.py",
+      "name": "correo.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/correo.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "16.7",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "62"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "48",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LU",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:infraestructura/scripts/create_test_config.py",
+      "name": "create_test_config.py",
+      "qualifier": "FIL",
+      "path": "infraestructura/scripts/create_test_config.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "96.6",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "27"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "0",
+          "bestValue": true
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jk",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/database.py",
+      "name": "database.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/database.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "80.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "26"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "4",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_J5",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/permissions-service/database.py",
+      "name": "database.py",
+      "qualifier": "FIL",
+      "path": "servicios/permissions-service/database.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "83.3",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "10"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "1",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_J_",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/usuarios/database.py",
+      "name": "database.py",
+      "qualifier": "FIL",
+      "path": "servicios/usuarios/database.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "14"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "14",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kc",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/sync-service/database.py",
+      "name": "database.py",
+      "qualifier": "FIL",
+      "path": "servicios/sync-service/database.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "73.3",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "26"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "6",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Ki",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/audit-service/database.py",
+      "name": "database.py",
+      "qualifier": "FIL",
+      "path": "servicios/audit-service/database.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "73.3",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "26"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "6",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kn",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/audit-dispatcher/database.py",
+      "name": "database.py",
+      "qualifier": "FIL",
+      "path": "servicios/audit-dispatcher/database.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "76.9",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "24"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "5",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kr",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/autenticacion/database.py",
+      "name": "database.py",
+      "qualifier": "FIL",
+      "path": "servicios/autenticacion/database.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "17"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "17",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kx",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/backend/database.py",
+      "name": "database.py",
+      "qualifier": "FIL",
+      "path": "servicios/backend/database.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "17"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "17",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JY",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/dc.py",
+      "name": "dc.py",
+      "qualifier": "FIL",
+      "path": "dast/dc.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "100.0",
+          "bestValue": true
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "12"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "0",
+          "bestValue": true
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_K_",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:.github/workflows/deploy-simulated.yml",
+      "name": "deploy-simulated.yml",
+      "qualifier": "FIL",
+      "path": ".github/workflows/deploy-simulated.yml",
+      "language": "yaml",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LY",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:infraestructura/ansible/deploy.yml",
+      "name": "deploy.yml",
+      "qualifier": "FIL",
+      "path": "infraestructura/ansible/deploy.yml",
+      "language": "yaml",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_K-",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:.github/workflows/devsecops-pipeline.yml",
+      "name": "devsecops-pipeline.yml",
+      "qualifier": "FIL",
+      "path": ".github/workflows/devsecops-pipeline.yml",
+      "language": "yaml",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Js",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/Dockerfile",
+      "name": "Dockerfile",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/Dockerfile",
+      "language": "docker",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_J8",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/permissions-service/Dockerfile",
+      "name": "Dockerfile",
+      "qualifier": "FIL",
+      "path": "servicios/permissions-service/Dockerfile",
+      "language": "docker",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KA",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/usuarios/Dockerfile",
+      "name": "Dockerfile",
+      "qualifier": "FIL",
+      "path": "servicios/usuarios/Dockerfile",
+      "language": "docker",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Ka",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/Dockerfile",
+      "name": "Dockerfile",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/Dockerfile",
+      "language": "docker",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kd",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/sync-service/Dockerfile",
+      "name": "Dockerfile",
+      "qualifier": "FIL",
+      "path": "servicios/sync-service/Dockerfile",
+      "language": "docker",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kg",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/audit-service/Dockerfile",
+      "name": "Dockerfile",
+      "qualifier": "FIL",
+      "path": "servicios/audit-service/Dockerfile",
+      "language": "docker",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Km",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/audit-dispatcher/Dockerfile",
+      "name": "Dockerfile",
+      "qualifier": "FIL",
+      "path": "servicios/audit-dispatcher/Dockerfile",
+      "language": "docker",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4vQrxBwaXbO5ozHMV",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/evidence.py",
+      "name": "evidence.py",
+      "qualifier": "FIL",
+      "path": "dast/evidence.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "89.7",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "117"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "68"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "117"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "10",
+              "bestValue": false
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "9",
+              "bestValue": false
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "9",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JO",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/export.py",
+      "name": "export.py",
+      "qualifier": "FIL",
+      "path": "dast/export.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "87.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "15"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "1",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JM",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/gateway.py",
+      "name": "gateway.py",
+      "qualifier": "FIL",
+      "path": "dast/gateway.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "89.3",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "62"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "4",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jq",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/http_headers.py",
+      "name": "http_headers.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/http_headers.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "100.0",
+          "bestValue": true
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "15"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "0",
+          "bestValue": true
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kk",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/audit-service/http_headers.py",
+      "name": "http_headers.py",
+      "qualifier": "FIL",
+      "path": "servicios/audit-service/http_headers.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "22.2",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "14"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "10",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_K5",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:docs/evidencias/2026-09-30/IAM_Secure_pytest_identity_PyJWT_2.15.0.xml",
+      "name": "IAM_Secure_pytest_identity_PyJWT_2.15.0.xml",
+      "qualifier": "FIL",
+      "path": "docs/evidencias/2026-09-30/IAM_Secure_pytest_identity_PyJWT_2.15.0.xml",
+      "language": "xml",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KS",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/index.css",
+      "name": "index.css",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/index.css",
+      "language": "css",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KW",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/index.html",
+      "name": "index.html",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/index.html",
+      "language": "web",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KD",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/main.jsx",
+      "name": "main.jsx",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/main.jsx",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "1"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "1",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jj",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/main.py",
+      "name": "main.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/main.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "87.2",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "58"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "4",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_J4",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/permissions-service/main.py",
+      "name": "main.py",
+      "qualifier": "FIL",
+      "path": "servicios/permissions-service/main.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "94.6",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "121"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "4",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_J-",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/usuarios/main.py",
+      "name": "main.py",
+      "qualifier": "FIL",
+      "path": "servicios/usuarios/main.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "48"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "48",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Ke",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/sync-service/main.py",
+      "name": "main.py",
+      "qualifier": "FIL",
+      "path": "servicios/sync-service/main.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "73.5",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "143"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "32",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kj",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/audit-service/main.py",
+      "name": "main.py",
+      "qualifier": "FIL",
+      "path": "servicios/audit-service/main.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "93.3",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "102"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "5",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kp",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/audit-dispatcher/main.py",
+      "name": "main.py",
+      "qualifier": "FIL",
+      "path": "servicios/audit-dispatcher/main.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "70.9",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "97"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "23",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Ks",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/autenticacion/main.py",
+      "name": "main.py",
+      "qualifier": "FIL",
+      "path": "servicios/autenticacion/main.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "81"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "81",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kw",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/backend/main.py",
+      "name": "main.py",
+      "qualifier": "FIL",
+      "path": "servicios/backend/main.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "45"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "45",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jl",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/mfa.py",
+      "name": "mfa.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/mfa.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "66.4",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "85"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "23",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kv",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/backend/models.py",
+      "name": "models.py",
+      "qualifier": "FIL",
+      "path": "servicios/backend/models.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "9"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "9",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jw",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/permisos_iniciales.py",
+      "name": "permisos_iniciales.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/permisos_iniciales.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "85.7",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "10"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "1",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KP",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/PermissionCards.jsx",
+      "name": "PermissionCards.jsx",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/PermissionCards.jsx",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "30"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "30",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KJ",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/PermissionGrid.jsx",
+      "name": "PermissionGrid.jsx",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/PermissionGrid.jsx",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "50"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "50",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KN",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/permissions-api.js",
+      "name": "permissions-api.js",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/permissions-api.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "13"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "13",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KK",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/permissions-main.jsx",
+      "name": "permissions-main.jsx",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/permissions-main.jsx",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "1"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "1",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KR",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/permissions.css",
+      "name": "permissions.css",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/permissions.css",
+      "language": "css",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KV",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/permissions.html",
+      "name": "permissions.html",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/permissions.html",
+      "language": "web",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KC",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/PermissionsWindow.jsx",
+      "name": "PermissionsWindow.jsx",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/PermissionsWindow.jsx",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "83"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "83",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JV",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/phase2.py",
+      "name": "phase2.py",
+      "qualifier": "FIL",
+      "path": "dast/phase2.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "94.4",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "67"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "4"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "0",
+          "bestValue": true
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jd",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/postflight2.py",
+      "name": "postflight2.py",
+      "qualifier": "FIL",
+      "path": "dast/postflight2.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "88.9",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "33"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "4"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "3",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JR",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/preflight2.py",
+      "name": "preflight2.py",
+      "qualifier": "FIL",
+      "path": "dast/preflight2.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "85.7",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "22"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "7"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "1",
+              "bestValue": false
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2",
+              "bestValue": false
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "2",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JS",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/prepare.py",
+      "name": "prepare.py",
+      "qualifier": "FIL",
+      "path": "dast/prepare.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "86.7",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "13"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "1",
+              "bestValue": false
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "1",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JQ",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/probe.py",
+      "name": "probe.py",
+      "qualifier": "FIL",
+      "path": "dast/probe.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "10"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "10",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JN",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/probe_host.py",
+      "name": "probe_host.py",
+      "qualifier": "FIL",
+      "path": "dast/probe_host.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "81.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "15"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "2",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LA",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:.github/workflows/publish-dockerhub.yml",
+      "name": "publish-dockerhub.yml",
+      "qualifier": "FIL",
+      "path": ".github/workflows/publish-dockerhub.yml",
+      "language": "yaml",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_K0",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:docs/evidencias/2026-10-07/auditoria-actor/pytest-audit-actor.xml",
+      "name": "pytest-audit-actor.xml",
+      "qualifier": "FIL",
+      "path": "docs/evidencias/2026-10-07/auditoria-actor/pytest-audit-actor.xml",
+      "language": "xml",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_K2",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:docs/evidencias/2026-10-07/auditoria-excel/pytest-audit-report.xml",
+      "name": "pytest-audit-report.xml",
+      "qualifier": "FIL",
+      "path": "docs/evidencias/2026-10-07/auditoria-excel/pytest-audit-report.xml",
+      "language": "xml",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jb",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/record_seed.py",
+      "name": "record_seed.py",
+      "qualifier": "FIL",
+      "path": "dast/record_seed.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "81.8",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "9"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "1",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4vQrxBwaXbO5ozHMU",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/runtime.py",
+      "name": "runtime.py",
+      "qualifier": "FIL",
+      "path": "dast/runtime.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "85.7",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "22"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "6"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "22"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2",
+              "bestValue": false
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2",
+              "bestValue": false
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "2",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LS",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:scripts/safe_paths.py",
+      "name": "safe_paths.py",
+      "qualifier": "FIL",
+      "path": "scripts/safe_paths.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "86.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "73"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "6",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JP",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/scan_fixtures.py",
+      "name": "scan_fixtures.py",
+      "qualifier": "FIL",
+      "path": "dast/scan_fixtures.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "18"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "18",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Ku",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/backend/schemas.py",
+      "name": "schemas.py",
+      "qualifier": "FIL",
+      "path": "servicios/backend/schemas.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "3"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "3",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KU",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/security-policy.js",
+      "name": "security-policy.js",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/security-policy.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "100.0",
+          "bestValue": true
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "31"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "0",
+          "bestValue": true
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JX",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/seed.py",
+      "name": "seed.py",
+      "qualifier": "FIL",
+      "path": "dast/seed.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "23"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "23",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LR",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:scripts/seed_identity_demo.py",
+      "name": "seed_identity_demo.py",
+      "qualifier": "FIL",
+      "path": "scripts/seed_identity_demo.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "80"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "80",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jy",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/seguridad.py",
+      "name": "seguridad.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/seguridad.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "74.4",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "118"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "27",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Kh",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/audit-service/seguridad.py",
+      "name": "seguridad.py",
+      "qualifier": "FIL",
+      "path": "servicios/audit-service/seguridad.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "85.2",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "36"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "4",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jc",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/snapshot.py",
+      "name": "snapshot.py",
+      "qualifier": "FIL",
+      "path": "dast/snapshot.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "13"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "13",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE7B61Q6Z8dxhj5I-Rb",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:.github/workflows/sonar-diagnostics.yml",
+      "name": "sonar-diagnostics.yml",
+      "qualifier": "FIL",
+      "path": ".github/workflows/sonar-diagnostics.yml",
+      "language": "yaml",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JU",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/summarize2.py",
+      "name": "summarize2.py",
+      "qualifier": "FIL",
+      "path": "dast/summarize2.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "96.9",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "52"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "1",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jx",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/sync_jobs.py",
+      "name": "sync_jobs.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/sync_jobs.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "67.6",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "21"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "5",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KL",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/src/usePermissionWindow.js",
+      "name": "usePermissionWindow.js",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/src/usePermissionWindow.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "45"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "45",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jn",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/identity-service/usuarios.py",
+      "name": "usuarios.py",
+      "qualifier": "FIL",
+      "path": "servicios/identity-service/usuarios.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "75.7",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "289"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "61",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_JW",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/validate.py",
+      "name": "validate.py",
+      "qualifier": "FIL",
+      "path": "dast/validate.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "63"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "63",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LP",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:scripts/validate_threat_model.py",
+      "name": "validate_threat_model.py",
+      "qualifier": "FIL",
+      "path": "scripts/validate_threat_model.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "62"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "62",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LV",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:infraestructura/scripts/verify_deployment.py",
+      "name": "verify_deployment.py",
+      "qualifier": "FIL",
+      "path": "infraestructura/scripts/verify_deployment.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "91.1",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "120"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "9",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Jf",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/verify_seed.py",
+      "name": "verify_seed.py",
+      "qualifier": "FIL",
+      "path": "dast/verify_seed.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "21"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "21",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_LQ",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:scripts/verify_trivy_sca.py",
+      "name": "verify_trivy_sca.py",
+      "qualifier": "FIL",
+      "path": "scripts/verify_trivy_sca.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "88.9",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "132"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "10",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KX",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/vite.config.js",
+      "name": "vite.config.js",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/vite.config.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_KY",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:servicios/frontend/container/write-nginx-config.mjs",
+      "name": "write-nginx-config.mjs",
+      "qualifier": "FIL",
+      "path": "servicios/frontend/container/write-nginx-config.mjs",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "92.3",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "61"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "4",
+          "bestValue": false
+        }
+      ]
+    },
+    {
+      "id": "AaE4Xh2hNoXR--p2P_Ja",
+      "key": "yeisonfblopez_DevSecOps-proyecto-Final-ci:dast/zap_readonly.py",
+      "name": "zap_readonly.py",
+      "qualifier": "FIL",
+      "path": "dast/zap_readonly.py",
+      "language": "py",
+      "measures": [
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "lines_to_cover",
+          "value": "73"
+        },
+        {
+          "metric": "new_conditions_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "metric": "new_lines_to_cover",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_conditions",
+          "periods": [
+            {
+              "index": 1,
+              "value": "0",
+              "bestValue": true
+            }
+          ]
+        },
+        {
+          "metric": "new_uncovered_lines",
+          "periods": [
+            {
+              "index": 1,
+              "value": "2",
+              "bestValue": false
+            }
+          ]
+        },
+        {
+          "metric": "uncovered_lines",
+          "value": "73",
+          "bestValue": false
+        }
+      ]
+    }
+  ]
+}

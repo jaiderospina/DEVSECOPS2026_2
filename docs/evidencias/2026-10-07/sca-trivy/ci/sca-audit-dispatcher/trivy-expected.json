@@ -1,0 +1,13 @@
+{
+  "requirements.txt": {
+    "packages": {
+      "greenlet": "3.5.6",
+      "psycopg2-binary": "2.9.13",
+      "python-dotenv": "1.2.3",
+      "sqlalchemy": "2.0.52",
+      "typing-extensions": "4.16.0"
+    },
+    "source_sha256": "7d463c23cc4f3e76ca950cc5a0c571631c874fc40d5a1a2dfc7d3d06f73927c1",
+    "scan_sha256": "7d463c23cc4f3e76ca950cc5a0c571631c874fc40d5a1a2dfc7d3d06f73927c1"
+  }
+}

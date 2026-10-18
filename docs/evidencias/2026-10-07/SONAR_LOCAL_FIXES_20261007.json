@@ -1,0 +1,267 @@
+{
+  "project": "Prueba-ProyectoFinal / IAM Secure",
+  "date": "2026-10-07",
+  "timezone": "America/Bogota",
+  "repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "baseline": "3bfde80dfae5164a15eafc0c7b6b262cc35ff45e",
+  "implementation_commit": "ef413942b79e160ae1fe611b085c82e99e69fe0b",
+  "before_sonar": {
+    "head": "3bfde80dfae5164a15eafc0c7b6b262cc35ff45e",
+    "check_run_id": 112835771345,
+    "conclusion": "failure",
+    "security_rating": "C",
+    "required_rating": "A",
+    "security_annotations": [
+      {
+        "path": "infraestructura/scripts/verify_deployment.py",
+        "start_line": 92,
+        "end_line": 92,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEU7khPIIA1DvOUPUpD&open=AaEU7khPIIA1DvOUPUpD&pullRequest=3",
+        "title": "Path Traversal via faulty LLM-supplied CLI arguments in verify_deployment.main()",
+        "raw_details": null
+      },
+      {
+        "path": "infraestructura/scripts/verify_deployment.py",
+        "start_line": 98,
+        "end_line": 98,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEU7khPIIA1DvOUPUpC&open=AaEU7khPIIA1DvOUPUpC&pullRequest=3",
+        "title": "Path Traversal via faulty LLM-supplied CLI arguments in verify_deployment.main()",
+        "raw_details": null
+      },
+      {
+        "path": "infraestructura/scripts/check_compose.py",
+        "start_line": 74,
+        "end_line": 74,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEU7khAIIA1DvOUPUo9&open=AaEU7khAIIA1DvOUPUo9&pullRequest=3",
+        "title": "Path Traversal via faulty LLM-supplied CLI arguments in check_compose.main()",
+        "raw_details": null
+      },
+      {
+        "path": "infraestructura/scripts/verify_deployment.py",
+        "start_line": 10,
+        "end_line": 10,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEU7khPIIA1DvOUPUpB&open=AaEU7khPIIA1DvOUPUpB&pullRequest=3",
+        "title": "Command Argument Injection via faulty LLM-supplied CLI arguments in verify_deployment.command()",
+        "raw_details": null
+      },
+      {
+        "path": "infraestructura/scripts/create_test_config.py",
+        "start_line": 31,
+        "end_line": 31,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEU7khHIIA1DvOUPUpA&open=AaEU7khHIIA1DvOUPUpA&pullRequest=3",
+        "title": "Path Traversal via faulty LLM-supplied CLI arguments in create_test_config.main()",
+        "raw_details": null
+      },
+      {
+        "path": "scripts/verify_trivy_sca.py",
+        "start_line": 127,
+        "end_line": 127,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEWnlkCPOjA81FmN-Zf&open=AaEWnlkCPOjA81FmN-Zf&pullRequest=3",
+        "title": "Path Traversal via faulty LLM-supplied CLI arguments in verify_trivy_sca.main()",
+        "raw_details": null
+      },
+      {
+        "path": "infraestructura/scripts/check_compose.py",
+        "start_line": 68,
+        "end_line": 68,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEU7khAIIA1DvOUPUo8&open=AaEU7khAIIA1DvOUPUo8&pullRequest=3",
+        "title": "Path Traversal via faulty LLM-supplied CLI arguments in check_compose.main()",
+        "raw_details": null
+      },
+      {
+        "path": "servicios/frontend/container/write-nginx-config.mjs",
+        "start_line": 53,
+        "end_line": 53,
+        "annotation_level": "failure",
+        "message": "\nSee more on https://sonarcloud.io/project/issues?id=jeancarlosalmenarez8318-tech_DevSecOps-proyecto-Final&issues=AaEUpwXRzQwPPfnDcsyn&open=AaEUpwXRzQwPPfnDcsyn&pullRequest=3",
+        "title": "Path Traversal via faulty LLM-supplied CLI arguments",
+        "raw_details": null
+      }
+    ]
+  },
+  "changes": [
+    {
+      "path": "scripts/safe_paths.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9b83e17ebad39a953351088d71f739a110c490a3"
+    },
+    {
+      "path": "infraestructura/scripts/check_compose.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0a3c9106d4d32457b7a7fb064c19bc4d6899a6e7"
+    },
+    {
+      "path": "infraestructura/scripts/create_test_config.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b4b51a008f7b21b2a81465023a9dbef65c96e931"
+    },
+    {
+      "path": "infraestructura/scripts/verify_deployment.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e6209cea361f1e3347672cd42eb57918b86c4c1c"
+    },
+    {
+      "path": "servicios/frontend/container/write-nginx-config.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a65d9adf5954bc29e131e7d81bdac81ad6cb401a"
+    },
+    {
+      "path": "servicios/frontend/Dockerfile",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1056c073a242a0ef96a204a3295d9e5b609ff61f"
+    },
+    {
+      "path": "tests/frontend_container/config.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b53f6ed582f38ff7653778d9d927a580ce283571"
+    },
+    {
+      "path": ".github/workflows/devsecops-pipeline.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "59f34ccc26458cf99db58ed208b645ab51a7c56c"
+    },
+    {
+      "path": ".github/workflows/deploy-simulated.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b371f82ec2a474321e871ef0cb459106cd3e1e9e"
+    },
+    {
+      "path": "infraestructura/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a71c878e31362b662a1dcf36ec4ebfdf4f562c54"
+    },
+    {
+      "path": "scripts/verify_trivy_sca.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8227bdad404ac5b125e6c72726749129ef5cc6c1"
+    },
+    {
+      "path": "tests/automation_security/test_boundaries.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b03f02289d9ed2475d8448df28833b715669ebf8"
+    }
+  ],
+  "local_checks": {
+    "linuxPython": {
+      "chunk_id": "474e31",
+      "wall_time_seconds": 5.0901211,
+      "exit_code": 0,
+      "original_token_count": 1031,
+      "output": "test_absolute_escape_and_similar_prefix_are_rejected (test_boundaries.AutomationBoundaries.test_absolute_escape_and_similar_prefix_are_rejected) ... ok\ntest_atomic_report_replacement_does_not_modify_hardlink_source (test_boundaries.AutomationBoundaries.test_atomic_report_replacement_does_not_modify_hardlink_source) ... ok\ntest_compose_blocks_input_and_output_outside_allowed_roots (test_boundaries.AutomationBoundaries.test_compose_blocks_input_and_output_outside_allowed_roots) ... ok\ntest_compose_security_regressions_still_pass (test_boundaries.AutomationBoundaries.test_compose_security_regressions_still_pass) ... ok\ntest_config_escape_fails_before_creating_secret_file (test_boundaries.AutomationBoundaries.test_config_escape_fails_before_creating_secret_file) ... ok\ntest_config_is_private_exclusive_and_not_printed (test_boundaries.AutomationBoundaries.test_config_is_private_exclusive_and_not_printed) ... ok\ntest_docker_rejects_other_programs_subcommands_and_option_ids (test_boundaries.AutomationBoundaries.test_docker_rejects_other_programs_subcommands_and_option_ids) ... ok\ntest_docker_valid_probe_uses_fixed_executable_and_no_shell (test_boundaries.AutomationBoundaries.test_docker_valid_probe_uses_fixed_executable_and_no_shell) ... ok\ntest_invalid_inventory_is_not_echoed_or_staged (test_boundaries.AutomationBoundaries.test_invalid_inventory_is_not_echoed_or_staged) ... ok\ntest_invalid_project_cannot_become_docker_option_or_shell (test_boundaries.AutomationBoundaries.test_invalid_project_cannot_become_docker_option_or_shell) ... ok\ntest_manual_deployment_requires_explicit_matching_operator_directory (test_boundaries.AutomationBoundaries.test_manual_deployment_requires_explicit_matching_operator_directory) ... ok\ntest_parent_symlink_does_not_escape (test_boundaries.AutomationBoundaries.test_parent_symlink_does_not_escape) ... ok\ntest_parent_traversal_is_rejected_even_when_it_returns_inside (test_boundaries.AutomationBoundaries.test_parent_traversal_is_rejected_even_when_it_returns_inside) ... ok\ntest_report_symlink_does_not_overwrite_victim (test_boundaries.AutomationBoundaries.test_report_symlink_does_not_overwrite_victim) ... ok\ntest_runtime_probes_and_persistence_reports_keep_their_contract (test_boundaries.AutomationBoundaries.test_runtime_probes_and_persistence_reports_keep_their_contract) ... ok\ntest_trivy_cannot_read_outside_or_overwrite_outside (test_boundaries.AutomationBoundaries.test_trivy_cannot_read_outside_or_overwrite_outside) ... ok\ntest_trivy_cli_still_emits_a_blocking_summary_for_high_unfixed (test_boundaries.AutomationBoundaries.test_trivy_cli_still_emits_a_blocking_summary_for_high_unfixed) ... ok\ntest_trivy_prepare_preserves_legitimate_runner_inventory (test_boundaries.AutomationBoundaries.test_trivy_prepare_preserves_legitimate_runner_inventory) ... ok\ntest_verifier_rejects_unsafe_report_before_docker (test_boundaries.AutomationBoundaries.test_verifier_rejects_unsafe_report_before_docker) ... ok\ntest_clean_dependency_inventory (test_trivy_gate.TrivyGateTests.test_clean_dependency_inventory) ... ok\ntest_empty_or_missing_scan_fails (test_trivy_gate.TrivyGateTests.test_empty_or_missing_scan_fails) ... ok\ntest_extras_and_bom_normalization (test_trivy_gate.TrivyGateTests.test_extras_and_bom_normalization) ... Runtime verification passed: 8 containers, 8 HTTP checks; no secrets emitted.\nRuntime verification passed: 8 containers, 8 HTTP checks; no secrets emitted.\nok\ntest_high_and_critical_unfixed_block (test_trivy_gate.TrivyGateTests.test_high_and_critical_unfixed_block) ... ok\ntest_medium_recorded_without_blocking (test_trivy_gate.TrivyGateTests.test_medium_recorded_without_blocking) ... ok\ntest_unpinned_requirements_fail (test_trivy_gate.TrivyGateTests.test_unpinned_requirements_fail) ... ok\ntest_utf16_manifest_is_normalized_without_changing_source (test_trivy_gate.TrivyGateTests.test_utf16_manifest_is_normalized_without_changing_source) ... ok\ntest_wrong_version_fails (test_trivy_gate.TrivyGateTests.test_wrong_version_fails) ... ok\n\n----------------------------------------------------------------------\nRan 27 tests in 3.165s\n\nOK\n"
+    },
+    "linuxNode": {
+      "chunk_id": "a8de86",
+      "wall_time_seconds": 1.9002089,
+      "exit_code": 0,
+      "original_token_count": 178,
+      "output": "✔ CSP mantiene MFA y bloquea scripts/estilos inline (1.817816ms)\n✔ CSP incluye ambos orígenes públicos personalizados, sin rutas (0.258121ms)\n✔ CSP admite los orígenes IPv6 HTTP/HTTPS (0.158611ms)\n✔ Se rechazan protocolos, credenciales y URLs ambiguas (0.496264ms)\n✔ Se rechaza la interpolación de variables Nginx en orígenes (0.188502ms)\n✔ El generador conserva cabeceras y puerto no privilegiado (139.865713ms)\n✔ Se rechaza cualquier ruta CLI y no se modifica el destino (117.722583ms)\n✔ Renderizar no escribe archivos y conserva el escape de expresiones Nginx (5.584693ms)\nℹ tests 8\nℹ suites 0\nℹ pass 8\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 476.501809\n"
+    },
+    "nginxCompatibility": {
+      "chunk_id": "461021",
+      "wall_time_seconds": 3.1288316,
+      "exit_code": 0,
+      "original_token_count": 30,
+      "output": "{\r\n  \"NginxConfigUnchanged\": true,\r\n  \"SHA256\": \"F82F71202E84482D52BEBFA34408BEA1B06D62B9F97DA02818B3FCB4D3E24FF7\"\r\n}\r\n"
+    },
+    "nginxSyntax": {
+      "chunk_id": "e3c8f4",
+      "wall_time_seconds": 1.0485528,
+      "exit_code": 0,
+      "original_token_count": 33,
+      "output": "nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful\n"
+    },
+    "yaml": {
+      "chunk_id": "78d24f",
+      "wall_time_seconds": 1.3112267,
+      "exit_code": 0,
+      "original_token_count": 19,
+      "output": "Python AST valid: 5\r\nYAML syntax and regression wiring valid: 2 workflows\r\n"
+    },
+    "compatibility": {
+      "chunk_id": "60513a",
+      "wall_time_seconds": 2.3266104,
+      "exit_code": 0,
+      "original_token_count": 1565,
+      "output": "Prepared 8 dependency manifests\r\n{\"coverage\": [{\"target\": \"servicios/audit-dispatcher/requirements.txt\", \"type\": \"pip\", \"packages_detected\": 3, \"required_packages_verified\": 3}, {\"target\": \"servicios/audit-service/requirements.txt\", \"type\": \"pip\", \"packages_detected\": 6, \"required_packages_verified\": 6}, {\"target\": \"servicios/identity-service/requirements.txt\", \"type\": \"pip\", \"packages_detected\": 15, \"required_packages_verified\": 15}, {\"target\": \"servicios/permissions-service/requirements.txt\", \"type\": \"pip\", \"packages_detected\": 6, \"required_packages_verified\": 6}, {\"target\": \"servicios/sync-service/requirements.txt\", \"type\": \"pip\", \"packages_detected\": 3, \"required_packages_verified\": 3}, {\"target\": \"servicios/usuarios/requirements.txt\", \"type\": \"pip\", \"packages_detected\": 19, \"required_packages_verified\": 19}, {\"target\": \"infraestructura/ansible/requirements.txt\", \"type\": \"pip\", \"packages_detected\": 2, \"required_packages_verified\": 2}, {\"target\": \"servicios/frontend/package-lock.json\", \"type\": \"npm\", \"packages_detected\": 67, \"required_packages_verified\": 7}], \"severity_counts\": {}, \"blockers\": [], \"passed\": true, \"policy\": \"HIGH/CRITICAL, including unfixed; no ignored CVEs\"}\r\n{\"coverage\": [{\"target\": \"requirements.txt\", \"type\": \"pip\", \"packages_detected\": 5, \"required_packages_verified\": 5}], \"severity_counts\": {}, \"blockers\": [], \"passed\": true, \"policy\": \"HIGH/CRITICAL, including unfixed; no ignored CVEs\"}\r\n{\"coverage\": [{\"target\": \"requirements.txt\", \"type\": \"pip\", \"packages_detected\": 19, \"required_packages_verified\": 19}], \"severity_counts\": {}, \"blockers\": [], \"passed\": true, \"policy\": \"HIGH/CRITICAL, including unfixed; no ignored CVEs\"}\r\n{\"coverage\": [{\"target\": \"requirements.txt\", \"type\": \"pip\", \"packages_detected\": 5, \"required_packages_verified\": 5}], \"severity_counts\": {}, \"blockers\": [], \"passed\": true, \"policy\": \"HIGH/CRITICAL, including unfixed; no ignored CVEs\"}\r\n{\"coverage\": [{\"target\": \"requirements.txt\", \"type\": \"pip\", \"packages_detected\": 19, \"required_packages_verified\": 19}], \"severity_counts\": {}, \"blockers\": [], \"passed\": true, \"policy\": \"HIGH/CRITICAL, including unfixed; no ignored CVEs\"}\r\n{\"coverage\": [{\"target\": \"requirements.txt\", \"type\": \"pip\", \"packages_detected\": 33, \"required_packages_verified\": 33}], \"severity_counts\": {}, \"blockers\": [], \"passed\": true, \"policy\": \"HIGH/CRITICAL, including unfixed; no ignored CVEs\"}\r\n{\"coverage\": [{\"target\": \"requirements.txt\", \"type\": \"pip\", \"packages_detected\": 17, \"required_packages_verified\": 17}], \"severity_counts\": {}, \"blockers\": [], \"passed\": true, \"policy\": \"HIGH/CRITICAL, including unfixed; no ignored CVEs\"}\r\n{\"coverage\": [{\"target\": \"requirements.txt\", \"type\": \"pip\", \"packages_detected\": 1, \"required_packages_verified\": 1}], \"severity_counts\": {\"CRITICAL\": 6, \"HIGH\": 16}, \"blockers\": [{\"target\": \"requirements.txt\", \"id\": \"CVE-2019-14234\", \"package\": \"Django\", \"severity\": \"CRITICAL\", \"installed\": \"2.2.0\", \"fixed\": \"1.11.23, 2.1.11, 2.2.4\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2019-19844\", \"package\": \"Django\", \"severity\": \"CRITICAL\", \"installed\": \"2.2.0\", \"fixed\": \"1.11.27, 2.2.9, 3.0.1\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2020-7471\", \"package\": \"Django\", \"severity\": \"CRITICAL\", \"installed\": \"2.2.0\", \"fixed\": \"1.11.28, 2.2.10, 3.0.3\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2022-28346\", \"package\": \"Django\", \"severity\": \"CRITICAL\", \"installed\": \"2.2.0\", \"fixed\": \"2.2.28, 3.2.13, 4.0.4\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2022-28347\", \"package\": \"Django\", \"severity\": \"CRITICAL\", \"installed\": \"2.2.0\", \"fixed\": \"2.2.28, 3.2.13, 4.0.4\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2025-64459\", \"package\": \"Django\", \"severity\": \"CRITICAL\", \"installed\": \"2.2.0\", \"fixed\": \"5.2.8, 5.1.14, 4.2.26\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2019-14232\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"1.11.23, 2.1.11, 2.2.4\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2019-14233\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"1.11.23, 2.1.11, 2.2.4\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2019-14235\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"1.11.23, 2.1.11, 2.2.4\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2019-19118\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"2.1.15, 2.2.8\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2020-13254\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"2.2.13, 3.0.7\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2020-24583\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"2.2.16, 3.0.10, 3.1.1\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2020-9402\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"1.11.29, 2.2.11, 3.0.4\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2021-31542\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"2.2.21, 3.1.9, 3.2.1\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2021-33571\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"2.2.24, 3.1.12, 3.2.4\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2021-45115\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"2.2.26, 3.2.11, 4.0.1\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2021-45116\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"2.2.26, 3.2.11, 4.0.1\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2022-23833\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"2.2.27, 3.2.12, 4.0.2\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2022-36359\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"3.2.15, 4.0.7\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2025-57833\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"4.2.24, 5.1.12, 5.2.6\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2025-64458\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"5.2.8, 5.1.14, 4.2.26\"}, {\"target\": \"requirements.txt\", \"id\": \"CVE-2026-15307\", \"package\": \"Django\", \"severity\": \"HIGH\", \"installed\": \"2.2.0\", \"fixed\": \"5.2.17, 6.0.8\"}], \"passed\": false, \"policy\": \"HIGH/CRITICAL, including unfixed; no ignored CVEs\"}\r\n"
+    },
+    "dockerContextSmoke": {
+      "chunk_id": "ca4424",
+      "wall_time_seconds": 1.0468032,
+      "exit_code": 0,
+      "original_token_count": 33,
+      "output": "nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful\n"
+    }
+  },
+  "local_tests": {
+    "python": 27,
+    "node": 8,
+    "total": 35,
+    "failed": 0,
+    "skipped": 0,
+    "platform": "Linux containers, isolated, without network"
+  },
+  "limitations": [
+    "Runtime verifier contract uses mocked Docker/HTTP replies in its regression test; no new real deployment",
+    "Trivy reports from E11 were reverified; no new vulnerability database scan",
+    "Final GitHub Actions CI pending due exhausted included minutes",
+    "No merge; no billing changes; no findings marked false positive or quality gate disabled",
+    "Docker smoke builds only the configuration generator using cached Node 24, then Nginx as non-root; it is not a full npm frontend image build"
+  ],
+  "sonar_after": {
+    "status": "No SonarCloud check reported for corrected revisions yet; remote confirmation pending",
+    "observed_heads": [
+      "ef413942b79e160ae1fe611b085c82e99e69fe0b",
+      "a1867e4e8ea4020f82a9d43f2f0f6beb248abfd6"
+    ]
+  },
+  "additional_context_changes": [
+    {
+      "path": "servicios/frontend/.dockerignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b059e0ab226869cd4a8da2a576eef517ca2f201"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bf024a135ddcf10c73ee1d6009ff11c625c8a7fd"
+    }
+  ],
+  "ci_attempt_after_fix": {
+    "head": "a1867e4e8ea4020f82a9d43f2f0f6beb248abfd6",
+    "run_id": 37638738429,
+    "total_jobs": 28,
+    "jobs_started": 0,
+    "annotations": [
+      {
+        "path": ".github",
+        "start_line": 1,
+        "end_line": 1,
+        "annotation_level": "failure",
+        "message": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+        "title": "",
+        "raw_details": ""
+      }
+    ]
+  }
+}

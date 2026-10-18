@@ -1,0 +1,186 @@
+{
+  "scope": "Default views for newly created leaders, bulk Excel and individual creation. PostgreSQL and JWT test sessions are real fixtures; SMTP and Chromium API contracts are simulated. Local activation, SMTP delivery and real user password/MFA acceptance remain pending.",
+  "source_commit": "0b3ad04b2626d04724feb7b26f1258c90e52bdba",
+  "workflow_run_id": 37414395017,
+  "workflow_run_url": "https://github.com/jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final/actions/runs/37414395017",
+  "jobs": [
+    {
+      "id": 112109687101,
+      "name": "model",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687220,
+      "name": "sca-python (permissions-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687224,
+      "name": "sca-python (usuarios)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687235,
+      "name": "images (permissions-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687245,
+      "name": "pytest (sync_worker, sync-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687246,
+      "name": "sast (bandit)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687269,
+      "name": "pytest (identity_http, identity-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687281,
+      "name": "frontend-ui",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687285,
+      "name": "permissions-tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687292,
+      "name": "sca-node",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687294,
+      "name": "images (usuarios)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687305,
+      "name": "sast (semgrep)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687315,
+      "name": "gitleaks",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687330,
+      "name": "sca-python (audit-dispatcher)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687368,
+      "name": "pytest (audit_service, audit-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687383,
+      "name": "frontend-lint",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687404,
+      "name": "sca-python (identity-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687410,
+      "name": "sca-python (audit-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687411,
+      "name": "pytest (audit_dispatcher, audit-dispatcher)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687462,
+      "name": "images (sync-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687479,
+      "name": "sca-python (sync-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687498,
+      "name": "images (audit-dispatcher)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687499,
+      "name": "images (audit-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687564,
+      "name": "images (identity-service)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687567,
+      "name": "images (frontend)",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109687589,
+      "name": "bulk-users-tests",
+      "conclusion": "success"
+    },
+    {
+      "id": 112109970059,
+      "name": "gate",
+      "conclusion": "success"
+    }
+  ],
+  "pytest_suites": {
+    "pytest (sync_worker, sync-service)": {
+      "job_id": 112109687245,
+      "passed": 23
+    },
+    "pytest (identity_http, identity-service)": {
+      "job_id": 112109687269,
+      "passed": 6
+    },
+    "permissions-tests": {
+      "job_id": 112109687285,
+      "passed": 32
+    },
+    "pytest (audit_service, audit-service)": {
+      "job_id": 112109687368,
+      "passed": 13
+    },
+    "pytest (audit_dispatcher, audit-dispatcher)": {
+      "job_id": 112109687411,
+      "passed": 22
+    },
+    "bulk-users-tests": {
+      "job_id": 112109687589,
+      "passed": 51
+    }
+  },
+  "pytest_total": 147,
+  "chromium_contract_checks": 6,
+  "verified_behavior": [
+    "Exactly three views matching the role and Permissions catalog",
+    "Initial grants restricted to the new user's selected company",
+    "Individual and bulk creation use the same defaults",
+    "SMTP failure rolls back permission grants with the identity",
+    "Retry and duplicate import preserve disabled permissions",
+    "Creating ADMIN_SOPORTE does not grant leader views"
+  ],
+  "manual_pending": [
+    "Update local branch and rebuild Identity/frontend",
+    "Apply migration 12 if stage 2 is not activated yet",
+    "Authorized SMTP delivery and real first login/password change/MFA",
+    "Observe three enabled area views and verify an exception disabled in grid"
+  ],
+  "production_deployment": "not performed"
+}

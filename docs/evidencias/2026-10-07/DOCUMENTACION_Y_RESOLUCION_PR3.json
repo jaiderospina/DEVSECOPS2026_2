@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-07",
+  "timezone": "America/Bogota",
+  "base_master": "9930660f7d10be0e266d27bcba0f708fa7cfc2de",
+  "base_feature": "ab444034719b6da3aab08009606de6dd7d12f26d",
+  "merge_base": "244835d78376f7379307dc08d1cd020070a95371",
+  "conflicts_reviewed": [
+    ".github/workflows/devsecops-pipeline.yml",
+    "README.md",
+    "docs/desarrollo/DESARROLLO.md",
+    "docs/seguridad/SEGURIDAD.md",
+    "docs/despliegue/IMAGENES_Y_DOCKERHUB.md"
+  ],
+  "resolution": {
+    "latest_master_docs_retained_then_updated": true,
+    "application_code_changed": false,
+    "feature_ci_retained": true,
+    "master_only_ci_change": "workflow_call added; already present in feature",
+    "method": "three-way blob comparison; preserve unilateral changes, current master documentation and feature pipeline; merge commit has both parents"
+  },
+  "documents": [
+    "docs/arquitectura/ARQUITECTURA.md",
+    "docs/despliegue/DESPLIEGUE.md",
+    "docs/usuario/MANUAL_USUARIO.md",
+    "docs/usuario/capturas/README.md",
+    "docs/diagramas/uml/COMPONENTES.md",
+    "docs/diagramas/uml/DESPLIEGUE.md",
+    "docs/diagramas/uml/SECUENCIA_AUTENTICACION.md",
+    "docs/diagramas/uml/CASOS_USO.md",
+    "docs/diagramas/uml/CASOS_USO.puml",
+    "docs/trazabilidad/MATRIZ_REQUISITOS.md",
+    "README.md",
+    "docs/CARGA_MASIVA_EXCEL.md",
+    "docs/desarrollo/DESARROLLO.md",
+    "docs/seguridad/SEGURIDAD.md"
+  ],
+  "captures": [
+    {
+      "path": "docs/usuario/capturas/04-carga-importacion.png",
+      "blob_sha": "7132be400ef444564d711e472e6e57aed8a424eb",
+      "source": "user-supplied conversation attachment",
+      "image_content_modified": false
+    },
+    {
+      "path": "docs/usuario/capturas/05-carga-duplicado.png",
+      "blob_sha": "3a8c9eb758cf5d1d2987a5d429a3dd9a83f4e96e",
+      "source": "user-supplied conversation attachment",
+      "image_content_modified": false
+    },
+    {
+      "path": "docs/usuario/capturas/07-sesion-expirada.png",
+      "blob_sha": "6acd62a9199d2f0ad9a37e8cba196abd3cdcd6ef",
+      "source": "user-supplied conversation attachment",
+      "image_content_modified": false
+    },
+    {
+      "path": "docs/usuario/capturas/02-mfa-inicio-sin-secretos.png",
+      "blob_sha": "401fb1ff519290e49082cec196549762c28e3176",
+      "source": "user-supplied conversation attachment",
+      "image_content_modified": false
+    },
+    {
+      "path": "docs/usuario/capturas/06-opciones-lider.png",
+      "blob_sha": "c8a5120bbe689dd5a1a3dc0a1e8a0b4ea1061cd8",
+      "source": "user-supplied conversation attachment",
+      "image_content_modified": false
+    },
+    {
+      "path": "docs/usuario/capturas/03-carga-validacion.png",
+      "blob_sha": "500d8e354b1114db292bc6af01aa2c6d5e37fb2a",
+      "source": "user-supplied conversation attachment",
+      "image_content_modified": false
+    },
+    {
+      "path": "docs/usuario/capturas/01-carga-pantalla.png",
+      "blob_sha": "6a4880e05e629a99f3a106de69dca49ef0079b40",
+      "source": "user-supplied conversation attachment",
+      "image_content_modified": false
+    },
+    {
+      "path": "docs/usuario/capturas/08-panel-soporte.png",
+      "blob_sha": "7051ba803925c018f3bf6ce220ddc981d54a3e26",
+      "source": "user-supplied conversation attachment",
+      "image_content_modified": false
+    }
+  ],
+  "verification": {
+    "relative_links": 174,
+    "broken_relative_links": 0,
+    "conflict_markers": 0,
+    "markdown_tilde_fences_balanced": true,
+    "original_seven_capture_git_hashes_verified": true,
+    "eighth_capture_incorporated": true,
+    "mermaid_and_plantuml_rendered": false,
+    "ci_after_merge_resolution": "pending at preparation"
+  },
+  "limits": [
+    "This record documents source/doc checks, not IaC, CD or deployment.",
+    "Eight screenshots do not cover every administrative function.",
+    "Threat Dragon review/export and new-scope update remain pending.",
+    "PR3 application integration into master is separate from resolving conflicts."
+  ],
+  "dockerhub_release_record": "docs/evidencias/2026-10-07/DOCKERHUB_1.0.0_37574847806.json"
+}

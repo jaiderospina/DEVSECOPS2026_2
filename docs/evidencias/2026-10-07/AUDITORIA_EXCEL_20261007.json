@@ -1,0 +1,88 @@
+{
+  "evidence": "E15",
+  "date": "2026-10-07",
+  "timezone": "America/Bogota",
+  "repository": "jeancarlosalmenarez8318-tech/DevSecOps-proyecto-Final",
+  "pr": 3,
+  "base_revision": "bf2b75b4abc79fa8173cc69b260befb2ae29736e",
+  "feature": {
+    "name": "Informe de auditoría",
+    "role": "ADMIN_TI",
+    "endpoint": "GET /auditoria/informe.xlsx",
+    "source": "auditoria_eventos (persisted Audit Service events)",
+    "filters": [
+      "desde",
+      "hasta",
+      "evento",
+      "servicio",
+      "resultado",
+      "usuario_id (actor or target)",
+      "compania_id"
+    ],
+    "date_semantics": "inclusive UTC calendar days",
+    "max_days": 31,
+    "max_rows": 5000,
+    "max_detail_characters": 2000,
+    "over_limit": "422; no partial download",
+    "sheets": [
+      "Auditoria",
+      "Resumen"
+    ],
+    "generation_event": "AUDITORIA_INFORME_GENERADO via transactional outbox",
+    "empty_report": "headers and zero-event summary"
+  },
+  "authorization": {
+    "backend_role_required": true,
+    "live_session_account_role_and_mfa_verified": true,
+    "other_roles_denied": true,
+    "revoked_session_denied": true,
+    "password_change_or_blocked_account_denied": true
+  },
+  "export_security": {
+    "fixed_parameterized_sql": true,
+    "query_limit": 5001,
+    "sensitive_detail_keys_redacted": true,
+    "all_cells_text_no_formulas": true,
+    "illegal_excel_controls_removed": true,
+    "cache_control": "no-store",
+    "no_password_hash_token_or_mfa_columns": true
+  },
+  "verification": {
+    "postgresql": "17, pinned immutable image; isolated temporary database",
+    "pytest_total": 82,
+    "new_audit_cases": 31,
+    "pytest_failures": 0,
+    "pytest_skipped": 0,
+    "node_total": 16,
+    "new_node_cases": 4,
+    "node_failures": 0,
+    "node_skipped": 0,
+    "combined_passed": 98,
+    "lint": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "frontend_build": {
+      "vite": "8.2.2",
+      "modules": 31,
+      "passed": true
+    },
+    "pip_check": "passed; existing 41 hashed wheel pins unchanged",
+    "warning": "Starlette TestClient httpx deprecation"
+  },
+  "limitations": {
+    "draft": true,
+    "merged": false,
+    "production_deployed": false,
+    "existing_1_0_0_images": "do not contain this feature; updated Identity/frontend must be built and deployed",
+    "github_actions": "integral validation pending; included quota exhausted",
+    "browser_visual_test": "not performed",
+    "real_smtp": "not used",
+    "report_download_is_not_proof_of_saved_file": true,
+    "outbox_delivery_pending_events": "not included until persisted by dispatcher",
+    "example_workbook": "not generated; permission auto-review failed due to account usage limit"
+  },
+  "artifacts": [
+    "auditoria-excel/pytest-audit-report.xml"
+  ]
+}

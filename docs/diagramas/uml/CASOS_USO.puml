@@ -1,0 +1,43 @@
+@startuml
+left to right direction
+title IAM Secure - Casos de uso (7 de octubre de 2026)
+actor "Usuario" as U
+actor "ADMIN_TI" as TI
+actor "ADMIN_SOPORTE" as AS
+actor "Lider funcional" as L
+TI --|> U
+AS --|> U
+L --|> U
+rectangle "IAM Secure" {
+  usecase "Autenticarse con password y MFA" as LOGIN
+  usecase "Cambiar / recuperar password" as PW
+  usecase "Consultar / cerrar sesiones propias" as SES
+  usecase "Administrar soportes y acceso/MFA" as SUPPORT
+  usecase "Administrar companias y asignaciones" as COMPANY
+  usecase "Administrar lideres del alcance" as LEADER
+  usecase "Validar, confirmar e importar XLSX" as BULK
+  usecase "Consultar lote / exportar resultados" as RESULT
+  usecase "Gestionar excepciones de vistas" as GRID
+  usecase "Abrir vistas autorizadas" as VIEWS
+}
+U --> LOGIN
+U --> PW
+U --> SES
+TI --> SUPPORT
+TI --> COMPANY
+AS --> LEADER
+AS --> BULK
+AS --> RESULT
+AS --> GRID
+L --> VIEWS
+BULK ..> LEADER : reutiliza creacion
+GRID ..> VIEWS : determina concesiones
+note bottom of LEADER
+  Tres vistas iniciales del rol.
+  Rol y compania comprobados en servidor.
+end note
+note bottom of VIEWS
+  Referencias academicas;
+  no ejecutan procesos reales de negocio.
+end note
+@enduml

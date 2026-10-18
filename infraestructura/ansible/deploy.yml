@@ -1,0 +1,149 @@
+---
+- name: Deploy immutable IAM Secure release to an isolated Linux Docker host
+  hosts: iam
+  gather_facts: false
+  vars:
+    iam_install_docker: false
+    iam_bootstrap_admin: false
+    iam_source_dir: "{{ playbook_dir }}/../.."
+    iam_compose:
+      - docker
+      - compose
+      - --project-name
+      - "{{ iam_project_name }}"
+      - --project-directory
+      - "{{ iam_deploy_dir }}"
+      - --env-file
+      - "{{ iam_deploy_dir }}/.env"
+      - -f
+      - "{{ iam_deploy_dir }}/compose.simulated.json"
+  tasks:
+    - name: Validate deployment namespace and absolute Linux directory
+      ansible.builtin.assert:
+        that:
+          - iam_project_name is match('^iam-[a-z0-9][a-z0-9-]{1,48}$')
+          - iam_deploy_dir is match('^/(opt|srv|tmp|home)/[A-Za-z0-9_./-]+$')
+          - "'..' not in iam_deploy_dir.split('/')"
+          - iam_deploy_dir not in ['/opt', '/srv', '/tmp', '/home']
+        quiet: true
+
+    - name: Validate secret configuration without logging values
+      ansible.builtin.assert:
+        that:
+          - iam_postgres_password | length >= 32
+          - iam_jwt_secret | length >= 32
+          - iam_audit_token | length >= 32
+          - iam_mfa_key is match('^[A-Za-z0-9_-]{43}=$')
+          - not iam_bootstrap_admin or iam_admin_password | default('') | length >= 12
+          - "'\n' not in iam_postgres_password"
+          - "'\n' not in iam_jwt_secret"
+          - "'\n' not in iam_audit_token"
+        quiet: true
+      no_log: true
+
+    - name: Install Ubuntu Docker packages when explicitly enabled
+      ansible.builtin.apt:
+        name:
+          - docker.io
+          - docker-compose-v2
+        state: present
+        update_cache: true
+        allow_unauthenticated: false
+        force: false
+      become: true
+      when: iam_install_docker | bool
+
+    - name: Enable Docker when installing packages
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+      become: true
+      when: iam_install_docker | bool
+
+    - name: Verify Docker daemon and Compose
+      ansible.builtin.command:
+        argv: "{{ item }}"
+      loop:
+        - [docker, info, --format, "{{ '{{' }}.ServerVersion{{ '}}' }}"]
+        - [docker, compose, version, --short]
+      changed_when: false
+
+    - name: Create private deployment directory
+      ansible.builtin.file:
+        path: "{{ iam_deploy_dir }}"
+        state: directory
+        mode: '0700'
+
+    - name: Copy immutable Compose specification
+      ansible.builtin.copy:
+        src: "{{ iam_source_dir }}/orquestacion/compose.simulated.json"
+        dest: "{{ iam_deploy_dir }}/compose.simulated.json"
+        mode: '0600'
+
+    - name: Determine the operator group for private SQL initialization
+      ansible.builtin.command:
+        argv: [id, -g]
+      register: iam_operator_group
+      changed_when: false
+
+    - name: Use a non-root group for PostgreSQL schema access
+      ansible.builtin.set_fact:
+        iam_sql_read_gid: "{{ 999 if (iam_operator_group.stdout | int) == 0 else (iam_operator_group.stdout | int) }}"
+
+    - name: Create group-readable schema directory without access for other users
+      ansible.builtin.file:
+        path: "{{ iam_deploy_dir }}/postgres-init"
+        state: directory
+        group: "{{ iam_sql_read_gid }}"
+        mode: '0750'
+
+    - name: Copy schema initialization scripts
+      ansible.builtin.copy:
+        src: "{{ iam_source_dir }}/postgres-init/"
+        dest: "{{ iam_deploy_dir }}/postgres-init/"
+        group: "{{ iam_sql_read_gid }}"
+        mode: '0640'
+        directory_mode: '0750'
+
+    - name: Render runtime configuration without exposing secrets
+      ansible.builtin.template:
+        src: runtime.env.j2
+        dest: "{{ iam_deploy_dir }}/.env"
+        mode: '0600'
+      no_log: true
+      diff: false
+
+    - name: Validate Compose without printing resolved environment
+      ansible.builtin.command:
+        argv: "{{ iam_compose + ['config', '--quiet'] }}"
+      changed_when: false
+      no_log: true
+
+    - name: Pull immutable release images
+      ansible.builtin.command:
+        argv: "{{ iam_compose + ['pull'] }}"
+      changed_when: false
+
+    - name: Start and wait for healthy services
+      ansible.builtin.command:
+        argv: "{{ iam_compose + ['up', '-d', '--wait', '--wait-timeout', '180'] }}"
+      register: iam_up
+      changed_when: >-
+        (iam_up.stdout ~ iam_up.stderr) is search('Created|Recreated|Started')
+
+    - name: Apply idempotent permissions and bulk schema migrations
+      ansible.builtin.command:
+        argv: "{{ iam_compose + ['exec', '-T', 'postgres', 'psql', '-U', 'postgres', '-d', 'iam_secure', '-v', 'ON_ERROR_STOP=1', '-f', '/docker-entrypoint-initdb.d/' ~ item] }}"
+      loop:
+        - 11-create-permisos.sql
+        - 12-create-cargas-usuarios.sql
+      changed_when: false
+
+    - name: Bootstrap a single ADMIN_TI when explicitly enabled
+      ansible.builtin.command:
+        argv: "{{ iam_compose + ['run', '--rm', '-T', '--no-deps', 'bootstrap-admin'] }}"
+      register: iam_bootstrap
+      changed_when: "'ADMIN_TI inicial creado correctamente.' in iam_bootstrap.stdout"
+      when: iam_bootstrap_admin | bool
+      no_log: true

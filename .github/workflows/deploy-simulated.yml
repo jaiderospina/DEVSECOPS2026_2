@@ -1,0 +1,144 @@
+name: Deploy simulated production
+on:
+  push:
+    branches: [master, "feat/**"]
+    paths:
+      - "infraestructura/**"
+      - "orquestacion/**"
+      - "postgres-init/**"
+      - "tests/automation_security/**"
+      - ".github/workflows/deploy-simulated.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "infraestructura/**"
+      - "orquestacion/**"
+      - "postgres-init/**"
+      - "tests/automation_security/**"
+      - ".github/workflows/deploy-simulated.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: deploy-simulated-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  validation:
+    if: github.event_name != 'pull_request'
+    uses: ./.github/workflows/devsecops-pipeline.yml
+  iac:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - run: "python -m pip install --only-binary :all: --require-hashes -r infraestructura/ansible/requirements-ci.lock"
+      - name: Ansible syntax and Compose security policies
+        run: |
+          mkdir -p reports/iac
+          ansible-playbook -i infraestructura/ansible/inventory.example.ini infraestructura/ansible/deploy.yml --syntax-check
+          python infraestructura/scripts/check_compose.py --report reports/iac/compose-policy.json
+          python -m unittest discover -s tests/automation_security -v
+          python -m compileall -q infraestructura/scripts
+      - name: Checkov must scan and pass actual Ansible checks
+        run: |
+          checkov -f infraestructura/ansible/deploy.yml --framework ansible --output json > reports/iac/checkov.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("reports/iac/checkov.json").read_text())
+          reports = report if isinstance(report, list) else [report]
+          passed = sum(r["summary"]["passed"] for r in reports)
+          failed = sum(r["summary"]["failed"] for r in reports)
+          assert passed > 0 and failed == 0, (passed, failed)
+          print(f"Checkov: {passed} checks passed, {failed} failed")
+          PY
+      - name: Prove Checkov rejects an unsafe fixture without executing it
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          fixture = Path(os.environ["RUNNER_TEMP"]) / "unsafe-ansible-fixture.yml"
+          fixture.write_text("- name: Negative gate fixture\n  hosts: all\n  tasks:\n    - name: Unsafe apt test only\n      ansible.builtin.apt:\n        name: curl\n        allow_unauthenticated: true\n        force: true\n")
+          result = subprocess.run(["checkov", "-f", str(fixture), "--framework", "ansible", "--output", "json"], capture_output=True, text=True)
+          assert result.returncode == 1, "Checkov gate did not reject unsafe apt"
+          report = json.loads(result.stdout)
+          checks = {c["check_id"] for c in report["results"]["failed_checks"]}
+          assert {"CKV_ANSIBLE_5", "CKV_ANSIBLE_6"} <= checks, checks
+          Path("reports/iac/checkov-negative-gate.json").write_text(json.dumps({"rejected": True, "checks": sorted(checks), "fixture_executed": False}, indent=2))
+          fixture.unlink()
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: iac-security-evidence
+          path: reports/iac/
+          retention-days: 30
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: [validation, iac]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      IAM_PROJECT: iam-ci-${{ github.run_id }}-${{ github.run_attempt }}
+      ANSIBLE_NOCOLOR: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - run: "python -m pip install --only-binary :all: --require-hashes -r infraestructura/ansible/requirements-ci.lock"
+      - name: Define private runner directories
+        run: |
+          echo "IAM_DIR=$RUNNER_TEMP/iam-deployment" >> "$GITHUB_ENV"
+          echo "IAM_VARS=$RUNNER_TEMP/iam-deployment-vars.json" >> "$GITHUB_ENV"
+          echo "DOCKER_CONFIG=$RUNNER_TEMP/iam-docker-config" >> "$GITHUB_ENV"
+      - name: Authenticate only for pulling published images
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          if [ -n "$DOCKERHUB_TOKEN" ]; then
+            printf '%s' "$DOCKERHUB_TOKEN" | docker login --username jeancarlosalmenarez8318 --password-stdin
+          fi
+      - name: Generate disposable secrets outside the checkout
+        run: |
+          mkdir -p reports/deployment
+          python infraestructura/scripts/create_test_config.py --output "$IAM_VARS" --deploy-dir "$IAM_DIR" --project "$IAM_PROJECT"
+      - name: Deploy immutable images through Ansible
+        run: |
+          ansible-playbook -i infraestructura/ansible/inventory.example.ini infraestructura/ansible/deploy.yml -e "@$IAM_VARS" | tee reports/deployment/ansible-first.txt
+          python infraestructura/scripts/verify_deployment.py --deploy-dir "$IAM_DIR" --project "$IAM_PROJECT" --report reports/deployment/runtime-first.json
+      - name: Prove idempotence without duplicating the administrator
+        run: |
+          ansible-playbook -i infraestructura/ansible/inventory.example.ini infraestructura/ansible/deploy.yml -e "@$IAM_VARS" | tee reports/deployment/ansible-second.txt
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          recap = Path("reports/deployment/ansible-second.txt").read_text()
+          assert re.search(r"changed=0\s+unreachable=0\s+failed=0", recap), "Second deploy changed state or failed"
+          PY
+      - name: Prove persistence after recreating PostgreSQL
+        run: |
+          docker compose --project-name "$IAM_PROJECT" --project-directory "$IAM_DIR" --env-file "$IAM_DIR/.env" -f "$IAM_DIR/compose.simulated.json" up -d --force-recreate --no-deps --wait --wait-timeout 120 postgres
+          docker compose --project-name "$IAM_PROJECT" --project-directory "$IAM_DIR" --env-file "$IAM_DIR/.env" -f "$IAM_DIR/compose.simulated.json" up -d --wait --wait-timeout 120
+          python infraestructura/scripts/verify_deployment.py --deploy-dir "$IAM_DIR" --project "$IAM_PROJECT" --expect reports/deployment/runtime-first.json --report reports/deployment/runtime-final.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: simulated-deployment-evidence
+          path: reports/deployment/
+          retention-days: 30
+      - name: Remove only this ephemeral CI project and its test volume
+        if: always()
+        run: |
+          case "$IAM_PROJECT" in iam-ci-${{ github.run_id }}-${{ github.run_attempt }}) ;; *) exit 1 ;; esac
+          if [ -f "$IAM_DIR/compose.simulated.json" ] && [ -f "$IAM_DIR/.env" ]; then
+            docker compose --project-name "$IAM_PROJECT" --project-directory "$IAM_DIR" --env-file "$IAM_DIR/.env" -f "$IAM_DIR/compose.simulated.json" down --volumes --remove-orphans
+          fi
+          docker logout >/dev/null 2>&1 || true

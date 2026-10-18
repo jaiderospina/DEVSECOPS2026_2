@@ -1,0 +1,2 @@
+ansible-core==2.21.5
+checkov==3.2.506

@@ -1,0 +1,46 @@
+name: Sonar read-only diagnostics
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnostics:
+    if: github.repository == 'yeisonfblopez/DevSecOps-proyecto-Final-ci' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.14"
+      - name: Read new-code security findings without changing issue status
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.parse, urllib.request
+          from pathlib import Path
+          token = os.environ['SONAR_TOKEN']
+          assert token, 'Sonar credentials are required'
+          key = 'yeisonfblopez_DevSecOps-proyecto-Final-ci'
+          query = {'componentKeys': key, 'branch': 'master', 'sinceLeakPeriod': 'true',
+                   'resolved': 'false', 'ps': 500}
+          request = urllib.request.Request('https://sonarcloud.io/api/issues/search?' + urllib.parse.urlencode(query),
+              headers={'Authorization': 'Bearer ' + token})
+          with urllib.request.urlopen(request, timeout=30) as response:
+              data = json.load(response)
+          fields = ('key', 'rule', 'component', 'line', 'type', 'severity', 'status',
+                    'message', 'textRange', 'flows', 'impacts')
+          result = {'repository': os.environ['GITHUB_REPOSITORY'],
+                    'diagnostic_workflow_sha': os.environ['GITHUB_SHA'], 'branch': 'master',
+                    'paging': data.get('paging'),
+                    'issues': [{k: issue[k] for k in fields if k in issue} for issue in data['issues']]}
+          Path('reports').mkdir()
+          Path('reports/sonar-new-issues.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+          print('Read', len(result['issues']), 'new-code issues; statuses unchanged')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sonar-security-diagnostics
+          path: reports/sonar-new-issues.json
+          if-no-files-found: error
+          retention-days: 7

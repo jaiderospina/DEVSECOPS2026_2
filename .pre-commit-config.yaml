@@ -1,0 +1,7 @@
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.3
+    hooks:
+      - id: gitleaks-docker
+        entry: zricethezav/gitleaks:v8.24.3 git --pre-commit --redact --staged
+        pass_filenames: false
