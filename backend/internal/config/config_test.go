@@ -1,0 +1,424 @@
+package config
+
+import (
+	"encoding/json"
+	"fmt"
+	"strings"
+	"testing"
+)
+
+// RNF-003 — Un secreto ausente tiene que impedir el arranque. Una aplicación
+// que arranca con una contraseña por defecto es peor que una que no arranca,
+// porque nadie se entera de que está expuesta.
+func TestRNF003_FaltaDeSecretoImpideElArranque(t *testing.T) {
+	casos := []struct {
+		nombre  string
+		entorno map[string]string
+		falta   string
+	}{
+		{
+			nombre:  "sin DATABASE_URL",
+			entorno: map[string]string{"RABBITMQ_URL": "amqp://x"},
+			falta:   "DATABASE_URL",
+		},
+		{
+			nombre:  "sin RABBITMQ_URL",
+			entorno: map[string]string{"DATABASE_URL": "postgres://x"},
+			falta:   "RABBITMQ_URL",
+		},
+		{
+			nombre:  "entorno vacío",
+			entorno: map[string]string{},
+			falta:   "DATABASE_URL",
+		},
+		{
+			nombre: "una variable presente pero en blanco no cuenta como presente",
+			entorno: map[string]string{
+				"DATABASE_URL": "   ",
+				"RABBITMQ_URL": "amqp://x",
+			},
+			falta: "DATABASE_URL",
+		},
+	}
+
+	for _, c := range casos {
+		t.Run(c.nombre, func(t *testing.T) {
+			for k, v := range c.entorno {
+				t.Setenv(k, v)
+			}
+
+			_, err := Load()
+			if err == nil {
+				t.Fatal("Load() devolvió nil; se esperaba un error por secreto ausente")
+			}
+			if !strings.Contains(err.Error(), c.falta) {
+				t.Errorf("el error debería nombrar %q para que sea accionable; se obtuvo: %v", c.falta, err)
+			}
+		})
+	}
+}
+
+// Los errores se acumulan en lugar de abortar en el primero: arrancar el
+// contenedor cinco veces para descubrir cinco variables faltantes es una forma
+// tonta de perder una tarde.
+func TestRNF003_AcumulaTodosLosErroresDeUnaVez(t *testing.T) {
+	t.Setenv("DATABASE_URL", "")
+	t.Setenv("RABBITMQ_URL", "")
+
+	_, err := Load()
+	if err == nil {
+		t.Fatal("se esperaba un error")
+	}
+
+	msg := err.Error()
+	for _, esperada := range []string{"DATABASE_URL", "RABBITMQ_URL"} {
+		if !strings.Contains(msg, esperada) {
+			t.Errorf("el error debería mencionar %s; se obtuvo:\n%s", esperada, msg)
+		}
+	}
+}
+
+// RNF-012 / AM-013 — Un secreto nunca debe poder acabar en los logs por
+// descuido. El tipo Secret hace que formatear la estructura que lo contiene sea
+// seguro por defecto, en vez de depender de que nadie se equivoque.
+func TestRNF012_SecretNoSeRevelaAlFormatearla(t *testing.T) {
+	const valor = "postgres://identity:contraseña-real@db:5432/identity"
+	s := Secret(valor)
+
+	comprobaciones := map[string]string{
+		"%v con String()":  fmt.Sprintf("%v", s),
+		"%s con String()":  fmt.Sprint(s),
+		"%q":               fmt.Sprintf("%q", s),
+		"%#v con GoString": fmt.Sprintf("%#v", s),
+		"dentro de struct": fmt.Sprintf("%+v", struct{ URL Secret }{s}),
+	}
+
+	for nombre, salida := range comprobaciones {
+		if strings.Contains(salida, "contraseña-real") {
+			t.Errorf("%s filtró el secreto: %s", nombre, salida)
+		}
+		if !strings.Contains(salida, "REDACTADO") {
+			t.Errorf("%s debería mostrar [REDACTADO]; se obtuvo: %s", nombre, salida)
+		}
+	}
+
+	// Serializar la configuración a JSON —por ejemplo en un endpoint de
+	// diagnóstico— tampoco puede filtrarla.
+	crudo, err := json.Marshal(struct {
+		URL Secret `json:"url"`
+	}{s})
+	if err != nil {
+		t.Fatalf("json.Marshal: %v", err)
+	}
+	if strings.Contains(string(crudo), "contraseña-real") {
+		t.Errorf("la serialización JSON filtró el secreto: %s", crudo)
+	}
+
+	// Y aun así el valor sigue siendo utilizable donde hace falta de verdad.
+	if s.Reveal() != valor {
+		t.Errorf("Reveal() = %q; se esperaba %q", s.Reveal(), valor)
+	}
+}
+
+func TestRNF003_FaltaClaveDeFirmaImpideElArranque(t *testing.T) {
+	t.Setenv("DATABASE_URL", "")
+	t.Setenv("RABBITMQ_URL", "")
+	t.Setenv("JWT_SIGNING_KEY", "")
+	_, err := Load()
+	if err == nil || !strings.Contains(err.Error(), "JWT_SIGNING_KEY") || !strings.Contains(err.Error(), "DATABASE_URL") || !strings.Contains(err.Error(), "RABBITMQ_URL") {
+		t.Fatalf("Load did not accumulate mandatory configuration errors: %v", err)
+	}
+
+	t.Setenv("DATABASE_URL", "postgres://x")
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", "not-base64")
+	_, err = Load()
+	if err == nil || !strings.Contains(err.Error(), "JWT_SIGNING_KEY") {
+		t.Fatalf("Load malformed JWT_SIGNING_KEY error = %v", err)
+	}
+}
+
+func TestRNF003_ClaveDeFirmaNoSeRevelaEnConfig(t *testing.T) {
+	const encodedSeed = "MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE="
+	t.Setenv("DATABASE_URL", "postgres://x")
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", encodedSeed)
+	cfg, err := Load()
+	if err != nil {
+		t.Fatalf("Load: %v", err)
+	}
+	if output := fmt.Sprintf("%+v", cfg); strings.Contains(output, encodedSeed) {
+		t.Fatalf("formatted config leaked signing key: %s", output)
+	}
+}
+
+func TestRF012_PublicBaseURLTieneValorPorDefectoYAdmiteOverride(t *testing.T) {
+	const seed = "MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE="
+	t.Setenv("DATABASE_URL", "postgres://x")
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", seed)
+
+	cfg, err := Load()
+	if err != nil {
+		t.Fatalf("Load default: %v", err)
+	}
+	// D10: el Hub vive en su propio dominio local, no en localhost a secas.
+	if cfg.PublicBaseURL != "http://identityhub.localhost:8080" {
+		t.Errorf("default PublicBaseURL = %q", cfg.PublicBaseURL)
+	}
+	if cfg.JWTIssuer != "http://identityhub.localhost:8080" {
+		t.Errorf("default JWTIssuer = %q", cfg.JWTIssuer)
+	}
+
+	t.Setenv("PUBLIC_BASE_URL", "https://identity.example")
+	cfg, err = Load()
+	if err != nil {
+		t.Fatalf("Load override: %v", err)
+	}
+	if cfg.PublicBaseURL != "https://identity.example" {
+		t.Errorf("override PublicBaseURL = %q", cfg.PublicBaseURL)
+	}
+}
+
+func TestRF017_ConfiguraLimitesDeFuerzaBruta(t *testing.T) {
+	const seed = "MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE="
+	t.Setenv("DATABASE_URL", "postgres://x")
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", seed)
+
+	cfg, err := Load()
+	if err != nil {
+		t.Fatalf("Load defaults: %v", err)
+	}
+	if cfg.LoginAccountMaxFailures != 5 || cfg.LoginIPMaxFailures != 20 || cfg.LoginFailureWindow.String() != "15m0s" || cfg.LoginLockoutDuration.String() != "15m0s" {
+		t.Fatalf("default lockout config = %+v", cfg)
+	}
+	t.Setenv("LOGIN_ACCOUNT_MAX_FAILURES", "7")
+	t.Setenv("LOGIN_IP_MAX_FAILURES", "25")
+	t.Setenv("LOGIN_FAILURE_WINDOW", "10m")
+	t.Setenv("LOGIN_LOCKOUT_DURATION", "30m")
+	cfg, err = Load()
+	if err != nil {
+		t.Fatalf("Load overrides: %v", err)
+	}
+	if cfg.LoginAccountMaxFailures != 7 || cfg.LoginIPMaxFailures != 25 || cfg.LoginFailureWindow.String() != "10m0s" || cfg.LoginLockoutDuration.String() != "30m0s" {
+		t.Fatalf("override lockout config = %+v", cfg)
+	}
+}
+
+func TestRF017_RechazaLimitesDeFuerzaBrutaNoPositivos(t *testing.T) {
+	const seed = "MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE="
+	t.Setenv("DATABASE_URL", "postgres://x")
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", seed)
+	t.Setenv("LOGIN_ACCOUNT_MAX_FAILURES", "0")
+	t.Setenv("LOGIN_IP_MAX_FAILURES", "-1")
+	t.Setenv("LOGIN_FAILURE_WINDOW", "0s")
+	t.Setenv("LOGIN_LOCKOUT_DURATION", "0s")
+	_, err := Load()
+	if err == nil {
+		t.Fatal("Load accepted unsafe brute-force limits")
+	}
+	for _, key := range []string{"LOGIN_ACCOUNT_MAX_FAILURES", "LOGIN_IP_MAX_FAILURES", "LOGIN_FAILURE_WINDOW", "LOGIN_LOCKOUT_DURATION"} {
+		if !strings.Contains(err.Error(), key) {
+			t.Errorf("Load error did not name %s: %v", key, err)
+		}
+	}
+}
+
+func TestConfig_BootstrapAdminEmailOpcionalYValidado(t *testing.T) {
+	const seed = "MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE="
+	t.Setenv("DATABASE_URL", "postgres://x")
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", seed)
+
+	for _, tt := range []struct {
+		name    string
+		email   string
+		want    string
+		wantErr bool
+	}{
+		{name: "unset disables bootstrap", want: ""},
+		{name: "empty disables bootstrap", email: "  ", want: ""},
+		{name: "valid email enables bootstrap", email: "first-admin@example.test", want: "first-admin@example.test"},
+		{name: "invalid email is rejected", email: "not-an-email", wantErr: true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Setenv("BOOTSTRAP_ADMIN_EMAIL", tt.email)
+			cfg, err := Load()
+			if tt.wantErr {
+				if err == nil || !strings.Contains(err.Error(), "BOOTSTRAP_ADMIN_EMAIL") {
+					t.Fatalf("Load() error = %v, want BOOTSTRAP_ADMIN_EMAIL validation error", err)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("Load() error = %v", err)
+			}
+			if cfg.BootstrapAdminEmail != tt.want {
+				t.Fatalf("BootstrapAdminEmail = %q, want %q", cfg.BootstrapAdminEmail, tt.want)
+			}
+		})
+	}
+}
+
+// RNF-003 — El worker solo consume la cola y envía SMTP: no debe exigir (ni
+// recibir) la cadena de conexión a la base de datos.
+func TestRNF003_WorkerArrancaSinDatabaseURL(t *testing.T) {
+	const seed = "MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=" // base64 of the digits 0-9 repeated: a fake test key
+	t.Setenv("DATABASE_URL", "")
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", seed)
+
+	cfg, err := LoadWorker()
+	if err != nil {
+		t.Fatalf("LoadWorker sin DATABASE_URL: %v", err)
+	}
+	if cfg.RabbitURL.Reveal() != "amqp://x" {
+		t.Errorf("LoadWorker perdió RABBITMQ_URL: %q", cfg.RabbitURL.Reveal())
+	}
+
+	// La API mantiene la exigencia.
+	if _, err := Load(); err == nil || !strings.Contains(err.Error(), "DATABASE_URL") {
+		t.Fatalf("Load sin DATABASE_URL debe seguir fallando; se obtuvo: %v", err)
+	}
+}
+
+func TestRNF003_WorkerSigueExigiendoElBroker(t *testing.T) {
+	const seed = "MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=" // base64 of the digits 0-9 repeated: a fake test key
+	t.Setenv("DATABASE_URL", "")
+	t.Setenv("RABBITMQ_URL", "")
+	t.Setenv("JWT_SIGNING_KEY", seed)
+
+	_, err := LoadWorker()
+	if err == nil || !strings.Contains(err.Error(), "RABBITMQ_URL") {
+		t.Fatalf("LoadWorker sin RABBITMQ_URL debe fallar; se obtuvo: %v", err)
+	}
+	if strings.Contains(err.Error(), "DATABASE_URL") {
+		t.Errorf("LoadWorker no debe mencionar DATABASE_URL: %v", err)
+	}
+}
+
+// The worker must not carry the database credential even when the environment
+// still provides it (for example an old .env), so LoadWorker never reads it.
+func TestRNF003_WorkerIgnoraDatabaseURLAunqueExista(t *testing.T) {
+	const seed = "MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=" // base64 of the digits 0-9 repeated: a fake test key
+	t.Setenv("DATABASE_URL", "postgres://worker-should-not-see-this")
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", seed)
+
+	cfg, err := LoadWorker()
+	if err != nil {
+		t.Fatalf("LoadWorker error = %v", err)
+	}
+	if cfg.DatabaseURL != "" {
+		t.Fatal("LoadWorker kept DATABASE_URL; the worker must not receive it")
+	}
+}
+
+// The worker never signs or verifies tokens, so it must start without the
+// signing key and must not carry it even when the environment provides one.
+func TestRNF003_WorkerArrancaSinClaveDeFirma(t *testing.T) {
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", "")
+
+	cfg, err := LoadWorker()
+	if err != nil {
+		t.Fatalf("LoadWorker sin JWT_SIGNING_KEY: %v", err)
+	}
+	if cfg.JWTSigningKey != "" {
+		t.Error("LoadWorker produced a signing key from an empty environment")
+	}
+}
+
+func TestRNF003_WorkerIgnoraClaveDeFirmaAunqueExista(t *testing.T) {
+	const seed = "MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=" // base64 of the digits 0-9 repeated: a fake test key
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", seed)
+
+	cfg, err := LoadWorker()
+	if err != nil {
+		t.Fatalf("LoadWorker error = %v", err)
+	}
+	if cfg.JWTSigningKey != "" {
+		t.Fatal("LoadWorker kept JWT_SIGNING_KEY; the worker must not receive it")
+	}
+}
+
+// A malformed key must not stop the worker either: it never reads the value.
+func TestRNF003_WorkerNoValidaClaveDeFirma(t *testing.T) {
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	t.Setenv("JWT_SIGNING_KEY", "not-a-valid-seed")
+
+	if _, err := LoadWorker(); err != nil {
+		t.Fatalf("LoadWorker must not validate JWT_SIGNING_KEY: %v", err)
+	}
+}
+
+func workerEnv(t *testing.T, extra map[string]string) {
+	t.Helper()
+	t.Setenv("RABBITMQ_URL", "amqp://x")
+	for k, v := range extra {
+		t.Setenv(k, v)
+	}
+}
+
+func TestRF012_SMTPPorDefectoExigeSTARTTLSSinCredenciales(t *testing.T) {
+	workerEnv(t, nil)
+	cfg, err := LoadWorker()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.SMTPTLS != "starttls" || cfg.SMTPUsername != "" || cfg.SMTPPassword.Reveal() != "" || cfg.SMTPCAFile != "" {
+		t.Fatalf("defaults = %+v", cfg)
+	}
+}
+
+func TestRF012_SMTPAceptaConfiguracionCompleta(t *testing.T) {
+	workerEnv(t, map[string]string{
+		"SMTP_TLS": "STARTTLS", "SMTP_USERNAME": "hub", "SMTP_PASSWORD": "s3cret", "SMTP_CA_FILE": "/certs/ca.pem",
+	})
+	cfg, err := LoadWorker()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.SMTPTLS != "starttls" || cfg.SMTPUsername != "hub" || cfg.SMTPPassword.Reveal() != "s3cret" || cfg.SMTPCAFile != "/certs/ca.pem" {
+		t.Fatalf("cfg = %+v", cfg)
+	}
+}
+
+func TestRF012_SMTPContrasenaNuncaSeFormatea(t *testing.T) {
+	workerEnv(t, map[string]string{"SMTP_USERNAME": "hub", "SMTP_PASSWORD": "pw-leak"})
+	cfg, err := LoadWorker()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, rendered := range []string{fmt.Sprintf("%v", cfg), fmt.Sprintf("%+v", cfg), fmt.Sprintf("%#v", cfg)} {
+		if strings.Contains(rendered, "pw-leak") {
+			t.Fatalf("SMTP password leaked: %s", rendered)
+		}
+	}
+}
+
+func TestRF012_SMTPCombinacionesInvalidasSeRechazan(t *testing.T) {
+	casos := []struct {
+		nombre string
+		env    map[string]string
+		espera string
+	}{
+		{"usuario sin contraseña", map[string]string{"SMTP_USERNAME": "hub"}, "SMTP_PASSWORD"},
+		{"contraseña sin usuario", map[string]string{"SMTP_PASSWORD": "x"}, "SMTP_USERNAME"},
+		{"modo desconocido", map[string]string{"SMTP_TLS": "maybe"}, "SMTP_TLS"},
+		{"none con credenciales", map[string]string{"SMTP_TLS": "none", "SMTP_USERNAME": "hub", "SMTP_PASSWORD": "x"}, "SMTP_TLS"},
+		{"CA con none", map[string]string{"SMTP_TLS": "none", "SMTP_CA_FILE": "/c.pem"}, "SMTP_CA_FILE"},
+	}
+	for _, c := range casos {
+		t.Run(c.nombre, func(t *testing.T) {
+			workerEnv(t, c.env)
+			_, err := LoadWorker()
+			if err == nil || !strings.Contains(err.Error(), c.espera) {
+				t.Fatalf("LoadWorker() error = %v, want mention of %s", err, c.espera)
+			}
+		})
+	}
+}

@@ -1,0 +1,223 @@
+# ═══════════════════════════════════════════════════════════════════════════
+#  Escaneo de la línea base vulnerable — MODO INFORME, no bloquea.
+#
+#  Corre sobre el tag v0.0.0-vuln-baseline (specs/adr/0007). Su trabajo es
+#  ENCONTRAR, no IMPEDIR: todos los pasos llevan continue-on-error para que el
+#  workflow recorra los siete gates completos y produzca el inventario entero
+#  de hallazgos, en vez de detenerse en el primero.
+#
+#  Las salidas quedan como artefactos y alimentan las fichas de
+#  security/findings/ y el informe final docs/security-report.md.
+# ═══════════════════════════════════════════════════════════════════════════
+name: Escaneo de la línea base
+#checkov:skip=CKV_GHA_7:El input "ref" de workflow_dispatch es deliberado (ADR 0007): permite escanear el tag de la línea base vulnerable
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Referencia a escanear"
+        required: false
+        default: "v0.0.0-vuln-baseline"
+  push:
+    tags:
+      - "v0.0.0-vuln-baseline"
+
+permissions:
+  contents: read
+
+jobs:
+  inventario:
+    name: Inventario de vulnerabilidades sembradas
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          fetch-depth: 0
+
+      - run: mkdir -p evidence
+
+      # ── Secretos ────────────────────────────────────────────────────────
+      # El informe se escribe FUERA del árbol escaneado: dentro de evidence/ Gitleaks
+      # se leía a sí mismo (16 de 28 hallazgos eran autorreferenciales, D1).
+      - name: Gitleaks
+        continue-on-error: true
+        run: |
+          mkdir -p "$RUNNER_TEMP/gitleaks"
+          docker run --rm -v "$PWD:/repo:ro" -v "$RUNNER_TEMP/gitleaks:/out" zricethezav/gitleaks:v8.18.4 \
+            detect --source=/repo --report-format=json --report-path=/out/gitleaks.json \
+            --no-git --verbose | tee "$RUNNER_TEMP/gitleaks/gitleaks.txt"
+          cp "$RUNNER_TEMP/gitleaks/gitleaks.json" "$RUNNER_TEMP/gitleaks/gitleaks.txt" evidence/
+
+      # ── Dependencias ────────────────────────────────────────────────────
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.22"
+          cache-dependency-path: backend/go.sum
+
+      # El checkout anterior es el tag de la línea base, que no contiene tools/.
+      # Las herramientas se fijan en tools/go.mod de la rama del workflow
+      # (github.sha) y se COMPILAN con el toolchain que exige su directiva `go`
+      # (GOTOOLCHAIN=auto lo descarga a partir de Go 1.22); GOTOOLCHAIN
+      # solo se define en este paso. El análisis posterior sigue ejecutándose con
+      # el Go 1.22 de setup-go, porque govulncheck usa el `go` del PATH para
+      # cargar el código de backend y la versión de la biblioteca estándar.
+      - name: Obtener tools/ de la rama del workflow
+        continue-on-error: true
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: .herramientas
+          sparse-checkout: tools
+          persist-credentials: false
+
+      - name: Compilar govulncheck y gosec fijados
+        continue-on-error: true
+        env:
+          GOTOOLCHAIN: auto
+        run: |
+          go -C .herramientas/tools install golang.org/x/vuln/cmd/govulncheck github.com/securego/gosec/v2/cmd/gosec
+          rm -rf .herramientas
+
+      - name: govulncheck
+        continue-on-error: true
+        working-directory: backend
+        run: |
+          govulncheck ./... | tee ../evidence/govulncheck.txt
+          govulncheck -format json ./... > ../evidence/govulncheck.json
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "18"
+
+      - name: npm audit
+        continue-on-error: true
+        working-directory: frontend
+        run: |
+          npm install --package-lock-only --ignore-scripts
+          npm audit --json > ../evidence/npm-audit.json || true
+          npm audit || true
+
+      # ── Análisis estático ───────────────────────────────────────────────
+      - name: gosec
+        continue-on-error: true
+        working-directory: backend
+        run: |
+          gosec -fmt=json -out=../evidence/gosec.json -stdout ./... || true
+
+      - name: Semgrep
+        continue-on-error: true
+        run: |
+          docker run --rm -v "$PWD:/src" semgrep/semgrep:1.86.0 \
+            semgrep scan --config=p/owasp-top-ten --config=p/golang \
+            --json --output=/src/evidence/semgrep.json /src || true
+
+      # ── Contenedores ────────────────────────────────────────────────────
+      - name: Hadolint
+        continue-on-error: true
+        run: |
+          for f in backend/Dockerfile frontend/Dockerfile; do
+            echo "── $f ──" | tee -a evidence/hadolint.txt
+            docker run --rm -i hadolint/hadolint:v2.12.0 hadolint - < "$f" \
+              2>&1 | tee -a evidence/hadolint.txt || true
+          done
+
+      # Cada imagen se construye por separado y su resultado queda en el informe. Con
+      # `bash -e`, el primer fallo (apt-get sobre Debian 11, ya sin soporte) cortaba el
+      # paso y las demás imágenes no se llegaban a construir (D2).
+      - name: Construir las imágenes de la línea base
+        continue-on-error: true
+        run: |
+          set +e
+          construir() {
+            echo "── baseline/$1 (target $2, contexto $3) ──" | tee -a evidence/docker-build.txt
+            docker build -t "baseline/$1:scan" --target "$2" "$3" > "$RUNNER_TEMP/build-$1.log" 2>&1
+            codigo=$?
+            tail -25 "$RUNNER_TEMP/build-$1.log" | tee -a evidence/docker-build.txt
+            echo "resultado: exit code $codigo" | tee -a evidence/docker-build.txt
+          }
+          construir api    api    backend
+          construir worker worker backend
+          construir web    web    frontend
+
+      - name: Trivy sobre las imágenes
+        continue-on-error: true
+        run: |
+          for img in api worker web; do
+            echo "── baseline/$img ──" | tee -a evidence/trivy-images.txt
+            if ! docker image inspect "baseline/$img:scan" > /dev/null 2>&1; then
+              echo "sin imagen: la construcción falló (ver docker-build.txt)" | tee -a evidence/trivy-images.txt
+              continue
+            fi
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+              -v "$PWD/evidence:/out" aquasec/trivy:0.56.2 \
+              image --severity HIGH,CRITICAL --format json \
+              --output "/out/trivy-$img.json" "baseline/$img:scan" || true
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+              aquasec/trivy:0.56.2 image --severity HIGH,CRITICAL \
+              "baseline/$img:scan" 2>&1 | tail -20 | tee -a evidence/trivy-images.txt || true
+          done
+
+      # Las imágenes base se escanean por nombre (se descargan del registro): así hay
+      # evidencia de VULN-008, 016, 017/018 y 019 aunque la construcción de la línea base falle.
+      - name: Trivy sobre las imágenes base
+        continue-on-error: true
+        run: |
+          mkdir -p "$RUNNER_TEMP/trivy-cache"
+          imagenes="debian:11-slim golang:1.22-bullseye node:18-bullseye nginx:latest $(grep -E '^[[:space:]]+image:' deploy/docker-compose.yml | awk '{print $2}' | tr '\n' ' ')"
+          for img in $imagenes; do
+            nombre=$(echo "$img" | tr ':/' '__')
+            echo "── $img ──" | tee -a evidence/trivy-base-images.txt
+            docker run --rm -v "$RUNNER_TEMP/trivy-cache:/root/.cache/trivy" -v "$RUNNER_TEMP:/out" \
+              aquasec/trivy:0.56.2 image --scanners vuln --severity HIGH,CRITICAL --format json \
+              --output "/out/trivy-base-$nombre.json" "$img" 2>&1 | tail -3 | tee -a evidence/trivy-base-images.txt
+            if [ -s "$RUNNER_TEMP/trivy-base-$nombre.json" ]; then
+              jq -c '{imagen: "'"$img"'", os: .Metadata.OS, hallazgos: [.Results[]?.Vulnerabilities // [] | .[] | {id: .VulnerabilityID, paquete: .PkgName, instalado: .InstalledVersion, corregido: .FixedVersion, severidad: .Severity}]}' \
+                "$RUNNER_TEMP/trivy-base-$nombre.json" > "evidence/trivy-base-$nombre.json"
+              echo "hallazgos HIGH/CRITICAL: $(jq '.hallazgos | length' "evidence/trivy-base-$nombre.json")" | tee -a evidence/trivy-base-images.txt
+            else
+              echo "sin resultado para $img" | tee -a evidence/trivy-base-images.txt
+            fi
+          done
+
+      - name: Trivy config
+        continue-on-error: true
+        run: |
+          docker run --rm -v "$PWD:/src" aquasec/trivy:0.56.2 \
+            config --severity HIGH,CRITICAL --format json --output /src/evidence/trivy-config.json /src || true
+
+      # ── Resumen ─────────────────────────────────────────────────────────
+      - name: Resumen de hallazgos
+        if: always()
+        env:
+          SCANNED_REF: ${{ inputs.ref || github.ref_name }}
+        run: |
+          {
+            echo "## Inventario de la línea base vulnerable"
+            echo
+            echo "Referencia escaneada: \`$SCANNED_REF\`"
+            echo
+            echo "| Herramienta | Hallazgos |"
+            echo "|---|---|"
+            echo "| Gitleaks | $(jq 'length' evidence/gitleaks.json 2>/dev/null || echo '?') |"
+            echo "| govulncheck | $(grep -c '^Vulnerability #' evidence/govulncheck.txt 2>/dev/null || echo '?') |"
+            echo "| gosec | $(jq '.Issues | length' evidence/gosec.json 2>/dev/null || echo '?') |"
+            echo "| Semgrep | $(jq '.results | length' evidence/semgrep.json 2>/dev/null || echo '?') |"
+            echo "| Trivy — imagen api | $(jq '[.Results[]?.Vulnerabilities // [] | length] | add // 0' evidence/trivy-api.json 2>/dev/null || echo '?') |"
+            echo "| Trivy — imagen web | $(jq '[.Results[]?.Vulnerabilities // [] | length] | add // 0' evidence/trivy-web.json 2>/dev/null || echo '?') |"
+            echo "| Trivy — configuración | $(jq '[.Results[]?.Misconfigurations // [] | length] | add // 0' evidence/trivy-config.json 2>/dev/null || echo '?') |"
+            echo
+            echo "Cada hallazgo debe acabar con su ficha en \`security/findings/\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: evidencia-linea-base
+          path: evidence/
+          retention-days: 90

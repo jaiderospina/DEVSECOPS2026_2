@@ -1,0 +1,1289 @@
+openapi: 3.0.3
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  FUENTE DE VERDAD del contrato HTTP.
+#  De este archivo se genera:
+#    · backend/internal/api/gen.go        (tipos + interfaz del servidor)  oapi-codegen
+#    · frontend/src/api/schema.d.ts       (tipos del cliente)              openapi-typescript
+#  El job `spec-drift` de CI regenera y falla si el resultado difiere.
+#  Se usa 3.0.3 y no 3.1 por compatibilidad con kin-openapi (ver adr/0003).
+# ─────────────────────────────────────────────────────────────────────────────
+
+info:
+  title: Identity Hub API
+  version: 0.1.0
+  description: |
+    Proveedor de identidad: alta administrativa, autenticación, emisión y rotación de
+    tokens, segundo factor, autorización de aplicaciones, control por roles y auditoría.
+
+    Cada operación declara `x-requirement` con el identificador del requisito que
+    implementa (ver specs/01-requirements.md).
+
+    El refresh token viaja exclusivamente en la cookie `refresh_token`, con
+    `HttpOnly`, `Secure`, `SameSite=Strict` y `Path=/api/v1/auth`. Las operaciones
+    de refresh y logout exigen esa cookie y usan `POST`; la renovación devuelve JSON
+    y logout confirma con `204`. El resto de la API usa exclusivamente
+    `Authorization: Bearer`, nunca cookies, por lo que no queda expuesta a CSRF.
+
+    La API de la consola se entrega a través de Nginx y comparte origen. CORS solo se
+    habilita para el origen configurado de Contabilidad en `POST /oauth/token` y en el
+    JWKS, siempre sin credenciales. Los nombres OAuth en `snake_case` son la única
+    excepción intencional a la convención `camelCase`: los define RFC 6749.
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: http://identityhub.localhost:8080
+    description: Desarrollo local, dominio del Hub (a través de Nginx; localhost:8080 también lo sirve)
+
+tags:
+  - name: system
+    description: Sondas de salud y metadatos criptográficos
+  - name: auth
+    description: Operaciones no autenticadas del ciclo de sesión
+  - name: me
+    description: Operaciones del titular sobre su propia cuenta
+  - name: admin
+    description: Operaciones restringidas al rol admin
+
+security:
+  - bearerAuth: []
+
+paths:
+  # ── Sistema ───────────────────────────────────────────────────────────────
+  /healthz:
+    get:
+      operationId: getHealth
+      tags: [system]
+      summary: Sonda de vitalidad
+      security: []
+      responses:
+        '200':
+          description: El proceso está vivo
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/HealthStatus' }
+
+  /readyz:
+    get:
+      operationId: getReadiness
+      tags: [system]
+      summary: Sonda de disponibilidad (comprueba base de datos y broker)
+      security: []
+      responses:
+        '200':
+          description: Todas las dependencias responden
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ReadinessStatus' }
+        '503':
+          description: Alguna dependencia no responde
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ReadinessStatus' }
+
+  /.well-known/jwks.json:
+    get:
+      operationId: getJwks
+      tags: [system]
+      summary: Clave pública para validar los tokens emitidos
+      description: CORS sin credenciales, permitido solo al origen configurado del cliente.
+      x-requirement: RF-004
+      security: []
+      responses:
+        '200':
+          description: Conjunto de claves públicas
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Jwks' }
+
+  # ── Autenticación ─────────────────────────────────────────────────────────
+  /api/v1/auth/invitations/accept:
+    post:
+      operationId: acceptInvitation
+      tags: [auth]
+      summary: Aceptar una invitación y definir la contraseña
+      description: Consume un token de invitación de un solo uso y activa la cuenta.
+      x-requirement: RF-002
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/InvitationAcceptRequest' }
+      responses:
+        '204': { description: Invitación aceptada y cuenta activada }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '410':
+          description: El token expiró o ya fue usado
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+
+  /api/v1/auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Iniciar sesión con correo y contraseña
+      description: |
+        Una contraseña correcta siempre devuelve `202` con un `mfaToken` temporal y
+        envía por correo un código de 6 dígitos. No crea sesión hasta completar MFA.
+        Cada desafío nuevo anula los abiertos de la cuenta; se emiten como máximo 5 por cuenta
+        cada 15 minutos (`429` al superarlo). El código se publica tras confirmar la transacción:
+        si el broker falla, responde `503` y anula ese desafío para que no consuma el límite de emisión (ADR 0006, D16).
+      x-requirement: RF-003
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginRequest' }
+      responses:
+        '202':
+          description: Se requiere segundo factor
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MfaChallenge' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '423':
+          description: Cuenta bloqueada por intentos fallidos
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+        '429':
+          description: Límite de peticiones excedido, o ya se emitieron 5 desafíos MFA para la cuenta en 15 minutos
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+        '503':
+          description: No se pudo enviar el código MFA; el desafío se anula y no consume el límite de emisión
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+
+  /api/v1/auth/mfa/verify:
+    post:
+      operationId: verifyMfa
+      tags: [auth]
+      summary: Canjear el desafío de segundo factor por una sesión
+      x-requirement: RF-014
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MfaVerifyRequest' }
+      responses:
+        '200':
+          description: >
+            Sesión iniciada. Emite dos cookies independientes: el refresh de la consola
+            (`SameSite=Strict`, ADR 0005) y la sesión SSO del Hub (`SameSite=Lax`, ADR 0009),
+            que usa `/oauth/authorize` para no volver a pedir credenciales.
+          headers:
+            Set-Cookie:
+              description: >
+                'refresh_token=<opaco>; HttpOnly; Secure; SameSite=Strict; Path=/api/v1/auth; Max-Age=<vigencia del refresh>'
+                y, en otra cabecera Set-Cookie, 'hub_session=<opaco>; HttpOnly; Secure; SameSite=Lax; Path=/oauth; Max-Age=<vigencia de la sesión SSO>'
+              schema: { type: string }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TokenPair' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/v1/auth/mfa/resend:
+    post:
+      operationId: resendMfaCode
+      tags: [auth]
+      summary: Reenviar el código del desafío MFA
+      description: Anula el código anterior, conserva el desafío y permite un envío cada 60 segundos. Si el broker falla después del commit, restaura el código y `lastSentAt` previos para permitir reintentar sin esperar.
+      x-requirement: RF-014
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MfaResendRequest' }
+      responses:
+        '202': { description: Código anterior anulado y nuevo envío encolado }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503':
+          description: No se pudo enviar el código MFA; se restaura el código anterior y el reintento no espera 60 segundos
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+
+  /api/v1/auth/refresh:
+    post:
+      operationId: refreshSession
+      tags: [auth]
+      summary: Rotar el refresh token y obtener un par nuevo
+      description: |
+        La rotación es obligatoria: el token presentado queda invalidado.
+        Presentar un token ya rotado se interpreta como robo de credencial y
+        revoca la familia de sesiones completa (RF-006).
+      x-requirement: RF-005
+      security: []
+      parameters:
+        - name: refresh_token
+          in: cookie
+          required: true
+          description: Refresh token opaco de la sesión actual.
+          schema: { type: string }
+      responses:
+        '200':
+          description: Par de tokens renovado
+          headers:
+            Set-Cookie:
+              description: 'refresh_token=<opaco>; HttpOnly; Secure; SameSite=Strict; Path=/api/v1/auth; Max-Age=<vigencia del refresh>'
+              schema: { type: string }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TokenPair' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/v1/auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Revocar el refresh token de la sesión actual
+      x-requirement: RF-007
+      security: []
+      parameters:
+        - name: refresh_token
+          in: cookie
+          required: true
+          description: Refresh token opaco de la sesión actual.
+          schema: { type: string }
+      responses:
+        '204':
+          description: Sesión cerrada
+          headers:
+            Set-Cookie:
+              description: 'refresh_token=; HttpOnly; Secure; SameSite=Strict; Path=/api/v1/auth; Max-Age=0'
+              schema: { type: string }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/v1/auth/password-reset/request:
+    post:
+      operationId: requestPasswordReset
+      tags: [auth]
+      summary: Solicitar un enlace de restablecimiento
+      description: Responde `202` exista o no la cuenta, para no revelar qué correos están registrados.
+      x-requirement: RF-015
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/EmailRequest' }
+      responses:
+        '202': { description: 'Si la cuenta existe, se envió el correo' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503':
+          description: El servicio de restablecimiento no está disponible
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+
+  /api/v1/auth/password-reset/confirm:
+    post:
+      operationId: confirmPasswordReset
+      tags: [auth]
+      summary: Fijar una contraseña nueva con el token recibido
+      x-requirement: RF-015
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PasswordResetConfirmRequest' }
+      responses:
+        '204': { description: Contraseña actualizada y sesiones revocadas; el aviso por correo se publica tras confirmar y un fallo del broker no cambia el resultado (D16) }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '410':
+          description: El token expiró o ya fue usado
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+
+  # ── OAuth 2.0 para aplicaciones cliente ──────────────────────────────────
+  /oauth/authorize:
+    get:
+      operationId: authorizeClient
+      tags: [auth]
+      summary: Autorizar al cliente mediante Authorization Code con PKCE
+      description: |
+        Valida que el cliente esté registrado en `applications`, la coincidencia exacta de `redirect_uri`, `state`
+        obligatorio y PKCE S256. Si existe la cookie SSO del Hub (`HttpOnly`, `Secure`,
+        `SameSite=Lax`) no vuelve a pedir contraseña. Sin sesión SSO
+        válida responde `302` al login del Hub con `continue` = la ruta relativa de esta misma
+        petición; el login solo acepta `continue` si es una ruta relativa que empieza por
+        `/oauth/authorize` (nunca una URL absoluta ni `//host`, para evitar redirección abierta)
+        y vuelve a ella tras completar el MFA. Los errores con una URI validada se
+        devuelven por redirección según RFC 6749 §4.1.2.1. Si el usuario autenticado pertenece a una
+        empresa distinta de la de la aplicación, o no tiene ningún rol de ella, no se emite código:
+        responde `302` a la `redirect_uri` registrada con `error=access_denied` y el `state` original, y
+        registra el evento de auditoría `oauth_authorization_rejected` (ADR 0015). No se habilita CORS aquí.
+        Los parámetros en `snake_case` son nombres de protocolo definidos por RFC 6749.
+      x-requirement: RF-020
+      security: []
+      parameters:
+        - name: client_id
+          in: query
+          required: true
+          schema: { type: string }
+        - name: redirect_uri
+          in: query
+          required: true
+          schema: { type: string, format: uri }
+        - name: response_type
+          in: query
+          required: true
+          schema: { type: string, enum: [code] }
+        - name: state
+          in: query
+          required: true
+          schema: { type: string, minLength: 1 }
+        - name: code_challenge
+          in: query
+          required: true
+          schema: { type: string, minLength: 43, maxLength: 128 }
+        - name: code_challenge_method
+          in: query
+          required: true
+          schema: { type: string, enum: [S256] }
+      responses:
+        '302':
+          description: Redirección al cliente con `code` y `state`, o con `error` y el mismo `state`.
+          headers:
+            Location:
+              required: true
+              schema: { type: string, format: uri }
+        '400':
+          description: Petición inválida que no puede redirigirse de forma segura.
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+
+  /oauth/token:
+    post:
+      operationId: exchangeAuthorizationCode
+      tags: [auth]
+      summary: Canjear un código de autorización por un access token
+      description: |
+        Acepta exclusivamente `application/x-www-form-urlencoded`. CORS se permite sin
+        credenciales y solo para el origen configurado del cliente. No emite refresh token.
+        Los campos en `snake_case` son nombres de protocolo definidos por RFC 6749.
+      x-requirement: RF-020
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema: { $ref: '#/components/schemas/OAuthTokenRequest' }
+      responses:
+        '200':
+          description: Access token dirigido al cliente
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OAuthTokenResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+
+  # ── Titular ───────────────────────────────────────────────────────────────
+  /api/v1/me:
+    get:
+      operationId: getCurrentUser
+      tags: [me]
+      summary: Perfil del usuario autenticado
+      x-requirement: RF-008
+      responses:
+        '200':
+          description: Perfil
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    patch:
+      operationId: updateCurrentUser
+      tags: [me]
+      summary: Actualizar el perfil propio
+      x-requirement: RF-008
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UpdateProfileRequest' }
+      responses:
+        '200':
+          description: Perfil actualizado
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/v1/me/applications:
+    get:
+      operationId: listMyApplications
+      tags: [me]
+      summary: Aplicaciones de la empresa del titular en las que tiene algún rol
+      description: |
+        Devuelve las aplicaciones de la empresa del usuario autenticado en las que tiene al menos un
+        rol, con la URL de lanzamiento (el origen registrado). Un usuario sin roles de aplicación recibe
+        una lista vacía (RF-022).
+      x-requirement: RF-022
+      responses:
+        '200':
+          description: Aplicaciones disponibles para el titular
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/UserApplication' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/v1/me/sessions:
+    get:
+      operationId: listSessions
+      tags: [me]
+      summary: Sesiones activas del titular
+      x-requirement: RF-016
+      responses:
+        '200':
+          description: Listado de sesiones
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Session' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/v1/me/sessions/{sessionId}:
+    delete:
+      operationId: revokeSession
+      tags: [me]
+      summary: Revocar una sesión concreta
+      x-requirement: RF-016
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '204': { description: Sesión revocada }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  # ── Administración ────────────────────────────────────────────────────────
+  /api/v1/admin/users:
+    post:
+      operationId: createEmployee
+      tags: [admin]
+      summary: Dar de alta a un empleado y enviar su invitación
+      description: |
+        La cuenta pertenece a la empresa indicada en `organizationId` (obligatorio). Un rol de una
+        aplicación de otra empresa se rechaza con `400` y queda auditado como `role_assignment_rejected`
+        (RF-022).
+      x-requirement: RF-001
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AdminCreateUserRequest' }
+      responses:
+        '201':
+          description: Cuenta creada en estado pending_verification
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409':
+          description: El correo ya está registrado
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+    get:
+      operationId: listUsers
+      tags: [admin]
+      summary: Listar y buscar cuentas de una empresa
+      description: Devuelve solo las cuentas de la empresa indicada (RF-022).
+      x-requirement: RF-010
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/Query'
+        - $ref: '#/components/parameters/Status'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Cursor'
+      responses:
+        '200':
+          description: Página de cuentas
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/UserPage' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/v1/admin/users/{userId}:
+    get:
+      operationId: getUser
+      tags: [admin]
+      summary: Consultar una cuenta
+      x-requirement: RF-010
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Cuenta
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      operationId: updateUser
+      tags: [admin]
+      summary: Cambiar el estado o los roles de una cuenta
+      description: |
+        Un administrador no puede deshabilitarse ni asignarse roles a sí mismo (invariantes 6 y 11).
+        Un rol de una aplicación de otra empresa que la del usuario se rechaza con `400` y queda
+        auditado como `role_assignment_rejected` (RF-022).
+      x-requirement: RF-010
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AdminUpdateUserRequest' }
+      responses:
+        '200':
+          description: Cuenta actualizada
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/v1/admin/users/{userId}/invitation:
+    post:
+      operationId: resendInvitation
+      tags: [admin]
+      summary: Reenviar la invitación de una cuenta pendiente
+      description: Anula invitaciones anteriores y envía un enlace nuevo que vence en 24 horas.
+      x-requirement: RF-001
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '204': { description: Invitación reenviada }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: La cuenta no está pendiente de verificación
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+
+  /api/v1/admin/audit-log:
+    get:
+      operationId: listAuditLog
+      tags: [admin]
+      summary: Consultar el registro de auditoría
+      description: |
+        Acepta el access token de un administrador o una clave de servicio con el alcance
+        `audit-log:read` (RF-018). Una clave inválida, expirada o revocada devuelve el mismo `401`.
+      x-requirement: RF-011
+      security:
+        - bearerAuth: []
+        - serviceKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Action'
+        - $ref: '#/components/parameters/ActorId'
+        - $ref: '#/components/parameters/Since'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Cursor'
+      responses:
+        '200':
+          description: Página de eventos
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuditLogPage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/v1/admin/audit-log/export:
+    get:
+      operationId: exportAuditLog
+      tags: [admin]
+      summary: Exportar el registro de auditoría filtrado en CSV o JSON
+      description: |
+        Aplica los mismos filtros que el listado y devuelve como máximo 10 000 eventos, del más reciente
+        al más antiguo, como descarga (Content-Disposition: attachment). Si había más, la cabecera
+        X-Export-Truncated vale true. Las celdas CSV que empiezan por = + - @, tabulador o retorno de carro
+        se neutralizan con una comilla simple (inyección de fórmulas). La exportación queda registrada
+        en el propio registro de auditoría (audit_log_exported) con el formato y los filtros usados.
+      x-requirement: RF-019
+      parameters:
+        - $ref: '#/components/parameters/ExportFormat'
+        - $ref: '#/components/parameters/Action'
+        - $ref: '#/components/parameters/ActorId'
+        - $ref: '#/components/parameters/Since'
+      responses:
+        '200':
+          description: Archivo con los eventos filtrados
+          headers:
+            Content-Disposition:
+              description: attachment con un nombre que incluye la marca de tiempo
+              schema: { type: string }
+            X-Export-Truncated:
+              description: "true si el filtro tenía más de 10 000 eventos y la exportación se recortó"
+              schema: { type: string, enum: ['true', 'false'] }
+          content:
+            text/csv:
+              schema: { type: string }
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/AuditEvent' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/v1/admin/organizations:
+    get:
+      operationId: listOrganizations
+      tags: [admin]
+      summary: Listar las empresas que atiende el Hub
+      description: |
+        Incluye la empresa operadora `hub` (marcada con `operator: true`), a la que pertenecen los
+        administradores globales. La consola la usa para el selector de empresa (RF-022).
+      x-requirement: RF-022
+      responses:
+        '200':
+          description: Empresas ordenadas por nombre
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Organization' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/v1/admin/applications:
+    get:
+      operationId: listApplications
+      tags: [admin]
+      summary: Listar las aplicaciones, permisos y roles configurables de una empresa
+      description: Devuelve solo las aplicaciones (y sus roles) de la empresa indicada (RF-022).
+      x-requirement: RF-021
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      responses:
+        '200':
+          description: Aplicaciones con su catálogo declarativo
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Application' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/v1/admin/applications/{applicationId}/roles:
+    get:
+      operationId: listApplicationRoles
+      tags: [admin]
+      x-requirement: RF-021
+      parameters: [{ $ref: '#/components/parameters/ApplicationId' }]
+      responses:
+        '200':
+          description: Roles configurables de la aplicación
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/ApplicationRole' } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    post:
+      operationId: createApplicationRole
+      tags: [admin]
+      x-requirement: RF-021
+      parameters: [{ $ref: '#/components/parameters/ApplicationId' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreateApplicationRoleRequest' } } }
+      responses:
+        '201': { description: Rol creado, content: { application/json: { schema: { $ref: '#/components/schemas/ApplicationRole' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: Ya existe un rol con ese nombre
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+
+  /api/v1/admin/applications/{applicationId}/roles/{roleId}:
+    patch:
+      operationId: updateApplicationRole
+      tags: [admin]
+      summary: Actualizar descripción o permisos de un rol (no admite renombrar)
+      description: |
+        El nombre no se puede cambiar. Un administrador no puede cambiar los permisos de un rol que él tiene (403).
+      x-requirement: RF-021
+      parameters: [{ $ref: '#/components/parameters/ApplicationId' }, { $ref: '#/components/parameters/RoleId' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/UpdateApplicationRoleRequest' } } }
+      responses:
+        '200': { description: Rol actualizado, content: { application/json: { schema: { $ref: '#/components/schemas/ApplicationRole' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403':
+          description: Quien llama no es administrador, o es un administrador que intenta cambiar o eliminar un rol que él tiene, o el rol es de sistema (admin, user)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      operationId: deleteApplicationRole
+      tags: [admin]
+      summary: Eliminar un rol de aplicación sin asignaciones
+      description: Un administrador no puede eliminar un rol que él tiene (403, se evalúa antes que las asignaciones); un rol asignado devuelve 409.
+      x-requirement: RF-021
+      parameters: [{ $ref: '#/components/parameters/ApplicationId' }, { $ref: '#/components/parameters/RoleId' }]
+      responses:
+        '204': { description: Rol eliminado }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403':
+          description: Quien llama no es administrador, o es un administrador que intenta cambiar o eliminar un rol que él tiene, o el rol es de sistema (admin, user)
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: El rol tiene asignaciones activas
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+
+  /api/v1/admin/service-keys:
+    get:
+      operationId: listServiceKeys
+      tags: [admin]
+      summary: Listar las claves de servicio (solo metadatos)
+      description: Nunca devuelve el secreto ni su hash.
+      x-requirement: RF-018
+      responses:
+        '200':
+          description: Claves de servicio, las más recientes primero
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/ServiceKey' } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    post:
+      operationId: createServiceKey
+      tags: [admin]
+      summary: Emitir una clave de servicio
+      description: |
+        Devuelve la clave completa una sola vez; no se puede recuperar después. Solo un
+        administrador con access token puede emitirla (una clave de servicio no emite claves).
+      x-requirement: RF-018
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreateServiceKeyRequest' } } }
+      responses:
+        '201':
+          description: Clave emitida; `key` solo aparece en esta respuesta
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CreatedServiceKey' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/v1/admin/service-keys/{serviceKeyId}:
+    delete:
+      operationId: revokeServiceKey
+      tags: [admin]
+      summary: Revocar una clave de servicio
+      description: Revocación lógica e idempotente; revocar una clave ya revocada también devuelve 204.
+      x-requirement: RF-018
+      parameters: [{ $ref: '#/components/parameters/ServiceKeyId' }]
+      responses:
+        '204': { description: Clave revocada }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Access token Ed25519. Validar contra el JWKS; se rechaza cualquier `alg` distinto de `EdDSA`.
+    serviceKeyAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: ihk_<publicId>_<secret>
+      description: |
+        Clave de servicio de RF-018 (`Authorization: Bearer ihk_<publicId>_<secret>`). Solo la
+        aceptan las operaciones que la declaran en `security` y exigen su alcance (hoy,
+        `audit-log:read` en `listAuditLog`); el resto responde 401.
+
+  parameters:
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    RoleId:
+      name: roleId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    ServiceKeyId:
+      name: serviceKeyId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    UserId:
+      name: userId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    SessionId:
+      name: sessionId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    OrganizationId:
+      name: organizationId
+      in: query
+      required: false
+      description: |
+        Empresa a la que se acota el listado (RF-022). El servidor lo exige (UUID de una empresa): sin él, o
+        mal formado, responde 400, pero solo después de autenticar y comprobar el rol admin (401/403 primero).
+        Por eso el contrato lo declara opcional: así el binding no valida antes que la autorización.
+      schema: { type: string }
+    Query:
+      name: q
+      in: query
+      description: Búsqueda parcial por correo o nombre
+      schema: { type: string, maxLength: 200 }
+    Status:
+      name: status
+      in: query
+      schema: { $ref: '#/components/schemas/UserStatus' }
+    Action:
+      name: action
+      in: query
+      schema: { type: string, maxLength: 100 }
+    ActorId:
+      name: actorId
+      in: query
+      schema: { type: string, format: uuid }
+    Since:
+      name: since
+      in: query
+      schema: { type: string, format: date-time }
+    ExportFormat:
+      name: format
+      in: query
+      required: true
+      schema: { type: string, enum: [csv, json] }
+    Limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 25 }
+    Cursor:
+      name: cursor
+      in: query
+      schema: { type: string, maxLength: 500 }
+
+  responses:
+    BadRequest:
+      description: Petición mal formada o que no supera la validación
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    Unauthorized:
+      description: Credenciales ausentes, inválidas o expiradas
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    Forbidden:
+      description: Autenticado pero sin permiso para este recurso
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    NotFound:
+      description: El recurso no existe
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    TooManyRequests:
+      description: Límite de peticiones excedido
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+
+  schemas:
+    Problem:
+      type: object
+      description: Error en formato RFC 7807. Nunca revela si un correo está registrado.
+      required: [type, title, status]
+      properties:
+        type:     { type: string, format: uri, example: 'https://identity.local/problems/invalid-credentials' }
+        title:    { type: string, example: 'Credenciales inválidas' }
+        status:   { type: integer, example: 401 }
+        detail:   { type: string }
+        instance: { type: string }
+        errors:
+          type: array
+          description: Detalle por campo en errores de validación
+          items:
+            type: object
+            required: [field, message]
+            properties:
+              field:   { type: string }
+              message: { type: string }
+
+    HealthStatus:
+      type: object
+      required: [status, version]
+      properties:
+        status:  { type: string, enum: [ok] }
+        version: { type: string }
+
+    ReadinessStatus:
+      type: object
+      required: [status, checks]
+      properties:
+        status: { type: string, enum: [ready, degraded] }
+        checks:
+          type: object
+          additionalProperties:
+            type: object
+            required: [status]
+            properties:
+              status: { type: string, enum: [up, down] }
+              error:  { type: string }
+
+    Jwks:
+      type: object
+      required: [keys]
+      properties:
+        keys:
+          type: array
+          items:
+            type: object
+            required: [kty, crv, x, kid, use, alg]
+            properties:
+              kty: { type: string, example: OKP }
+              crv: { type: string, example: Ed25519 }
+              x:   { type: string, description: Clave pública en base64url }
+              kid: { type: string }
+              use: { type: string, example: sig }
+              alg: { type: string, example: EdDSA }
+
+    UserStatus:
+      type: string
+      enum: [pending_verification, active, locked, disabled]
+
+    Role:
+      type: string
+      minLength: 3
+      maxLength: 127
+      pattern: '^(admin|user|[a-z][a-z0-9_-]{0,62}\.[a-z][a-z0-9_-]{0,62})$'
+      description: Rol de directorio (`admin` o `user`) o rol configurable `<aplicacion>.<nombre>`.
+      "x-requirement": RF-021
+
+    ApplicationRoleName:
+      type: string
+      minLength: 4
+      maxLength: 127
+      pattern: '^[a-z0-9][a-z0-9_-]*\.[a-z0-9][a-z0-9_-]{1,40}$'
+      description: |
+        Rol configurable exclusivo de una aplicación, con la forma `<client_id>.<nombre>`. El patrón solo
+        comprueba esa forma genérica; el servidor exige además que el prefijo sea exactamente el client_id
+        de la aplicación y que el nombre cumpla `^[a-z0-9][a-z0-9_-]{1,40}$`.
+    Organization:
+      type: object
+      required: [id, slug, name, operator]
+      properties:
+        id: { type: string, format: uuid }
+        slug: { type: string, example: contabilidad-sa }
+        name: { type: string, example: Contabilidad S.A. }
+        operator: { type: boolean, description: Verdadero solo para la empresa operadora del Hub. }
+    UserApplication:
+      type: object
+      required: [clientId, name, launchUrl]
+      properties:
+        clientId: { type: string, example: contabilidad }
+        name: { type: string, example: Contabilidad }
+        launchUrl: { type: string, format: uri, description: Origen registrado de la aplicación., example: 'http://contabilidad.localhost:8080' }
+    Permission:
+      type: object
+      required: [key, description]
+      properties:
+        key: { type: string, example: movimientos.ver_todos }
+        description: { type: string, example: Ver todos los movimientos contables }
+    Application:
+      type: object
+      required: [id, clientId, name, permissions, roles]
+      properties:
+        id: { type: string, format: uuid }
+        clientId: { type: string, example: contabilidad }
+        name: { type: string, example: Contabilidad }
+        permissions: { type: array, items: { $ref: '#/components/schemas/Permission' } }
+        roles: { type: array, items: { $ref: '#/components/schemas/ApplicationRole' } }
+    ApplicationRole:
+      type: object
+      required: [id, name, description, applicationId, permissionKeys, system, assignedCount]
+      properties:
+        id: { type: string, format: uuid }
+        name: { $ref: '#/components/schemas/ApplicationRoleName', example: contabilidad.auditor }
+        description: { type: string }
+        applicationId: { type: string, format: uuid }
+        permissionKeys: { type: array, items: { type: string } }
+        system: { type: boolean }
+        assignedCount: { type: integer, minimum: 0, description: Usuarios que tienen asignado el rol. }
+    CreateApplicationRoleRequest:
+      type: object
+      required: [name, permissionKeys]
+      properties:
+        name:
+          allOf:
+            - $ref: '#/components/schemas/ApplicationRoleName'
+          description: El prefijo debe ser igual al client_id de la aplicación (`<client_id>.<nombre>`) y el nombre cumple `^[a-z0-9][a-z0-9_-]{1,40}$`; de lo contrario, 400.
+          example: contabilidad.auditor
+        description: { type: string, maxLength: 500 }
+        permissionKeys: { type: array, uniqueItems: true, items: { type: string } }
+    UpdateApplicationRoleRequest:
+      type: object
+      description: El nombre de un rol no se puede cambiar; solo descripción y permisos.
+      properties:
+        description: { type: string, maxLength: 500 }
+        permissionKeys: { type: array, uniqueItems: true, items: { type: string } }
+
+    ServiceKeyScope:
+      type: string
+      description: Lista cerrada de alcances. Hoy solo `audit-log:read`.
+      enum: [audit-log:read]
+    CreateServiceKeyRequest:
+      type: object
+      required: [name, scopes, expiresInDays]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 100, example: SIEM de seguridad }
+        scopes:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items: { $ref: '#/components/schemas/ServiceKeyScope' }
+        expiresInDays: { type: integer, minimum: 1, maximum: 365 }
+    ServiceKey:
+      type: object
+      description: Metadatos de una clave de servicio. Nunca incluye el secreto ni su hash.
+      required: [id, name, scopes, prefix, createdAt, createdBy, expiresAt]
+      properties:
+        id:         { type: string, format: uuid }
+        name:       { type: string }
+        scopes:     { type: array, items: { $ref: '#/components/schemas/ServiceKeyScope' } }
+        prefix:     { type: string, description: 'Parte pública de la clave (`ihk_<publicId>`); sirve para identificarla',
+                  example: ihk_3f9a1c07d2b84e65 }
+        createdAt:  { type: string, format: date-time }
+        createdBy:  { type: string, format: uuid, nullable: true }
+        expiresAt:  { type: string, format: date-time }
+        lastUsedAt: { type: string, format: date-time, nullable: true }
+        revokedAt:  { type: string, format: date-time, nullable: true }
+    CreatedServiceKey:
+      description: Metadatos más la clave completa, que se muestra una sola vez.
+      allOf:
+        - $ref: '#/components/schemas/ServiceKey'
+        - type: object
+          required: [key]
+          properties:
+            key: { type: string, description: 'Clave completa `ihk_<publicId>_<secret>`; no se puede recuperar después' }
+
+    User:
+      type: object
+      required: [id, email, displayName, status, roles, mfaEnabled, createdAt]
+      properties:
+        id:          { type: string, format: uuid }
+        email:       { type: string, format: email }
+        displayName: { type: string }
+        status:      { $ref: '#/components/schemas/UserStatus' }
+        roles:
+          type: array
+          items: { $ref: '#/components/schemas/Role' }
+        mfaEnabled:  { type: boolean, description: Siempre verdadero para cuentas activas; no requiere enrolamiento }
+        createdAt:   { type: string, format: date-time }
+        lastLoginAt: { type: string, format: date-time, nullable: true }
+
+    UserPage:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/User' }
+        nextCursor: { type: string, nullable: true }
+
+    AdminCreateUserRequest:
+      type: object
+      required: [email, displayName, roles, organizationId]
+      properties:
+        email:       { type: string, format: email, maxLength: 254 }
+        displayName: { type: string, minLength: 1, maxLength: 100 }
+        organizationId: { type: string, format: uuid, description: Empresa de la cuenta nueva (RF-022). }
+        roles:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items: { $ref: '#/components/schemas/Role' }
+
+    InvitationAcceptRequest:
+      allOf:
+        - $ref: '#/components/schemas/TokenRequest'
+        - type: object
+          required: [password]
+          properties:
+            password: { type: string, minLength: 12, maxLength: 128, format: password }
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:    { type: string, format: email }
+        password: { type: string, format: password }
+
+    TokenPair:
+      type: object
+      required: [accessToken, tokenType, expiresIn]
+      properties:
+        accessToken:  { type: string, description: JWT Ed25519 }
+        tokenType:    { type: string, enum: [Bearer] }
+        expiresIn:    { type: integer, description: 'Segundos de vigencia del access token', example: 900 }
+
+    MfaChallenge:
+      type: object
+      required: [mfaToken, expiresIn]
+      properties:
+        mfaToken:  { type: string, description: 'Token de un solo uso, vigente 5 minutos' }
+        expiresIn: { type: integer, example: 300 }
+
+    MfaVerifyRequest:
+      type: object
+      required: [mfaToken, code]
+      properties:
+        mfaToken: { type: string }
+        code:
+          type: string
+          description: Código de un solo uso enviado por correo
+          minLength: 6
+          maxLength: 6
+          pattern: '^[0-9]{6}$'
+
+    MfaResendRequest:
+      type: object
+      required: [mfaToken]
+      properties:
+        mfaToken: { type: string }
+
+    TokenRequest:
+      type: object
+      required: [token]
+      properties:
+        token: { type: string }
+
+    EmailRequest:
+      type: object
+      required: [email]
+      properties:
+        email: { type: string, format: email }
+
+    PasswordResetConfirmRequest:
+      type: object
+      required: [token, password]
+      properties:
+        token:    { type: string }
+        password: { type: string, minLength: 12, maxLength: 128, format: password }
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        displayName: { type: string, minLength: 1, maxLength: 100 }
+
+    AdminUpdateUserRequest:
+      type: object
+      properties:
+        status: { $ref: '#/components/schemas/UserStatus' }
+        roles:
+          type: array
+          items: { $ref: '#/components/schemas/Role' }
+
+    OAuthTokenRequest:
+      type: object
+      required: [grant_type, code, redirect_uri, client_id, code_verifier]
+      properties:
+        grant_type:   { type: string, enum: [authorization_code] }
+        code:         { type: string }
+        redirect_uri: { type: string, format: uri }
+        client_id:    { type: string }
+        code_verifier: { type: string, minLength: 43, maxLength: 128 }
+
+    OAuthTokenResponse:
+      type: object
+      required: [access_token, token_type, expires_in]
+      properties:
+        access_token: { type: string, description: JWT Ed25519 con `aud` del cliente y solo sus roles }
+        token_type:   { type: string, enum: [Bearer] }
+        expires_in:   { type: integer, example: 900 }
+
+    Session:
+      type: object
+      required: [id, ip, userAgent, createdAt, lastUsedAt, current]
+      properties:
+        id:         { type: string, format: uuid }
+        ip:         { type: string }
+        userAgent:  { type: string }
+        createdAt:  { type: string, format: date-time }
+        lastUsedAt: { type: string, format: date-time }
+        current:    { type: boolean, description: Indica si es la sesión desde la que se consulta }
+
+    AuditEvent:
+      type: object
+      required: [id, action, createdAt]
+      properties:
+        id:           { type: integer, format: int64 }
+        actorUserId:  { type: string, format: uuid, nullable: true }
+        action:       { type: string, example: login_failed }
+        resourceType: { type: string, nullable: true }
+        resourceId:   { type: string, nullable: true }
+        ip:           { type: string, nullable: true }
+        userAgent:    { type: string, nullable: true }
+        metadata:     { type: object, additionalProperties: true }
+        createdAt:    { type: string, format: date-time }
+
+    AuditLogPage:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/AuditEvent' }
+        nextCursor: { type: string, nullable: true }

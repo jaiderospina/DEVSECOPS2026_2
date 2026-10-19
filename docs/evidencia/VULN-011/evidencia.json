@@ -1,0 +1,30 @@
+{
+  "vuln": "VULN-011",
+  "gate": [],
+  "antes": {
+    "commit_linea_base": "053e15fb27b1aaf974c7c818108eee64628973e9",
+    "commit_main": null,
+    "workflow": "Escaneo de la línea base",
+    "run_id": "35476102444",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/35476102444",
+    "artefacto": "security/evidence/actions-35476102444/hadolint.txt",
+    "captura": null,
+    "observacion": "Ningún gate lo detecta: backend/Dockerfile:44 contiene ADD https://raw.githubusercontent.com/..., pero Hadolint v2.12.0 no emite DL3020 (D4) para un ADD con URL y Trivy config no lo señala."
+  },
+  "remediacion": {
+    "tarea": "T27",
+    "commit": "a0c64d6",
+    "ficha": "security/findings/VULN-011-add-desde-url-remota.md"
+  },
+  "despues": {
+    "commit": "a2b57e2",
+    "workflow": null,
+    "run_id": null,
+    "run_url": null,
+    "captura": null,
+    "hallazgos": [
+      "backend/Dockerfile ya no tiene ninguna instrucción ADD: se eliminó por completo, sin reemplazo (diff del commit a0c64d6)"
+    ],
+    "observacion": "Sigue sin gate que lo detecte (ni antes ni después); evidencia por diff del commit, igual que VULN-005/006/007 en T23. Sin gate de CI: la evidencia después es el diff del commit de remediación; run_url se mantiene en null."
+  }
+}

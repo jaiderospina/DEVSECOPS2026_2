@@ -1,0 +1,37 @@
+{
+  "vuln": "VULN-012",
+  "gate": [
+    "Gitleaks (baseline-scan)",
+    "Trivy config DS031"
+  ],
+  "antes": {
+    "commit_linea_base": "053e15fb27b1aaf974c7c818108eee64628973e9",
+    "commit_main": null,
+    "workflow": "Escaneo de la línea base",
+    "run_id": "35476102444",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/35476102444",
+    "artefacto": "security/evidence/actions-35476102444/gitleaks.redacted.json",
+    "captura": "informe Desktop §3 VULN-012",
+    "hallazgos": [
+      "Gitleaks: 3 hallazgos contrasena-en-variable-de-entorno en backend/Dockerfile líneas 48, 49 y 64",
+      "Trivy config DS031 CRITICAL en backend/Dockerfile: Secrets passed via build-args or envs or copied secret files"
+    ],
+    "observacion": "Desktop no encontró el componente Trivy en el log de texto; existe en trivy-config.json (DS031), versionado en el repo."
+  },
+  "remediacion": {
+    "tarea": "T26",
+    "commit": "afab4e9",
+    "ficha": "security/findings/VULN-012-secreto-en-env.md"
+  },
+  "despues": {
+    "commit": "59cf8cff8d25776f3cc558e6cd41da29949ef064",
+    "workflow": "CI",
+    "run_id": "36283211113",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/36283211113",
+    "captura": "informe Desktop, seccion VULN-012 despues",
+    "hallazgos": [
+      "Job \"3 · Secretos en el historial\" (108518929834): gitleaks detect sobre 143 commits: \"no leaks found\""
+    ],
+    "observacion": "Los ENV con secretos se eliminaron por completo del Dockerfile en T27; ya no hay nada que Gitleaks ni Trivy config puedan marcar ahí. Referencia al run parcial anterior 36259385478: se reemplaza por el run verde 36283211113. Run verde 36283211113 (workflow_dispatch, feat/idp-semana-2, commit 59cf8cff, 13/13 jobs): Gitleaks no encontró filtraciones."
+  }
+}

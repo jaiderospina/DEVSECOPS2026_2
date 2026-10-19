@@ -1,0 +1,35 @@
+{
+  "vuln": "VULN-022",
+  "gate": [
+    "govulncheck (baseline-scan)"
+  ],
+  "antes": {
+    "commit_linea_base": "053e15fb27b1aaf974c7c818108eee64628973e9",
+    "commit_main": null,
+    "workflow": "Escaneo de la línea base",
+    "run_id": "35476102444",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/35476102444",
+    "artefacto": "security/evidence/actions-35476102444/govulncheck.txt",
+    "captura": "informe Desktop §3 VULN-022",
+    "hallazgos": [
+      "GO-2024-2606 (#33) en github.com/jackc/pgx/v5@v5.5.1, traza en internal/store/store.go:36 y :57"
+    ],
+    "observacion": "Idéntico en el job 5 del CI (run 35473988275, main 9f04fec), según Desktop."
+  },
+  "remediacion": {
+    "tarea": "T24",
+    "commit": "001a489",
+    "ficha": "security/findings/VULN-022-pgx-sql-injection.md"
+  },
+  "despues": {
+    "commit": "59cf8cff8d25776f3cc558e6cd41da29949ef064",
+    "workflow": "CI",
+    "run_id": "36283211113",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/36283211113",
+    "captura": "informe Desktop, seccion VULN-022 despues",
+    "hallazgos": [
+      "Job \"5 · Dependencias vulnerables\" (108518929566), govulncheck: \"No vulnerabilities found\"; affected 0, imported 0, required modules uncalled 1."
+    ],
+    "observacion": "Texto literal de Desktop (job 108452162164). El job sigue en rojo en general por el paso npm audit (VULN-025, gap ya documentado de T25), no por Go. Referencia al run parcial anterior 36259385478: se reemplaza por el run verde 36283211113. Run verde 36283211113 (workflow_dispatch, feat/idp-semana-2, commit 59cf8cff, 13/13 jobs): govulncheck no encontró vulnerabilidades."
+  }
+}

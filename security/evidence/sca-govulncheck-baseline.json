@@ -1,0 +1,2628 @@
+{
+  "_nota": "Solo los hallazgos ALCANZABLES. La base de avisos completa se omite; se regenera con: govulncheck -format json ./...",
+  "generado": "2026-09-05",
+  "referencia": "v0.0.0-vuln-baseline",
+  "hallazgos": [
+    {
+      "osv": "GO-2026-5970",
+      "fixed_version": "v0.39.0",
+      "trace": [
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/unicode/norm",
+          "function": "Span",
+          "receiver": "Form",
+          "position": {
+            "filename": "unicode/norm/normalize.go",
+            "offset": 6950,
+            "line": 274,
+            "column": 15
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "apply",
+          "receiver": "*buffers",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 3581,
+            "line": 125,
+            "column": 18
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "enforce",
+          "receiver": "*buffers",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 4475,
+            "line": 161,
+            "column": 20
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "processBytes",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 6594,
+            "line": 252,
+            "column": 23
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "Bytes",
+          "receiver": "*Profile",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 6894,
+            "line": 266,
+            "column": 21
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "newScramClient",
+          "position": {
+            "filename": "pgconn/auth_scram.go",
+            "offset": 3534,
+            "line": 143,
+            "column": 46
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "scramAuth",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/auth_scram.go",
+            "offset": 759,
+            "line": 34,
+            "column": 27
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "connect",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 12481,
+            "line": 366,
+            "column": 26
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 6368,
+            "line": 170,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "connect",
+          "position": {
+            "filename": "conn.go",
+            "offset": 9345,
+            "line": 257,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "conn.go",
+            "offset": 5165,
+            "line": 141,
+            "column": 16
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 7080,
+            "line": 216,
+            "column": 35
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "CreateResource",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 18816,
+            "line": 628,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14538,
+            "line": 479,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14498,
+            "line": 478,
+            "column": 3
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$3",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8128,
+            "line": 263,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8093,
+            "line": 262,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "New",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1088,
+            "line": 36,
+            "column": 36
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 4923,
+            "line": 130,
+            "column": 6
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "connect",
+          "position": {
+            "filename": "conn.go",
+            "offset": 9345,
+            "line": 257,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "conn.go",
+            "offset": 5165,
+            "line": 141,
+            "column": 16
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 7080,
+            "line": 216,
+            "column": 35
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "CreateResource",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 18816,
+            "line": 628,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14538,
+            "line": 479,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14498,
+            "line": 478,
+            "column": 3
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$3",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8128,
+            "line": 263,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8093,
+            "line": 262,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "New",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1088,
+            "line": 36,
+            "column": 36
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgproto3",
+          "function": "SendExecute",
+          "receiver": "*Frontend",
+          "position": {
+            "filename": "pgproto3/frontend.go",
+            "offset": 5263,
+            "line": 161,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "execExtendedSuffix",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 38491,
+            "line": 1179,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ExecParams",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 36278,
+            "line": 1112,
+            "column": 27
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ValidateConnectTargetSessionAttrsReadWrite",
+          "position": {
+            "filename": "pgconn/config.go",
+            "offset": 25467,
+            "line": 815,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "connect",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 13334,
+            "line": 387,
+            "column": 34
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 6368,
+            "line": 170,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "connect",
+          "position": {
+            "filename": "conn.go",
+            "offset": 9345,
+            "line": 257,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "conn.go",
+            "offset": 5165,
+            "line": 141,
+            "column": 16
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 7080,
+            "line": 216,
+            "column": 35
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "CreateResource",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 18816,
+            "line": 628,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14538,
+            "line": 479,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14498,
+            "line": 478,
+            "column": 3
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$3",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8128,
+            "line": 263,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8093,
+            "line": 262,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "New",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1088,
+            "line": 36,
+            "column": 36
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "Ping",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 55787,
+            "line": 1771,
+            "column": 23
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "Ping",
+          "receiver": "*Conn",
+          "position": {
+            "filename": "conn.go",
+            "offset": 14002,
+            "line": 421,
+            "column": 22
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "Ping",
+          "receiver": "*Conn",
+          "position": {
+            "filename": "pgxpool/conn.go",
+            "offset": 3298,
+            "line": 113,
+            "column": 22
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "Ping",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 22024,
+            "line": 694,
+            "column": 15
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "Ping",
+          "receiver": "*Store",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1654,
+            "line": 57,
+            "column": 20
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-3250",
+      "fixed_version": "v4.5.1",
+      "trace": [
+        {
+          "module": "github.com/golang-jwt/jwt/v4",
+          "version": "v4.5.0",
+          "package": "github.com/golang-jwt/jwt/v4",
+          "function": "Parse",
+          "position": {
+            "filename": "token.go",
+            "offset": 4291,
+            "line": 104,
+            "column": 6
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/api",
+          "function": "legacyParseToken",
+          "position": {
+            "filename": "internal/api/legacy_auth.go",
+            "offset": 4627,
+            "line": 84,
+            "column": 18
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/api",
+          "function": "LegacyLogin",
+          "receiver": "*Server",
+          "position": {
+            "filename": "internal/api/legacy_auth.go",
+            "offset": 5661,
+            "line": 103,
+            "column": 34
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2025-3553",
+      "fixed_version": "v4.5.2",
+      "trace": [
+        {
+          "module": "github.com/golang-jwt/jwt/v4",
+          "version": "v4.5.0",
+          "package": "github.com/golang-jwt/jwt/v4",
+          "function": "ParseUnverified",
+          "receiver": "*Parser",
+          "position": {
+            "filename": "parser.go",
+            "offset": 4107,
+            "line": 125,
+            "column": 18
+          }
+        },
+        {
+          "module": "github.com/golang-jwt/jwt/v4",
+          "version": "v4.5.0",
+          "package": "github.com/golang-jwt/jwt/v4",
+          "function": "ParseWithClaims",
+          "receiver": "*Parser",
+          "position": {
+            "filename": "parser.go",
+            "offset": 2052,
+            "line": 53,
+            "column": 40
+          }
+        },
+        {
+          "module": "github.com/golang-jwt/jwt/v4",
+          "version": "v4.5.0",
+          "package": "github.com/golang-jwt/jwt/v4",
+          "function": "Parse",
+          "receiver": "*Parser",
+          "position": {
+            "filename": "parser.go",
+            "offset": 1236,
+            "line": 42,
+            "column": 26
+          }
+        },
+        {
+          "module": "github.com/golang-jwt/jwt/v4",
+          "version": "v4.5.0",
+          "package": "github.com/golang-jwt/jwt/v4",
+          "function": "Parse",
+          "position": {
+            "filename": "token.go",
+            "offset": 4412,
+            "line": 105,
+            "column": 36
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/api",
+          "function": "legacyParseToken",
+          "position": {
+            "filename": "internal/api/legacy_auth.go",
+            "offset": 4627,
+            "line": 84,
+            "column": 18
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/api",
+          "function": "LegacyLogin",
+          "receiver": "*Server",
+          "position": {
+            "filename": "internal/api/legacy_auth.go",
+            "offset": 5661,
+            "line": 103,
+            "column": 34
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgproto3",
+          "function": "SendDescribe",
+          "receiver": "*Frontend",
+          "position": {
+            "filename": "pgproto3/frontend.go",
+            "offset": 4926,
+            "line": 151,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "execExtendedSuffix",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 38425,
+            "line": 1178,
+            "column": 30
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ExecParams",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 36278,
+            "line": 1112,
+            "column": 27
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ValidateConnectTargetSessionAttrsReadWrite",
+          "position": {
+            "filename": "pgconn/config.go",
+            "offset": 25467,
+            "line": 815,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "connect",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 13334,
+            "line": 387,
+            "column": 34
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 6368,
+            "line": 170,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "connect",
+          "position": {
+            "filename": "conn.go",
+            "offset": 9345,
+            "line": 257,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "conn.go",
+            "offset": 5165,
+            "line": 141,
+            "column": 16
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 7080,
+            "line": 216,
+            "column": 35
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "CreateResource",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 18816,
+            "line": 628,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14538,
+            "line": 479,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14498,
+            "line": 478,
+            "column": 3
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$3",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8128,
+            "line": 263,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8093,
+            "line": 262,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "New",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1088,
+            "line": 36,
+            "column": 36
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2026-5775",
+      "fixed_version": "v5.3.0",
+      "trace": [
+        {
+          "module": "github.com/go-chi/chi/v5",
+          "version": "v5.0.11",
+          "package": "github.com/go-chi/chi/v5/middleware",
+          "function": "RealIP",
+          "position": {
+            "filename": "middleware/realip.go",
+            "offset": 1263,
+            "line": 31,
+            "column": 6
+          }
+        },
+        {
+          "module": "github.com/go-chi/chi/v5",
+          "version": "v5.0.11",
+          "package": "github.com/go-chi/chi/v5",
+          "function": "chain",
+          "position": {
+            "filename": "chain.go",
+            "offset": 1420,
+            "line": 43,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/go-chi/chi/v5",
+          "version": "v5.0.11",
+          "package": "github.com/go-chi/chi/v5",
+          "function": "Handler",
+          "receiver": "Middlewares",
+          "position": {
+            "filename": "chain.go",
+            "offset": 429,
+            "line": 13,
+            "column": 31
+          }
+        },
+        {
+          "module": "github.com/go-chi/chi/v5",
+          "version": "v5.0.11",
+          "package": "github.com/go-chi/chi/v5",
+          "function": "handle",
+          "receiver": "*Mux",
+          "position": {
+            "filename": "mux.go",
+            "offset": 13300,
+            "line": 403,
+            "column": 39
+          }
+        },
+        {
+          "module": "github.com/go-chi/chi/v5",
+          "version": "v5.0.11",
+          "package": "github.com/go-chi/chi/v5",
+          "function": "Get",
+          "receiver": "*Mux",
+          "position": {
+            "filename": "mux.go",
+            "offset": 5002,
+            "line": 150,
+            "column": 11
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/api",
+          "function": "Routes",
+          "receiver": "*Server",
+          "position": {
+            "filename": "internal/api/server.go",
+            "offset": 1216,
+            "line": 45,
+            "column": 7
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2026-5970",
+      "fixed_version": "v0.39.0",
+      "trace": [
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/unicode/norm",
+          "function": "Properties",
+          "receiver": "Form",
+          "position": {
+            "filename": "unicode/norm/forminfo.go",
+            "offset": 7565,
+            "line": 225,
+            "column": 15
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/cases",
+          "function": "ltLower",
+          "position": {
+            "filename": "cases/map.go",
+            "offset": 16889,
+            "line": 595,
+            "column": 27
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/cases",
+          "function": "Transform",
+          "receiver": "*simpleCaser",
+          "position": {
+            "filename": "cases/map.go",
+            "offset": 6426,
+            "line": 214,
+            "column": 21
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/cases",
+          "function": "Transform",
+          "receiver": "Caser",
+          "position": {
+            "filename": "cases/cases.go",
+            "offset": 2078,
+            "line": 62,
+            "column": 22
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/transform",
+          "function": "doAppend",
+          "position": {
+            "filename": "transform/transform.go",
+            "offset": 21967,
+            "line": 696,
+            "column": 33
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/transform",
+          "function": "Append",
+          "position": {
+            "filename": "transform/transform.go",
+            "offset": 21776,
+            "line": 689,
+            "column": 17
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "apply",
+          "receiver": "*buffers",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 3823,
+            "line": 134,
+            "column": 34
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "enforce",
+          "receiver": "*buffers",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 4475,
+            "line": 161,
+            "column": 20
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "processBytes",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 6594,
+            "line": 252,
+            "column": 23
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "Bytes",
+          "receiver": "*Profile",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 6894,
+            "line": 266,
+            "column": 21
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "newScramClient",
+          "position": {
+            "filename": "pgconn/auth_scram.go",
+            "offset": 3534,
+            "line": 143,
+            "column": 46
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "scramAuth",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/auth_scram.go",
+            "offset": 759,
+            "line": 34,
+            "column": 27
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "connect",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 12481,
+            "line": 366,
+            "column": 26
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 6368,
+            "line": 170,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "connect",
+          "position": {
+            "filename": "conn.go",
+            "offset": 9345,
+            "line": 257,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "conn.go",
+            "offset": 5165,
+            "line": 141,
+            "column": 16
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 7080,
+            "line": 216,
+            "column": 35
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "CreateResource",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 18816,
+            "line": 628,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14538,
+            "line": 479,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14498,
+            "line": 478,
+            "column": 3
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$3",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8128,
+            "line": 263,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8093,
+            "line": 262,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "New",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1088,
+            "line": 36,
+            "column": 36
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgproto3",
+          "function": "Send",
+          "receiver": "*Frontend",
+          "position": {
+            "filename": "pgproto3/frontend.go",
+            "offset": 2867,
+            "line": 74,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "asyncClose$1",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 21605,
+            "line": 659,
+            "column": 23
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "asyncClose",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 21306,
+            "line": 646,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "Exec",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 34460,
+            "line": 1073,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "Ping",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 55840,
+            "line": 1772,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "Ping",
+          "receiver": "*Conn",
+          "position": {
+            "filename": "conn.go",
+            "offset": 14002,
+            "line": 421,
+            "column": 22
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "Ping",
+          "receiver": "*Conn",
+          "position": {
+            "filename": "pgxpool/conn.go",
+            "offset": 3298,
+            "line": 113,
+            "column": 22
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "Ping",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 22024,
+            "line": 694,
+            "column": 15
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "Ping",
+          "receiver": "*Store",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1654,
+            "line": 57,
+            "column": 20
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "Close",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 19923,
+            "line": 606,
+            "column": 23
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "Close",
+          "receiver": "*Conn",
+          "position": {
+            "filename": "conn.go",
+            "offset": 10043,
+            "line": 285,
+            "column": 23
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$2",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 7909,
+            "line": 248,
+            "column": 15
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "destructResourceValue",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 20884,
+            "line": 708,
+            "column": 14
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "releaseAcquiredResource",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 20096,
+            "line": 677,
+            "column": 3
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "Release",
+          "receiver": "*Resource[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 1682,
+            "line": 58,
+            "column": 34
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "Release",
+          "receiver": "*Conn",
+          "position": {
+            "filename": "pgxpool/conn.go",
+            "offset": 1363,
+            "line": 50,
+            "column": 14
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "Ping",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 21992,
+            "line": 693,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "Ping",
+          "receiver": "*Store",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1654,
+            "line": 57,
+            "column": 20
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgproto3",
+          "function": "SendSync",
+          "receiver": "*Frontend",
+          "position": {
+            "filename": "pgproto3/frontend.go",
+            "offset": 5591,
+            "line": 171,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "execExtendedSuffix",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 38538,
+            "line": 1180,
+            "column": 26
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ExecParams",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 36278,
+            "line": 1112,
+            "column": 27
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ValidateConnectTargetSessionAttrsReadWrite",
+          "position": {
+            "filename": "pgconn/config.go",
+            "offset": 25467,
+            "line": 815,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "connect",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 13334,
+            "line": 387,
+            "column": 34
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 6368,
+            "line": 170,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "connect",
+          "position": {
+            "filename": "conn.go",
+            "offset": 9345,
+            "line": 257,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "conn.go",
+            "offset": 5165,
+            "line": 141,
+            "column": 16
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 7080,
+            "line": 216,
+            "column": 35
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "CreateResource",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 18816,
+            "line": 628,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14538,
+            "line": 479,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14498,
+            "line": 478,
+            "column": 3
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$3",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8128,
+            "line": 263,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8093,
+            "line": 262,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "New",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1088,
+            "line": 36,
+            "column": 36
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgproto3",
+          "function": "SendQuery",
+          "receiver": "*Frontend",
+          "position": {
+            "filename": "pgproto3/frontend.go",
+            "offset": 5911,
+            "line": 181,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "Exec",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 34340,
+            "line": 1070,
+            "column": 27
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "Ping",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 55840,
+            "line": 1772,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "Ping",
+          "receiver": "*Conn",
+          "position": {
+            "filename": "conn.go",
+            "offset": 14002,
+            "line": 421,
+            "column": 22
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "Ping",
+          "receiver": "*Conn",
+          "position": {
+            "filename": "pgxpool/conn.go",
+            "offset": 3298,
+            "line": 113,
+            "column": 22
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "Ping",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 22024,
+            "line": 694,
+            "column": 15
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "Ping",
+          "receiver": "*Store",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1654,
+            "line": 57,
+            "column": 20
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2026-5970",
+      "fixed_version": "v0.39.0",
+      "trace": [
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/unicode/norm",
+          "function": "Transform",
+          "receiver": "Form",
+          "position": {
+            "filename": "unicode/norm/transform.go",
+            "offset": 650,
+            "line": 20,
+            "column": 15
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/transform",
+          "function": "doAppend",
+          "position": {
+            "filename": "transform/transform.go",
+            "offset": 21967,
+            "line": 696,
+            "column": 33
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/transform",
+          "function": "Append",
+          "position": {
+            "filename": "transform/transform.go",
+            "offset": 21776,
+            "line": 689,
+            "column": 17
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "apply",
+          "receiver": "*buffers",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 3823,
+            "line": 134,
+            "column": 34
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "enforce",
+          "receiver": "*buffers",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 4475,
+            "line": 161,
+            "column": 20
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "processBytes",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 6594,
+            "line": 252,
+            "column": 23
+          }
+        },
+        {
+          "module": "golang.org/x/text",
+          "version": "v0.14.0",
+          "package": "golang.org/x/text/secure/precis",
+          "function": "Bytes",
+          "receiver": "*Profile",
+          "position": {
+            "filename": "secure/precis/profile.go",
+            "offset": 6894,
+            "line": 266,
+            "column": 21
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "newScramClient",
+          "position": {
+            "filename": "pgconn/auth_scram.go",
+            "offset": 3534,
+            "line": 143,
+            "column": 46
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "scramAuth",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/auth_scram.go",
+            "offset": 759,
+            "line": 34,
+            "column": 27
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "connect",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 12481,
+            "line": 366,
+            "column": 26
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 6368,
+            "line": 170,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "connect",
+          "position": {
+            "filename": "conn.go",
+            "offset": 9345,
+            "line": 257,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "conn.go",
+            "offset": 5165,
+            "line": 141,
+            "column": 16
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 7080,
+            "line": 216,
+            "column": 35
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "CreateResource",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 18816,
+            "line": 628,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14538,
+            "line": 479,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14498,
+            "line": 478,
+            "column": 3
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$3",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8128,
+            "line": 263,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8093,
+            "line": 262,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "New",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1088,
+            "line": 36,
+            "column": 36
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgproto3",
+          "function": "SendParse",
+          "receiver": "*Frontend",
+          "position": {
+            "filename": "pgproto3/frontend.go",
+            "offset": 4274,
+            "line": 131,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ExecParams",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 36058,
+            "line": 1109,
+            "column": 27
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ValidateConnectTargetSessionAttrsReadWrite",
+          "position": {
+            "filename": "pgconn/config.go",
+            "offset": 25467,
+            "line": 815,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "connect",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 13334,
+            "line": 387,
+            "column": 34
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 6368,
+            "line": 170,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "connect",
+          "position": {
+            "filename": "conn.go",
+            "offset": 9345,
+            "line": 257,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "conn.go",
+            "offset": 5165,
+            "line": 141,
+            "column": 16
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 7080,
+            "line": 216,
+            "column": 35
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "CreateResource",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 18816,
+            "line": 628,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14538,
+            "line": 479,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14498,
+            "line": 478,
+            "column": 3
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$3",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8128,
+            "line": 263,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8093,
+            "line": 262,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "New",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1088,
+            "line": 36,
+            "column": 36
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgproto3",
+          "function": "SendBind",
+          "receiver": "*Frontend",
+          "position": {
+            "filename": "pgproto3/frontend.go",
+            "offset": 3954,
+            "line": 121,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ExecParams",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 36139,
+            "line": 1110,
+            "column": 26
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ValidateConnectTargetSessionAttrsReadWrite",
+          "position": {
+            "filename": "pgconn/config.go",
+            "offset": 25467,
+            "line": 815,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "connect",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 13334,
+            "line": 387,
+            "column": 34
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 6368,
+            "line": 170,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "connect",
+          "position": {
+            "filename": "conn.go",
+            "offset": 9345,
+            "line": 257,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "ConnectConfig",
+          "position": {
+            "filename": "conn.go",
+            "offset": 5165,
+            "line": 141,
+            "column": 16
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 7080,
+            "line": 216,
+            "column": 35
+          }
+        },
+        {
+          "module": "github.com/jackc/puddle/v2",
+          "version": "v2.2.2",
+          "package": "github.com/jackc/puddle/v2",
+          "function": "CreateResource",
+          "receiver": "*Pool[*github.com/jackc/pgx/v5/pgxpool.connResource]",
+          "position": {
+            "filename": "pool.go",
+            "offset": 18816,
+            "line": 628,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources$1",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14538,
+            "line": 479,
+            "column": 29
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "createIdleResources",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 14498,
+            "line": 478,
+            "column": 3
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig$3",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8128,
+            "line": 263,
+            "column": 24
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "NewWithConfig",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 8093,
+            "line": 262,
+            "column": 2
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "New",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1088,
+            "line": 36,
+            "column": 36
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2024-2606",
+      "fixed_version": "v5.5.4",
+      "trace": [
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgproto3",
+          "function": "Flush",
+          "receiver": "*Frontend",
+          "position": {
+            "filename": "pgproto3/frontend.go",
+            "offset": 3128,
+            "line": 83,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "flushWithPotentialWriteReadDeadlock",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 57959,
+            "line": 1811,
+            "column": 30
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "Exec",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 34421,
+            "line": 1071,
+            "column": 51
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgconn",
+          "function": "Ping",
+          "receiver": "*PgConn",
+          "position": {
+            "filename": "pgconn/pgconn.go",
+            "offset": 55840,
+            "line": 1772,
+            "column": 20
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5",
+          "function": "Ping",
+          "receiver": "*Conn",
+          "position": {
+            "filename": "conn.go",
+            "offset": 14002,
+            "line": 421,
+            "column": 22
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "Ping",
+          "receiver": "*Conn",
+          "position": {
+            "filename": "pgxpool/conn.go",
+            "offset": 3298,
+            "line": 113,
+            "column": 22
+          }
+        },
+        {
+          "module": "github.com/jackc/pgx/v5",
+          "version": "v5.5.1",
+          "package": "github.com/jackc/pgx/v5/pgxpool",
+          "function": "Ping",
+          "receiver": "*Pool",
+          "position": {
+            "filename": "pgxpool/pool.go",
+            "offset": 22024,
+            "line": 694,
+            "column": 15
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/store",
+          "function": "Ping",
+          "receiver": "*Store",
+          "position": {
+            "filename": "internal/store/store.go",
+            "offset": 1654,
+            "line": 57,
+            "column": 20
+          }
+        }
+      ]
+    },
+    {
+      "osv": "GO-2026-5777",
+      "fixed_version": "v5.3.0",
+      "trace": [
+        {
+          "module": "github.com/go-chi/chi/v5",
+          "version": "v5.0.11",
+          "package": "github.com/go-chi/chi/v5/middleware",
+          "function": "RealIP",
+          "position": {
+            "filename": "middleware/realip.go",
+            "offset": 1263,
+            "line": 31,
+            "column": 6
+          }
+        },
+        {
+          "module": "github.com/go-chi/chi/v5",
+          "version": "v5.0.11",
+          "package": "github.com/go-chi/chi/v5",
+          "function": "chain",
+          "position": {
+            "filename": "chain.go",
+            "offset": 1420,
+            "line": 43,
+            "column": 38
+          }
+        },
+        {
+          "module": "github.com/go-chi/chi/v5",
+          "version": "v5.0.11",
+          "package": "github.com/go-chi/chi/v5",
+          "function": "Handler",
+          "receiver": "Middlewares",
+          "position": {
+            "filename": "chain.go",
+            "offset": 429,
+            "line": 13,
+            "column": 31
+          }
+        },
+        {
+          "module": "github.com/go-chi/chi/v5",
+          "version": "v5.0.11",
+          "package": "github.com/go-chi/chi/v5",
+          "function": "handle",
+          "receiver": "*Mux",
+          "position": {
+            "filename": "mux.go",
+            "offset": 13300,
+            "line": 403,
+            "column": 39
+          }
+        },
+        {
+          "module": "github.com/go-chi/chi/v5",
+          "version": "v5.0.11",
+          "package": "github.com/go-chi/chi/v5",
+          "function": "Get",
+          "receiver": "*Mux",
+          "position": {
+            "filename": "mux.go",
+            "offset": 5002,
+            "line": 150,
+            "column": 11
+          }
+        },
+        {
+          "module": "github.com/jorgepaez/identity-hub",
+          "package": "github.com/jorgepaez/identity-hub/internal/api",
+          "function": "Routes",
+          "receiver": "*Server",
+          "position": {
+            "filename": "internal/api/server.go",
+            "offset": 1216,
+            "line": 45,
+            "column": 7
+          }
+        }
+      ]
+    }
+  ]
+}

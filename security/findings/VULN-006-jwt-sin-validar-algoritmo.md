@@ -1,0 +1,28 @@
+# VULN-006 — JWT sin validar algoritmo
+
+| | |
+|---|---|
+| **Severidad** | no informada por ningún escáner |
+| **Estado** | remediado |
+| **Detectado por** | ningún gate lo detecta hoy |
+| **Componente** | `backend/internal/api/legacy_auth.go` (sin línea reportada por el escáner) |
+| **Amenaza** | AM-003 (falsificación de JWT con `alg: none` o cambio a HS256) |
+| **Sembrada** | sí |
+| **Evidencia antes** | `docs/evidencia/VULN-006/evidencia.json` — informe Desktop §3 VULN-005/006/007 (no aparecen) |
+| **Commit de remediación** | `51a7a4f` (T23) |
+| **Evidencia después** | `docs/evidencia/VULN-006/evidencia.json` (sin gate propio; evidencia por diff del commit; de paso, alerta CodeQL #81 go/log-injection sigue "Open" en `main`, Discrepancia #6) — informe Desktop §3 VULN-005/006/007 |
+| **Run de Actions (antes/después)** | https://github.com/jorgepaez-ops/IdentityHub/actions/runs/35476102444 / — (evidencia por commit, no por run) |
+
+## Evidencia
+
+```
+Ningún gate lo detecta (D3 confirmado). Semgrep hardcoded-jwt-key (legacy_auth.go:121) es otro problema (clave incrustada, VULN-001), no la falta de validación del algoritmo.
+```
+
+## Por qué importa en esta aplicación
+
+Aceptar un algoritmo no permitido permitiría forjar tokens y suplantar identidades.
+
+## Remediación
+
+Validar explícitamente `EdDSA` antes de comprobar la firma en T23.

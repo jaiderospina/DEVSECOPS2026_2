@@ -1,0 +1,857 @@
+# ═══════════════════════════════════════════════════════════════════════════
+#  Pipeline principal — los gates ROMPEN la build.
+#
+#  Estado esperado hoy: EN ROJO. El repositorio está en la línea base
+#  deliberadamente vulnerable (specs/adr/0007) y varios gates encuentran lo que
+#  se sembró para ellos. Pasará a verde durante la fase de remediación.
+#  Para ver los hallazgos sin bloquear, está baseline-scan.yml.
+#
+#  Jobs 1–10 de la tabla del plan; el 7 (E2E con Playwright contra el stack
+#  completo de docker compose) se agregó en T14e y el 11 (DAST con OWASP ZAP,
+#  rompe con riesgo medio o más) en T15a. Los de release (SBOM, firma,
+#  publicación) se incorporan en la semana 3.
+#
+#  Cambios solo de documentación: si TODOS los archivos modificados (renombres
+#  incluidos, se listan origen y destino) terminan en .md o están bajo odd/ o docs/,
+#  y ninguno está bajo .github/, specs/ o scripts/ (que cuentan como código aunque
+#  sean .md), el job 0 (changes) marca code=false y se omiten los
+#  jobs pesados (lint, sca, pruebas, e2e, dast y los pasos de las imágenes). Siguen
+#  corriendo los baratos que alimentan checks obligatorios o SARIF (spec-drift,
+#  secrets, sast, semgrep, iac-scan, iac-checkov). Cualquier otra ruta (Makefile,
+#  backend/, frontend/, etc.) cuenta como código, y ante la menor
+#  duda (lista vacía, error de git, workflow_dispatch o falla del propio job 0) se
+#  corre todo: los jobs gateados comparan con != 'false' y usan !cancelled().
+#  No se usa paths-ignore a nivel de workflow ni de job: el ruleset "Protect main"
+#  exige estos checks por nombre y un check que no se ejecuta queda en "Expected —
+#  waiting" para siempre; además, el job image es una matriz cuyos nombres
+#  expandidos son los obligatorios, así que arranca siempre y omite sus pasos.
+#
+#  Clasificador: la lógica del job 0 vive en scripts/ci_changes.sh y se prueba en
+#  scripts/ci_changes_test.py (job 1). Guardas del job image: se evaluó una acción compuesta local
+#  que agrupara los pasos tras una sola guarda (S2, seguimiento-pre-v1) y se descartó: las acciones
+#  de terceros fijadas por SHA saldrían del alcance de Dependabot (directory "/" no recorre
+#  .github/actions/*) y el checkout debe quedar fuera para poder cargar la acción local. Se mantiene
+#  el if por paso y la misma prueba falla si algún paso del job image no lo tiene.
+# ═══════════════════════════════════════════════════════════════════════════
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# AM-022 — El token por defecto solo lee. Cada job amplía lo mínimo que necesite.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Go 1.26: chi >= 5.3.0 exige go 1.23 y los avisos de la biblioteca estándar solo se
+  # corrigen a partir de Go 1.25.13 (decisión Q11 ampliada, 2026-09-21). Subido a
+  # 1.26 en T34b (decisión Q11 amendment 2, 2026-09-26, autorizado por el usuario):
+  # golang.org/x/crypto >= 0.56.0 (VULN-028) declara "go 1.26.0" en su propio go.mod.
+  # Parche exacto desde el cierre (2026-10-12): con "1.26", setup-go reutilizaba el
+  # go1.26.8 en caché del runner y govulncheck marcaba los avisos corregidos en 1.26.9.
+  GO_VERSION: "1.26.9"
+  NODE_VERSION: "24"
+
+jobs:
+  # ── 0. Detección de cambios ─────────────────────────────────────────────
+  # Decide si el cambio toca código o solo documentación (ver el encabezado).
+  # Falla hacia "correr todo": cualquier duda o error produce code=true.
+  changes:
+    name: 0 · Detección de cambios
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      code: ${{ steps.classify.outputs.code }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Clasificar archivos modificados
+        id: classify
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_SHA: ${{ github.sha }}
+        # La lógica vive en scripts/ci_changes.sh y se prueba en scripts/ci_changes_test.py.
+        run: bash scripts/ci_changes.sh
+
+  # ── 1. Los specs son la fuente de verdad ────────────────────────────────
+  spec-drift:
+    name: 1 · Deriva entre specs y código
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Validar el contrato OpenAPI
+        run: |
+          # Versiones y hashes fijados en tools/requirements-openapi.txt (dependencias transitivas incluidas).
+          python3 -m pip install --quiet --require-hashes --only-binary :all: -r tools/requirements-openapi.txt
+          python3 -m openapi_spec_validator specs/03-api/openapi.yaml
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+
+      - name: Regenerar la API Go
+        working-directory: backend
+        run: |
+          # Sin @versión a propósito: la versión (v2.7.1) la fija tools/go.mod y go.sum la verifica.
+          go -C ../tools install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
+          go generate ./internal/api
+
+      - name: Regenerar consultas SQL con sqlc
+        run: |
+          # Versión (v1.31.1) fijada en tools/go.mod; la directiva `go` de ese módulo
+          # (1.26.8) fija el toolchain con el que se compila (GOTOOLCHAIN=auto lo descarga si hace falta).
+          GOTOOLCHAIN=auto go -C tools install github.com/sqlc-dev/sqlc/cmd/sqlc
+          "$(go env GOPATH)/bin/sqlc" generate
+
+      # `npm ci` instala exactamente lo versionado en frontend/package-lock.json.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Regenerar los tipos de la API
+        working-directory: frontend
+        run: |
+          npm ci --ignore-scripts
+          npm run gen:api
+
+      # T14d — correspondencia 1 a 1 escenario Gherkin ↔ prueba E2E (stdlib, sin red).
+      - name: Pruebas del verificador de trazabilidad
+        run: python3 scripts/traceability_test.py
+
+      # Pruebas del gate de ZAP (stdlib, sin red): el gate decide el job 11.
+      - name: Pruebas del gate de ZAP
+        run: python3 scripts/zap_gate_test.py
+
+      # Pruebas del clasificador del job 0 (repos git desechables) y lint de las guardas del job image.
+      - name: Pruebas del clasificador de cambios
+        run: python3 scripts/ci_changes_test.py
+
+      # Prometheus, Loki y Grafana no pueden publicar puertos fuera de 127.0.0.1 (lee docker compose config).
+      - name: Prueba de puertos de observabilidad en loopback
+        run: python3 scripts/compose_ports_test.py
+
+      # RNF-001, RNF-002, RNF-006 y RNF-008 contra los archivos reales (compose renderizado, Dockerfile, workflows).
+      - name: Pruebas de los requisitos no funcionales del pipeline y los contenedores
+        run: python3 scripts/pipeline_controls_test.py
+
+      # RNF-010: guarda de producción y estado de salida de scripts/load-test.sh (docker simulado, sin red).
+      - name: Pruebas del script de la prueba de carga
+        run: python3 scripts/load_test_script_test.py
+
+      # Los extractos de código del informe usan rangos fijos de líneas: falla si una edición los deja a mitad de bloque.
+      - name: Prueba de los extractos de código del informe
+        run: python3 scripts/informe_excerpts_test.py
+
+      - name: Regenerar la matriz de trazabilidad
+        run: python3 scripts/traceability.py
+
+      - name: El árbol de trabajo debe quedar limpio
+        run: |
+          # git diff omite archivos sin seguimiento; status los hace fallar también.
+          git diff --exit-code
+          test -z "$(git status --porcelain)"
+
+  # ── 2. Estilo y tipos ───────────────────────────────────────────────────
+  lint:
+    name: 2 · Lint y tipos
+    needs: [changes]
+    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+
+      # golangci-lint v2: la v1 se compila con Go 1.22 y no analiza código que apunte a Go 1.26.
+      - name: golangci-lint (incluye gosec)
+        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        with:
+          version: v2.13.2
+          working-directory: backend
+          args: --timeout=5m
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: |
+            frontend/package-lock.json
+            contabilidad/package-lock.json
+            inventario/package-lock.json
+
+      - name: Instalar dependencias del frontend
+        working-directory: frontend
+        run: npm ci --ignore-scripts
+
+      - name: ESLint
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Comprobación de tipos
+        working-directory: frontend
+        run: npm run typecheck
+
+      # T13 — la SPA de Contabilidad pasa por los mismos gates que la consola.
+      - name: Instalar dependencias de Contabilidad
+        working-directory: contabilidad
+        run: npm ci --ignore-scripts
+
+      - name: ESLint (Contabilidad)
+        working-directory: contabilidad
+        run: npm run lint
+
+      - name: Comprobación de tipos (Contabilidad)
+        working-directory: contabilidad
+        run: npm run typecheck
+
+      # R5 — Inventario (Empresa B) pasa por los mismos gates.
+      - name: Instalar dependencias de Inventario
+        working-directory: inventario
+        run: npm ci --ignore-scripts
+
+      - name: ESLint (Inventario)
+        working-directory: inventario
+        run: npm run lint
+
+      - name: Comprobación de tipos (Inventario)
+        working-directory: inventario
+        run: npm run typecheck
+
+      - name: Hadolint sobre los Dockerfiles
+        uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
+        with:
+          dockerfile: backend/Dockerfile
+          failure-threshold: warning
+
+      - name: Hadolint sobre el Dockerfile del frontend
+        uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
+        with:
+          dockerfile: frontend/Dockerfile
+          failure-threshold: warning
+
+  # ── 3. Secretos ─────────────────────────────────────────────────────────
+  secrets:
+    name: 3 · Secretos en el historial
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # RNF-003 — El historial completo. Un secreto borrado en el último
+          # commit sigue estando en el repositorio y sigue siendo válido.
+          fetch-depth: 0
+
+      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ── 4. Análisis estático ────────────────────────────────────────────────
+  sast:
+    name: 4 · SAST
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write   # necesario para publicar los SARIF
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [go, javascript-typescript]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        if: matrix.language == 'go'
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+
+      - uses: github/codeql-action/init@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-extended
+
+      - uses: github/codeql-action/autobuild@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+
+      - uses: github/codeql-action/analyze@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        with:
+          category: /language:${{ matrix.language }}
+
+  semgrep:
+    name: 4b · Semgrep (OWASP)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write
+    container:
+      image: semgrep/semgrep:1.86.0
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Analizar
+        run: semgrep scan --config=p/owasp-top-ten --config=p/golang --config=p/react --sarif --output=semgrep.sarif
+        env:
+          SEMGREP_RULES: p/owasp-top-ten
+
+      - uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        if: always()
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+      - name: Romper la build si hay hallazgos de severidad alta
+        run: semgrep scan --config=p/owasp-top-ten --config=p/golang --severity=ERROR --error
+
+  # ── 5. Dependencias ─────────────────────────────────────────────────────
+  sca:
+    name: 5 · Dependencias vulnerables
+    needs: [changes]
+    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+
+      # govulncheck analiza ALCANZABILIDAD: solo informa de vulnerabilidades
+      # cuyo código es realmente invocable desde el nuestro. Eso elimina casi
+      # todo el ruido frente a un escáner que solo lee go.mod.
+      - name: govulncheck
+        working-directory: backend
+        run: |
+          # Versión fijada en tools/go.mod (sin @versión: go.sum la verifica).
+          go -C ../tools install golang.org/x/vuln/cmd/govulncheck
+          govulncheck ./...
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: npm audit
+        working-directory: frontend
+        run: |
+          npm install --package-lock-only --ignore-scripts
+          npm audit --audit-level=high
+
+      - name: npm audit (Contabilidad)
+        working-directory: contabilidad
+        run: |
+          npm install --package-lock-only --ignore-scripts
+          npm audit --audit-level=high
+
+      - name: npm audit (Inventario)
+        working-directory: inventario
+        run: |
+          npm install --package-lock-only --ignore-scripts
+          npm audit --audit-level=high
+
+      # v1.9.0 traía Go 1.22.7 embebido: el análisis de alcanzabilidad (govulncheck)
+      # fallaba porque backend/go.mod exige >= 1.26.0 (desde T34b; >= 1.25.0 antes), y
+      # el escáner degradaba a listar cada advisory de go.mod sin filtrar (ruido,
+      # incluida toda la stdlib). v2.6.0
+      # trae Go 1.27.1 embebido (ya cumple el mínimo) y además fija GOTOOLCHAIN=auto
+      # en su propio action.yml, igual que el reusable workflow oficial, por si un
+      # futuro `go` del módulo supera la versión embebida. El análisis de llamadas de
+      # Go viene activado por defecto (no hace falta --call-analysis=go); lo que no se
+      # invoca se marca "called": false en vez de fallar. --skip-git ya no existe en
+      # v2 (el root del repo se excluye por defecto salvo --include-git-root, mismo
+      # efecto). --all-vulns evita que el formato tabla por defecto oculte los
+      # hallazgos no invocados: sin ese flag el paso queda en verde sin listar nada.
+      - name: osv-scanner
+        uses: google/osv-scanner-action/osv-scanner-action@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
+        env:
+          GOTOOLCHAIN: auto
+        with:
+          scan-args: |-
+            --recursive
+            --all-vulns
+            ./
+
+  # ── 6. Pruebas unitarias ────────────────────────────────────────────────
+  test-unit:
+    name: 6 · Pruebas unitarias
+    needs: [changes]
+    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+
+      - name: go test
+        working-directory: backend
+        run: go test -race -short -coverprofile=coverage.out -covermode=atomic ./...
+
+      # RNF-005 — Informe de cobertura de este job. Es solo informativo: `-short`
+      # y sin el tag `integration` dejan `internal/store` y el código sqlc en 0 %,
+      # así que el gate real (>= 70 %) vive en el job "6b" con Postgres real y
+      # -coverpkg=./internal/... (ver su paso "Cobertura de internal/ (gate)").
+      - name: Informe de cobertura
+        working-directory: backend
+        run: |
+          go tool cover -func=coverage.out | tail -1
+          COVERAGE=$(go tool cover -func=coverage.out | tail -1 | awk '{print substr($3, 1, length($3)-1)}')
+          echo "Cobertura actual (solo unitarias, sin gate): ${COVERAGE}%"
+          echo "coverage=${COVERAGE}" >> "$GITHUB_OUTPUT"
+        id: coverage
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Pruebas del frontend
+        working-directory: frontend
+        run: |
+          npm ci --ignore-scripts
+          npm run test
+
+      - name: Pruebas de Contabilidad
+        working-directory: contabilidad
+        run: |
+          npm ci --ignore-scripts
+          npm run test
+
+      - name: Pruebas de Inventario
+        working-directory: inventario
+        run: |
+          npm ci --ignore-scripts
+          npm run test
+
+  # ── 6b. Pruebas de integración ─────────────────────────────────────────
+  test-integration:
+    name: 6b · Pruebas de integración
+    needs: [changes]
+    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
+    runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.coverage.outputs.coverage }}
+    env:
+      # github.run_id is a per-run, throwaway service password, not a secret.
+      TEST_DATABASE_URL: ${{ format('{0}{1}{2}', 'postgres://identity:', github.run_id, '@localhost:5432/identity?sslmode=disable') }}
+    services:
+      postgres:
+        image: postgres:16-bookworm@sha256:0ea6700a3b4f0ae6ce746519073558aed4d88a79d8d07622a9a644946c7319c4
+        env:
+          POSTGRES_USER: identity
+          POSTGRES_PASSWORD: ${{ github.run_id }}
+          POSTGRES_DB: identity
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U identity -d identity"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+
+      - name: go test integration
+        working-directory: backend
+        run: go test -race -tags=integration -coverprofile=coverage.out -covermode=atomic -coverpkg=./internal/... ./...
+
+      # RNF-005 — Umbral de cobertura (>= 70 %). Este job corre con Postgres real
+      # y el tag `integration`, así que -coverpkg=./internal/... también atribuye
+      # cobertura a internal/store y a su código sqlc generado, que el job 6
+      # (unitarias, sin BD) nunca ejercita. No se excluye ningún paquete.
+      - name: Cobertura de internal/ (gate)
+        working-directory: backend
+        run: |
+          go tool cover -func=coverage.out | tail -1
+          COVERAGE=$(go tool cover -func=coverage.out | tail -1 | awk '{print substr($3, 1, length($3)-1)}')
+          echo "Cobertura actual: ${COVERAGE}% (umbral: 70%)"
+          awk -v coverage="$COVERAGE" 'BEGIN {
+            if (coverage + 0 < 70) {
+              printf "Cobertura insuficiente: %.1f%% (mínimo: 70%%)\n", coverage > "/dev/stderr"
+              exit 1
+            }
+          }'
+          echo "coverage=${COVERAGE}" >> "$GITHUB_OUTPUT"
+        id: coverage
+
+  # ── 6c. Badge de cobertura (sin servicio externo) ───────────────────────
+  # Publica la cobertura medida en 6b como JSON de endpoint de shields.io en la rama
+  # huérfana `badges` (solo contiene coverage.json; nunca código). Es un job aparte a
+  # propósito: contents: write solo lo tiene este job, que no ejecuta código del PR ni
+  # hace checkout; solo corre en push a main y recibe el valor por outputs (AM-022).
+  coverage-badge:
+    name: 6c · Publicar badge de cobertura
+    needs: [test-integration]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Un fallo al publicar el badge no debe dejar main en rojo: el gate real es 6b.
+    continue-on-error: true
+    permissions:
+      contents: write
+    env:
+      COVERAGE: ${{ needs.test-integration.outputs.coverage }}
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+    steps:
+      - name: Publicar coverage.json en la rama badges
+        run: |
+          set -euo pipefail
+          # El valor viene de un output de job: se valida antes de usarlo.
+          if ! [[ "$COVERAGE" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+            echo "Valor de cobertura inválido: '${COVERAGE}'" >&2
+            exit 1
+          fi
+          color=$(awk -v c="$COVERAGE" 'BEGIN { if (c + 0 >= 80) print "green"; else if (c + 0 >= 70) print "yellowgreen"; else print "red" }')
+          message=$(awk -v c="$COVERAGE" 'BEGIN { printf "%.1f %%", c }')
+
+          work=$(mktemp -d)
+          cd "$work"
+          git init --quiet
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add origin "https://github.com/${REPO}.git"
+          # El token viaja solo en este encabezado, nunca queda en .git/config.
+          auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)
+          echo "::add-mask::${auth}"
+          git_remote() { git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic ${auth}" "$@"; }
+
+          for attempt in 1 2 3 4 5; do
+            # ls-remote --exit-code devuelve 2 solo si la rama no existe; cualquier otro
+            # fallo (red, permisos) se reintenta en vez de confundirse con "no existe".
+            status=0
+            git_remote ls-remote --exit-code --heads origin badges > /dev/null || status=$?
+            if [[ $status -eq 0 ]]; then
+              if ! git_remote fetch --quiet --depth=1 origin badges; then
+                echo "Fetch fallido (intento ${attempt}/5); se reintenta." >&2
+                sleep $((attempt * 3)); continue
+              fi
+              git checkout --quiet -B badges FETCH_HEAD
+            elif [[ $status -eq 2 ]]; then
+              # Primera ejecución: la rama no existe; se crea huérfana desde cero.
+              git checkout --quiet --orphan "badges-${attempt}"
+              git rm -rf --quiet . 2>/dev/null || true
+            else
+              echo "ls-remote fallido (intento ${attempt}/5); se reintenta." >&2
+              sleep $((attempt * 3)); continue
+            fi
+
+            printf '{"schemaVersion":1,"label":"cobertura de integración","message":"%s","color":"%s"}\n' \
+              "$message" "$color" > coverage.json
+            git add coverage.json
+            if git diff --cached --quiet; then
+              echo "coverage.json sin cambios (${message}); no se publica."
+              exit 0
+            fi
+            git commit --quiet -m "chore(badges): coverage ${message}"
+            if git_remote push --quiet origin HEAD:refs/heads/badges; then
+              echo "Badge publicado: ${message} (${color})."
+              exit 0
+            fi
+            echo "Push rechazado (intento ${attempt}/5); se reintenta." >&2
+            sleep $((attempt * 3))
+          done
+          echo "No se pudo publicar el badge tras 5 intentos." >&2
+          exit 1
+
+  # ── 7. Pruebas de extremo a extremo ─────────────────────────────────────
+  e2e:
+    name: 7 · E2E (Playwright)
+    needs: [changes]
+    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # .env desechable, hosts *.localhost, make up-app (solo la aplicación) y espera de salud (acción compuesta local).
+      - name: Levantar el stack
+        uses: ./.github/actions/stack-up
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: e2e/package-lock.json
+
+      # `make e2e` ejecuta `npm ci --ignore-scripts`; los navegadores van antes porque necesitan las
+      # dependencias de sistema (--with-deps usa sudo) y el paquete ya instalado.
+      - name: Instalar Chromium de Playwright
+        working-directory: e2e
+        run: |
+          npm ci --ignore-scripts
+          # The lockfile-pinned binary, never npx: it cannot fetch an unpinned package on demand.
+          ./node_modules/.bin/playwright install --with-deps chromium
+
+      - name: Pruebas E2E (make e2e)
+        run: make e2e
+
+      # RNF-010: k6 (imagen fijada por digest) contra el mismo stack, después de las pruebas E2E. Rompe
+      # la build si el p95 de refresh, GET /me o JWKS supera 300 ms. make load-test sube el límite por IP
+      # como make e2e: los logins fallidos de la suite pueden seguir en la ventana de RF-017 al restaurarlo.
+      - name: Prueba de carga de latencia (make load-test)
+        run: make load-test
+
+      - name: Subir informe y trazas de Playwright
+        # cancelled(): al vencer timeout-minutes GitHub cancela el job (no lo marca como
+        # fallido); sin esto, justo ese caso se quedaría sin informe ni logs.
+        if: failure() || cancelled()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-${{ github.run_id }}
+          path: |
+            e2e/playwright-report
+            e2e/test-results
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Volcar los logs del stack
+        if: failure() || cancelled()
+        run: docker compose --env-file .env -f deploy/docker-compose.yml logs --no-color --tail=300
+
+      - name: Derribar el stack
+        if: always()
+        run: docker compose --env-file .env -f deploy/docker-compose.yml down -v
+
+  # ── 8. Configuración e infraestructura ──────────────────────────────────
+  iac-scan:
+    name: 8 · Configuración de contenedores
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Trivy config
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: config
+          scan-ref: .
+          format: sarif
+          output: trivy-config.sarif
+          severity: HIGH,CRITICAL
+          exit-code: "0"   # el SARIF se sube siempre; el gate va en el paso siguiente
+
+      - uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        if: always()
+        with:
+          sarif_file: trivy-config.sarif
+          category: trivy-config
+
+      - name: Romper la build si hay misconfiguración HIGH o CRITICAL
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: config
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+
+  # ── 9 y 10. Construcción y escaneo de imágenes ──────────────────────────
+  image:
+    # Nombre explícito: estos checks son obligatorios en el ruleset de main y deben
+    # conservar el nombre "(nombre, carpeta, target)" que tenían antes de T13.
+    name: 9-10 · Construir y escanear imágenes (${{ matrix.name }}, ${{ matrix.label }}, ${{ matrix.target }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Siempre arranca (aun en cambios solo de docs) para que los nombres expandidos de la
+    # matriz existan y resuelvan; en docs cada paso se omite con su propio if. Un lint
+    # fallido sigue deteniendo las imágenes; lint omitido (docs) no las detiene.
+    needs: [lint, changes]
+    if: ${{ !cancelled() && (needs.lint.result == 'success' || needs.lint.result == 'skipped') }}
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: api
+            label: backend
+            context: backend
+            file: backend/Dockerfile
+            target: api
+          - name: worker
+            label: backend
+            context: backend
+            file: backend/Dockerfile
+            target: worker
+          # T13: la imagen web compila frontend/, contabilidad/ e inventario/, así que su contexto es la raíz.
+          - name: web
+            label: frontend
+            context: .
+            file: frontend/Dockerfile
+            target: web
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: needs.changes.outputs.code != 'false'
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+        if: needs.changes.outputs.code != 'false'
+
+      - name: Construir ${{ matrix.name }}
+        if: needs.changes.outputs.code != 'false'
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
+          target: ${{ matrix.target }}
+          load: true
+          tags: identity-hub/${{ matrix.name }}:${{ github.sha }}
+          cache-from: type=gha,scope=${{ matrix.name }}
+          cache-to: type=gha,scope=${{ matrix.name }},mode=max
+
+      - name: Trivy sobre la imagen (informe)
+        if: needs.changes.outputs.code != 'false'
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: identity-hub/${{ matrix.name }}:${{ github.sha }}
+          format: sarif
+          output: trivy-${{ matrix.name }}.sarif
+          severity: HIGH,CRITICAL
+          exit-code: "0"
+
+      - uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        if: always() && needs.changes.outputs.code != 'false'
+        with:
+          sarif_file: trivy-${{ matrix.name }}.sarif
+          category: trivy-image-${{ matrix.name }}
+
+      # RNF-004 — --ignore-unfixed: solo rompe la build lo que tiene parche
+      # disponible. Bloquear por un CVE sin arreglo no protege de nada y
+      # entrena al equipo a ignorar el rojo.
+      - name: Romper la build si hay CVE corregibles
+        if: needs.changes.outputs.code != 'false'
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: identity-hub/${{ matrix.name }}:${{ github.sha }}
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          trivyignores: security/.trivyignore
+          exit-code: "1"
+
+  # ── 11. DAST con OWASP ZAP ──────────────────────────────────────────────
+  # Mismo arranque del stack que el job 7. `make scan-dast` corre ZAP (baseline del Hub y de
+  # Contabilidad e Inventario + escaneo de API con el OpenAPI) y scripts/zap-gate.py rompe la build con
+  # hallazgos de severidad media o más (T15; las reglas aceptadas viven en .zap/rules.tsv).
+  # El arranque es el mismo del job 7: acción compuesta .github/actions/stack-up.
+  dast:
+    name: 11 · DAST (OWASP ZAP)
+    needs: [changes]
+    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # .env desechable, hosts *.localhost, make up-app (solo la aplicación) y espera de salud (acción compuesta local).
+      - name: Levantar el stack
+        uses: ./.github/actions/stack-up
+
+      - name: Escaneo DAST (make scan-dast)
+        run: make scan-dast
+
+      - name: Subir informes de ZAP
+        # always(): los informes se guardan pase, falle o se cancele el job (al vencer
+        # timeout-minutes GitHub lo cancela, no lo marca como fallido).
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: zap-reports-${{ github.run_id }}
+          path: security/zap-reports
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Volcar los logs del stack
+        if: failure() || cancelled()
+        run: docker compose --env-file .env -f deploy/docker-compose.yml logs --no-color --tail=300
+
+      - name: Derribar el stack
+        if: always()
+        run: docker compose --env-file .env -f deploy/docker-compose.yml down -v
+
+  # ── 12. IaC: Terraform, Dockerfiles y workflows ─────────────────────────
+  # Checkov se instala con pip y versión fija (3.3.23) en vez de usar
+  # bridgecrewio/checkov-action: el release v12.1347.0 de la acción trae una
+  # imagen de Checkov 2.0.930 (action.yml), sin los checks actuales de AWS.
+  # Las excepciones aceptadas viven en línea (#checkov:skip=ID:motivo), nunca
+  # como soft_fail ni como lista global de omisión.
+  iac-checkov:
+    name: 12 · IaC (Checkov)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Instalar Checkov
+        run: |
+          python3 -m pip install --quiet --only-binary :all: 'checkov==3.3.23'
+
+      - name: Checkov (rompe ante cualquier hallazgo)
+        run: |
+          checkov -d . --framework terraform dockerfile github_actions \
+            --compact --quiet \
+            --output cli --output sarif \
+            --output-file-path console,checkov-results.sarif
+
+      # P9d — Checkov mete en el SARIF también los hallazgos omitidos en línea (llevan
+      # "suppressions" con la justificación) y GitHub los muestra como alertas abiertas. Este
+      # paso solo los quita del SARIF que se sube; el gate de arriba nunca los contó y la
+      # excepción sigue visible en el código (#checkov:skip=ID:motivo). Si Checkov no llegó a
+      # escribir el SARIF, no hace nada para no tapar el error original.
+      - name: Quitar del SARIF los hallazgos ya justificados en línea
+        if: always()
+        run: |
+          if [ ! -s checkov-results.sarif ]; then
+            echo "Sin SARIF de Checkov; no hay nada que filtrar."
+            exit 0
+          fi
+          jq '.runs[]? |= (.results = ((.results // []) | map(select((.suppressions // []) | length == 0))))' \
+            checkov-results.sarif > checkov-results.filtered.sarif
+          mv checkov-results.filtered.sarif checkov-results.sarif
+
+      - uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        if: always()
+        with:
+          sarif_file: checkov-results.sarif
+          category: checkov

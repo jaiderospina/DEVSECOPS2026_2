@@ -1,0 +1,481 @@
+# Bitácora del proyecto
+
+Registro de avance, decisiones tomadas sobre la marcha y hallazgos. Se añade una
+entrada por sesión de trabajo, la más reciente arriba.
+
+Esta bitácora es también **evidencia de proceso**: junto con el historial de git
+y las fichas de `security/findings/`, documenta cómo se llegó al resultado y no
+solo cuál fue.
+
+**Convención:** cada entrada cierra con *Estado* y *Siguiente paso*, para que
+retomar el trabajo no exija reconstruir el contexto desde cero.
+
+---
+
+## 2026-10-19 · Resumen del estado al cierre (movido desde el README el 2026-10-19)
+
+Esta sección conserva, sin cambios salvo las rutas relativas de los enlaces, la crónica de estado y el detalle de alertas que vivían en el README raíz, para que el README quede como puerta de entrada. El texto refleja el estado al momento en que se escribió: por ejemplo, la viñeta «Pendiente» es anterior a la publicación de `v1.0.0` (2026-10-13, ver `odd/tasks/cierre-entrega.md`).
+
+### Estado del proyecto
+
+- **Semana 2 cerrada:** 47 de 47 tareas completadas; el tag
+  `v0.1.0-hardened` identifica el estado remediado en `main`, con CI verde.
+- **Semana 3 cerrada:** SSO entre dominios, MFA por correo, alta de empleados y frontend funcional.
+- **Semana 4:** documentación, IaC de referencia, grilla de roles, manual, informe y guion terminados. Las imágenes están publicadas en Docker Hub (`docker.io/jorgeivp/identity-hub-api`, `-worker` y `-web`, firmadas con Cosign y con SBOM adjunto). El seguimiento está en [`odd/tasks/idp-semana-4.md`](../odd/tasks/idp-semana-4.md).
+- **Funciones de cierre (F1 a F10, PR 32 a 43), integradas en `main`:** exportación del registro de auditoría en CSV y JSON (RF-019); SMTP con STARTTLS y autenticación obligatorios en el worker y hosts configurables (`SMTP_*`, `OAUTH_*`); Falco en el perfil de observabilidad con cuatro reglas propias, alerta en Grafana y [runbook](runbooks/falco-alerta.md); claves de servicio para integraciones máquina (RF-018, [manual](manuales/claves-de-servicio.md), ADR 0014); columna de controles de CI en la matriz; insignia de cobertura medida; y un filtro de CI para cambios solo de documentación. La integración OAuth/OIDC de terceros y el outbox (F5) quedan como trabajo futuro ([sección 9.1](manuales/integracion-terceros.md)).
+- **Release firmado:** `latest` solo se mueve después de firmar y atestar, y únicamente para el `vX.Y.Z` más alto; los pasos de red se reintentan y los artefactos se retienen 7 días. El tag `v0.9.1` (ejecución 38405885275) lo validó y se verificó con Cosign v3.1.3 sobre `v0.9.0` y `v0.9.1`.
+- **Matriz de trazabilidad:** 33 requisitos; 33 completos, 0 parciales, 0 sin cubrir y 0 diferidos.
+- **Pendiente:** el tag de entrega `v1.0.0` y el release de GitHub con el informe en PDF, y la grabación del video, que hace el equipo.
+
+### Alertas abiertas conocidas
+
+Estado de las alertas de code scanning en `main` una vez integradas las correcciones de P9b a P9d (2026-10-06). Lo demás (acciones sin fijar, diagramas, nginx, imágenes base de `web`, Checkov, AWS-0089) está corregido o justificado en el propio código.
+
+| Herramienta | Regla | Ubicación | Motivo | Justificación o control compensatorio |
+|---|---|---|---|---|
+| Trivy | GO-2026-5932 | `golang.org/x/crypto` v0.56.0 en la imagen `api` | El aviso cubre el paquete `openpgp` y sus subpaquetes, que no tiene versión corregida; el módulo sigue haciendo falta para Argon2id (ADR 0004) | VULN-028, no afectado (`backend/osv-scanner.toml`, exclusión permanente): ningún paquete propio ni dependencia importa `openpgp` (`go list -deps`); osv-scanner solo lo marca por coincidencia a nivel de módulo y govulncheck no lo reporta |
+| Trivy | DLA-4792-1 | `tzdata` 2026b en las imágenes `api` y `worker` (base `distroless/static-debian12`) | Debian publicó 2026c, pero la imagen distroless fijada todavía no lo incluye; severidad sin clasificar (UNKNOWN) | Solo son datos de zonas horarias. Se actualizará el digest de la base cuando upstream la reconstruya (el escaneo semanal lo detecta) |
+
+Falsos positivos de secretos en SonarCloud (2026-10-07): `security/evidence/**` se excluye del análisis con `.sonarcloud.properties` porque son salidas almacenadas de los escáneres, conservadas como evidencia "antes" (VULN-001), no código; y el ejemplo literal del comentario de `.gitleaks.toml` (regla `secrets:S2068`) se reescribió sin un valor con forma de credencial. Justificación: los valores son sembrados, nunca reales ni reutilizados (confirmado por el responsable el 2026-10-06).
+
+Las 27 alertas de Checkov eran omisiones ya justificadas en línea (`#checkov:skip=ID:motivo`): CI deja de subirlas a code scanning (se filtran del SARIF) pero la justificación sigue en el código y el gate sigue activo. La de Trivy AWS-0089 (bucket de logs del ALB sin logging propio) lleva `#trivy:ignore:AWS-0089` por el mismo motivo que `CKV_AWS_18`.
+
+---
+
+## 2026-10-13 · Cierre — funciones F1 a F10, release firmado en orden y estado previo a v1.0.0
+
+Integra en `main` las mejoras de complejidad media y alta anotadas el 12 de octubre (PR 32 a 43). El detalle por tarea y la evidencia trazable permanecen en `odd/tasks/cierre-entrega.md`.
+
+### Hecho
+
+- **F1 (RF-019):** exportación del registro de auditoría en CSV y JSON (`GET /api/v1/admin/audit-log/export`), con tope de 10 000 filas, CSV protegido contra inyección de fórmulas y exportación auditada.
+- **F2 (SMTP):** el worker abre la sesión SMTP explícitamente con STARTTLS obligatorio (TLS 1.2 mínimo) y AUTH solo después del cifrado; hosts y cliente OAuth configurables por variables (`SMTP_*`, `OAUTH_*`; esas variables OAuth se retiraron después: ver ADR 0015). `make certs` genera la CA y el certificado locales y Mailpit exige STARTTLS y credenciales; un envío en claro se rechaza (530). `make up` ejecuta `make certs` primero y un `.env` anterior necesita `SMTP_PASSWORD`.
+- **F3 (Falco):** servicio en el perfil de observabilidad (driver modern eBPF), cuatro reglas propias (AM-020), alertas a Loki por Alloy, alerta y paneles en Grafana, runbook `docs/runbooks/falco-alerta.md` y `make falco-test`.
+- **F4 (RF-018):** claves de servicio para integraciones máquina (ADR 0014, manual `docs/manuales/claves-de-servicio.md`, amenaza AM-023): alcance único `audit-log:read` en el listado del registro de auditoría.
+- **F5 (OAuth/OIDC de terceros y outbox):** queda como trabajo futuro por decisión del usuario (`docs/manuales/integracion-terceros.md`, sección 9.1).
+- **F6 (matriz):** columna «Controles CI» desde `specs/07-controls.yaml`; de 5 RNF sin cubrir a 1. La matriz queda en 33 requisitos: 25 completos, 7 parciales, 1 sin cubrir (RNF-010) y 0 diferidos.
+- **F7 y F8 (release):** `publish` sube solo `vX.Y.Z`, firma y atesta, y solo entonces mueve `latest` (únicamente para el `vX.Y.Z` más alto); pasos de red con tres reintentos y artefactos de imagen retenidos 7 días.
+- **F9:** VULN-028 reclasificado como no afectado. **F10:** insignia de cobertura medida (job 6c).
+- **Job 0 de CI (PR 43):** detecta cambios solo de documentación y omite los jobs pesados sin debilitar los checks obligatorios del ruleset.
+- **Validación `v0.9.1`** (ejecución 38405885275, commit `32e8359`): en las tres imágenes «Mover latest» empezó después de «Firmar y atestar». Verificación independiente con Cosign v3.1.3 (`verify` y `verify-attestation`) correcta sobre `v0.9.0` y `v0.9.1`.
+
+### Problemas al integrar
+
+- **CVE-2026-85091 (`zlib`) en la imagen `web`:** capa temporal `apk upgrade --no-cache zlib` hasta que la base de nginx lo incluya (PR 40).
+- **Doble envío de correo (error de F2):** el hook de revisión con IA detectó que un `QUIT` fallido tras el `250` hacía reencolar el evento; `QUIT` pasó a mejor esfuerzo, con prueba primero en rojo (PR 41).
+- **Issue 29** (escaneo semanal con go1.26.8): cerrado con un escaneo manual sobre `main` con go1.26.9 y govulncheck sin vulnerabilidades.
+- **Fallas de CI en los PR:** Checkov (CKV_AWS_273 y CKV_AWS_40, justificadas en línea), un falso positivo de Sonar (S7552) y una prueba del frontend no aislada. El PR 42, solo de notas, corrió el pipeline completo y motivó el job 0.
+- La sección «Hallazgos y correcciones posteriores al cierre de la remediación» del informe técnico recoge el detalle.
+
+### Decisiones tomadas sobre la marcha
+
+- Las notas de fin de día viven en una rama local, sin PR hasta que se pidan.
+- El diseño del filtro de documentación con `paths-ignore` se descartó: los checks obligatorios quedarían en «Expected — waiting»; un job que decide en tiempo de ejecución sí cuenta como aprobado al omitirse.
+- Los hallazgos nuevos de esta etapa no reciben identificador VULN (decisión del usuario).
+- **S1 (seguimiento-pre-v1):** `release.yml` verifica con `cosign verify` y `cosign verify-attestation` cada digest antes de mover `latest`; primera prueba real con el tag `v1.0.0`.
+- **S5 (seguimiento-pre-v1):** RNF-010 con prueba de carga k6 (`make load-test`, paso del job 7 de CI): p95 de refresh, `GET /me` y JWKS de 2 a 5 ms contra el umbral de 300 ms; el login con Argon2id queda fuera, como dice el requisito.
+- **S6 (seguimiento-pre-v1):** segunda evidencia real para RF-008 (escenarios y E2E), RNF-007 y RNF-012 (E2E sobre `/metrics` y los logs reales) y RNF-001, RNF-002, RNF-006 y RNF-008 (`scripts/pipeline_controls_test.py` con escenarios); la matriz queda en 33 completos, 0 parciales y 0 sin cubrir.
+- **S7 (seguimiento-pre-v1):** los 123 code smells de SonarCloud quedan resueltos en la rama: 111 corregidos sin cambiar el comportamiento (550 pruebas unitarias, 631 de integración y 264 del frontend antes y después), 11 falsos positivos justificados y 1 no aplicable (`db/migrations/**`, inmutable, excluida del análisis). Sonar solo lo reflejará tras fusionar a `main`.
+- `make up` levanta el stack completo, observabilidad y Falco incluidos; se eliminó `make up-obs` y se añadió `make up-app` (solo la aplicación) para CI. Motivo: los guiones de la demo y del video muestran Grafana y Falco, y el usuario debe recordar un único comando (`make setup` en un clon nuevo y `make up`).
+
+### Estado
+
+- `main` con CI verde, `v0.9.1` validado. Matriz: 33 requisitos (33 completos, 0 parciales, 0 sin cubrir, 0 diferidos). Informe técnico actualizado (`b4bf102`); esta rama propaga el estado final a README, manuales, diagramas y modelo de amenazas.
+
+### Siguiente paso
+
+1. Fusionar la documentación final y crear el tag `v1.0.0`; el workflow de release publica las imágenes firmadas.
+2. Publicar el release de GitHub con el PDF del informe técnico (`make informe`).
+3. Grabación del video (decisión del usuario sobre las escenas de las funciones F1 a F4).
+
+---
+
+## 2026-10-12 · Cierre — publicación en Docker Hub (C3), avisos nuevos e informe actualizado
+
+Cierra C3 y la parte documental del cierre. El detalle por tarea y la evidencia trazable permanecen en `odd/tasks/cierre-entrega.md`.
+
+### Hecho
+
+- **C3 (Docker Hub):** `.github/workflows/release.yml` se dispara solo con tags `vX.Y.Z`. El job `gate` construye `api`, `worker` y `web` y aplica el mismo gate de Trivy que CI; el job `publish` (único con el environment protegido `dockerhub`, restringido a tags `v*`) sube las mismas imágenes ya escaneadas a `docker.io/jorgeivp/identity-hub-api`, `identity-hub-worker` e `identity-hub-web` con `vX.Y.Z` y `latest`, adjunta un SBOM CycloneDX (Syft) como atestación de Cosign y firma cada digest con Cosign keyless (OIDC de GitHub). Se fusionó con el PR #30.
+- **Tag de validación `v0.9.0`** sobre `0ea0ea3` (merge del PR #30): ejecución 38319904991 en verde, 6 jobs. `cosign verify` y `cosign verify-attestation --type cyclonedx` pasan sobre las tres imágenes con **Cosign v3**.
+- **Avisos publicados después del último CI verde de `main` (PR #31, fusionado):** biblioteca estándar de Go 1.26.8 a 1.26.9 (`net/http`, `net/textproto`, `crypto/tls`), `tiff` 4.7.1 a 4.7.2 en la base `nginx-unprivileged` (CVE-2026-4775) y `golang.org/x/net` 0.59.0 a 0.60.0 en `tools/go.mod`. Por decisión del usuario no reciben identificador VULN.
+- **Informe técnico actualizado** (`docs/informe/informe-tecnico.md`): Docker Hub hecho, AM-008, AM-009 y AM-022 mitigadas, avisos del PR #31 y nota de Cosign v3. Esta misma rama documental propaga el cambio al README, los manuales, el ADR 0011, el informe de seguridad, el modelo de amenazas y el guion del video.
+
+### Verificado contra la evidencia versionada
+
+| Comprobación | Resultado |
+|---|---|
+| Release `v0.9.0` | run 38319904991 en verde (6 jobs) sobre `0ea0ea3` |
+| Digest `api` | `sha256:52f2988ccee6f62a3bcd1ba7aa2c9f1b270d9dfbef7d99ec67b1198e707a86a3` |
+| Digest `worker` | `sha256:f9b5443d5335e8005dfc33530da78d6f41e09a66b3907f7a9a52a054c57bd03c` |
+| Digest `web` | `sha256:fcca1f1c96479c0c94ee266960d74c88cb4c2555d084f38253e143b06a586005` |
+| Amenazas abiertas | ninguna; AM-009 conserva el riesgo residual aceptado de VULN-028 (reclasificado después como no afectado, ver Decisiones) |
+
+### Decisiones tomadas sobre la marcha
+
+- Un release no publica nada si alguna de las tres imágenes falla el gate, y publica la misma imagen que escaneó (sin reconstruirla). Un fallo de red durante `publish` todavía puede dejar una imagen sin subir; su corrección quedó planificada (F8).
+- Cosign v3 guarda la firma y la atestación como referrers OCI (formato bundle), no como etiquetas `.sig`/`.att`: no aparecen en la pestaña Tags de Docker Hub y Cosign v2 no las encuentra.
+
+- VULN-028 (GO-2026-5932) pasa de riesgo aceptado hasta 2026-12-25 a **no afectado** (decisión del usuario, F9): no tiene versión corregida ni la tendrá, y `go list -deps` no encuentra `x/crypto/openpgp` ni en el backend ni en las herramientas; la exclusión de `osv-scanner` pasa a ser permanente.
+
+### Hallazgos
+
+- Los gates bloquearon el release tal como están diseñados: aparecieron avisos publicados después del último CI verde, sin que nadie tocara el código.
+
+### Estado
+
+- Docker Hub queda cerrado; el tag `v1.0.0` y el release de GitHub con el PDF del informe aún no existen.
+- La grabación del video la hace el equipo.
+
+### Siguiente paso
+
+1. 2026-10-13, tareas F: RF-019 (exportación del audit log), SMTP con STARTTLS y hosts configurables, Falco y RF-018 (claves de servicio).
+2. Crear el tag `v1.0.0` (dispara `release.yml`) y el release de GitHub con el PDF adjunto.
+
+---
+
+## 2026-10-06 · Semana 4 — Documentación, IaC de referencia, grilla de roles y cierre
+
+Cierra el trabajo verificable de la semana 4 antes de la publicación en Docker Hub. *(La publicación se hizo después, el 2026-10-12: ver la entrada de arriba.)* El detalle por tarea y la evidencia trazable permanecen en `odd/tasks/idp-semana-4.md`; esta entrada resume el estado para el equipo que hará el cierre en vivo.
+
+### Hecho
+
+- **Fase 1 (T1–T6):** se organizaron los manuales, diagramas UML, el modelo Threat Dragon y la guía de integración; la portabilidad quedó documentada con `make setup` y `docker compose up -d`.
+- **Fase 2 (T7–T10):** se incorporaron la arquitectura AWS de referencia como IaC, el compose de producción simulada y los controles de Checkov, sin convertir una nube de pago en requisito local.
+- **Fase 3 (T11–T15):** la grilla configurable de roles y permisos implementa RF-021 y ADR 0013; se integró en `main` mediante el PR #11.
+- **Fase 4:** T16 remedia VULN-019: el escaneo de las ocho imágenes del compose baja de 710 a 108 hallazgos HIGH/CRITICAL. T18 incorpora el manual de usuario, T19 el informe técnico y la corrección de métricas del dashboard, T20 el guion del video y T21a corrige la codificación MIME de los correos.
+
+### Verificado contra la evidencia versionada
+
+| Comprobación | Resultado |
+|---|---|
+| PR #11 | merge `8b4a18a` en `main`; CI 21/21 en verde |
+| VULN-019 | run `baseline-scan` 37473616659 sobre `924b581`: 710 → 108 en ocho imágenes |
+| Riesgo aceptado | VULN-028 permanece aceptado hasta 2026-12-25 |
+
+### Decisiones tomadas sobre la marcha
+
+- La infraestructura AWS y el compose de producción son referencias verificables, no un despliegue real en una nube de pago.
+- Docker Hub, el tag de versión y el release se reservan para el cierre en vivo con el equipo; no se publican de forma anticipada.
+
+### Hallazgos
+
+- VULN-019 ya no es parcial: las ocho imágenes del compose están actualizadas y fijadas por digest. Los 108 avisos residuales dependen de paquetes o componentes que los proveedores aún no incorporan; el detalle queda en `security/evidence/actions-37473616659/README.md`.
+- La corrección del dashboard conecta las métricas de login, eventos y reuso de refresh, y consulta la métrica detallada de RabbitMQ para la DLQ.
+
+### Estado
+
+- Al cierre de esta entrada estaban pendientes T17 (publicación en Docker Hub), el tag `vX.Y.Z` y el release de GitHub con el PDF adjunto. *Actualización 2026-10-12: Docker Hub quedó hecho con C3; tag y release siguen pendientes. Actualización 2026-10-13: tag `v1.0.0` y release publicados, con el PDF adjunto.*
+- La grabación del video sigue pendiente; el guion de 13 minutos está listo.
+
+### Siguiente paso
+
+1. ~~Resolver Q1 y publicar las imágenes de T17 en Docker Hub~~ (hecho el 2026-10-12, C3).
+2. Crear el tag `vX.Y.Z` y el release de GitHub con el PDF del informe adjunto.
+3. Grabar el video con el guion versionado.
+
+---
+
+## 2026-10-05 · Semana 3 — OAuth, dominios locales, frontend, E2E y DAST
+
+Cierra las fases 0 a 3 de la semana 3. El detalle por tarea y la evidencia trazable permanecen en
+`odd/tasks/idp-semana-3.md`; esta entrada concentra el estado que necesita quien retome el proyecto.
+
+### Hecho
+
+- Las fases 0 a 3 incorporaron OAuth 2.0 con authorization code y PKCE, los dominios locales separados del Hub y Contabilidad, y sus interfaces de frontend.
+- Playwright cubre la demo y los escenarios de extremo a extremo; OWASP ZAP añade el gate DAST para los baselines web y el escaneo de API.
+- Se crearon y remediaron VULN-030 (CSP sin `form-action`) y VULN-031 (login con contraseña larga que respondía 500).
+- T16 dejó documentado e instalado el hook real de pre-commit para detectar secretos antes del commit.
+
+### Verificado contra el sistema en ejecución
+
+| Comprobación | Resultado |
+|---|---|
+| CI, run 37334970578 | 15/15 jobs en verde |
+| Acción compuesta `stack-up` | verificada por los jobs E2E, integración y DAST |
+
+### Decisiones tomadas sobre la marcha
+
+- D3 y D10 mantienen Hub y Contabilidad en dominios locales distintos para demostrar SSO sin compartir la sesión entre aplicaciones; Chrome y Firefox resuelven `*.localhost` sin preparar el equipo.
+- D4 fija OAuth 2.0 authorization code con PKCE como el SSO mínimo; D5 conserva MFA por código enviado a Mailpit para el alcance de la demo.
+- D8 y D9 separan los roles del directorio de los roles de Contabilidad y mantienen cerrado el autorregistro.
+
+### Hallazgos
+
+- ZAP detectó VULN-030 y VULN-031; ambos quedaron remediados y el gate DAST forma parte del CI.
+- BUG-1 y BUG-2 (aceptar invitación y entrar a Contabilidad) no se reproducen: con una sesión por
+  usuario funcionan en Chromium, WebKit, Firefox y Safari (verificación manual del usuario,
+  2026-10-05). La causa probable fue compartir la sesión del Hub entre el admin y el empleado en el
+  mismo navegador, que el SSO reutiliza a propósito.
+
+### Estado
+
+- Fases 0 a 3 cerradas con T16 (hook de pre-commit) y T17 (cierre de fase). El PR de corte de la
+  fase 3 queda pendiente de la confirmación del usuario.
+- RF-018 y RF-019 siguen diferidos para la semana 4 y visibles en la matriz de trazabilidad.
+
+### Entregables publicados
+
+- OAuth, dominios locales, frontend, pruebas Playwright E2E y gate DAST de OWASP ZAP.
+- Fichas y evidencia versionada de VULN-030 y VULN-031.
+
+### Siguiente paso
+
+1. Planificar RF-018 y RF-019 para la semana 4.
+
+---
+
+## 2026-09-27 · Semana 2 (cierre) — Núcleo del IdP, remediación y evidencia "después"
+
+Cierra las fases 0 a 3. El detalle por tarea y la evidencia trazable permanecen en
+`odd/tasks/idp-semana-2.md`; esta entrada concentra el estado que necesita quien retome el proyecto.
+
+### Hecho
+
+- Fases 0 a 3 completas: contrato ejecutable, núcleo del IdP, remediación y evidencia "después". Hay 29 fichas: 27 remediadas, VULN-019 parcial y VULN-028 como riesgo aceptado.
+- Las seis métricas medidas pasaron de 64 a 0 CVE corregibles en imágenes, 12 a 0 hallazgos de secretos, 6 a 0 dependencias alcanzables, 3 a 0 contenedores de aplicación como root, 0 a 5 cabeceras Nginx y 0 a 3 imágenes de aplicación fijadas por digest.
+- Los runs finales 36283211113 y 36284740966 terminaron en verde; las mediciones se hicieron en `feat/idp-semana-2` antes del merge a `main`.
+
+### Decisiones tomadas sobre la marcha
+
+- GO-2026-5932 queda aceptada como VULN-028: el módulo sigue requerido, pero no es alcanzable y permanece filtrado en `backend/osv-scanner.toml` hasta 2026-12-25.
+- La actualización de osv-scanner de v1.9 a v2.6 reveló VULN-028 y VULN-029, antes ocultas por el análisis; remediarlas exigió subir el proyecto a Go 1.26.
+
+### Hallazgos
+
+- El sandbox de Codex no tenía red ni Docker; Claude ejecutó directamente las verificaciones que dependían de esos recursos.
+- El hook de Gitleaks está declarado, pero nunca se instaló; solo corre `gga run`.
+- T14 y T15 probaron handlers con `httptest` sin componerlos en `Server.Routes`; dos tareas parecían completas mientras el router real seguía devolviendo 501/400. La corrección se verificó contra las rutas reales.
+
+### Estado
+
+- Fase 4: 45/47 tareas al escribir esta entrada. T37 está en curso; T38 queda pendiente del tag, cuyo nombre decide el usuario.
+- VULN-019 sigue parcial: Mailpit, migrate y cuatro imágenes de observabilidad permanecen fuera de la actualización. La evidencia "después" quedó registrada en las fichas y el informe de seguridad.
+
+### Siguiente paso
+
+1. Cerrar T37 y crear el tag de T38 con el nombre que decida el usuario.
+2. Abrir la PR de fase 4 hacia `main`; solo después se medirá el estado de `main`.
+3. Iniciar la semana 3 con ZAP/DAST.
+
+---
+
+## 2026-09-20 · Semana 2 (inicio) — Evidencia "antes", hallazgos del pipeline y reestructuración
+
+Cubre el 2026-09-19 y el 2026-09-20. Seguimiento fino por tarea en `odd/tasks/idp-semana-2.md`;
+esta entrada resume lo que importa para entender el proyecto.
+
+### Hecho
+
+- **T0.1**: repo público publicado (`main` y el tag `v0.0.0-vuln-baseline`). GitHub bloqueó el primer push por
+  *push protection* (token de Slack sembrado en `legacy_auth.go`): evidencia "antes" de VULN-001.
+- **T1a**: OpenAPI enmendado, el refresh token viaja en cookie `HttpOnly; Secure; SameSite=Strict`.
+- **T0.4**: plantilla de fichas con filas de evidencia y `docs/evidencia/README.md`.
+- **T0.2 y T0.3 (en curso)**: dos escaneos de la línea base (runs 35476102444 y 35534898422), los 26
+  `docs/evidencia/VULN-XXX/evidencia.json` con su "antes", alertas de code scanning leídas por API,
+  `curl` local sobre la imagen `web` y las 12 huellas de Gitleaks para T31.
+- **T1** (Codex): `gen.go` generado desde el OpenAPI con oapi-codegen v2.5.1 + runtime v1.1.2; el servidor implementa las 22
+  operaciones (501 las pendientes). Se descartó oapi-codegen v2.8.0: obliga a `go 1.24` y actualiza `x/text`, lo que rompe
+  Q11 y borraría la evidencia de VULN-026.
+- **Gitleaks sobre nuestro propio historial (decisión Q20 aprobada).** Tras publicar la rama, el escaneo del historial da
+  14 huellas: las 12 de la línea base y 2 falsos positivos nuestros (`Password: PasswordConfig{` en `config.go` y una nota de
+  handoff con un patrón de URL). Ya están corregidos en el árbol; el historial los conserva y el CI los verá. **El usuario
+  aprobó añadirlos al `.gitleaksignore` de T31** (14 huellas en total) y descartó reescribir la rama. Desde ahora se ejecuta
+  `gitleaks protect --staged` antes de cada commit (el hook de `pre-commit` no está instalado en esta máquina).
+- **T6** (Codex): se retira `middleware.RealIP` de chi (VULN-020) y `ClientIP` solo confía en `X-Forwarded-For` desde los
+  proxies configurados (`TRUSTED_PROXIES`, vacío por defecto). chi pasa a v5.3.2 y **Go a 1.25** (Q19, aprobado por el
+  usuario): `govulncheck` ya no informa GO-2026-5775 ni 5777 ni los 26 avisos de la biblioteca estándar.
+- **Salto a Go 1.25, efectos colaterales:** `golangci-lint` v1 no analiza código de Go 1.25, así que el CI usa golangci-lint
+  v2.13.2 con la configuración migrada; `make lint` escondía los fallos y ahora falla; con el linter v2 solo quedan los 3
+  avisos de la línea base (`legacy_auth.go`, hasta T23).
+- **T0.5** (Codex): las 19 fichas que faltaban; ya hay una por cada VULN-001 a VULN-026. **Fase 0 cerrada.**
+- **T0.2 cerrada.** El escaneo semanal (run 35547924202) encontró 33 vulnerabilidades y aun así terminó en éxito sin abrir la
+  incidencia: `govulncheck | tee` sin `pipefail` esconde el fallo (D9). Corregido en `scheduled-scan.yml`.
+- **T14a** (Codex): la ADR 0005 retira la ventana de gracia de 10 segundos (Q4) y documenta el riesgo residual y su
+  mitigación en el cliente.
+- **T8** (Codex): tokens de acceso EdDSA de 15 minutos, `GET /.well-known/jwks.json` y el middleware `RequireAuth`; la clave
+  de firma es obligatoria (`JWT_SIGNING_KEY`). La prueba de confusión de algoritmo de Codex firmaba tokens sin `kid` y
+  habría pasado por otra razón: se rehízo para que solo el algoritmo pueda causar el rechazo.
+- **T7** (Codex): Argon2id con los parámetros de la ADR 0004, verificación en tiempo constante, hash señuelo y un semáforo
+  que acota a unos 256 MiB simultáneos. La prueba de integración de Codex no podía pasar (omitía una columna `NOT NULL`)
+  y se corrigió al ejecutarla contra la base real.
+- **T5** (Codex): sqlc v1.31.1 con consultas parametrizadas para usuarios y auditoría, y un adaptador que oculta los
+  tipos generados. El hook de revisión previo al commit detectó errores sin contexto en el adaptador y se corrigieron.
+- **T4** (Codex): paquete `testdb` que crea y borra una base PostgreSQL temporal por prueba, `make test-integration` y el
+  job 6b del CI con PostgreSQL 16.15 fijado por digest. Claude ejecutó las pruebas contra una base real (el sandbox de
+  Codex no llega a `localhost:5432`).
+- **T2 y T3** (Codex y Claude): `make gen` regenera el servidor Go, los tipos TypeScript y la matriz; el job `spec-drift`
+  del CI falla con cualquier deriva (comprobado con una sonda negativa). Fase 1 cerrada.
+- **Informe con capturas** (Claude Desktop, fuera del repo): 20 de los 26 VULN ya tienen captura "antes" (005, 006 y 007 cuentan como "no aparecen").
+
+### Decisiones tomadas sobre la marcha
+
+- **Q16 · Evidencia en dos capas.** Claude Desktop no puede escribir en el repo (errores de permisos), así que
+  las capturas viven en su informe `.docx` y el repo guarda solo `evidencia.json` (texto). Se rehízo T0.3.
+- **Q17 · Sin Dependabot por ahora.** La evidencia de dependencias sale de govulncheck y npm audit.
+- **Cierre de tareas de Codex.** El sandbox de Codex no puede escribir en `.git`: Claude revisa el diff y hace
+  los dos commits de cada tarea (el de la tarea y el de registro).
+- **Comprobar antes de creer.** Contrastar lo que informa cada herramienta con los archivos de evidencia corrigió
+  varias suposiciones (ver Hallazgos).
+
+### Hallazgos
+
+**Correcciones al registro de evidencia** (la columna "Gate" ya refleja lo observado):
+
+- Ningún gate detecta VULN-005, 006, 007, 011 ni 024. Que el pipeline esté en verde sobre ellos no es una garantía.
+- `USER root` (VULN-009, 018) lo detecta Trivy config `DS002`, no Hadolint. Los secretos en `ENV` (VULN-012) también
+  los marca Trivy (`DS031`).
+- `GO-2026-5774`, citado en la ficha de VULN-020, no aparece en govulncheck; sí 5775 y 5777.
+
+**Defectos del propio pipeline:**
+
+- **D2 · La imagen `api` no se puede construir hoy.** `apt-get` sobre `debian:11-slim` da 404 en
+  `bullseye-security` (Debian 11 ya no recibe paquetes). Es evidencia de VULN-008 y afecta a T27.
+- **D6 · El job `secrets` del CI no escaneó nada** en el push inicial: `053e15f^..9f04fec` no existe porque
+  `053e15f` es el primer commit. Un gate en rojo por la causa equivocada.
+- **D7 · El job "Configuración de contenedores" falla en "Set up job"**: Hadolint y Trivy config no corren en CI.
+- **D8 · El job "Dependencias vulnerables" se detiene en govulncheck** y `npm audit` y `osv-scanner` no se ejecutan.
+- **D1 · Gitleaks se escaneaba a sí mismo** (16 de 28 hallazgos). Corregido: ahora da 12.
+
+**Hallazgos sin ficha ni id** (el id solo se asigna al crear la ficha; decidir en T0.5 si se abren):
+
+- CodeQL #81 `go/log-injection` (Medium, `legacy_auth.go:113`).
+- `amqp091-go` GO-2026-6372 (`broker.go` y `cmd/worker`), y 26 avisos de la biblioteca estándar de Go 1.22 que solo
+  se corrigen con Go 1.25 (decisión Q11).
+- Semgrep: 40 acciones de GitHub fijadas por etiqueta, 1 `run-shell-injection` en `baseline-scan.yml`, 2
+  `request-host-used` en `default.conf`. gosec G104 x3 en `broker.go`.
+- 33 alertas CodeQL `js/remote-property-injection` en `docs/diagramas/*.html`: ruido de diagramas generados;
+  excluirlas de CodeQL sería tocar un gate y requiere aprobación.
+
+### Dónde queda cada cosa
+
+| Qué | Dónde |
+|---|---|
+| Estado y decisiones por tarea | `odd/tasks/idp-semana-2.md` (registro de evidencia, Q1 a Q17) |
+| Evidencia por VULN, en texto | `docs/evidencia/VULN-XXX/evidencia.json` (26) |
+| Salidas de los escáneres y su análisis | `security/evidence/actions-<run>/README.md`, `local-web-baseline.txt` |
+| Capturas de pantalla | Informe de Claude Desktop (fuera del repo) |
+| Fichas de hallazgos | `security/findings/` (7 hoy; T0.5 crea 19 más) |
+
+### Estado
+
+- Rama `feat/idp-semana-2`; los commits posteriores al push del 2026-09-20 están solo en local.
+- Con captura "antes" en el informe: 20 de 26. Sin captura aún: VULN-013, 014 y 015 (evidencia local ya guardada en
+  texto), VULN-011 y 024 (ningún gate los detecta) y VULN-023 (ya remediado).
+- **T0.3 cerrada.** VULN-013, 014 y 015 se documentan con la salida en texto (Q18). T0.2 espera el escaneo semanal (lunes 2026-09-21).
+
+### Siguiente paso
+
+1. Cerrar T0.2 con el escaneo semanal del lunes; después T0.5 (fichas).
+2. Cerrar T0.2 (el escaneo semanal corre solo el lunes 2026-09-21) y T0.3; después T0.5.
+3. Empezar el código con T1 (oapi-codegen); Codex escribe y Claude revisa y commitea.
+
+---
+
+## 2026-09-05 · Semana 1 — Specs, esqueleto y línea base vulnerable
+
+### Hecho
+
+**Specs como fuente de verdad (22 archivos).**
+31 requisitos (19 RF + 12 RNF), cada uno con criterio de aceptación verificable.
+Contrato OpenAPI 3.0.3 con 22 operaciones, cada una declarando su
+`x-requirement`. Contrato AsyncAPI con 5 eventos y la topología de RabbitMQ.
+Modelo de amenazas STRIDE con 22 amenazas, donde cada mitigación nombra el gate
+del pipeline que impide que se pierda. 15 escenarios Gherkin. 8 ADR.
+
+La matriz de trazabilidad **no se escribe a mano**: `scripts/traceability.py` la
+deriva del OpenAPI, de las etiquetas de los `.feature` y de los nombres de las
+pruebas. Estado actual, sin maquillaje: 0 completos, 17 parciales, 14 sin
+cubrir.
+
+**Aplicación.**
+Seis contenedores operativos: `db`, `broker`, `mailpit`, `api`, `worker`, `web`.
+Esquema de base de datos con los invariantes aplicados por PostgreSQL, no por
+disciplina del código.
+
+**Pipeline.**
+`ci.yml` con 8 gates bloqueantes · `baseline-scan.yml` en modo informe sobre el
+tag vulnerable · `scheduled-scan.yml` semanal que abre incidencia ante CVE
+nuevos en código que no ha cambiado.
+
+### Verificado contra el sistema en ejecución
+
+No son afirmaciones: se comprobaron una a una.
+
+| Comprobación | Resultado |
+|---|---|
+| Recorrido completo navegador → Nginx → API → PostgreSQL y RabbitMQ | correcto |
+| Publicar evento → worker → SMTP → Mailpit | correo entregado |
+| Republicar el mismo `eventId` | descartado, sigue habiendo 1 correo |
+| `INSERT` de un hash MD5 en `users` | rechazado por `CHECK` |
+| `UPDATE` y `DELETE` sobre `audit_log` | rechazados por disparador |
+| Segunda sesión activa en la misma familia | rechazada por índice único |
+| Inyección SQL en el endpoint sembrado | llega literal a la consulta |
+| Cabeceras de seguridad en Nginx | ausentes, como se esperaba |
+| Usuario de los tres contenedores | `uid=0` |
+
+### Decisiones tomadas sobre la marcha
+
+**Las vulnerabilidades se siembran en el esqueleto, no en el núcleo de auth.**
+El plan las ponía en la primera pasada de la semana 2 para remediarlas
+reescribiendo en la semana 3. Escribir el IdP dos veces no cabe en un mes.
+Concentradas en el esqueleto disparan exactamente los mismos gates, y el núcleo
+se escribe bien desde el principio. *Motivo: coste, no criterio de seguridad.*
+
+**OpenAPI 3.0.3 en lugar de 3.1** — `kin-openapi`, sobre el que se apoya
+`oapi-codegen`, tiene soporte parcial de 3.1. Ver `adr/0003`.
+
+**El registro de auditoría se protege con disparador, no solo con permisos.**
+Un disparador se aplica a todo el mundo, incluido quien se conecte con
+credenciales de más. La revocación de `UPDATE`/`DELETE` al rol `identity_app` se
+añade en la semana 2, encima y no en lugar del disparador.
+
+**Se eliminó el repositorio git de `~/Documents/Proyectos`.** Tenía cero commits
+y englobaba todos los proyectos del usuario; GitHub Actions exige que los
+workflows estén en la raíz del repositorio. Movido a `.git.bak-20260905-vacio`
+(reversible) tras verificar que no tenía commits, ramas, stash, remotos ni
+reflog.
+
+### Hallazgos
+
+Sembrados a propósito, funcionando como se esperaba: VULN-001 (credenciales
+incrustadas), VULN-002 (MD5), VULN-005 (SQL concatenado), y los defectos de
+Dockerfile y Nginx.
+
+**Los tres que no habíamos previsto —y que justifican tener el pipeline:**
+
+- **VULN-020** · `middleware.RealIP` de chi acepta `X-Forwarded-For` sin
+  validar. Rompe a la vez el bloqueo por fuerza bruta (el contador va por IP) y
+  la credibilidad del registro de auditoría. Es la frontera de confianza T2 de
+  nuestro propio modelo de amenazas, mal implementada.
+- **VULN-022** · Inyección SQL **en el driver pgx**, por debajo de nuestro
+  código. Desmonta el "uso consultas parametrizadas, luego estoy a salvo".
+- **VULN-023** · Gitleaks con reglas por defecto detectaba **2 de 12** secretos:
+  identifica por formato (AWS, Slack), no por contexto (`POSTGRES_PASSWORD`).
+  Con `.gitleaks.toml` propio pasó a 12 sin falsos positivos. Sin la línea base
+  deliberada, ese job habría estado en verde y lo habríamos leído como "no hay
+  secretos".
+
+### Estado
+
+- Repositorio: `main` + tag `v0.0.0-vuln-baseline`. Árbol limpio.
+- `ci.yml` **en rojo a propósito**: los gates encuentran lo sembrado.
+- El pipeline aún **no se ha ejecutado en GitHub Actions** (falta subir el repo).
+
+### Entregables publicados
+
+- **Informe de seguridad de la línea base** —
+  https://claude.ai/code/artifact/c652b965-baba-49f8-a283-c57ca7fae1c4
+  Fuente versionada en `docs/security-report.html`; se republica desde ese mismo
+  archivo, de modo que el documento y el repositorio no pueden divergir.
+  La columna `main` está vacía a propósito hasta que exista la medición.
+
+### Siguiente paso
+
+1. Crear el repositorio en GitHub y subirlo. Confirmar que los tres workflows
+   se ejecutan y que `baseline-scan.yml` produce el inventario completo.
+2. Empezar el núcleo del IdP (semana 2): `sqlc`, Argon2id, JWT Ed25519 con
+   JWKS, rotación de refresh con detección de reuso, RBAC y audit log.
+3. Generar `backend/internal/api/gen.go` con `oapi-codegen` y activar el gate
+   real de deriva de specs.

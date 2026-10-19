@@ -1,0 +1,27 @@
+{
+  "vuln": "VULN-006",
+  "gate": [],
+  "antes": {
+    "commit_linea_base": "053e15fb27b1aaf974c7c818108eee64628973e9",
+    "commit_main": null,
+    "workflow": "Escaneo de la línea base",
+    "run_id": "35476102444",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/35476102444",
+    "artefacto": "security/evidence/actions-35476102444/semgrep.json",
+    "captura": "informe Desktop §3 VULN-005/006/007 (no aparecen)",
+    "observacion": "Ningún gate lo detecta (D3 confirmado). Semgrep hardcoded-jwt-key (legacy_auth.go:121) es otro problema (clave incrustada, VULN-001), no la falta de validación del algoritmo."
+  },
+  "remediacion": {
+    "tarea": "T23",
+    "commit": "51a7a4f",
+    "ficha": "security/findings/VULN-006-jwt-sin-validar-algoritmo.md"
+  },
+  "despues": {
+    "commit": "51a7a4f",
+    "workflow": null,
+    "run_id": null,
+    "run_url": null,
+    "captura": "informe Desktop §3 VULN-005/006/007",
+    "observacion": "Sin gate propio: evidencia por diff del commit (legacy_auth.go borrado entero). De paso, Security > Code scanning alerta #81 (CodeQL go/log-injection, legacy_auth.go:113, relacionada pero no es este VULN) también sigue \"Open · On branch main\" por Discrepancia #6. Sin gate de CI: la evidencia después es el diff del commit de remediación; run_url se mantiene en null."
+  }
+}

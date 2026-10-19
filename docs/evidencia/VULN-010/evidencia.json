@@ -1,0 +1,38 @@
+{
+  "vuln": "VULN-010",
+  "gate": [
+    "Hadolint DL3008/DL3009 (baseline-scan)",
+    "Trivy config DS029"
+  ],
+  "antes": {
+    "commit_linea_base": "053e15fb27b1aaf974c7c818108eee64628973e9",
+    "commit_main": null,
+    "workflow": "Escaneo de la línea base",
+    "run_id": "35476102444",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/35476102444",
+    "artefacto": "security/evidence/actions-35476102444/hadolint.txt",
+    "captura": "informe Desktop §3 VULN-010",
+    "hallazgos": [
+      "Hadolint DL3008 en backend/Dockerfile líneas 24, 51 y 66",
+      "Hadolint DL3009 en línea 66",
+      "Hadolint DL3015 en líneas 24, 51 y 66",
+      "Trivy config DS029 HIGH x3 (apt-get sin --no-install-recommends)"
+    ]
+  },
+  "remediacion": {
+    "tarea": "T27",
+    "commit": "a0c64d6",
+    "ficha": "security/findings/VULN-010-apt-get-sin-fijar-ni-limpiar.md"
+  },
+  "despues": {
+    "commit": "59cf8cff8d25776f3cc558e6cd41da29949ef064",
+    "workflow": "CI",
+    "run_id": "36283211113",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/36283211113",
+    "captura": "informe Desktop, seccion VULN-010 despues",
+    "hallazgos": [
+      "Job \"2 · Lint y tipos\" (108518929695): Hadolint sobre backend/Dockerfile: sin hallazgos."
+    ],
+    "observacion": "El \"antes\" venía de baseline-scan.yml, que solo corre sobre el tag v0.0.0-vuln-baseline. Confirmado con Desktop (job 108452162149): el job \"8 · Configuración de contenedores\" de ci.yml corre Trivy config pero NO tiene ningún step de Hadolint (tampoco en 9-10). No hay \"después\" de CI posible para este hallazgo hasta que baseline-scan.yml corra contra un tag nuevo (T38); mientras tanto, evidencia local ya verificada en T27. Corrección de la observación anterior: Hadolint sí tiene gate en el job 2 de ci.yml (cerca de las líneas 124/130). Run verde 36283211113: sin hallazgos."
+  }
+}

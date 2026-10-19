@@ -1,0 +1,70 @@
+# Reescaneo semanal.
+#
+# Captura los CVE que aparecen en código que no ha cambiado: una dependencia
+# segura el lunes puede tener un aviso publicado el jueves sin que nadie toque
+# el repositorio. Es la parte "continua" del DevSecOps que casi nunca se
+# entrega, y sin ella el escaneo solo protege del código nuevo.
+name: Escaneo semanal
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # lunes a las 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  revisar:
+    name: Reescaneo de dependencias e imágenes publicadas
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      security-events: write
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.9"
+          cache-dependency-path: backend/go.sum
+
+      - name: govulncheck
+        id: govuln
+        continue-on-error: true
+        working-directory: backend
+        # `shell: bash` activa pipefail: sin él, `govulncheck | tee` devuelve el
+        # estado de tee (0) y el paso siguiente, que abre la incidencia cuando
+        # govulncheck falla, nunca se ejecutaba (el run 35547924202 encontró 33
+        # vulnerabilidades y terminó en éxito).
+        shell: bash
+        run: |
+          # Versión fijada en tools/go.mod (sin @versión: go.sum la verifica); se
+          # actualiza con `go get -tool` dentro de tools/, no con @latest.
+          go -C ../tools install golang.org/x/vuln/cmd/govulncheck
+          govulncheck ./... | tee /tmp/govulncheck.txt
+
+      - name: Abrir una incidencia si aparecen vulnerabilidades nuevas
+        if: steps.govuln.outcome == 'failure'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const fs = require('fs');
+            const salida = fs.readFileSync('/tmp/govulncheck.txt', 'utf8').slice(0, 60000);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Escaneo semanal: vulnerabilidades nuevas (${new Date().toISOString().slice(0, 10)})`,
+              labels: ['seguridad', 'automático'],
+              body: [
+                'El reescaneo semanal encontró vulnerabilidades en código que no ha cambiado.',
+                '',
+                '```',
+                salida,
+                '```',
+                '',
+                'Registrar cada hallazgo en `security/findings/` antes de remediar.',
+              ].join('\n'),
+            });

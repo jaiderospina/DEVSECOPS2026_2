@@ -1,0 +1,47 @@
+# Secretos y entorno local
+.env
+.env.local
+*.local.md
+*.pem
+*.key
+# Certificados y credenciales SMTP locales de Mailpit (make certs)
+deploy/certs/
+!specs/**/*.key.example
+
+# Go
+backend/bin/
+*.test
+coverage.out
+coverage.html
+
+# Node / frontend
+node_modules/
+frontend/dist/
+contabilidad/dist/
+frontend/.vite/
+*.tsbuildinfo
+
+# Playwright
+e2e/node_modules/
+e2e/test-results/
+e2e/playwright-report/
+e2e/.auth/
+
+# Salidas de escaneo generadas localmente (las de CI se versionan en security/evidence/)
+*.sarif
+trivy-report.json
+gitleaks-report.json
+security/zap-reports/
+
+# SO / editores
+.DS_Store
+.idea/
+.vscode/
+
+# Python bytecode (scripts/traceability_test.py imports the script on CI runners).
+__pycache__/
+*.pyc
+
+# Informe técnico: el PDF se genera con `make informe` y se publica como asset del release (excede el
+# límite de 512 KB del hook de archivos grandes).
+docs/informe/informe-tecnico.pdf

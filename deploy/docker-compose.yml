@@ -1,0 +1,306 @@
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  Entorno de DESARROLLO — construye desde el código local. Imágenes base   ║
+# ║  con soporte, fijadas por digest, y los tres servicios propios            ║
+# ║  endurecidos (read_only, cap_drop, no-new-privileges) desde T30.          ║
+# ║  Historia (ver specs/adr/0007): esta línea base sembraba a propósito      ║
+# ║  VULN-019 (imágenes base antiguas) y VULN-024 (sin endurecimiento; el     ║
+# ║  comentario original de este archivo lo llamaba "VULN-020", que en       ║
+# ║  realidad es el hallazgo de chi RealIP — ver VULN-024, Q9).               ║
+# ║                                                                          ║
+# ║  El compose de producción (docker-compose.prod.yml) llega en la semana 3: ║
+# ║  imágenes firmadas desde GHCR y secretos por entorno gestionado.          ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
+name: identity-hub
+
+services:
+  # ── Datos ───────────────────────────────────────────────────────────────
+  db:
+    # postgres:16-bookworm, con soporte, fijado por digest real.
+    image: postgres@sha256:0ea6700a3b4f0ae6ce746519073558aed4d88a79d8d07622a9a644946c7319c4
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:?POSTGRES_USER must be set in the repository root .env}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in the repository root .env}"
+      POSTGRES_DB: "${POSTGRES_DB:?POSTGRES_DB must be set in the repository root .env}"
+      # Leída solo por deploy/postgres-init/01-identity-app-role.sh (Q21):
+      # da login a identity_app (creado NOLOGIN por la migración 000002, T9).
+      IDENTITY_APP_PASSWORD: "${IDENTITY_APP_PASSWORD:?IDENTITY_APP_PASSWORD must be set in the repository root .env}"
+    # Q12 (2026-09-19) — publicado al host a propósito en desarrollo (acceso
+    # directo con un cliente psql local); se revisa en docker-compose.prod.yml
+    # en la semana 3, no aquí.
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Corre una sola vez, cuando el volumen está vacío (ver el script).
+      - ./postgres-init/01-identity-app-role.sh:/docker-entrypoint-initdb.d/01-identity-app-role.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  broker:
+    # rabbitmq:4-management, con soporte, fijado por digest real.
+    image: rabbitmq@sha256:ddc75301edf58a8332934cf2d801be7cbf8d65c6458d747364a8046238ff1c89
+    environment:
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER:?RABBITMQ_DEFAULT_USER must be set in the repository root .env}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS:?RABBITMQ_DEFAULT_PASS must be set in the repository root .env}"
+    # Q12 (2026-09-19) — mismo criterio que `db`: publicado a propósito en
+    # desarrollo, se revisa en docker-compose.prod.yml en la semana 3.
+    ports:
+      - "5672:5672"    # AMQP
+      - "15672:15672"  # interfaz de administración
+    volumes:
+      - rabbitdata:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  mailpit:
+    # Servidor SMTP de captura: recoge todo el correo saliente y lo muestra en
+    # una interfaz web. No es un broker — esa función la cumple RabbitMQ.
+    # axllent/mailpit v1.31.4, con soporte, fijado por digest real.
+    image: axllent/mailpit@sha256:b68349e3a014b90c5610bfb26b2ae36f3892d7b8cf25ee140c6c71c98d2fcf48
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # interfaz web y API HTTP que consultan las pruebas E2E
+    # SMTP con STARTTLS obligatorio y autenticación real (SMTP_USERNAME/SMTP_PASSWORD
+    # del .env). Los certificados y smtp-auth.txt los genera `make certs`
+    # (scripts/gen-smtp-certs.sh, en deploy/certs/, fuera de git). Sin
+    # MP_SMTP_AUTH_ALLOW_INSECURE, Mailpit solo acepta PLAIN/LOGIN tras TLS.
+    volumes:
+      - ./certs:/certs:ro
+    environment:
+      MP_MAX_MESSAGES: 500
+      MP_SMTP_TLS_CERT: /certs/server.pem
+      MP_SMTP_TLS_KEY: /certs/server-key.pem
+      MP_SMTP_REQUIRE_STARTTLS: 1
+      MP_SMTP_AUTH_FILE: /certs/smtp-auth.txt
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Migraciones ─────────────────────────────────────────────────────────
+  migrate:
+    # migrate/migrate v4.20.1, con soporte, fijado por digest real.
+    image: migrate/migrate@sha256:76cc2074cb6642631f34a898ced71e6aeaa6b1a4d78c4daa743275a22e0c5be7
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ../db/migrations:/migrations:ro
+    command:
+      - "-path=/migrations"
+      - "-database=${MIGRATE_DATABASE_URL:?MIGRATE_DATABASE_URL must be set in the repository root .env}"
+      - "up"
+    restart: on-failure
+
+  # ── Aplicación ──────────────────────────────────────────────────────────
+  api:
+    build:
+      context: ../backend
+      target: api
+    depends_on:
+      db:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      API_PORT: 8081
+      LOG_LEVEL: debug
+      APP_VERSION: 0.1.0-baseline
+      DATABASE_URL: "${DATABASE_URL:?DATABASE_URL must be set in the repository root .env}"
+      RABBITMQ_URL: "${RABBITMQ_URL:?RABBITMQ_URL must be set in the repository root .env}"
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_FROM: no-reply@identity.local
+      JWT_ISSUER: http://identityhub.localhost:8080
+      JWT_SIGNING_KEY: "${JWT_SIGNING_KEY:?JWT_SIGNING_KEY must be set in the repository root .env}"
+      TRUSTED_PROXIES: "${TRUSTED_PROXIES:?TRUSTED_PROXIES must be set in the repository root .env}"
+      BOOTSTRAP_ADMIN_EMAIL: "${BOOTSTRAP_ADMIN_EMAIL:-}"
+      # RF-017 per-IP limit. Same default as the code; `make e2e` raises it while
+      # the suite runs, because every E2E request comes from one IP and the
+      # failures counted in audit_log cannot be deleted. The per-account limit
+      # (LOGIN_ACCOUNT_MAX_FAILURES) is never relaxed.
+      LOGIN_IP_MAX_FAILURES: "${LOGIN_IP_MAX_FAILURES:-20}"
+    ports:
+      - "8081:8081"
+    healthcheck:
+      # La imagen distroless (T27) no tiene shell ni curl: el binario se
+      # autosondea con su propio subcomando "healthcheck".
+      test: ["CMD", "/usr/local/bin/api", "healthcheck"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 15s
+    # T30 — endurecimiento (VULN-024): sistema de archivos raíz de solo
+    # lectura (el binario no escribe nada en disco), sin capacidades Linux y
+    # sin poder escalar privilegios. El usuario no-root ya lo fija la imagen
+    # (T27, distroless nonroot); tmpfs por si algo de la stdlib de Go
+    # necesita un temporal (perfiles, TLS), aunque hoy no le hace falta.
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp
+
+  worker:
+    build:
+      context: ../backend
+      target: worker
+    depends_on:
+      broker:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      LOG_LEVEL: debug
+      APP_VERSION: 0.1.0-baseline
+      # Sin DATABASE_URL, JWT_SIGNING_KEY ni TRUSTED_PROXIES: el worker solo consume la cola y
+      # envía SMTP (config.LoadWorker).
+      RABBITMQ_URL: "${RABBITMQ_URL:?RABBITMQ_URL must be set in the repository root .env}"
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_FROM: no-reply@identity.local
+      SMTP_TLS: starttls
+      SMTP_CA_FILE: /certs/ca.pem
+      SMTP_USERNAME: "${SMTP_USERNAME:-identity-hub}"
+      SMTP_PASSWORD: "${SMTP_PASSWORD:?set it in the repository root .env (make setup generates it)}"
+    volumes:
+      # Solo la CA pública: el worker no necesita ni debe ver las claves.
+      - ./certs/ca.pem:/certs/ca.pem:ro
+    ports:
+      - "9091:9091"  # /metrics del worker
+    restart: unless-stopped
+    # T30 — endurecimiento (VULN-024): mismo razonamiento que `api`.
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp
+
+  web:
+    build:
+      # T13: la imagen compila frontend/, contabilidad/ e inventario/, así que el contexto es la raíz.
+      context: ..
+      dockerfile: frontend/Dockerfile
+      target: web
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    # T30 — endurecimiento (VULN-024): el usuario no-root ya lo fija la
+    # imagen (T28, nginx-unprivileged); `nginx.conf` ya manda sus temporales
+    # (proxy_temp, client_temp, el pidfile) a /tmp, así que basta con tmpfs
+    # ahí para poder correr con el resto del filesystem en solo lectura.
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp
+
+  # ── Observabilidad (perfil observability) ───────────────────────────────
+  # make up la incluye (docker compose --profile observability up -d).
+  # make up-app levanta solo la aplicación, sin este perfil (lo usa CI).
+  prometheus:
+    # prom/prometheus v3.15.0, con soporte, fijado por digest real.
+    image: prom/prometheus@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
+    profiles: ["observability"]
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "127.0.0.1:9090:9090"  # solo loopback: Prometheus no tiene autenticación
+
+  loki:
+    # grafana/loki 3.7.8, con soporte, fijado por digest real.
+    image: grafana/loki@sha256:1107dd5274e0ada47e42472b7a7e71f3b2a2fe878878108f3e2f9e51528f0193
+    profiles: ["observability"]
+    command: ["-config.file=/etc/loki/local-config.yaml"]
+    ports:
+      - "127.0.0.1:3100:3100"  # solo loopback: Loki no tiene autenticación
+
+  alloy:
+    # Grafana Alloy sustituye a Promtail, que está descontinuado.
+    # grafana/alloy v1.20.1, con soporte, fijado por digest real.
+    image: grafana/alloy@sha256:2aa2099af76c0098d4af7a4d6e48f86cb66dc1a000222ad927a1c67c6542d13f
+    profiles: ["observability"]
+    depends_on: [loki]
+    volumes:
+      - ./observability/alloy.river:/etc/alloy/config.river:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      - "run"
+      - "--server.http.listen-addr=0.0.0.0:12345"
+      - "/etc/alloy/config.river"
+
+  falco:
+    # falcosecurity/falco 0.45.0 (2026-09-21), fijado por digest real (índice multi-arquitectura).
+    # Detección en tiempo de ejecución (AM-020): ve las llamadas al sistema de TODOS los contenedores
+    # del host mediante el driver modern eBPF y evalúa deploy/observability/falco/rules.d. Escribe
+    # alertas JSON en stdout; Alloy las envía a Loki y Grafana alerta sobre ellas. Requiere un kernel
+    # Linux con BTF (Docker Desktop y Linux modernos); no es parte del CI (ver docs/runbooks/falco-alerta.md).
+    image: falcosecurity/falco@sha256:788f1129c542171813083d4afc61b16730a47dde8c23d9c39370acef996349b6
+    profiles: ["observability"]
+    # Sin `privileged`: modern eBPF solo necesita cuatro capacidades. BPF y PERFMON cargan y asocian
+    # los programas eBPF; SYS_RESOURCE sube el límite de memoria bloqueada para los mapas; SYS_PTRACE
+    # permite leer /proc/<pid> de procesos de otros contenedores. AppArmor unconfined evita que el perfil
+    # por defecto de Docker bloquee bpf(2) en hosts Linux con AppArmor.
+    cap_drop: [ALL]
+    cap_add: [BPF, PERFMON, SYS_RESOURCE, SYS_PTRACE]
+    security_opt: ["apparmor=unconfined", "no-new-privileges:true"]
+    environment:
+      HOST_ROOT: /host
+    command:
+      - falco
+      - -r
+      - /etc/falco/rules.d
+      - -o
+      - engine.kind=modern_ebpf
+      - -o
+      - json_output=true
+      - -o
+      - stdout_output.enabled=true
+    volumes:
+      # Socket de solo lectura: el plugin de contenedores lo usa para resolver nombre e imagen.
+      - /var/run/docker.sock:/host/var/run/docker.sock:ro
+      - /proc:/host/proc:ro
+      - ./observability/falco/rules.d:/etc/falco/rules.d:ro
+    restart: unless-stopped
+
+  grafana:
+    # grafana/grafana 13.2.3, con soporte, fijado por digest real.
+    image: grafana/grafana@sha256:b28bae15e219c998fb0e0424ed724930cc61b1f61fb404d47c862f9a23f9e572
+    profiles: ["observability"]
+    depends_on: [prometheus, loki]
+    environment:
+      GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER:?GRAFANA_ADMIN_USER must be set in the repository root .env}"
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD:?GRAFANA_ADMIN_PASSWORD must be set in the repository root .env}"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./observability/grafana:/etc/grafana/provisioning:ro
+      - grafanadata:/var/lib/grafana
+    ports:
+      - "127.0.0.1:3000:3000"  # solo loopback
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+volumes:
+  pgdata:
+  rabbitdata:
+  grafanadata:

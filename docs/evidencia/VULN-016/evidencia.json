@@ -1,0 +1,36 @@
+{
+  "vuln": "VULN-016",
+  "gate": [
+    "Trivy image sobre node:18-bullseye (baseline-scan)"
+  ],
+  "antes": {
+    "commit_linea_base": "053e15fb27b1aaf974c7c818108eee64628973e9",
+    "commit_main": null,
+    "workflow": "Escaneo de la línea base",
+    "run_id": "35534898422",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/35534898422",
+    "artefacto": "security/evidence/actions-35534898422/README.md",
+    "captura": "informe Desktop §3 VULN-016",
+    "hallazgos": [
+      "Trivy sobre node:18-bullseye (builder del frontend): 2103 vulnerabilidades HIGH/CRITICAL (218 CRITICAL, 1885 HIGH)",
+      "Trivy sobre baseline/web (imagen final construida): 64 (1 CRITICAL, 63 HIGH), base debian 13.7 porque nginx:latest se resuelve hoy"
+    ],
+    "observacion": "Se escanea la imagen base por nombre; detalle por gravedad en security/evidence/actions-35534898422/trivy-resumen.txt. Cuentas con las etiquetas resueltas el 2026-09-20."
+  },
+  "remediacion": {
+    "tarea": "T28",
+    "commit": "8f3d461",
+    "ficha": "security/findings/VULN-016-node-18-bullseye.md"
+  },
+  "despues": {
+    "commit": "59cf8cff8d25776f3cc558e6cd41da29949ef064",
+    "workflow": "CI",
+    "run_id": "36283211113",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/36283211113",
+    "captura": "informe Desktop, seccion VULN-016 despues",
+    "hallazgos": [
+      "Job de imagen web (108519065602): Trivy image sobre debian 13.7: 0 vulnerabilidades."
+    ],
+    "observacion": "Texto literal de Desktop (job 108452298417). El builder node:18-bullseye ya no está en el Dockerfile (node:24-bookworm por digest); la imagen final es nginx-unprivileged, no lleva Node. Referencia al run parcial anterior 36259385478: se reemplaza por el run verde 36283211113. Run verde 36283211113 (workflow_dispatch, feat/idp-semana-2, commit 59cf8cff, 13/13 jobs): Trivy confirmó cero vulnerabilidades para la imagen web."
+  }
+}

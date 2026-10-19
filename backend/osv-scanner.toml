@@ -1,0 +1,19 @@
+# No afectado — VULN-028 (ver ficha en security/findings/).
+#
+# GO-2026-5932 (golang.org/x/crypto/openpgp y subpaquetes: packet, armor,
+# clearsign, errors, elgamal, s2k) no tiene versión corregida: el aviso es de
+# diseño/mantenimiento del paquete completo, no de una versión concreta.
+# `golang.org/x/crypto` no puede eliminarse del módulo (lo usa
+# internal/auth para Argon2id, ADR 0004), pero ningún paquete propio ni
+# ninguna dependencia importa `golang.org/x/crypto/openpgp` ni sus
+# subpaquetes: `go list -deps ./...` desde backend/ no lo lista, y el
+# análisis de llamadas tanto de osv-scanner v2.6.0 como de govulncheck marca
+# los tres avisos de x/crypto@v0.55.0/v0.56.0 (incluido este) como no
+# invocados/no alcanzables. Solo osv-scanner lo reporta, por coincidencia a
+# nivel de módulo; no hay ruta de código afectada, por
+# alcanzabilidad. Reclasificado el 2026-10-12 como «no afectado» (código
+# vulnerable no presente): como el aviso no tendrá versión corregida, la
+# exclusión es permanente y no lleva fecha de expiración.
+[[IgnoredVulns]]
+id = "GO-2026-5932"
+reason = "VULN-028: no afectado. Los paquetes vulnerables golang.org/x/crypto/openpgp* no se importan (go list -deps ./... no los lista; solo se usan x/crypto/argon2 y x/crypto/blake2b); el aviso no tiene versión corregida por diseño del paquete abandonado."

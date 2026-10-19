@@ -1,0 +1,35 @@
+{
+  "vuln": "VULN-018",
+  "gate": [
+    "Trivy config DS002 (baseline-scan)"
+  ],
+  "antes": {
+    "commit_linea_base": "053e15fb27b1aaf974c7c818108eee64628973e9",
+    "commit_main": null,
+    "workflow": "Escaneo de la línea base",
+    "run_id": "35476102444",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/35476102444",
+    "artefacto": "security/evidence/actions-35476102444/trivy-config.json",
+    "captura": "informe Desktop §3 VULN-009/018",
+    "hallazgos": [
+      "Trivy config DS002 HIGH en frontend/Dockerfile: Image user should not be 'root'"
+    ],
+    "observacion": "Hadolint no informa DL3002 (D4); la detección real es Trivy config DS002. Falta la parte de Trivy image (D2)."
+  },
+  "remediacion": {
+    "tarea": "T28",
+    "commit": "8f3d461",
+    "ficha": "security/findings/VULN-018-imagen-frontend-root.md"
+  },
+  "despues": {
+    "commit": "59cf8cff8d25776f3cc558e6cd41da29949ef064",
+    "workflow": "CI",
+    "run_id": "36283211113",
+    "run_url": "https://github.com/jorgepaez-ops/IdentityHub/actions/runs/36283211113",
+    "captura": "informe Desktop, seccion VULN-018 despues",
+    "hallazgos": [
+      "Job \"8 · Configuración de contenedores\" (108518929740): Trivy config sobre frontend/Dockerfile: 0 hallazgos."
+    ],
+    "observacion": "Texto literal de Desktop (job 108452162149). Confirmado también en local con docker inspect: USER 101. Referencia al run parcial anterior 36259385478: se reemplaza por el run verde 36283211113. Run verde 36283211113 (workflow_dispatch, feat/idp-semana-2, commit 59cf8cff, 13/13 jobs): Trivy config no reportó hallazgos en frontend/Dockerfile."
+  }
+}

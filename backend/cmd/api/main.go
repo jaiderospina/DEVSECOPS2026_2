@@ -1,0 +1,335 @@
+// Binario de la API: el proveedor de identidad.
+package main
+
+import (
+	"context"
+	"crypto/rand"
+	"encoding/base64"
+	"errors"
+	"fmt"
+	"log/slog"
+	"net/http"
+	"net/netip"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/jorgepaez/identity-hub/internal/api"
+	"github.com/jorgepaez/identity-hub/internal/auth/admin"
+	"github.com/jorgepaez/identity-hub/internal/auth/auditlog"
+	"github.com/jorgepaez/identity-hub/internal/auth/bootstrap"
+	"github.com/jorgepaez/identity-hub/internal/auth/employee"
+	"github.com/jorgepaez/identity-hub/internal/auth/invitation"
+	"github.com/jorgepaez/identity-hub/internal/auth/invitationresend"
+	"github.com/jorgepaez/identity-hub/internal/auth/lockout"
+	"github.com/jorgepaez/identity-hub/internal/auth/login"
+	"github.com/jorgepaez/identity-hub/internal/auth/logout"
+	"github.com/jorgepaez/identity-hub/internal/auth/mfa"
+	"github.com/jorgepaez/identity-hub/internal/auth/oauth"
+	"github.com/jorgepaez/identity-hub/internal/auth/password"
+	"github.com/jorgepaez/identity-hub/internal/auth/passwordreset"
+	"github.com/jorgepaez/identity-hub/internal/auth/refresh"
+	"github.com/jorgepaez/identity-hub/internal/auth/rolegrid"
+	"github.com/jorgepaez/identity-hub/internal/auth/servicekey"
+	"github.com/jorgepaez/identity-hub/internal/auth/session"
+	"github.com/jorgepaez/identity-hub/internal/auth/token"
+	"github.com/jorgepaez/identity-hub/internal/config"
+	"github.com/jorgepaez/identity-hub/internal/events"
+	"github.com/jorgepaez/identity-hub/internal/observability"
+	"github.com/jorgepaez/identity-hub/internal/store"
+)
+
+func main() {
+	// The distroless image (T27) has no shell or curl: the compose healthcheck
+	// invokes the binary itself instead of an external process.
+	if len(os.Args) > 1 && os.Args[1] == "healthcheck" {
+		os.Exit(runHealthcheck(http.DefaultClient, healthcheckURL()))
+	}
+	if err := run(); err != nil {
+		fmt.Fprintf(os.Stderr, "la api no pudo arrancar: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+// healthcheckURL reads API_PORT directly instead of going through
+// config.Load(), which requires every mandatory variable of the main
+// process: the healthcheck only needs to know which local port to ask.
+func healthcheckURL() string {
+	port := os.Getenv("API_PORT")
+	if port == "" {
+		port = "8081"
+	}
+	return fmt.Sprintf("http://127.0.0.1:%s/healthz", port)
+}
+
+type healthcheckRequester interface {
+	Do(*http.Request) (*http.Response, error)
+}
+
+func runHealthcheck(client healthcheckRequester, url string) int {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		return 1
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return 1
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return 1
+	}
+	return 0
+}
+
+type bootstrapEnsurer interface {
+	Ensure(context.Context, string) (bootstrap.Outcome, error)
+}
+
+// ensureBootstrapAdmin runs only after PostgreSQL and RabbitMQ are ready and
+// before HTTP serves requests. Its log messages deliberately omit the email
+// and invitation token, both of which are sensitive bootstrap material.
+func ensureBootstrapAdmin(ctx context.Context, logger *slog.Logger, service bootstrapEnsurer, email string) error {
+	if email == "" {
+		return nil
+	}
+	outcome, err := service.Ensure(ctx, email)
+	if err != nil {
+		return fmt.Errorf("bootstrap administrator: %w", err)
+	}
+	switch outcome {
+	case bootstrap.OutcomeCreated:
+		logger.Info("bootstrap administrator invitation created")
+	case bootstrap.OutcomeInvitationReissued:
+		logger.Info("bootstrap administrator invitation reissued")
+	case bootstrap.OutcomeInvitationPending:
+		logger.Info("bootstrap administrator skipped because its invitation is still valid")
+	case bootstrap.OutcomeInvitationUndelivered:
+		logger.Warn("bootstrap administrator invitation could not be delivered; the next startup will reissue it")
+	case bootstrap.OutcomeInvitationUndeliveredLive:
+		logger.Warn("bootstrap administrator invitation could not be delivered and could not be withdrawn; it will be reissued after it expires")
+	case bootstrap.OutcomeAdminExists:
+		logger.Info("bootstrap administrator skipped because an administrator already exists")
+	case bootstrap.OutcomeEmailConflict:
+		logger.Warn("bootstrap administrator skipped because configured email is already in use")
+	}
+	return nil
+}
+
+func run() error {
+	cfg, err := config.Load()
+	if err != nil {
+		return err
+	}
+
+	logger := observability.NewLogger(cfg.LogLevel, "api", cfg.Version)
+	logger.Info("arrancando", "port", cfg.Port)
+
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
+	db, err := store.New(ctx, cfg.DatabaseURL.Reveal())
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	db.WithLogger(logger)
+	logger.Info("conectado a postgres")
+
+	broker, err := events.Connect(cfg.RabbitURL.Reveal())
+	if err != nil {
+		return err
+	}
+	defer broker.Close()
+	logger.Info("conectado al broker y topología declarada")
+
+	seed, err := base64.StdEncoding.DecodeString(cfg.JWTSigningKey.Reveal())
+	if err != nil {
+		return fmt.Errorf("decode JWT signing key: %w", err)
+	}
+	tokens, err := token.New(seed, cfg.JWTIssuer, cfg.JWTAudience, time.Now)
+	if err != nil {
+		return fmt.Errorf("create token service: %w", err)
+	}
+	password.Configure(cfg.Argon2)
+	// OAuth clients are the applications registered in the database (ADR 0015);
+	// an empty or malformed registration stops the API at startup.
+	oauthClients, err := db.ListOAuthClients(ctx)
+	if err != nil {
+		return fmt.Errorf("load OAuth clients: %w", err)
+	}
+	if err := oauth.ValidateClients(oauthClients); err != nil {
+		return fmt.Errorf("validate OAuth client registration: %w", err)
+	}
+	employeeService := employee.New(db, broker, passwordHasher{}, rand.Reader, time.Now)
+	bootstrapService := bootstrap.New(db, broker, passwordHasher{}, rand.Reader, time.Now)
+	invitationService := invitation.New(db, broker, passwordHasher{})
+	// One RF-017 policy for both the password and the MFA-code steps.
+	lockoutPolicy := lockout.Config{
+		AccountMaxFailures: cfg.LoginAccountMaxFailures,
+		IPMaxFailures:      cfg.LoginIPMaxFailures,
+		FailureWindow:      cfg.LoginFailureWindow,
+		LockoutDuration:    cfg.LoginLockoutDuration,
+	}
+	mfaService := mfa.New(db, broker, rand.Reader, time.Now).WithTokenService(tokens, cfg.RefreshTTL).WithHubSessionTTL(cfg.HubSessionTTL).WithLockout(lockoutPolicy).WithLogger(logger)
+	loginService := login.New(db, lockoutPolicy).WithEventPublisher(loginSecurityEventPublisher{users: db, publisher: broker, logger: logger}).WithMFA(mfaService)
+	refreshService := refresh.New(db, tokens, cfg.RefreshTTL).WithEventPublisher(refreshSecurityEventPublisher{users: db, publisher: broker, logger: logger})
+	if err := ensureBootstrapAdmin(ctx, logger, bootstrapService, cfg.BootstrapAdminEmail); err != nil {
+		return err
+	}
+
+	server := api.NewServer(logger, cfg.Version, map[string]api.Checker{
+		"database": db,
+		"broker":   brokerChecker{broker},
+	})
+	server.SetTokenService(tokens)
+	server.SetEmployeeCreationService(employeeService)
+	server.SetInvitationAcceptanceService(invitationService)
+	server.SetInvitationResendService(invitationresend.New(db, broker, rand.Reader, time.Now))
+	server.SetPasswordResetService(passwordreset.New(db, broker, passwordHasher{}, rand.Reader, time.Now).WithLogger(logger))
+	server.SetLoginService(loginService)
+	server.SetMFAService(mfaService, cfg.RefreshTTL)
+	server.SetOAuthService(oauth.New(db.OAuthRepository(), oauthClients, rand.Reader, time.Now), db.OAuthRepository(), cfg.PublicBaseURL+"/login", cfg.HubSessionTTL)
+	server.SetRefreshService(refreshService)
+	server.SetSessionService(session.New(db))
+	server.SetLogoutService(logout.New(db))
+	server.SetAdminUserService(admin.New(db))
+	server.SetRoleGridService(rolegrid.New(db))
+	server.SetOrganizationDirectory(db)
+	server.SetAuditLogService(auditlog.New(db))
+	server.SetServiceKeyService(servicekey.New(db.ServiceKeys()).WithLogger(logger))
+	server.SetCurrentUserRepository(db)
+	server.SetTrustedProxies(cfg.TrustedProxies)
+
+	srv := &http.Server{
+		Addr:              fmt.Sprintf(":%d", cfg.Port),
+		Handler:           server.Routes(),
+		ReadHeaderTimeout: 10 * time.Second,
+		ReadTimeout:       30 * time.Second,
+		WriteTimeout:      30 * time.Second,
+		IdleTimeout:       120 * time.Second,
+	}
+
+	errCh := make(chan error, 1)
+	go func() {
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			errCh <- err
+		}
+	}()
+	logger.Info("escuchando", "addr", srv.Addr)
+
+	select {
+	case err := <-errCh:
+		return err
+	case <-ctx.Done():
+		logger.Info("señal recibida, cerrando ordenadamente")
+	}
+
+	// Margen para que las peticiones en vuelo terminen antes de cortar. Sin
+	// esto, un despliegue devuelve 502 a quien estuviera a mitad de un login.
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	return srv.Shutdown(shutdownCtx)
+}
+
+// brokerChecker adapta el broker a la interfaz Checker de /readyz, que recibe
+// un contexto que la comprobación de AMQP no necesita.
+type brokerChecker struct{ b *events.Broker }
+
+func (c brokerChecker) Ping(_ context.Context) error { return c.b.Ping() }
+
+type passwordHasher struct{}
+
+func (passwordHasher) Hash(value string) (string, error) { return password.Hash(value) }
+
+type userByIDGetter interface {
+	GetUserByID(context.Context, uuid.UUID) (store.User, error)
+}
+
+type eventPublisher interface {
+	Publish(context.Context, string, any) error
+}
+
+// loginSecurityEventPublisher enriches committed lockout events with the recipient
+// data required by the notification worker. A missing user is non-fatal because the
+// lockout transaction has already committed.
+type loginSecurityEventPublisher struct {
+	users     userByIDGetter
+	publisher eventPublisher
+	logger    *slog.Logger
+}
+
+func (p loginSecurityEventPublisher) PublishSecurityEvent(ctx context.Context, event login.SecurityEvent) error {
+	user, ok := p.lookupUser(ctx, event.UserID, event.Type)
+	if !ok {
+		return nil
+	}
+	message := events.AccountLocked{Envelope: events.NewEnvelope(events.TypeAccountLocked, api.TraceIDFrom(ctx))}
+	message.Data.UserID = event.UserID
+	message.Data.Email = user.Email
+	message.Data.DisplayName = user.DisplayName
+	message.Data.LockedUntil = event.LockedUntil
+	message.Data.FailedAttempts = event.FailedAttempts
+	message.Data.IP = addressString(event.IP)
+	return p.publisher.Publish(ctx, events.TypeAccountLocked, message)
+}
+
+func (p loginSecurityEventPublisher) lookupUser(ctx context.Context, userID uuid.UUID, eventType string) (store.User, bool) {
+	user, err := p.users.GetUserByID(ctx, userID)
+	if err != nil {
+		if p.logger != nil {
+			p.logger.Warn("security event skipped because recipient could not be loaded", "event_type", eventType, "user_id", userID, "error", err)
+		}
+		return store.User{}, false
+	}
+	return user, true
+}
+
+// refreshSecurityEventPublisher is deliberately separate from the login adapter:
+// the two services expose different SecurityEvent types despite sharing delivery.
+type refreshSecurityEventPublisher struct {
+	users     userByIDGetter
+	publisher eventPublisher
+	logger    *slog.Logger
+}
+
+func (p refreshSecurityEventPublisher) PublishSecurityEvent(ctx context.Context, event refresh.SecurityEvent) error {
+	user, err := p.users.GetUserByID(ctx, event.UserID)
+	if err != nil {
+		if p.logger != nil {
+			p.logger.Warn("security event skipped because recipient could not be loaded", "event_type", event.Type, "user_id", event.UserID, "error", err)
+		}
+		return nil
+	}
+	message := refreshReuseNotification{Envelope: events.NewEnvelope(events.TypeRefreshReuseDetected, api.TraceIDFrom(ctx))}
+	message.Data.UserID = event.UserID
+	message.Data.Email = user.Email
+	message.Data.DisplayName = user.DisplayName
+	message.Data.FamilyID = event.FamilyID
+	message.Data.RevokedCount = int(event.RevokedCount)
+	message.Data.IP = addressString(event.IP)
+	return p.publisher.Publish(ctx, events.TypeRefreshReuseDetected, message)
+}
+
+func addressString(address *netip.Addr) string {
+	if address == nil {
+		return ""
+	}
+	return address.String()
+}
+
+type refreshReuseNotification struct {
+	events.Envelope
+	Data struct {
+		UserID       uuid.UUID `json:"userId"`
+		Email        string    `json:"email"`
+		DisplayName  string    `json:"displayName"`
+		FamilyID     uuid.UUID `json:"familyId"`
+		RevokedCount int       `json:"revokedCount"`
+		IP           string    `json:"ip"`
+	} `json:"data"`
+}
