@@ -1,0 +1,421 @@
+# LiveMetric - Orquestación local: los 7 contenedores del sistema, incluida
+# la base de datos, corren en esta máquina. No depende de ningún servicio
+# externo.
+#
+# Seguridad de red:
+#   - "db-net" (internal): solo la base y los 5 servicios de backend. Sin
+#     salida a Internet y sin puertos en el host: nadie fuera de estos
+#     contenedores puede hablar con PostgreSQL.
+#   - "app-net": los servicios entre sí y con el host, únicamente en los
+#     puertos que publican explícitamente (el frontend en 3000 para la red
+#     local; los microservicios solo en 127.0.0.1).
+#
+# Secretos:
+#   - Ninguna credencial está escrita en este archivo: todas salen del .env
+#     LOCAL, que genera scripts/lib/generar-env.js con valores aleatorios
+#     propios de cada instalación y que NUNCA se commitea (ver .gitignore).
+#
+# Servicios:
+#   - postgres: PostgreSQL 16; carga db/init.sql la primera vez que arranca
+#     con el volumen vacío. Los datos persisten en el volumen "db-data".
+#   - frontend: SPA en React (nginx), único servicio pensado para el navegador.
+#   - auth-service, voting-service, analytics-service: microservicios A, B, C.
+#   - scrutiny-service: microservicio D, certifica resultados con hash SHA-256
+#     encadenado (append-only en la base de datos).
+#   - scheduler-worker: proceso asíncrono (node-cron) que abre/cierra
+#     elecciones según su ventana de tiempo y dispara la certificación.
+
+networks:
+  app-net:
+    driver: bridge
+  db-net:
+    driver: bridge
+    internal: true
+
+volumes:
+  db-data:
+
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: livemetric-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-livemetric}
+      POSTGRES_USER: ${POSTGRES_USER:-livemetric}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Falta POSTGRES_PASSWORD en el .env (lo genera scripts/lib/generar-env.js)}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      # Solo corre con el volumen vacío (la primera vez). Trae el esquema
+      # completo; db/migrations/ es para actualizar bases ya creadas.
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - db-net
+    # SIN "ports": no se expone al host; solo la ven los servicios en db-net.
+    healthcheck:
+      # Por TCP a propósito: mientras corre init.sql, Postgres atiende solo
+      # por socket local, así que la base no figura "sana" hasta terminar.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/run/postgresql
+
+  # Migraciones: pone al dia una base creada con una version anterior.
+  # init.sql solo corre con el volumen vacio, asi que una base que ya existia
+  # no recibe las columnas y tablas nuevas (por ejemplo, la firma de las
+  # actas): sin esto, el codigo nuevo fallaria contra el esquema viejo. Corre
+  # en cada "up", ANTES que los servicios que usan la base, y termina. Todas
+  # las migraciones de db/migrations/ son idempotentes (IF NOT EXISTS): en
+  # una base nueva o ya al dia no cambian nada.
+  migraciones:
+    image: postgres:16-alpine
+    container_name: livemetric-migraciones
+    labels:
+      # scripts/lib/esperar-contenedores.js: terminar con codigo 0 es su
+      # estado sano, no una falla.
+      livemetric.unica-vez: "true"
+    user: postgres
+    entrypoint:
+      - sh
+      - -c
+      - |
+        for f in /migraciones/*.sql; do
+          psql -q -v ON_ERROR_STOP=1 -f "$$f" || exit 1
+          echo "Aplicada (o ya estaba): $$(basename "$$f")"
+        done
+    environment:
+      PGHOST: postgres
+      PGDATABASE: ${POSTGRES_DB:-livemetric}
+      PGUSER: ${POSTGRES_USER:-livemetric}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?Falta POSTGRES_PASSWORD en el .env (lo genera scripts/lib/generar-env.js)}
+      # Sin los avisos de "ya existe, se omite" de cada IF NOT EXISTS.
+      PGOPTIONS: "-c client_min_messages=warning"
+    volumes:
+      - ./db/migrations:/migraciones:ro
+    # La imagen declara VOLUME para los datos de Postgres, que esta tarea no
+    # usa: sin esto, cada vez que se crea el contenedor queda un volumen
+    # anónimo vacío suelto.
+    tmpfs:
+      - /var/lib/postgresql/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - db-net
+    restart: "no"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+
+  auth-service:
+    build:
+      context: ./services/auth
+      # Fecha que pasan start.sh y contenedor.sh (ver ARG ACTUALIZAR_PAQUETES en el Dockerfile).
+      args:
+        ACTUALIZAR_PAQUETES: ${ACTUALIZAR_PAQUETES:-}
+    # Modo desarrollo: "docker compose watch" reconstruye y reinicia solo este
+    # servicio cuando cambia su codigo (ver docs/manual-desarrollo.md).
+    develop:
+      watch:
+        - action: rebuild
+          path: ./services/auth/src
+          ignore:
+            - __tests__/
+        - action: rebuild
+          path: ./services/auth/package.json
+    container_name: livemetric-auth
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1h}
+      VOTER_JWT_EXPIRES_IN: ${VOTER_JWT_EXPIRES_IN:-10m}
+      PIN_VIGENCIA_HORAS: ${PIN_VIGENCIA_HORAS:-24}
+      VOTER_ID_SALT: ${VOTER_ID_SALT}
+      VOTERS_ENCRYPTION_KEY: ${VOTERS_ENCRYPTION_KEY}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-livemetric}
+      DB_USER: ${POSTGRES_USER:-livemetric}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migraciones:
+        condition: service_completed_successfully
+    networks:
+      - app-net
+      - db-net
+    ports:
+      # Solo accesible desde localhost del host anfitrion, nunca 0.0.0.0
+      - "127.0.0.1:3001:3001"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  voting-service:
+    build:
+      context: ./services/voting
+      # Fecha que pasan start.sh y contenedor.sh (ver ARG ACTUALIZAR_PAQUETES en el Dockerfile).
+      args:
+        ACTUALIZAR_PAQUETES: ${ACTUALIZAR_PAQUETES:-}
+    # Modo desarrollo: "docker compose watch" reconstruye y reinicia solo este
+    # servicio cuando cambia su codigo (ver docs/manual-desarrollo.md).
+    develop:
+      watch:
+        - action: rebuild
+          path: ./services/voting/src
+          ignore:
+            - __tests__/
+        - action: rebuild
+          path: ./services/voting/package.json
+    container_name: livemetric-voting
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3002
+      JWT_SECRET: ${JWT_SECRET}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-livemetric}
+      DB_USER: ${POSTGRES_USER:-livemetric}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migraciones:
+        condition: service_completed_successfully
+    networks:
+      - app-net
+      - db-net
+    ports:
+      - "127.0.0.1:3002:3002"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  analytics-service:
+    build:
+      context: ./services/analytics
+      # Fecha que pasan start.sh y contenedor.sh (ver ARG ACTUALIZAR_PAQUETES en el Dockerfile).
+      args:
+        ACTUALIZAR_PAQUETES: ${ACTUALIZAR_PAQUETES:-}
+    # Modo desarrollo: "docker compose watch" reconstruye y reinicia solo este
+    # servicio cuando cambia su codigo (ver docs/manual-desarrollo.md).
+    develop:
+      watch:
+        - action: rebuild
+          path: ./services/analytics/src
+          ignore:
+            - __tests__/
+        - action: rebuild
+          path: ./services/analytics/package.json
+    container_name: livemetric-analytics
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3003
+      JWT_SECRET: ${JWT_SECRET}
+      VOTERS_ENCRYPTION_KEY: ${VOTERS_ENCRYPTION_KEY}
+      # Solo la pública: verifica la firma de las actas, no puede firmar.
+      ACTA_PUBLIC_KEY: ${ACTA_PUBLIC_KEY}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-livemetric}
+      DB_USER: ${POSTGRES_USER:-livemetric}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migraciones:
+        condition: service_completed_successfully
+      auth-service:
+        condition: service_started
+    networks:
+      - app-net
+      - db-net
+    ports:
+      - "127.0.0.1:3003:3003"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  # Microservicio D: certificacion independiente de resultados (cadena de
+  # hashes SHA-256). Expone /certifications y /verify a administradores via
+  # JWT, y /internal/certify SOLO alcanzable dentro de "app-net" mediante un
+  # token de servicio compartido con scheduler-worker (nunca un JWT de usuario).
+  scrutiny-service:
+    build:
+      context: ./services/scrutiny
+      # Fecha que pasan start.sh y contenedor.sh (ver ARG ACTUALIZAR_PAQUETES en el Dockerfile).
+      args:
+        ACTUALIZAR_PAQUETES: ${ACTUALIZAR_PAQUETES:-}
+    # Modo desarrollo: "docker compose watch" reconstruye y reinicia solo este
+    # servicio cuando cambia su codigo (ver docs/manual-desarrollo.md).
+    develop:
+      watch:
+        - action: rebuild
+          path: ./services/scrutiny/src
+          ignore:
+            - __tests__/
+        - action: rebuild
+          path: ./services/scrutiny/package.json
+    container_name: livemetric-scrutiny
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3004
+      JWT_SECRET: ${JWT_SECRET}
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
+      # La privada firma cada acta al certificarla; es el único servicio que
+      # la tiene. Con la pública comprueba al arrancar que sean pareja.
+      ACTA_SIGNING_KEY: ${ACTA_SIGNING_KEY}
+      ACTA_PUBLIC_KEY: ${ACTA_PUBLIC_KEY}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-livemetric}
+      DB_USER: ${POSTGRES_USER:-livemetric}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migraciones:
+        condition: service_completed_successfully
+    networks:
+      - app-net
+      - db-net
+    ports:
+      # Solo para que un admin autenticado consulte /certifications y /verify
+      # desde el host. El endpoint /internal/certify igual exige el token de
+      # servicio aunque esta ruta esté publicada, como defensa en profundidad.
+      - "127.0.0.1:3004:3004"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  # Worker asincrono: abre/cierra elecciones segun su ventana de tiempo y
+  # dispara la certificacion automatica en scrutiny-service. No se publica
+  # ningun puerto al host: solo vive dentro de "app-net".
+  scheduler-worker:
+    build:
+      context: ./services/scheduler
+      # Fecha que pasan start.sh y contenedor.sh (ver ARG ACTUALIZAR_PAQUETES en el Dockerfile).
+      args:
+        ACTUALIZAR_PAQUETES: ${ACTUALIZAR_PAQUETES:-}
+    # Modo desarrollo: "docker compose watch" reconstruye y reinicia solo este
+    # servicio cuando cambia su codigo (ver docs/manual-desarrollo.md).
+    develop:
+      watch:
+        - action: rebuild
+          path: ./services/scheduler/src
+          ignore:
+            - __tests__/
+        - action: rebuild
+          path: ./services/scheduler/package.json
+    container_name: livemetric-scheduler
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3005
+      SCHEDULER_CRON: ${SCHEDULER_CRON:-* * * * *}
+      SCRUTINY_INTERNAL_URL: http://scrutiny-service:3004
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-livemetric}
+      DB_USER: ${POSTGRES_USER:-livemetric}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migraciones:
+        condition: service_completed_successfully
+      scrutiny-service:
+        condition: service_started
+    networks:
+      - app-net
+      - db-net
+    # Sin "ports": este worker no necesita ser alcanzable desde el host.
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  # SPA en React, servida como archivos estáticos por nginx, que además hace
+  # de proxy reverso hacia los 4 microservicios por "app-net". No está en
+  # "db-net": el frontend nunca habla con la base.
+  frontend:
+    build:
+      context: ./services/frontend
+      # Fecha que pasan start.sh y contenedor.sh (ver ARG ACTUALIZAR_PAQUETES en el Dockerfile).
+      args:
+        ACTUALIZAR_PAQUETES: ${ACTUALIZAR_PAQUETES:-}
+    # Modo desarrollo: "docker compose watch" reconstruye y reinicia solo este
+    # servicio cuando cambia su codigo (ver docs/manual-desarrollo.md).
+    develop:
+      watch:
+        - action: rebuild
+          path: ./services/frontend/src
+          ignore:
+            - __tests__/
+        - action: rebuild
+          path: ./services/frontend/package.json
+    container_name: livemetric-frontend
+    restart: unless-stopped
+    environment:
+      # Rutas relativas: el navegador solo habla con el origen del frontend;
+      # nginx las reenvía server-a-server a cada microservicio (ver
+      # services/frontend/nginx.conf). Así, exponer el sistema hacia afuera
+      # (LAN, Tailscale Funnel, etc.) es cuestión de un solo puerto/origen,
+      # no de cuatro.
+      AUTH_URL: /auth
+      VOTING_URL: /voting
+      ANALYTICS_URL: /analytics
+      SCRUTINY_URL: /scrutiny
+    depends_on:
+      - auth-service
+      - voting-service
+      - analytics-service
+      - scrutiny-service
+    networks:
+      - app-net
+    ports:
+      # Expuesto a toda la red local (no solo localhost) para compartir el
+      # panel/votación dentro de la misma red. El resto de servicios
+      # (auth/voting/analytics/scrutiny) siguen en 127.0.0.1: el navegador
+      # solo necesita llegar a este puerto, todo lo demás pasa por el
+      # proxy reverso de nginx (ver nginx.conf).
+      # Adentro nginx escucha en 8080: corre entero sin root (ver Dockerfile).
+      # Afuera, 3000 o el LIVEMETRIC_PUERTO con que se corra scripts/start.sh.
+      - "0.0.0.0:${LIVEMETRIC_PUERTO:-3000}:8080"
+    # "no-new-privileges" bloquea escalación vía setuid; además nginx corre
+    # entero como el usuario "nginx", sin root (ver Dockerfile).
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      # nginx corre sin root y escribe acá todo lo suyo: buffers, pid y el
+      # config.js (ver nginx.conf y el Dockerfile).
+      - /tmp

@@ -1,0 +1,113 @@
+import React, { useEffect, useState } from 'react';
+import { api } from '../../api.js';
+import { adaptForWidgets } from './dataAdapters.js';
+import KpiCard from './KpiCard.jsx';
+import BarChartWidget from './BarChartWidget.jsx';
+import LineChartWidget from './LineChartWidget.jsx';
+import PieChartWidget from './PieChartWidget.jsx';
+import TableWidget from './TableWidget.jsx';
+
+function fetchDataSource(token, electionId, dataSource, params = {}) {
+  switch (dataSource) {
+    case 'results':
+    // "concentration" (HHI) viaja en la misma respuesta que "results", solo
+    // se muestra distinto (ver adaptForWidgets).
+    case 'concentration':
+      return api.getResults(token, electionId);
+    case 'timeseries':
+    // "anomalies" viaja en la misma respuesta que "timeseries".
+    case 'anomalies':
+      return api.getTimeseries(token, electionId, params.interval);
+    case 'participation':
+      return api.getParticipation(token, electionId, params.groupBy);
+    case 'operational':
+    // "participationRate" viaja en la misma respuesta que "operational".
+    case 'participationRate':
+      return api.getOperationalMetrics(token, electionId);
+    case 'audit':
+      return api.getAuditMetrics(token, electionId);
+    case 'turnoutProjection':
+      return api.getTurnoutProjection(token, electionId);
+    case 'leadTimeline':
+      return api.getLeadTimeline(token, electionId);
+    case 'integrity':
+      return api.getIntegrity(token, electionId);
+    case 'suspiciousAccess':
+      return api.getSuspiciousAccess(token, electionId);
+    default:
+      return Promise.resolve(null);
+  }
+}
+
+function renderByType(type, shaped, printMode) {
+  switch (type) {
+    case 'kpi':
+      return <KpiCard kpi={shaped.kpi} />;
+    case 'bar':
+      return <BarChartWidget items={shaped.items} unit={shaped.unit} printMode={printMode} emptyMessage={shaped.emptyMessage} />;
+    case 'line':
+      return <LineChartWidget items={shaped.items} series={shaped.series} unit={shaped.unit} printMode={printMode} emptyMessage={shaped.emptyMessage} />;
+    case 'pie':
+      // pieItems, si la fuente reparte en la torta otra cosa que en las barras (participación: % en las barras, votos en la torta).
+      return <PieChartWidget items={shaped.pieItems || shaped.items} printMode={printMode} emptyMessage={shaped.emptyMessage} />;
+    case 'table':
+      return <TableWidget table={shaped.table} />;
+    default:
+      return null;
+  }
+}
+
+// Un widget resuelve su propia fuente de datos a partir de su `config`
+// ({type, dataSource, params}); el builder y la vista de solo lectura del
+// auditor comparten este mismo componente, solo cambian los botones que le
+// pasan (editar/quitar, o ninguno). `printMode` retematiza los gráficos con
+// colores aptos para papel (ver palette.js) mientras se exporta a PDF; el
+// resto de la tarjeta (título, KPI, tabla) ya se retematiza solo vía las
+// variables CSS que redefine `.pdf-export-mode` en styles.css.
+export default function Widget({ session, electionId, config, onRemove, onConfigure, dragHandleClassName, printMode }) {
+  const [state, setState] = useState({ loading: true, error: '', shaped: null });
+
+  useEffect(() => {
+    let cancelled = false;
+    setState({ loading: true, error: '', shaped: null });
+    fetchDataSource(session.token, electionId, config.dataSource, config.params)
+      .then((raw) => {
+        if (cancelled) return;
+        setState({ loading: false, error: '', shaped: adaptForWidgets(config.dataSource, raw) });
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setState({ loading: false, error: err.message, shaped: null });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [session.token, electionId, config.dataSource, JSON.stringify(config.params)]);
+
+  return (
+    <div className="widget-card">
+      <div className={`widget-header ${dragHandleClassName || ''}`}>
+        <span className="widget-title">{config.title}</span>
+        {(onConfigure || onRemove) && (
+          <div className="widget-actions">
+            {onConfigure && (
+              <button className="link-button" title="Configurar" onClick={() => onConfigure(config)}>
+                ⚙
+              </button>
+            )}
+            {onRemove && (
+              <button className="link-button" title="Quitar" onClick={() => onRemove(config.id)}>
+                ✕
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+      <div className="widget-body">
+        {state.loading && <div className="widget-empty widget-loading">Cargando…</div>}
+        {state.error && <div className="widget-empty widget-error">{state.error}</div>}
+        {!state.loading && !state.error && state.shaped && renderByType(config.type, state.shaped, printMode)}
+      </div>
+    </div>
+  );
+}

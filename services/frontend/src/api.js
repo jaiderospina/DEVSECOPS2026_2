@@ -1,0 +1,197 @@
+// Cliente HTTP mínimo: envuelve fetch, adjunta el token cuando existe, y
+// normaliza los errores del backend (que siempre responden { error: "..." }).
+
+import { ownValue } from './utils/ownValue.js';
+
+const cfg = window.__LIVEMETRIC_CONFIG__ || {};
+
+const BASE_URLS = {
+  auth: cfg.AUTH_URL || 'http://localhost:3001',
+  voting: cfg.VOTING_URL || 'http://localhost:3002',
+  analytics: cfg.ANALYTICS_URL || 'http://localhost:3003',
+  scrutiny: cfg.SCRUTINY_URL || 'http://localhost:3004',
+};
+
+async function request(service, path, { method = 'GET', body, token } = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  let response;
+  try {
+    response = await fetch(`${ownValue(BASE_URLS, service)}${path}`, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch (networkErr) {
+    throw new Error(
+      `No se pudo contactar el servicio "${service}". ¿Está corriendo el stack con docker compose?`
+    );
+  }
+
+  let data = null;
+  try {
+    data = await response.json();
+  } catch {
+    // respuesta sin cuerpo (poco común, pero no debe romper el flujo)
+  }
+
+  if (!response.ok) {
+    const error = new Error(data?.error || `Error ${response.status} en ${service}${path}`);
+    // Para quien quiera reintentar: el estado y, con 429 (límite de
+    // operaciones), los segundos hasta que se renueva el cupo.
+    error.status = response.status;
+    error.retryAfter = Number(response.headers?.get('RateLimit-Reset') || response.headers?.get('Retry-After')) || null;
+    throw error;
+  }
+  return data;
+}
+
+export const api = {
+  // Auth
+  loginAdmin: (username, password) =>
+    request('auth', '/login/admin', { method: 'POST', body: { username, password } }),
+  loginVoter: (cedula, pin) =>
+    request('auth', '/login/voter', { method: 'POST', body: { cedula, pin } }),
+  // Segundo paso del ingreso: "challenge" es el desafío que devolvió el primero.
+  verifyVoterCode: (challenge, code) =>
+    request('auth', '/login/voter/codigo', { method: 'POST', body: { challenge, code } }),
+  enrollVoter: (challenge, code) =>
+    request('auth', '/login/voter/registro', { method: 'POST', body: { challenge, code } }),
+  authorizeAssistedVoter: (challenge, juradoUsername, juradoCode) =>
+    request('auth', '/login/voter/asistido', { method: 'POST', body: { challenge, juradoUsername, juradoCode } }),
+  verifyAdminCode: (challenge, code) =>
+    request('auth', '/login/admin/codigo', { method: 'POST', body: { challenge, code } }),
+  enrollAdmin: (challenge, code) =>
+    request('auth', '/login/admin/registro', { method: 'POST', body: { challenge, code } }),
+  // mesa: { pollingPlace, votingTable }, solo para un jurado.
+  createAdminUser: (token, username, password, role = 'admin', mesa = {}) =>
+    request('auth', '/admin/users', { method: 'POST', token, body: { username, password, role, ...mesa } }),
+  listUsers: (token) => request('auth', '/admin/users', { token }),
+  // Puestos del padrón con sus mesas: de ahí se elige el lugar de un jurado.
+  listPadronPlaces: (token) => request('auth', '/admin/padron/lugares', { token }),
+  // Todos los puestos, con sus mesas, cuántos votantes tienen y su ubicación
+  // (null si todavía no la tienen).
+  listPuestos: (token) => request('auth', '/admin/puestos', { token }),
+  // ubicacion: { departamento, municipio, localidad, zona } (nombres o códigos del DANE).
+  savePuestoUbicacion: (token, pollingPlace, ubicacion) =>
+    request('auth', '/admin/puestos/ubicacion', { method: 'PUT', token, body: { pollingPlace, ...ubicacion } }),
+  deletePuesto: (token, puestoId) => request('auth', `/admin/puestos/${puestoId}`, { method: 'DELETE', token }),
+  // Mesas de un puesto: crear una sin votantes, renombrarla (también en sus
+  // votantes y sus jurados) y eliminarla si no tiene ninguno.
+  createMesa: (token, pollingPlace, votingTable) =>
+    request('auth', '/admin/mesas', { method: 'POST', token, body: { pollingPlace, votingTable } }),
+  renameMesa: (token, pollingPlace, votingTable, nombre) =>
+    request('auth', '/admin/mesas', { method: 'PUT', token, body: { pollingPlace, votingTable, nombre } }),
+  deleteMesa: (token, pollingPlace, votingTable) =>
+    request('auth', '/admin/mesas', { method: 'DELETE', token, body: { pollingPlace, votingTable } }),
+  // Departamentos y municipios del DANE (Divipola), con las otras formas de escribirlos.
+  getDivipola: (token) => request('auth', '/admin/divipola', { token }),
+  // votingTable vacío: el jurado queda de todo el puesto.
+  // ubicacion: dónde vive el jurado ({ departamento, municipio, localidad });
+  // el puesto tiene que estar cerca de ahí.
+  changeJuradoMesa: (token, userId, pollingPlace, votingTable, ubicacion = {}) =>
+    request('auth', `/admin/users/${userId}/mesa`, { method: 'PUT', token, body: { pollingPlace, votingTable, ...ubicacion } }),
+  resetUserTotp: (token, userId) =>
+    request('auth', `/admin/users/${userId}/reset-totp`, { method: 'POST', token }),
+  // Agrega votantes (hasta 200 por vez): nunca modifica a uno que ya está.
+  // Cada PIN vence un tiempo fijo después de generarse (pinExpiresAt, en la respuesta).
+  // Si su puesto todavía no tiene ubicación, cada votante la trae (pais,
+  // departamento, municipio, localidad, zona).
+  // origen: 'archivo' en la carga masiva, para la auditoría.
+  addVoters: (token, voters, origen) =>
+    request('auth', '/admin/voters', { method: 'POST', token, body: { voters, origen } }),
+  // filtros: { q, pollingPlace, votingTable, pin, totp, assisted, limit, offset }; los vacíos no se mandan.
+  listVoters: (token, filtros = {}) => {
+    const params = new URLSearchParams(Object.entries(filtros).filter(([, valor]) => valor !== '' && valor !== undefined && valor !== null));
+    return request('auth', `/admin/voters?${params}`, { token });
+  },
+  deleteVoter: (token, voterId) => request('auth', `/admin/voters/${voterId}`, { method: 'DELETE', token }),
+  // Autocompletar del buscador: hasta 8 votantes cuya cédula (o nombre) coincide.
+  suggestVoters: (token, q) => request('auth', `/admin/voters/sugerencias?q=${encodeURIComponent(q)}`, { token }),
+  // Un PIN nuevo, que vence un tiempo fijo después de generarse.
+  resetVoterPin: (token, voterId) => request('auth', `/admin/voters/${voterId}/reset-pin`, { method: 'POST', token }),
+  resetVoterTotp: (token, voterId) =>
+    request('auth', `/admin/voters/${voterId}/reset-totp`, { method: 'POST', token }),
+  setVoterAssisted: (token, voterId, assisted) =>
+    request('auth', `/admin/voters/${voterId}/assisted`, { method: 'PUT', token, body: { assisted } }),
+  getJuradoMesa: (token) => request('auth', '/jurado/mesa', { token }),
+  listAuditLog: (token, limit = 50, offset = 0) =>
+    request('auth', `/admin/audit-log?limit=${limit}&offset=${offset}`, { token }),
+
+  // Voting
+  createTemplate: (token, name, description, templateType, options) =>
+    request('voting', '/admin/templates', { method: 'POST', token, body: { name, description, templateType, options } }),
+  listTemplates: (token) => request('voting', '/admin/templates', { token }),
+  createElection: (token, templateId, title, scheduledStart, scheduledEnd) =>
+    request('voting', '/admin/elections', {
+      method: 'POST',
+      token,
+      body: { templateId, title, scheduledStart, scheduledEnd },
+    }),
+  listAllElections: (token) => request('voting', '/admin/elections', { token }),
+  stopElection: (token, electionId) => request('voting', `/admin/elections/${electionId}/stop`, { method: 'POST', token }),
+  listActiveElections: () => request('voting', '/elections/active'),
+  castVote: (token, electionId, optionId) =>
+    request('voting', '/vote', { method: 'POST', token, body: { electionId, optionId } }),
+  listMyVotes: (token) => request('voting', '/my-votes', { token }),
+
+  // Analytics — resultados y métricas (fuentes de datos del builder de reportes)
+  getResults: (token, electionId) => request('analytics', `/api/elections/${electionId}/results`, { token }),
+  getTimeseries: (token, electionId, interval = 'hour') =>
+    request('analytics', `/api/elections/${electionId}/metrics/timeseries?interval=${interval}`, { token }),
+  getParticipation: (token, electionId, groupBy = 'polling_place') =>
+    request('analytics', `/api/elections/${electionId}/metrics/participation?groupBy=${groupBy}`, { token }),
+  getOperationalMetrics: (token, electionId) =>
+    request('analytics', `/api/elections/${electionId}/metrics/operational`, { token }),
+  getAuditMetrics: (token, electionId) =>
+    request('analytics', `/api/elections/${electionId}/metrics/audit`, { token }),
+  getTurnoutProjection: (token, electionId) =>
+    request('analytics', `/api/elections/${electionId}/metrics/turnout-projection`, { token }),
+  getLeadTimeline: (token, electionId) =>
+    request('analytics', `/api/elections/${electionId}/metrics/lead-timeline`, { token }),
+  getIntegrity: (token, electionId) =>
+    request('analytics', `/api/elections/${electionId}/metrics/integrity`, { token }),
+  getSuspiciousAccess: (token, electionId) =>
+    request('analytics', `/api/elections/${electionId}/metrics/suspicious-access`, { token }),
+
+  // Analytics — tableros de reportes (builder tipo Power BI)
+  listDashboards: (token, electionId) =>
+    request('analytics', `/api/elections/${electionId}/dashboards`, { token }),
+  getDashboard: (token, dashboardId) => request('analytics', `/api/dashboards/${dashboardId}`, { token }),
+  createDashboard: (token, electionId, name, layout) =>
+    request('analytics', `/api/elections/${electionId}/dashboards`, { method: 'POST', token, body: { name, layout } }),
+  updateDashboard: (token, dashboardId, name, layout) =>
+    request('analytics', `/api/dashboards/${dashboardId}`, { method: 'PUT', token, body: { name, layout } }),
+  deleteDashboard: (token, dashboardId) =>
+    request('analytics', `/api/dashboards/${dashboardId}`, { method: 'DELETE', token }),
+
+  // Scrutiny
+  getCertification: (token, electionId) => request('scrutiny', `/certifications/${electionId}`, { token }),
+  verifyChain: (token) => request('scrutiny', '/verify', { token }),
+  // Descarga binaria (PDF), no pasa por request(): necesita leer un blob,
+  // no un JSON, y disparar la descarga en el navegador con el nombre correcto.
+  downloadActaPdf: async (token, electionId) => {
+    const url = `${BASE_URLS.scrutiny}/certifications/${electionId}/acta.pdf`;
+    const response = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    if (!response.ok) {
+      let message = `Error ${response.status} al generar el acta`;
+      try {
+        const data = await response.json();
+        if (data?.error) message = data.error;
+      } catch {
+        // el cuerpo de error tampoco era JSON; se usa el mensaje genérico
+      }
+      throw new Error(message);
+    }
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = `acta-escrutinio-eleccion-${electionId}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(blobUrl);
+  },
+};

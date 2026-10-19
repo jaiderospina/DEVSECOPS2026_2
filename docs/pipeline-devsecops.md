@@ -1,0 +1,81 @@
+# Pipeline DevSecOps
+
+El pipeline (`.github/workflows/devsecops.yml`) sigue el enfoque **shift-left**: los controles de seguridad corren en cada `push` y `pull_request` a `main`, antes de que el código llegue a producción. El estado de la última corrida se ve en la insignia del README o con `./scripts/pipeline-status.sh`.
+
+Todas las actions de terceros están **fijadas a un SHA de commit** (con la versión como comentario), no a un tag que su dueño podría mover.
+
+## Fases
+
+**Fase 1 — Planificación.** Modelado de amenazas en [`docs/threat-model/`](threat-model/): `livemetric.threatdragon.json` (se abre en [OWASP Threat Dragon](https://www.threatdragon.com/)) con DFD de nivel 0 y 1, y [`STRIDE-analysis.md`](threat-model/STRIDE-analysis.md) con la misma información en una tabla. Cada amenaza está anclada a un flujo o proceso real del sistema.
+
+**Fase 2 — Codificación.**
+
+| Job | Herramienta | Qué detiene |
+|---|---|---|
+| `secrets-scan` | **Gitleaks** | Commits con secretos, tokens o credenciales. Corre primero: si falla, no corre nada más. También corre **antes de cada commit** vía `scripts/git-hooks/pre-commit` (se instala una vez con `./scripts/install-hooks.sh`). |
+| `dependency-audit` | **npm audit** | Vulnerabilidades conocidas (CVE) en las dependencias de los 6 servicios; falla ante severidad `high` o mayor. |
+| `sast-scan` | **Semgrep** (OWASP Top 10, Express, nodejsscan, JWT) | Inyección SQL, debilidades en la verificación de JWT, configuraciones inseguras. Sus hallazgos se revisan pero no bloquean; los resultados van a GitHub Security. |
+| `lint-security` | **ESLint** + `eslint-plugin-security` | En cada uno de los 6 servicios: `eval` y derivados, `require` dinámico, `child_process`, expresiones regulares vulnerables a ReDoS, rutas de archivo armadas con datos, acceso a objetos con claves variables (prototype pollution), comparación de secretos sin tiempo constante y caracteres Unicode que esconden código. En el frontend, además: `dangerouslySetInnerHTML`, `innerHTML`, `document.write`, URLs `javascript:` y `target="_blank"` sin `rel`. **Bloquea** con cualquier hallazgo. Las reglas están en [`scripts/lib/eslint-reglas-seguridad.js`](../scripts/lib/eslint-reglas-seguridad.js); un falso positivo solo pasa con la excepción justificada en la misma línea (`// eslint-disable-next-line <regla> -- <por qué>`); esas excepciones no se suben a GitHub Security, porque su justificación ya está en el código. Localmente: `cd services/<nombre> && npm run lint`. |
+| `sca-scan` | **Trivy** (modo `fs`) | Lo mismo que npm audit sobre cada `package.json`, con la herramienta que pide el enunciado; umbral `CRITICAL`/`HIGH`. |
+
+**Fase 3 — Integración / build.**
+
+| Job | Herramienta | Qué detiene |
+|---|---|---|
+| `container-scan` | **Trivy** (modo imagen) | Construye las 8 imágenes reales: las 6 del sistema, `livemetric-db` (la base con su esquema, de `db/Dockerfile`) y `livemetric` (la de instalación, de `docker-hub/Dockerfile`, construida desde la raíz). y busca CVE `CRITICAL`/`HIGH` en el sistema base y las librerías. Las excepciones, siempre justificadas, van en `.trivyignore` (hoy no hay ninguna). Además genera el **SBOM** de cada servicio en CycloneDX (ver abajo). |
+
+**SBOM (*Software Bill of Materials*).** El inventario de todo lo que lleva cada servicio, en formato **CycloneDX**, generado con Trivy:
+
+- `<servicio>-imagen.cdx.json`: lo que trae la imagen, los paquetes de Alpine y las dependencias de Node.
+- `<servicio>-dependencias.cdx.json`: lo que declara el `package-lock.json`, sin las dependencias de desarrollo. En el frontend es el que importa: sus librerías (React, Recharts…) van compiladas en el JavaScript, y la imagen no las deja ver.
+
+Quedan en cada corrida como artefacto `sbom-<servicio>`, durante 90 días; se generan antes del escaneo, así que están aunque la imagen no pase. Al publicar una versión, `release.yml` hace lo mismo (artefacto `sbom-<servicio>-vX.Y.Z`) y además adjunta a cada imagen de Docker Hub su SBOM en SPDX (`sbom: true` de BuildKit), que se lee con `docker buildx imagetools inspect <imagen>:<versión> --format '{{ json .SBOM }}'`. Cuando se publica una CVE nueva, `trivy sbom <archivo>` dice si una versión ya construida la tiene, sin reconstruirla.
+
+**Fase 4 — Pruebas.**
+
+| Job | Herramienta | Qué cubre |
+|---|---|---|
+| `unit-tests` | **Jest + Supertest**, **React Testing Library** | Servicios: pruebas contra la app de Express en memoria de cada uno y un PostgreSQL 16 de verdad: uno **desechable** por corrida, que levanta `scripts/lib/jest-db-setup.js` con el esquema de `db/init.sql` y se borra al terminar. Los secretos también son aleatorios en cada corrida (`jest.setup.js`), así que el job no necesita ningún *secret* del repositorio. Frontend: los componentes de React sobre jsdom, con el cliente HTTP reemplazado por un doble. Mide la **cobertura** de cada uno. Localmente: `cd services/<nombre> && npm test` (los servicios necesitan Docker; el frontend, no). |
+| `coverage-badge` | GitHub Pages | Solo en `main`: junta la cobertura de los 5 servicios y del frontend, y la publica en GitHub Pages (`coverage.json` para la insignia del README y una página con el detalle). |
+| `staging-deploy-and-dast` | **OWASP ZAP** (baseline) | Levanta el stack completo, con su propia base y un `.env` generado como en una instalación nueva, y lo ataca en `http://localhost:3000` como caja negra. El reporte queda como artefacto (`zap-baseline-report`); por ahora es un gate de **reporte**, no bloqueante. |
+
+**Fase 5 — Despliegue.**
+
+| Job | Herramienta | Qué cubre |
+|---|---|---|
+| `iac-scan` | **Checkov** | Malas prácticas en `infra/terraform/main.tf`. Checkov no trae controles para el provider de Docker (`kreuzwerker/docker`), así que el proyecto define los suyos en [`infra/terraform/politicas-checkov/`](../infra/terraform/politicas-checkov/): la red de la base es interna, los puertos solo se publican en `127.0.0.1`, la base no publica ninguno, y cada contenedor tiene solo lectura, `no-new-privileges` y nada privilegiado. |
+| `iac-deploy` | **Terraform** | Despliegue real: `terraform apply` levanta el stack (con su propio PostgreSQL), un smoke test confirma que los 4 microservicios responden y `terraform destroy` limpia todo. |
+
+| Job final | |
+|---|---|
+| `security-gate` | Resume el estado de todos los controles y falla si alguno falló. Es el *required check* recomendado para proteger `main`. |
+
+Los hallazgos de Semgrep, ESLint, Trivy y Checkov se suben en formato **SARIF** a **Security → Code scanning** de GitHub.
+
+> **Ninguna base real:** las pruebas, el DAST y `iac-deploy` usan cada uno su propio PostgreSQL efímero, que se borra al terminar. Ningún job del pipeline puede leer ni escribir los datos de una instalación.
+>
+> **`scrutiny_ledger` es append-only, también en las pruebas:** el trigger impide borrar las actas que certifican las pruebas de Scrutiny, incluso desde las propias pruebas (es la misma garantía de integridad que el sistema existe para dar). Por eso se prueban contra una base desechable: las actas desaparecen con ella.
+
+## Correr el mismo análisis en la PC
+
+`./scripts/pipeline-local.sh` (o `scripts\pipeline-local.bat`) corre localmente los mismos controles, con los mismos comandos, para detectar problemas **antes** de hacer push. `start.sh` lo usa como paso previo a levantar el stack.
+
+- Cada control termina en una línea ya interpretada: ✔ pasó, ⚠ para revisar (no bloquea), ✘ falló (bloquea). Debajo de un ✘ aparecen las líneas del log que explican por qué.
+- Al final, un cuadro con todos los controles por servicio y la duración.
+- La salida completa de cada herramienta queda en un log por paso; con `--detalle` además se ve en pantalla.
+- Una falla de la conexión no es un hallazgo: si npm audit o Trivy fallan por la red (DNS caído, `EAI_AGAIN`, `network is unreachable`, la base de Trivy que no baja), se reintentan hasta 3 veces antes de marcarse en rojo.
+- La base de vulnerabilidades de Trivy (unos 70 MB) queda en el volumen `livemetric-trivy-cache`: se descarga una vez, y otra solo cuando está vieja, en lugar de en cada uno de los 12 análisis. Para liberar el espacio: `docker volume rm livemetric-trivy-cache`.
+- Las imágenes se construyen con la fecha del día en `ACTUALIZAR_PAQUETES`, para que la capa de `apk upgrade` no salga de la caché de otro día (ver [Gestión de vulnerabilidades](manual-seguridad.md#5-gestión-de-vulnerabilidades)).
+- El SBOM de cada servicio (de la imagen y de las dependencias, en CycloneDX) queda en la subcarpeta `sbom` de la de resultados; el cuadro final dice dónde y cuántos.
+- Fuera de alcance local (solo en GitHub Actions): Checkov, el despliegue con Terraform y el DAST.
+
+## Cómo comprobar que los controles bloquean de verdad
+
+Cada prueba en un cambio aparte, revirtiéndolo después:
+
+1. **Gitleaks** — Agregar una línea como `const JWT_SECRET = "sk_live_abcdef1234567890"` y hacer commit: `secrets-scan` debe fallar y bloquear el resto.
+2. **npm audit** — Degradar una dependencia de `services/voting/package.json` a una versión con CVE conocidos y regenerar el lockfile: `dependency-audit` debe fallar.
+3. **Semgrep** — Reemplazar una query parametrizada por concatenación, p. ej. `` `SELECT * FROM votes WHERE election_id = ${electionId}` ``: debe aparecer como hallazgo de inyección SQL.
+4. **ESLint** — Agregar `const clave = req.query.clave; const obj = {}; obj[clave] = 1;` a una ruta (el plugin reconoce la clave cuando es una variable, no `obj[req.query.clave]` directo), o `<div dangerouslySetInnerHTML={{ __html: texto }} />` a un componente: `lint-security` debe fallar señalando el archivo y la línea.
+5. **Trivy** — Cambiar la imagen base de un `Dockerfile` por una antigua con CVE conocidos (p. ej. `node:18.0.0`): `container-scan` debe fallar.
+6. **Checkov** — Quitar `internal = true` de la red `db_net` en `infra/terraform/main.tf`: `iac-scan` debe fallar.

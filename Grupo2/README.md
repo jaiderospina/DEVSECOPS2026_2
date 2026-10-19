@@ -17,6 +17,17 @@
 
 ---
 
+## 🗳️ Proyecto final del curso: LiveMetric
+
+El proyecto final del Grupo 2 es **LiveMetric**, un sistema de elecciones y votación en tiempo real con un pipeline DevSecOps de ciclo completo. Está en la raíz de esta rama (`LiveMetric`):
+
+- [README del proyecto](../README.md): qué es, qué hace cada microservicio, cómo correrlo y el video de demostración.
+- [Informe técnico (PDF)](../docs/informe-tecnico.pdf) y [la documentación](../docs/): manuales de arquitectura, desarrollo, despliegue, seguridad y usuario, y el modelo de amenazas.
+- Imágenes en Docker Hub: [`nicolaspineda1421/livemetric`](https://hub.docker.com/r/nicolaspineda1421/livemetric).
+- Repositorio original, con su pipeline en GitHub Actions: [github.com/NicolasPineda1421/LiveMetric](https://github.com/NicolasPineda1421/LiveMetric).
+
+---
+
 ## 📖 Introducción general
 
 La seguridad en el desarrollo de software es hoy uno de los pilares fundamentales para proteger la información de los usuarios y la integridad de los sistemas. El **OWASP Top 10** es un documento de referencia elaborado por la *Open Web Application Security Project (OWASP)*, una fundación sin ánimo de lucro dedicada a mejorar la seguridad del software a nivel mundial.

@@ -1,0 +1,22 @@
+# Lo que NO se copia al contenedor global (el contexto de build es la raiz
+# del repo; BuildKit toma este archivo por estar al lado del Dockerfile).
+
+# Secretos: el .env real nunca queda dentro de una imagen (cualquiera con
+# la imagen podria leerlo). scripts/contenedor.sh lo genera en el host la
+# primera vez y lo monta en solo lectura al arrancar.
+.env
+*.env.local
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/*.tfvars
+infra/terraform/.terraform/
+
+# Se regeneran adentro (npm ci / npm install del analisis, build de Vite).
+**/node_modules
+services/frontend/dist/
+
+# Salidas locales que no aportan nada adentro.
+semgrep-local.sarif
+reports/
+*.log
+.DS_Store

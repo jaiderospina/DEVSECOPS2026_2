@@ -1,0 +1,601 @@
+name: LiveMetric DevSecOps Pipeline
+
+on:
+  # El equipo integra directo en "main", que siempre debe ser desplegable
+  # (ver docs/manual-desarrollo.md): el pipeline corre en cada push a main, y
+  # tambien en cada Pull Request hacia main para los cambios que se revisan
+  # antes de integrar.
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Minimo permiso por defecto para todo el workflow; "security-events: write"
+# (necesario solo para subir SARIF a la pestaña "Security") se otorga por
+# job, unicamente a los 4 jobs que realmente lo usan, en vez de a todo el
+# pipeline.
+permissions:
+  contents: read
+
+jobs:
+
+  # -------------------------------------------------------------------------
+  # 1) GITLEAKS - Bloquea el pipeline si hay secretos/tokens hardcodeados.
+  #    Se ejecuta PRIMERO y con "needs" en el resto de jobs: si aqui falla,
+  #    nada mas se ejecuta (no tiene sentido escanear codigo comprometido).
+  # -------------------------------------------------------------------------
+  secrets-scan:
+    name: Gitleaks - Escaneo de secretos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout con historial completo
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+
+      # Se invoca el CLI de Gitleaks directamente (imagen oficial del propio
+      # proyecto open source), en vez del Marketplace Action
+      # "gitleaks/gitleaks-action@v2": ese wrapper cambio su modelo y ahora
+      # exige una GITLEAKS_LICENSE de pago para poder correr, lo cual
+      # rompe la restriccion de "solo herramientas FOSS" del pipeline. La
+      # herramienta Gitleaks en si (el binario/imagen que se usa aqui) sigue
+      # siendo 100% gratuita; el costo era unicamente del wrapper de Action.
+      - name: Ejecutar Gitleaks (CLI, sin licencia)
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/repo" zricethezav/gitleaks:latest \
+            detect --source /repo --config /repo/.gitleaks.toml --redact --verbose
+        # "gitleaks detect" termina con exit code != 0 si encuentra secretos,
+        # lo que falla este step y bloquea automaticamente el resto del pipeline.
+
+  # -------------------------------------------------------------------------
+  # 2) NPM AUDIT - Vulnerabilidades de dependencias en los 6 servicios.
+  # -------------------------------------------------------------------------
+  dependency-audit:
+    name: npm audit - ${{ matrix.service }}
+    needs: secrets-scan
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [auth, voting, analytics, scrutiny, scheduler, frontend]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: services/${{ matrix.service }}/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: services/${{ matrix.service }}
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: npm audit (bloquea en severidad alta/critica)
+        working-directory: services/${{ matrix.service }}
+        # --omit=dev: audita solo lo que de verdad se ejecuta en produccion.
+        # Herramientas de build en devDependencies (ej. vite/esbuild) nunca
+        # llegan al contenedor final ni corren en el navegador del usuario;
+        # auditarlas igual que el runtime real generaria bloqueos por CVEs
+        # que no representan un riesgo del sistema desplegado.
+        run: npm audit --omit=dev --audit-level=high
+
+  # -------------------------------------------------------------------------
+  # 3) SAST - Semgrep enfocado en inyeccion SQL y middleware de autenticacion.
+  # -------------------------------------------------------------------------
+  sast-scan:
+    name: SAST - Semgrep (SQLi / Auth)
+    needs: secrets-scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      # Se invoca el CLI de Semgrep directamente (imagen oficial), en vez del
+      # Marketplace Action "semgrep/semgrep-action@v1": ese wrapper es un
+      # envoltorio viejo (imagen "returntocorp/semgrep-agent:v1") que solo
+      # acepta "config"/"publishToken" como inputs y nunca llegaba a generar
+      # semgrep.sarif (bug preexistente al trabajo de esta sesion, ya
+      # afectaba las primeras corridas del pipeline). El CLI real de Semgrep
+      # si soporta "--sarif" de forma nativa.
+      - name: Ejecutar Semgrep (CLI directo)
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/src" -w /src semgrep/semgrep \
+            semgrep scan --config=p/owasp-top-ten --config=p/expressjs --config=p/nodejsscan --config=p/jwt \
+            --sarif --output=semgrep.sarif .
+
+      - name: Verificar SARIF generado
+        run: test -f semgrep.sarif && echo "SARIF generado correctamente"
+
+      # Los hallazgos silenciados en el codigo con "nosemgrep" (con su
+      # justificacion al lado) no se suben: GitHub no respeta la marca de
+      # "suprimido" de herramientas externas y los mostraria como abiertos.
+      - name: Quitar del SARIF los hallazgos silenciados con nosemgrep
+        run: |
+          jq '(.runs[].results) |= map(select((.suppressions // []) | length == 0))' semgrep.sarif > semgrep.filtrado.sarif
+          mv semgrep.filtrado.sarif semgrep.sarif
+
+      - name: Subir resultados SARIF a GitHub Security
+        uses: github/codeql-action/upload-sarif@1190a975f95ce23525efb6a3fc21ea29567c1b52 # v3.38.2
+        if: always()
+        with:
+          sarif_file: semgrep.sarif
+
+  # -------------------------------------------------------------------------
+  # 3a) SAST - ESLint con reglas de seguridad (eslint-plugin-security y, en
+  #     el frontend, reglas contra XSS y tabnabbing), en cada servicio. Las
+  #     reglas estan en scripts/lib/eslint-reglas-seguridad.js y son todas
+  #     "error": cualquier hallazgo bloquea. Los falsos positivos solo pasan
+  #     con una excepcion justificada en la misma linea del codigo.
+  # -------------------------------------------------------------------------
+  lint-security:
+    name: SAST - ESLint (seguridad) - ${{ matrix.service }}
+    needs: secrets-scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [auth, voting, analytics, scrutiny, scheduler, frontend]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: services/${{ matrix.service }}/package-lock.json
+
+      - name: Instalar dependencias (incluye ESLint y eslint-plugin-security)
+        working-directory: services/${{ matrix.service }}
+        run: npm ci --ignore-scripts
+
+      # El formateador SARIF solo hace falta aca: se instala sin guardarlo
+      # en package.json, con la version fijada. Las excepciones justificadas
+      # en el codigo (eslint-disable -- motivo) se quitan del SARIF: GitHub
+      # no respeta la marca de "suprimido" de herramientas externas y las
+      # mostraria como alertas abiertas; su justificacion vive en el codigo.
+      - name: Generar SARIF (aunque haya hallazgos)
+        working-directory: services/${{ matrix.service }}
+        run: |
+          npm install --no-save --ignore-scripts @microsoft/eslint-formatter-sarif@3.1.0
+          npx eslint . -f @microsoft/eslint-formatter-sarif -o eslint.sarif || true
+          jq '(.runs[].results) |= map(select((.suppressions // []) | length == 0))' eslint.sarif > eslint.filtrado.sarif
+          mv eslint.filtrado.sarif eslint.sarif
+
+      - name: Subir resultados SARIF a GitHub Security
+        uses: github/codeql-action/upload-sarif@1190a975f95ce23525efb6a3fc21ea29567c1b52 # v3.38.2
+        if: always()
+        with:
+          sarif_file: services/${{ matrix.service }}/eslint.sarif
+          category: 'eslint-${{ matrix.service }}'
+
+      - name: ESLint (bloquea con cualquier hallazgo)
+        working-directory: services/${{ matrix.service }}
+        run: npx eslint . --max-warnings 0
+
+  # -------------------------------------------------------------------------
+  # 3b) SCA - Trivy en modo "filesystem" sobre las dependencias declaradas
+  #     (package.json/package-lock.json) de cada microservicio. Distinto del
+  #     escaneo de imagenes (container-scan, mas abajo): esto mira solo las
+  #     dependencias de codigo, antes de construir ninguna imagen.
+  # -------------------------------------------------------------------------
+  sca-scan:
+    name: SCA - Trivy fs - ${{ matrix.service }}
+    needs: secrets-scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [auth, voting, analytics, scrutiny, scheduler, frontend]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: services/${{ matrix.service }}/package-lock.json
+
+      - name: Generar package-lock.json (para que Trivy resuelva versiones exactas)
+        working-directory: services/${{ matrix.service }}
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Escanear dependencias con Trivy (fs)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: 'fs'
+          scan-ref: 'services/${{ matrix.service }}'
+          format: 'sarif'
+          output: 'trivy-sca-${{ matrix.service }}.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          ignore-unfixed: true
+          trivyignores: '.trivyignore'
+
+      - name: Subir resultados SARIF de Trivy SCA
+        uses: github/codeql-action/upload-sarif@1190a975f95ce23525efb6a3fc21ea29567c1b52 # v3.38.2
+        if: always()
+        with:
+          sarif_file: 'trivy-sca-${{ matrix.service }}.sarif'
+          category: 'trivy-sca-${{ matrix.service }}'
+
+  # -------------------------------------------------------------------------
+  # 4) TRIVY - Escaneo de vulnerabilidades en las imagenes Docker construidas,
+  #    y el SBOM (CycloneDX) de cada servicio.
+  # -------------------------------------------------------------------------
+  container-scan:
+    name: Trivy - ${{ matrix.service }}
+    needs: [dependency-audit, sast-scan, lint-security]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        # Ademas de los servicios, las dos imagenes del compose de Docker Hub:
+        # "db", la base con su esquema (db/Dockerfile), y "instalador", la que
+        # prepara la carpeta del usuario (docker-hub/Dockerfile, construida
+        # desde la raiz). Pasan por la misma puerta.
+        include:
+          - { service: auth, context: ./services/auth, dockerfile: ./services/auth/Dockerfile }
+          - { service: voting, context: ./services/voting, dockerfile: ./services/voting/Dockerfile }
+          - { service: analytics, context: ./services/analytics, dockerfile: ./services/analytics/Dockerfile }
+          - { service: scrutiny, context: ./services/scrutiny, dockerfile: ./services/scrutiny/Dockerfile }
+          - { service: scheduler, context: ./services/scheduler, dockerfile: ./services/scheduler/Dockerfile }
+          - { service: frontend, context: ./services/frontend, dockerfile: ./services/frontend/Dockerfile }
+          - { service: db, context: ./db, dockerfile: ./db/Dockerfile }
+          - { service: instalador, context: ., dockerfile: ./docker-hub/Dockerfile }
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Construir imagen local
+        env:
+          CONTEXTO: ${{ matrix.context }}
+          DOCKERFILE: ${{ matrix.dockerfile }}
+        run: |
+          docker build -t livemetric/${{ matrix.service }}-service:ci -f "$DOCKERFILE" "$CONTEXTO"
+
+      # SBOM (Software Bill of Materials) en CycloneDX: el inventario de lo
+      # que trae la imagen (paquetes del sistema y dependencias de Node) y el
+      # de las dependencias que declara el servicio en su package-lock.json
+      # (sin las de desarrollo). El segundo hace falta sobre todo en el
+      # frontend: sus librerias van compiladas en el JavaScript, y la imagen
+      # no las deja ver. Se generan antes del escaneo, para tenerlos aunque
+      # la imagen no pase la puerta de seguridad.
+      - name: Generar el SBOM de la imagen
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: 'livemetric/${{ matrix.service }}-service:ci'
+          format: 'cyclonedx'
+          output: 'sbom-${{ matrix.service }}-imagen.cdx.json'
+
+      # Solo los servicios declaran dependencias de Node (package-lock.json):
+      # el SBOM de la base y el del instalador es el de la imagen.
+      - name: Generar el SBOM de las dependencias
+        if: startsWith(matrix.context, './services/')
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: 'fs'
+          scan-ref: './services/${{ matrix.service }}'
+          format: 'cyclonedx'
+          output: 'sbom-${{ matrix.service }}-dependencias.cdx.json'
+
+      - name: Escanear imagen con Trivy
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: 'livemetric/${{ matrix.service }}-service:ci'
+          format: 'sarif'
+          output: 'trivy-${{ matrix.service }}.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          ignore-unfixed: true
+          trivyignores: '.trivyignore'
+
+      - name: Subir resultados SARIF de Trivy
+        uses: github/codeql-action/upload-sarif@1190a975f95ce23525efb6a3fc21ea29567c1b52 # v3.38.2
+        if: always()
+        with:
+          sarif_file: 'trivy-${{ matrix.service }}.sarif'
+          category: 'trivy-${{ matrix.service }}'
+
+      # Los dos SBOM quedan en la corrida (Summary > Artifacts), 90 dias.
+      - name: Guardar el SBOM
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sbom-${{ matrix.service }}
+          path: sbom-${{ matrix.service }}-*.cdx.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  # -------------------------------------------------------------------------
+  # 5) CHECKOV - Validacion de seguridad del codigo Terraform (IaC).
+  #    Checkov no trae controles para el provider kreuzwerker/docker: sin las
+  #    politicas propias de infra/terraform/politicas-checkov no evaluaria
+  #    ningun recurso. Esas politicas exigen lo que promete la arquitectura
+  #    (red de la base interna, puertos solo en 127.0.0.1, solo lectura,
+  #    no-new-privileges, nada privilegiado).
+  # -------------------------------------------------------------------------
+  iac-scan:
+    name: Checkov - Terraform
+    needs: secrets-scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Ejecutar Checkov sobre infra/terraform
+        uses: bridgecrewio/checkov-action@444c9db6fa75e2d9c19ebf1fde7322089be9009e # v12
+        with:
+          directory: infra/terraform
+          framework: terraform
+          external_checks_dirs: infra/terraform/politicas-checkov
+          output_format: sarif
+          output_file_path: checkov-report.sarif
+          soft_fail: false   # falla el pipeline ante hallazgos de severidad relevante
+
+      - name: Subir resultados SARIF de Checkov
+        uses: github/codeql-action/upload-sarif@1190a975f95ce23525efb6a3fc21ea29567c1b52 # v3.38.2
+        if: always()
+        with:
+          sarif_file: checkov-report.sarif
+          category: checkov-terraform
+
+  # -------------------------------------------------------------------------
+  # 6) PRUEBAS UNITARIAS/INTEGRACION - Jest.
+  #    - Servicios: Supertest contra la app de Express en memoria (sin
+  #      desplegar nada) y una base PostgreSQL real pero desechable: cada
+  #      "npm test" la levanta en un contenedor propio, le carga db/init.sql
+  #      y la borra al final (scripts/lib/jest-db-setup.js). No necesita
+  #      ningun secreto: los de la aplicacion se generan al azar en cada
+  #      corrida (services/*/jest.setup.js).
+  #    - Frontend: React Testing Library sobre jsdom, con el cliente HTTP
+  #      reemplazado por un doble (sin base ni servicios).
+  # -------------------------------------------------------------------------
+  unit-tests:
+    name: Pruebas unitarias - ${{ matrix.service }}
+    needs: secrets-scan
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [auth, voting, analytics, scrutiny, scheduler, frontend]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: services/${{ matrix.service }}/package-lock.json
+
+      - name: Instalar dependencias (incluye Jest)
+        working-directory: services/${{ matrix.service }}
+        run: npm ci --ignore-scripts
+
+      - name: Correr pruebas (con cobertura)
+        working-directory: services/${{ matrix.service }}
+        run: npm test -- --coverage --coverageReporters=json-summary --coverageReporters=text-summary
+
+      # El job "coverage-badge" junta el resumen de cada servicio para la
+      # insignia de cobertura del README.
+      - name: Guardar el resumen de cobertura
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: coverage-${{ matrix.service }}
+          path: services/${{ matrix.service }}/coverage/coverage-summary.json
+          retention-days: 7
+
+  # -------------------------------------------------------------------------
+  # 6b) INSIGNIA DE COBERTURA - junta la cobertura de las pruebas de los 5
+  #     servicios y del frontend, y la publica en GitHub Pages: coverage.json (el formato
+  #     que lee shields.io para la insignia del README) y una pagina con el
+  #     detalle por servicio. Solo en pushes a main, para que la insignia
+  #     refleje la rama principal y no un PR a medio camino. No es un
+  #     control de seguridad, asi que security-gate no la espera.
+  # -------------------------------------------------------------------------
+  coverage-badge:
+    name: Insignia de cobertura (GitHub Pages)
+    needs: unit-tests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Descargar la cobertura de cada servicio
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: coverage-*
+          path: coverage
+
+      - name: Calcular la cobertura total y armar la pagina
+        run: node scripts/ci/cobertura-insignia.js coverage _site
+
+      - name: Subir la pagina
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: _site
+
+      - name: Publicar en GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  # -------------------------------------------------------------------------
+  # 7) IaC DEPLOY - Despliegue automatizado con Terraform (Fase 5): levanta
+  #    el sistema completo, con su propio PostgreSQL efimero, a partir de
+  #    infra/terraform/main.tf, comprueba que responda y lo destruye.
+  # -------------------------------------------------------------------------
+  iac-deploy:
+    name: Despliegue automatizado - Terraform
+    needs: [iac-scan, container-scan]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      # Secretos para el Postgres local efimero de este job, que se destruye
+      # al final: se generan al azar en cada corrida (ningun valor fijo en el
+      # repositorio) y se enmascaran en los logs. Quedan en GITHUB_ENV, asi
+      # que "terraform destroy" usa los mismos. En hexadecimal para no meter
+      # caracteres especiales en la contrasena de Postgres, salvo la clave
+      # AES-256 del padron, que tiene que ser base64 de exactamente 32 bytes
+      # (auth-service y analytics-service no arrancan sin ese formato).
+      - name: Generar secretos desechables para el entorno efimero
+        run: |
+          set_secret() {
+            echo "::add-mask::$2"
+            echo "TF_VAR_$1=$2" >> "$GITHUB_ENV"
+          }
+          set_secret postgres_password "$(openssl rand -hex 24)"
+          set_secret jwt_secret "$(openssl rand -hex 48)"
+          set_secret voter_id_salt "$(openssl rand -hex 32)"
+          set_secret internal_service_token "$(openssl rand -hex 32)"
+          set_secret voters_encryption_key "$(openssl rand -base64 32)"
+          # Par Ed25519 de la firma de las actas: la publica se deriva de
+          # la privada, asi que las dos salen de un .env generado a proposito.
+          node scripts/lib/generar-env.js "$RUNNER_TEMP/claves.env" > /dev/null
+          set_secret acta_signing_key "$(sed -n 's/^ACTA_SIGNING_KEY=//p' "$RUNNER_TEMP/claves.env")"
+          set_secret acta_public_key "$(sed -n 's/^ACTA_PUBLIC_KEY=//p' "$RUNNER_TEMP/claves.env")"
+          rm -f "$RUNNER_TEMP/claves.env"
+
+      - name: Configurar Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+        with:
+          terraform_version: '1.9.0'
+
+      - name: Terraform init
+        working-directory: infra/terraform
+        run: terraform init
+
+      - name: Terraform apply
+        working-directory: infra/terraform
+        run: terraform apply -auto-approve
+
+      - name: Esperar a que el stack responda
+        run: timeout 90 bash -c 'until curl -sf http://127.0.0.1:3000 >/dev/null; do sleep 3; done'
+
+      - name: Smoke test de los 4 microservicios
+        run: |
+          curl -sf http://127.0.0.1:3001/health
+          curl -sf http://127.0.0.1:3002/health
+          curl -sf http://127.0.0.1:3003/health
+          curl -sf http://127.0.0.1:3004/health
+          echo "Los 4 microservicios responden correctamente tras el despliegue con Terraform."
+
+      - name: Terraform destroy (limpieza, siempre corre)
+        if: always()
+        working-directory: infra/terraform
+        run: terraform destroy -auto-approve
+
+  # -------------------------------------------------------------------------
+  # 8) DAST - Levanta el stack completo (docker compose, base local) y
+  #    corre OWASP ZAP Baseline Scan contra el frontend (que ya pasa por el
+  #    proxy reverso de nginx hacia los 4 microservicios). Va en un solo job
+  #    porque los contenedores de un job no sobreviven para el siguiente.
+  #    "continue-on-error" en el paso de ZAP: por ahora es un gate de
+  #    REPORTE, no bloqueante (evita que hallazgos INFO/LOW de una primera
+  #    pasada tumben todo el pipeline); revisar el artifact subido.
+  # -------------------------------------------------------------------------
+  staging-deploy-and-dast:
+    name: Despliegue de staging + DAST (OWASP ZAP)
+    needs: [container-scan, unit-tests, iac-scan]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      # Igual que en cualquier instalacion: un .env con secretos aleatorios
+      # propios de esta corrida (la base del staging es local y desechable).
+      - name: Generar el .env del entorno de staging
+        run: node scripts/lib/generar-env.js
+
+      - name: Levantar el stack completo
+        run: docker compose up -d --build
+
+      - name: Esperar a que el frontend responda
+        run: timeout 120 bash -c 'until curl -sf http://localhost:3000 >/dev/null; do sleep 3; done'
+
+      - name: OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@66042c8e7e24680119199a017e5b0e8603bf4dae # v0.12.0
+        continue-on-error: true
+        with:
+          target: 'http://localhost:3000'
+          cmd_options: '-a'
+
+      - name: Subir reporte de ZAP como artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: zap-baseline-report
+          path: report_html.html
+          if-no-files-found: warn
+
+      - name: Apagar el stack (limpieza, siempre corre)
+        if: always()
+        run: docker compose down -v
+
+  # -------------------------------------------------------------------------
+  # Gate final: resume el estado de todo el pipeline de seguridad.
+  # Util como "required check" en la proteccion de la rama main.
+  # -------------------------------------------------------------------------
+  security-gate:
+    name: Security Gate (resumen)
+    needs: [secrets-scan, dependency-audit, sast-scan, lint-security, sca-scan, container-scan, iac-scan, unit-tests, iac-deploy, staging-deploy-and-dast]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      # Resumen legible del pipeline, en el mismo espiritu que un dashboard
+      # de DevSecOps: pero con el resultado REAL de needs.<job>.result de
+      # ESTA corrida y las herramientas que de verdad usa este pipeline
+      # (Gitleaks/Semgrep/Trivy/Checkov/Jest/Terraform/OWASP ZAP) - nunca un
+      # numero inventado ni una herramienta que no corrimos.
+      - name: Resumen del Runner DevSecOps
+        if: always()
+        run: |
+          check() {
+            if [ "$1" = "success" ]; then echo "✅ $2"; else echo "❌ $2 (resultado real: $1)"; fi
+          }
+
+          echo "🚀 Commit ${GITHUB_SHA:0:7} en rama ${GITHUB_REF_NAME}. Resumen del Runner DevSecOps:"
+          echo ""
+          check "${{ needs.secrets-scan.result }}" "🔑 Secret Scanning (Gitleaks) — sin secretos expuestos"
+          check "${{ needs.sast-scan.result }}" "🔍 SAST (Semgrep: OWASP Top 10 / Express / JWT)"
+          check "${{ needs.lint-security.result }}" "🔍 SAST (ESLint + eslint-plugin-security, 6 servicios)"
+          check "${{ needs.dependency-audit.result }}" "📦 SCA (npm audit) — sin CVEs de severidad alta o mayor"
+          check "${{ needs.sca-scan.result }}" "📦 SCA (Trivy fs, sobre package.json) — sin CVEs de severidad alta o mayor"
+          check "${{ needs.container-scan.result }}" "🐳 Container Scan (Trivy, imagenes reales) — sin CVEs critical/high sin excepcion"
+          check "${{ needs.iac-scan.result }}" "☁️ IaC Guard (Checkov sobre Terraform)"
+          check "${{ needs.unit-tests.result }}" "🧪 Pruebas unitarias (Jest: 5 microservicios y frontend)"
+          check "${{ needs.iac-deploy.result }}" "🏗️ Despliegue automatizado (Terraform apply + smoke test + destroy)"
+          check "${{ needs.staging-deploy-and-dast.result }}" "🕷️ DAST (OWASP ZAP Baseline Scan)"
+          echo ""
+
+      - name: Verificar que todos los controles pasaron
+        run: |
+          if [ "${{ contains(needs.*.result, 'failure') }}" = "true" ]; then
+            echo "❌ QUALITY GATE NO SUPERADO. Uno o mas controles de seguridad fallaron. Bloqueando merge."
+            exit 1
+          fi
+          echo "✅ QUALITY GATE SUPERADO. Todos los controles de seguridad pasaron correctamente."
+          echo "Todos los controles de seguridad pasaron correctamente."

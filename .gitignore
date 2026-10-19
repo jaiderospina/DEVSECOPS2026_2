@@ -1,0 +1,29 @@
+# Entorno y secretos
+.env
+*.env.local
+
+# Node
+node_modules/
+npm-debug.log*
+services/**/node_modules/
+services/frontend/dist/
+# Reportes de cobertura de Jest (npm test -- --coverage)
+coverage/
+
+# Terraform
+infra/terraform/.terraform/
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/.terraform.lock.hcl
+infra/terraform/crash.log
+infra/terraform/*.tfvars
+
+# Reportes de seguridad generados por el pipeline
+reports/
+trivy-report.json
+checkov-report.json
+gitleaks-report.json
+
+# Varios
+.DS_Store
+*.log
